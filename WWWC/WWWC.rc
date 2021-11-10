@@ -1,0 +1,1050 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 日本語 (日本) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_MAIN           ICON                    "res\\icon_mai.ico"
+
+IDI_ICON_INET           ICON                    "res\\icon1.ico"
+
+IDI_ICON_UP             ICON                    "res\\icon_up.ico"
+
+IDI_ICON_ERROR          ICON                    "res\\icon_err.ico"
+
+IDI_ICON_TIMEOUT        ICON                    "res\\icon_tim.ico"
+
+IDI_ICON_NO             ICON                    "res\\icon_no.ico"
+
+IDI_ICON_CHECK          ICON                    "res\\icon_che.ico"
+
+IDI_ICON_WAIT           ICON                    "res\\icon_wai.ico"
+
+IDI_ICON_DIRUP          ICON                    "res\\ico00001.ico"
+
+IDI_ICON_UPCHILD        ICON                    "res\\ico00003.ico"
+
+IDI_ICON_CHECKCHILD     ICON                    "res\\ico00004.ico"
+
+IDI_ICON_RECYCLER       ICON                    "res\\icon_rec.ico"
+
+IDI_ICON_RECYCLER_USE   ICON                    "res\\ico00005.ico"
+
+IDI_ICON_NOCHECK        ICON                    "res\\ico00006.ico"
+
+IDI_ICON_NOAUTOTIME     ICON                    "res\\icon_noa.ico"
+
+IDI_ICON_MAIN_CHECK     ICON                    "res\\ico00007.ico"
+
+IDI_ICON_COPY           ICON                    "res\\ico00002.ico"
+
+IDI_ICON_NON            ICON                    "res\\icon_non.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_MAIN MENU
+BEGIN
+    POPUP "ファイル(&F)"
+    BEGIN
+        MENUITEM "新規作成(&N)",                    ID_MENUITEM_POP_NEWITEM
+        MENUITEM SEPARATOR
+        MENUITEM "削除(&D)",                      ID_MENUITEM_DELETE
+        MENUITEM "名前の変更(&M)",                   ID_MENUITEM_EDITNAME
+        MENUITEM "プロパティ(&R)...",                ID_MENUITEM_PROP
+        MENUITEM SEPARATOR
+        MENUITEM "閉じる(&C)",                     ID_MENUITEM_CLOSE
+    END
+    POPUP "編集(&E)"
+    BEGIN
+        MENUITEM "元に戻す(&U)\tCtrl+Z",            ID_MENUITEM_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "切り取り(&T)\tCtrl+X",            ID_MENUITEM_CUT
+        MENUITEM "コピー(&C)\tCtrl+C",             ID_MENUITEM_COPY
+        MENUITEM "貼り付け(&P)\tCtrl+V",            ID_MENUITEM_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "すべて選択(&A)\tCtrl+A",           ID_MENUITEM_ALLSELECT
+        MENUITEM "選択の切り替え(&I)",                 ID_MENUITEM_SWITCHSELECT
+        MENUITEM "更新アイテムを選択(&B)\tCtrl+B",       ID_MENUITEM_UPSELECT
+        MENUITEM SEPARATOR
+        MENUITEM "検索(&F)...\tCtrl+F",           ID_MENUITEM_SERACH
+    END
+    POPUP "表示(&V)"
+    BEGIN
+        MENUITEM "ツール バー(&T)",                  ID_MENUITEM_VIEW_TB
+        MENUITEM "ステータス バー(&B)",                ID_MENUITEM_VIEW_SB
+        MENUITEM "更新メッセージ(&U)...\tCtrl+U",      ID_MENUITEM_VIEWUPMSG
+        MENUITEM SEPARATOR
+        MENUITEM "大きいアイコン(&G)",                 ID_MENUITEM_VIEW_ICON
+        MENUITEM "小さいアイコン(&M)",                 ID_MENUITEM_VIEW_SMALLICON
+        MENUITEM "一覧(&L)",                      ID_MENUITEM_VIEW_LIST
+        MENUITEM "詳細(&D)",                      ID_MENUITEM_VIEW_REPORT
+        MENUITEM "詳細で一行選択(&F)",                 ID_MENUITEM_VIEW_REPORT_LINE
+        MENUITEM SEPARATOR
+        POPUP "アイコンの整列(&I)"
+        BEGIN
+            MENUITEM "アイコン順(&I)",                   ID_MENUITEM_SORT_ICON
+            MENUITEM "名前順(&N)",                     ID_MENUITEM_SORT_NAME
+            MENUITEM "サイズ順(&Z)",                    ID_MENUITEM_SORT_SIZE
+            MENUITEM "日付順(&D)",                     ID_MENUITEM_SORT_DATE
+            MENUITEM "URL順(&U)",                    ID_MENUITEM_SORT_URL
+            MENUITEM SEPARATOR
+            MENUITEM "自動ソート(&S)",                   ID_MENUITEM_AUTOSORT
+        END
+        MENUITEM SEPARATOR
+        POPUP "移動(&V)"
+        BEGIN
+            MENUITEM "前に戻る(&B)\tAlt+←",             ID_MENUITEM_PREV_HISTORY
+            MENUITEM "次に進む(&F)\tAlt+→",             ID_MENUITEM_NEXT_HISTORY
+        END
+        MENUITEM "最新の情報に更新(&R)",                ID_MENUITEM_REFRESH
+        MENUITEM SEPARATOR
+        MENUITEM "ツール バーのカスタマイズ(&C)...",        ID_MENUITEM4_TB_CUSTOM
+        MENUITEM "オプション(&O)...",                ID_MENUITEM_OPTION
+    END
+    POPUP "チェック(&C)"
+    BEGIN
+        MENUITEM "チェック(&E)\tF5",                ID_MENUITEM_CHECK
+        MENUITEM "すべてのアイテムをチェック(&A)\tCtrl+F5",  ID_MENUITEM_ALLCHECK
+        MENUITEM "階層チェック(&K)",                  ID_MENUITEM_FOLDERTREECHECK
+        MENUITEM "エラーのアイテムのみをチェック(&R)",         ID_MENUITEM_ALLERRORCHECK
+        MENUITEM SEPARATOR
+        MENUITEM "チェックを中止(&S)\tCtrl+S",         ID_MENUITEM_CHECKEND
+        MENUITEM "すべてのチェックを中止(&P)\tCtrl+T",     ID_MENUITEM_ALLCHECKEND
+        MENUITEM SEPARATOR
+        MENUITEM "アイコンを初期化(&I)\tCtrl+I",        ID_MENUITEM_INITICON
+        MENUITEM "すべてのアイコンを初期化(&T)",            ID_MENUITEM_ALLINITICON
+        MENUITEM SEPARATOR
+        POPUP "アイコン変更(&N)"
+        BEGIN
+            MENUITEM "UPアイコン(&U)",                  ID_MENUITEM_ICON_UP
+            MENUITEM "エラーアイコン(&E)",                 ID_MENUITEM_ICON_ERROR
+            MENUITEM "タイムアウトアイコン(&T)",              ID_MENUITEM_ICON_TIMEOUT
+            MENUITEM SEPARATOR
+            MENUITEM "チェックする／しない (&N)",             ID_MENUITEM_CHECKSWITCH
+        END
+    END
+    POPUP "ツール(&T)"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+    POPUP "ヘルプ(&H)"
+    BEGIN
+        MENUITEM "ヘルプ(&H)",                     ID_MENUITEM_HELP
+        MENUITEM SEPARATOR
+        MENUITEM "バージョン情報(&A)...",              ID_MENUITEM_ABOUT
+    END
+END
+
+IDR_MENU_POPUP MENU
+BEGIN
+    POPUP "新規作成(&N)"
+    BEGIN
+        MENUITEM "フォルダ(&F)",                    ID_MENUITEM_NEWFOLDER
+        MENUITEM SEPARATOR
+    END
+    POPUP "アイテム"
+    BEGIN
+        MENUITEM "チェック(&E)",                    ID_MENUITEM_CHECK_POP
+        MENUITEM "チェックを中止(&S)",                 ID_MENUITEM_CHECKEND_POP
+        MENUITEM SEPARATOR
+        MENUITEM "アイコンを初期化(&I)",                ID_MENUITEM_INITICON_POP
+        POPUP "アイコン変更(&N)"
+        BEGIN
+            MENUITEM "UPアイコン(&U)",                  ID_MENUITEM_ICON_UP
+            MENUITEM "エラーアイコン(&E)",                 ID_MENUITEM_ICON_ERROR
+            MENUITEM "タイムアウトアイコン(&T)",              ID_MENUITEM_ICON_TIMEOUT
+            MENUITEM SEPARATOR
+            MENUITEM "チェックする／しない (&N)",             ID_MENUITEM_CHECKSWITCH_POP
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "切り取り(&T)",                    ID_MENUITEM_CUT_POP
+        MENUITEM "コピー(&C)",                     ID_MENUITEM_COPY_POP
+        MENUITEM SEPARATOR
+        MENUITEM "削除(&D)",                      ID_MENUITEM_DELETE_POP
+        MENUITEM "名前の変更(&M)",                   ID_MENUITEM_EDITNAME_POP
+        MENUITEM SEPARATOR
+        MENUITEM "プロパティ(&R)...",                ID_MENUITEM_PROP_POP
+    END
+    POPUP "フォルダ"
+    BEGIN
+        MENUITEM "階層チェック(&K)",                  ID_MENUITEM_FOLDERTREECHECK
+        MENUITEM "チェック(&E)",                    ID_MENUITEM_CHECK
+        MENUITEM "チェックを中止(&S)",                 ID_MENUITEM_CHECKEND
+        MENUITEM "アイコンを初期化(&I)",                ID_MENUITEM_INITICON
+        MENUITEM SEPARATOR
+        POPUP "表示(&V)"
+        BEGIN
+            MENUITEM "大きいアイコン(&G)",                 ID_MENUITEM_VIEW_ICON
+            MENUITEM "小さいアイコン(&M)",                 ID_MENUITEM_VIEW_SMALLICON
+            MENUITEM "一覧(&L)",                      ID_MENUITEM_VIEW_LIST
+            MENUITEM "詳細(&D)",                      ID_MENUITEM_VIEW_REPORT
+            MENUITEM "詳細で一行選択(&F)",                 ID_MENUITEM_VIEW_REPORT_LINE
+        END
+        MENUITEM SEPARATOR
+        POPUP "アイコンの整列(&I)"
+        BEGIN
+            MENUITEM "アイコン順(&I)",                   ID_MENUITEM_SORT_ICON
+            MENUITEM "名前順(&N)",                     ID_MENUITEM_SORT_NAME
+            MENUITEM "サイズ順(&Z)",                    ID_MENUITEM_SORT_SIZE
+            MENUITEM "日付順(&D)",                     ID_MENUITEM_SORT_DATE
+            MENUITEM "URL順(&U)",                    ID_MENUITEM_SORT_URL
+            MENUITEM SEPARATOR
+            MENUITEM "自動ソート(&S)",                   ID_MENUITEM_AUTOSORT
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "貼り付け(&P)",                    ID_MENUITEM_PASTE
+        MENUITEM "元に戻す(&U)",                    ID_MENUITEM_UNDO
+        MENUITEM "検索(&F)...",                   ID_MENUITEM_SERACH
+        MENUITEM SEPARATOR
+        MENUITEM "新規作成(&N)",                    ID_MENUITEM_POP_NEWITEM
+        MENUITEM SEPARATOR
+        MENUITEM "プロパティ(&R)...",                ID_MENUITEM_PROP
+    END
+    POPUP "ドラッグ＆ドロップ"
+    BEGIN
+        MENUITEM "ここにコピー(&C)",                  ID_MENU_DGDP_COPY
+        MENUITEM "ここに移動(&M)",                   ID_MENU_DGDP_CUT
+        MENUITEM SEPARATOR
+        MENUITEM "キャンセル",                       ID_MENU_DGDP_CANCEL
+    END
+    POPUP "UPアイテム"
+    BEGIN
+        MENUITEM "アイコンを初期化(&I)\tCtrl+I",        ID_MENUITEM_INITICON_POP
+        MENUITEM "すべてのアイコンを初期化(&T)",            ID_MENUITEM_ALLINITICON
+        MENUITEM SEPARATOR
+        MENUITEM "表示(&V)\tCtrl+E",              ID_MENUITEM_UPVIEW
+        MENUITEM "コピー(&C)\tCtrl+C",             ID_MENUITEM_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "プロパティ(&R)...",                ID_MENUITEM_PROP
+    END
+    POPUP "タスクトレイ"
+    BEGIN
+        MENUITEM "すべてのアイテムをチェック(&C)",           ID_MENUITEM_ALLCHECK
+        MENUITEM "すべてのチェックを中止(&P)",             ID_MENUITEM_ALLCHECKEND
+        MENUITEM "自動チェック(&A)",                  ID_MENUITEM_AUTOCHECK
+        MENUITEM SEPARATOR
+        MENUITEM "更新メッセージ(&U)...",              ID_MENUITEM_VIEWUPMSG
+        MENUITEM "オプション(&O)...",                ID_MENUITEM_OPTION
+        MENUITEM SEPARATOR
+        MENUITEM "元のサイズに戻す(&R)",                ID_MENUITEM_REWINDOW
+        MENUITEM "終了(&X)",                      ID_MENUITEM_END
+    END
+    POPUP "UPメッセージ"
+    BEGIN
+        MENUITEM "すべて選択(&A)\tCtrl+A",           ID_MENUITEM_ALLSELECT
+        MENUITEM "すべてのアイコンを初期化(&T)",            ID_MENUITEM_ALLINITICON
+        MENUITEM SEPARATOR
+        MENUITEM "クリア(&C)",                     ID_MENUITEM_UPITEMCLEAR
+    END
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURSOR_SEP          CURSOR                  "res\\cursor1.cur"
+
+IDC_CURSOR_HAND         CURSOR                  "res\\cur00001.cur"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR_WWWC ACCELERATORS
+BEGIN
+    "A",            ID_MENUITEM_ALLSELECT,  VIRTKEY, CONTROL, NOINVERT
+    "B",            ID_MENUITEM_UPSELECT,   VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_MENUITEM_COPY,       VIRTKEY, CONTROL, NOINVERT
+    "E",            ID_MENUITEM_UPVIEW,     VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_MENUITEM_SERACH,     VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_MENUITEM_INITICON,   VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_MENUITEM_TBNEW,      VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_MENUITEM_CHECKEND,   VIRTKEY, CONTROL, NOINVERT
+    "T",            ID_MENUITEM_ALLCHECKEND, VIRTKEY, CONTROL, NOINVERT
+    "U",            ID_MENUITEM_VIEWUPMSG,  VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_KEY_PASTE,           VIRTKEY, CONTROL, NOINVERT
+    VK_APPS,        ID_KEY_RBUTTON,         VIRTKEY, NOINVERT
+    VK_DELETE,      ID_MENUITEM_DELETE,     VIRTKEY, NOINVERT
+    VK_DELETE,      ID_MENUITEM_DELETE,     VIRTKEY, SHIFT, NOINVERT
+    VK_ESCAPE,      ID_KEY_ESC,             VIRTKEY, NOINVERT
+    VK_F10,         ID_KEY_RBUTTON,         VIRTKEY, SHIFT, NOINVERT
+    VK_F2,          ID_KEY_EDITNAME,        VIRTKEY, NOINVERT
+    VK_F3,          ID_MENUITEM_SERACH,     VIRTKEY, NOINVERT
+    VK_F5,          ID_MENUITEM_CHECK,      VIRTKEY, NOINVERT
+    VK_F5,          ID_MENUITEM_ALLCHECK,   VIRTKEY, CONTROL, NOINVERT
+    VK_F6,          ID_KEY_TAB,             VIRTKEY, NOINVERT
+    VK_LEFT,        ID_MENUITEM_PREV_HISTORY, VIRTKEY, ALT, NOINVERT
+    VK_RETURN,      ID_KEY_RETURN,          VIRTKEY, NOINVERT
+    VK_RETURN,      ID_MENUITEM_PROP,       VIRTKEY, ALT, NOINVERT
+    VK_RIGHT,       ID_MENUITEM_NEXT_HISTORY, VIRTKEY, ALT, NOINVERT
+    "X",            ID_MENUITEM_CUT,        VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_MENUITEM_UNDO,       VIRTKEY, CONTROL, NOINVERT
+END
+
+IDR_ACCELERATOR_FIND ACCELERATORS
+BEGIN
+    "A",            ID_MENUITEM_ALLSELECT,  VIRTKEY, CONTROL, NOINVERT
+    "B",            ID_MENUITEM_UPSELECT,   VIRTKEY, CONTROL, NOINVERT
+    "E",            ID_MENUITEM_UPVIEW,     VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_MENUITEM_INITICON,   VIRTKEY, CONTROL, NOINVERT
+    VK_APPS,        ID_KEY_RBUTTON,         VIRTKEY, NOINVERT
+    VK_ESCAPE,      ID_KEY_ESC,             VIRTKEY, NOINVERT
+    VK_F10,         ID_KEY_RBUTTON,         VIRTKEY, SHIFT, NOINVERT
+    VK_F6,          ID_KEY_TAB,             VIRTKEY, NOINVERT
+    VK_RETURN,      ID_KEY_RETURN,          VIRTKEY, NOINVERT
+    VK_RETURN,      ID_MENUITEM_PROP,       VIRTKEY, ALT, NOINVERT
+    VK_TAB,         ID_KEY_TABCHANGE,       VIRTKEY, CONTROL, NOINVERT
+    VK_TAB,         ID_KEY_TABCHANGE,       VIRTKEY, SHIFT, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_TOOLBAR TOOLBAR 16, 16
+BEGIN
+    BUTTON      ID_BUTTON40035
+    BUTTON      ID_BUTTON40039
+    BUTTON      ID_BUTTON40106
+    BUTTON      ID_BUTTON40109
+    BUTTON      ID_BUTTON40082
+    BUTTON      ID_BUTTON40041
+    BUTTON      ID_BUTTON40042
+    BUTTON      ID_BUTTON40043
+    BUTTON      ID_BUTTON40044
+    BUTTON      ID_BUTTON40081
+    BUTTON      ID_BUTTON40102
+    BUTTON      ID_BUTTON40114
+    BUTTON      ID_BUTTON40122
+    BUTTON      ID_BUTTON40123
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_TOOLBAR             BITMAP                  "res\\toolbar.bmp"
+
+IDB_BITMAP_ANI          BITMAP                  "res\\bitmap_a.bmp"
+
+IDB_BITMAP_UMI          BITMAP                  "res\\wwwc_umi.bmp"
+
+IDB_BITMAP_TEXT         BITMAP                  "res\\wwwc_text.bmp"
+
+IDB_BITMAP_SIGN         BITMAP                  "res\\nakka.bmp"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_ANI DIALOG 0, 0, 15, 16
+STYLE DS_SETFONT | WS_CHILD
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+END
+
+IDD_DIALOG_UP DIALOGEX 0, 0, 246, 180
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "WWWC - [更新メッセージ]"
+FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "参照(&V)",IDC_BUTTON_VIEW,190,10,50,15,WS_GROUP
+    PUSHBUTTON      "待機(&W)",IDC_BUTTON_WAIT,190,30,50,15
+    PUSHBUTTON      "詳細(&D) >>",IDC_BUTTON_INFO,190,50,50,15
+    CONTROL         "",WWWC_LIST,"SysListView32",LVS_REPORT | LVS_SHAREIMAGELISTS | WS_BORDER | WS_TABSTOP,0,70,245,110
+    ICON            "",IDC_STATIC_ICON,10,10,20,20
+    LTEXT           "更新されたアイテムはありません。",IDC_STATIC_MSG,35,10,150,35
+    CONTROL         "",IDC_STATIC_BANNER,"Static",SS_BITMAP | SS_NOTIFY | SS_SUNKEN | NOT WS_VISIBLE,35,45,14,15
+END
+
+IDD_DIALOG_DLLLIST DIALOG 0, 0, 150, 155
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "プロトコルリスト"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "",IDC_STATIC_FILENAME,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,0,0,150,10
+    LISTBOX         IDC_LIST_DLLENTRY,0,10,150,120,LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,40,135,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,95,135,50,14
+END
+
+IDD_DIALOG_PRPTOCOLEDIT DIALOG 0, 0, 204, 159
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "プロトコル編集"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "タイトル(&T):",IDC_STATIC,10,5,35,10
+    EDITTEXT        IDC_EDIT_TITLE,10,15,180,13,ES_AUTOHSCROLL
+    LTEXT           "DLL(&D):",IDC_STATIC,10,31,35,10
+    EDITTEXT        IDC_EDIT_DLL,10,41,165,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BUTTON_DLLSELECT,178,41,12,12
+    LTEXT           "ヘッダ(&H):",IDC_STATIC,10,57,35,10
+    EDITTEXT        IDC_EDIT_HEAD,10,67,180,13,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "アイコンファイル (ファイルの指定が無い場合はDLLになる)(&I):",IDC_STATIC,10,82,190,10
+    EDITTEXT        IDC_EDIT_ICONFILE,10,93,130,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_ICONINDEX,143,93,33,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_ICONINDEX,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,168,95,11,14
+    PUSHBUTTON      "...",IDC_BUTTON_ICONSELECT,178,93,12,12
+    LTEXT           "UPアイコンファイル ( -1 で標準のUPアイコン)(&U):",IDC_STATIC,10,110,160,10
+    EDITTEXT        IDC_EDIT_UPICONFILE,10,120,130,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_UPICONINDEX,143,120,33,13,ES_RIGHT | ES_AUTOHSCROLL
+    CONTROL         "",IDC_SPIN_UPICONINDEX,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,168,120,11,14
+    PUSHBUTTON      "...",IDC_BUTTON_UPICONSELECT,178,120,12,12
+    DEFPUSHBUTTON   "OK",IDOK,85,140,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,140,140,50,14
+END
+
+IDD_DIALOG_SETAUTOTIME DIALOG 0, 0, 242, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "自動チェック時間設定"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "無効にする",IDC_CHECK_NO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,17,65,9
+    CONTROL         "分毎",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,10,48,35,10
+    CONTROL         "時間毎",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,55,48,40,10
+    CONTROL         "時間指定",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,101,48,44,10
+    CONTROL         "曜日指定",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,145,48,44,10
+    CONTROL         "日付指定",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,189,48,45,10
+    EDITTEXT        IDC_EDIT_DAY,11,81,40,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_DAY,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,90,80,11,14
+    CONTROL         "日曜日",IDC_RADIO6,"Button",BS_AUTORADIOBUTTON | WS_GROUP,10,116,50,10
+    CONTROL         "月曜日",IDC_RADIO7,"Button",BS_AUTORADIOBUTTON,10,129,50,10
+    CONTROL         "火曜日",IDC_RADIO8,"Button",BS_AUTORADIOBUTTON,10,142,50,10
+    CONTROL         "水曜日",IDC_RADIO9,"Button",BS_AUTORADIOBUTTON,95,116,50,10
+    CONTROL         "木曜日",IDC_RADIO10,"Button",BS_AUTORADIOBUTTON,95,129,50,10
+    CONTROL         "金曜日",IDC_RADIO11,"Button",BS_AUTORADIOBUTTON,95,142,50,10
+    CONTROL         "土曜日",IDC_RADIO12,"Button",BS_AUTORADIOBUTTON,175,116,50,10
+    EDITTEXT        IDC_EDIT_HOU,11,170,40,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_HOU,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,80,170,11,14
+    EDITTEXT        IDC_EDIT_MIN,96,170,40,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_MIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,165,170,11,14
+    DEFPUSHBUTTON   "OK",IDOK,125,195,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,180,195,50,14
+    GROUPBOX        "自動チェック",IDC_STATIC,5,5,230,25
+    GROUPBOX        "指定方法",IDC_STATIC,5,35,230,30
+    GROUPBOX        "日付",IDC_STATIC,5,70,230,30
+    LTEXT           "日",IDC_STATIC_DAY,56,84,10,10
+    GROUPBOX        "曜日",IDC_STATIC,5,105,230,50
+    GROUPBOX        "時間",IDC_STATIC,5,160,230,30
+    LTEXT           "時",IDC_STATIC_HOU,56,173,30,10
+    LTEXT           "分",IDC_STATIC_MIN,141,173,20,10
+END
+
+IDD_DIALOG_OPTION DIALOG 0, 0, 223, 217
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "全般"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "すべてのユーザで共通のアイテム情報と設定を使用する(&G)",IDC_CHECK_GENERALUSER,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,205,10
+    GROUPBOX        "チェック",IDC_STATIC,5,25,215,50
+    ICON            IDI_ICON_CHECK,IDC_STATIC,10,35,18,21
+    LTEXT           "一度にチェックするアイテムの数(1～30)(&N):",IDC_STATIC,40,40,170,10
+    EDITTEXT        IDC_EDIT_CHECKITEMCNT,40,50,35,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_CHECKMAX,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,75,50,11,15
+    GROUPBOX        "表示",IDC_STATIC,5,80,215,50
+    ICON            "",IDC_STATIC_ICON,10,95,20,20
+    CONTROL         "タスクトレイにアイコンを表示する(&T)",IDC_CHECK_TRAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,40,95,175,10
+    CONTROL         "起動時にウィンドウを表示しない(&W)",IDC_CHECK_TRAYWINSHOW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,50,110,160,10
+    GROUPBOX        "更新時の動作",IDC_STATIC,5,135,215,75
+    ICON            IDI_ICON_UP,IDC_STATIC,10,150,18,21
+    CONTROL         "メッセージを出す(&M)",IDC_CHECK_UPMSG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,40,150,170,10
+    CONTROL         "音を鳴らす(&S)",IDC_CHECK_UPSND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,40,164,175,10
+    EDITTEXT        IDC_EDIT_WAVEFILE,50,176,129,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照(&B)...",IDC_BUTTON_BROWS,182,176,33,13
+    PUSHBUTTON      "&Play",IDC_BUTTON_PLAY,50,192,25,12
+END
+
+IDD_DIALOG_FOLDER DIALOG 0, 0, 223, 209
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "全般"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    ICON            "",IDC_STATIC_ICON,5,5,20,20
+    EDITTEXT        IDC_EDIT_TITLE,45,10,170,15,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,30,215,1
+    LTEXT           "種類:",IDC_STATIC,5,38,35,10
+    LTEXT           "フォルダ",IDC_STATIC_TYPE,45,38,165,10
+    LTEXT           "場所:",IDC_STATIC,5,54,35,10
+    EDITTEXT        IDC_EDIT_LOCATE,45,54,170,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "内容:",IDC_STATIC,5,68,35,10
+    EDITTEXT        IDC_EDIT_INFO,45,68,175,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,85,214,1
+    LTEXT           "作成日時:",IDC_STATIC,5,94,35,10
+    EDITTEXT        IDC_EDIT_MAKEDAY,45,94,170,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,111,213,1
+    LTEXT           "コメント(&C):",IDC_STATIC,5,120,35,10
+    EDITTEXT        IDC_EDIT_COMMENT,45,120,170,40,ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+END
+
+IDD_DIALOG_TOOL_EXE DIALOG 0, 0, 297, 239
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ツール設定"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "タイトル(&T):",IDC_STATIC,7,8,53,10
+    EDITTEXT        IDC_EDIT_TITLE,61,7,125,13,ES_AUTOHSCROLL
+    LTEXT           "( ""-"" で区切り) ",IDC_STATIC,191,10,70,10
+    LTEXT           "ファイル名(&F):",IDC_STATIC,7,25,43,10
+    EDITTEXT        IDC_EDIT_FILENAME,61,23,214,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BUTTON_FILESELECT,279,23,11,12
+    LTEXT           "コマンドライン(&C):",IDC_STATIC_COMMANDLINE,7,42,53,8
+    EDITTEXT        IDC_EDIT_COMMANDLINE,61,39,214,13,ES_AUTOHSCROLL
+    CONTROL         "",IDC_BUTTON_COMMANDLINE,"Button",BS_OWNERDRAW | WS_TABSTOP,279,39,11,12
+    CONTROL         "ウィンドウメニューに表示",IDC_CHECK_WINDOWMENU,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,73,92,10
+    LTEXT           "ショートカットキー:",IDC_STATIC_HOTKEY,23,87,105,8
+    CONTROL         "HotKey1",IDC_HOTKEY,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,23,97,101,14
+    CONTROL         "アイテムのメニューに表示",IDC_CHECK_ITEMMENU,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,116,123,10
+    LTEXT           "メニュー位置( -1 の場合は一番下):",IDC_STATIC_MENUINDEX,23,129,115,10
+    EDITTEXT        IDC_EDIT_MENUINDEX,23,139,32,13,ES_RIGHT | ES_AUTOHSCROLL
+    CONTROL         "",IDC_SPIN_MENUINDEX,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,61,138,11,14
+    CONTROL         "アイテムをダブルクリックで実行する",IDC_CHECK_MENUDEFAULT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,23,155,127,10
+    LTEXT           "適用するプロトコル:",IDC_STATIC_PROTOCOL,13,170,107,8
+    EDITTEXT        IDC_EDIT_PROTOCOL,13,180,110,13,ES_AUTOHSCROLL
+    CONTROL         "",IDC_BUTTON_PUROTOCOL,"Button",BS_OWNERDRAW | WS_TABSTOP,127,180,11,12
+    CONTROL         "実行後にアイコンを初期化する",IDC_CHECK_INITICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,196,110,10
+    CONTROL         "起動時に実行",IDC_CHECK_START,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,74,75,10
+    CONTROL         "終了時に実行",IDC_CHECK_END,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,88,75,10
+    CONTROL         "チェック開始時に実行",IDC_CHECK_CHECHSTART,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,102,100,10
+    CONTROL         "チェック終了時に実行",IDC_CHECK_CHECKEND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,116,100,10
+    CONTROL         "更新あり時に実行",IDC_CHECK_CHECKENDUP,"Button",BS_AUTORADIOBUTTON,167,130,70,10
+    CONTROL         "更新なし時に実行",IDC_CHECK_CHECKENDNOUP,"Button",BS_AUTORADIOBUTTON,167,142,70,10
+    CONTROL         "更新に関係なく実行",IDC_CHECK_CHECKENDEXEC,"Button",BS_AUTORADIOBUTTON,167,154,74,10
+    CONTROL         "チェック中は実行しない",IDC_CHECK_NOTCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,168,105,10
+    CONTROL         "ツールが終了するまで待機する",IDC_CHECK_SYNC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,182,115,10
+    CONTROL         "ツール実行後にフォルダを読み直す",IDC_CHECK_SAVEFOLDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,196,125,10
+    DEFPUSHBUTTON   "OK",IDOK,180,220,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,235,220,50,14
+    GROUPBOX        "実行オプション",IDC_STATIC,5,60,285,155
+END
+
+IDD_DIALOG_TITLE DIALOG 0, 0, 119, 104
+STYLE DS_SETFONT | WS_POPUP | WS_BORDER
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+END
+
+IDD_DIALOG_COPYMSG DIALOG 0, 0, 311, 149
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "アイテムの上書きの確認"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    ICON            IDI_ICON_COPY,IDC_STATIC_ICON,10,10,20,20
+    LTEXT           "",IDC_STATIC_COPYMSG_TITLE,45,5,255,15
+    LTEXT           "URL:",IDC_STATIC,45,22,30,10
+    EDITTEXT        IDC_EDIT_COPYMSG_URL,85,22,215,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "現在のアイテム",IDC_STATIC,45,35,65,10
+    ICON            "",IDC_STATIC_COPYMSG_TOICON,56,51,20,20
+    LTEXT           "",IDC_STATIC_COPYMSG_TO,85,55,215,25
+    LTEXT           "に次の新しいアイテムを上書きしますか?",IDC_STATIC,45,81,135,10
+    ICON            "",IDC_STATIC_COPYMSG_FROMICON,56,97,20,20
+    LTEXT           "",IDC_STATIC_COPYMSG_FROM,85,101,215,25
+    DEFPUSHBUTTON   "はい(&Y)",IDOK,10,128,50,14
+    PUSHBUTTON      "すべて上書き(&A)",ID_ALLYES,65,128,60,14
+    PUSHBUTTON      "いいえ(&N)",IDNO,130,128,50,14
+    PUSHBUTTON      "すべていいえ(&B)",ID_ALLNO,185,128,60,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,250,128,50,14
+END
+
+IDD_DIALOG_FIND DIALOGEX 0, 0, 291, 248
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "検索"
+FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "検索開始(&I)",IDOK,230,20,55,14
+    PUSHBUTTON      "閉じる(&C)",IDCANCEL,230,38,55,14
+    PUSHBUTTON      "オプション保存(&S)",ID_BUTTON_SAVEOPTION,230,57,55,14
+    CONTROL         "",WWWC_LIST,"SysListView32",LVS_REPORT | LVS_SHAREIMAGELISTS | WS_BORDER | WS_TABSTOP,0,125,290,120
+    CONTROL         "Tab1",IDC_TAB,"SysTabControl32",WS_TABSTOP,5,5,220,112
+END
+
+IDD_DIALOG_FINDNAME DIALOGEX 0, 0, 212, 96
+STYLE DS_SETFONT | WS_CHILD
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+BEGIN
+    LTEXT           "検索文字列(&N):",IDC_STATIC,5,5,125,10
+    COMBOBOX        IDC_COMBO_FINDSTRING,5,15,200,105,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "探す場所(&L):",IDC_STATIC,5,35,90,10
+    EDITTEXT        IDC_EDIT_FINDLOCATE,5,45,155,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照(&B)...",IDC_BUTTON_SELECT,165,45,38,13
+    CONTROL         "サブフォルダも探す(&F)",IDC_CHECK_FINDSUBFOLDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,63,105,10
+    CONTROL         "チェックしないフォルダは検索しない(&E)",IDC_CHECK_FINDNOCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,77,130,10
+END
+
+IDD_DIALOG_TOOL_DLLLIST DIALOG 0, 0, 150, 155
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ツールリスト"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "",IDC_STATIC_FILENAME,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,0,0,150,10
+    LISTBOX         IDC_LIST_DLLENTRY,0,10,150,120,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,40,135,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,95,135,50,14
+END
+
+IDD_DIALOG_ITEM DIALOG 0, 0, 227, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "アイテム"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    ICON            IDI_ICON_NO,IDC_STATIC_ICON,5,4,20,20
+    LTEXT           "名前(&N):",IDC_STATIC,45,4,50,10
+    EDITTEXT        IDC_EDIT_TITLE,45,14,175,13,ES_AUTOHSCROLL
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,32,214,1
+    LTEXT           "チェックするURL(&U):",IDC_STATIC,5,38,75,10
+    EDITTEXT        IDC_EDIT_CHECKURL,5,50,215,13,ES_AUTOHSCROLL
+    LTEXT           "表示するURL(&V):",IDC_STATIC,5,67,75,10
+    EDITTEXT        IDC_EDIT_VIEWURL,5,79,215,13,ES_AUTOHSCROLL
+    LTEXT           "コメント(&C):",IDC_STATIC_URL3,5,95,115,10
+    EDITTEXT        IDC_EDIT_COMMENT,5,105,215,30,ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,140,214,1
+    LTEXT           "サイズ:",IDC_STATIC,5,150,35,10
+    EDITTEXT        IDC_EDIT_SIZE,45,150,175,10,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "更新日時:",IDC_STATIC,5,163,35,10
+    EDITTEXT        IDC_EDIT_UPDATE,45,163,175,25,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | ES_WANTRETURN | NOT WS_BORDER | NOT WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,115,195,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,170,195,50,14
+END
+
+IDD_DIALOG_FINDITEM DIALOGEX 0, 0, 212, 96
+STYLE DS_SETFONT | WS_CHILD
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "項目",IDC_STATIC,5,5,95,85
+    CONTROL         "名前(&T)",IDC_CHECK_NAME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,17,65,10
+    CONTROL         "チェックするURL(&U)",IDC_CHECK_CHECKURL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,31,70,10
+    CONTROL         "表示するURL(&V)",IDC_CHECK_OPENURL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,45,65,10
+    CONTROL         "更新日(&D)",IDC_CHECK_DATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,59,65,10
+    CONTROL         "コメント(&M)",IDC_CHECK_COMMENT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,73,65,10
+    GROUPBOX        "アイコン",IDC_STATIC,105,5,100,85
+    CONTROL         "通常アイコン(&A)",IDC_CHECK_ICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,115,17,75,10
+    CONTROL         "UPアイコン(&P)",IDC_CHECK_UPICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,115,31,75,10
+    CONTROL         "エラーアイコン(&E)",IDC_CHECK_ERRICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,115,45,75,10
+    CONTROL         "タイムアウトアイコン(&O)",IDC_CHECK_TIMEICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,115,59,80,10
+    CONTROL         "チェックしないアイコン(&N)",IDC_CHECK_NOCHECKICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,115,73,85,10
+END
+
+IDD_DIALOG_SELECTFOLDER DIALOG 0, 0, 209, 189
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "フォルダの参照"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "フォルダを選択してください。",IDC_STATIC,10,5,190,8
+    CONTROL         "Tree1",WWWC_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,9,25,191,130
+    DEFPUSHBUTTON   "OK",IDOK,95,165,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,150,165,50,14
+END
+
+IDD_DIALOG_SELECTDLL DIALOG 0, 0, 211, 225
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "DLL"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "追加するプロトコルとツールを選択してください。",IDC_STATIC,5,5,200,10
+    LTEXT           "プロトコル(&P):",IDC_STATIC,5,21,85,8
+    LISTBOX         IDC_LIST_PROTOCOL,5,31,200,65,LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "すべて選択(&A)",IDC_BUTTON_SELECT_P,155,96,50,12
+    LTEXT           "ツール(&T):",IDC_STATIC,5,105,85,8
+    LISTBOX         IDC_LIST_TOOL,5,115,200,65,LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "すべて選択(&A)",IDC_BUTTON_SELECT_T,155,180,50,12
+    DEFPUSHBUTTON   "OK",IDOK,100,205,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,155,205,50,14
+END
+
+IDD_DIALOG_SELECTICON DIALOG 0, 0, 207, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "アイコンの選択"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "List1",IDC_LIST_ICON,"SysListView32",LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_AUTOARRANGE | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,5,25,195,165
+    DEFPUSHBUTTON   "OK",IDOK,95,195,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,150,195,50,14
+    EDITTEXT        IDC_EDIT_FILE,5,5,157,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照(&B)...",IDC_BUTTON_BROWS,165,5,35,13
+END
+
+IDD_DIALOG_AUTOTIME DIALOG 0, 0, 225, 209
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "自動チェック"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    CONTROL         "起動時にチェックする(&S)",IDC_CHECK_STARTCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,90,10
+    CONTROL         "全ての自動チェックを行わない(&N)",IDC_CHECK_NOCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,24,115,10
+    CONTROL         "巡回チェックの対象外にする(&X)",IDC_CHECK_FOLDER_NOCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,170,10
+    CONTROL         "共通の自動チェック設定を使用する(&G)",IDC_CHECK_FOLDER_DEF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,24,170,10
+    LTEXT           "現在の自動チェック設定(&C):",IDC_STATIC,10,40,110,10
+    CONTROL         "",IDC_LIST_AUTOTIME,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,5,50,215,110,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "追加(&A)...",IDC_BUTTON_ADD,60,165,50,14
+    PUSHBUTTON      "編集(&E)...",IDC_BUTTON_EDIT,115,165,50,14
+    PUSHBUTTON      "削除(&D)",IDC_BUTTON_DELETE,170,165,50,14
+    PUSHBUTTON      "下の階層に反映する(&R)",IDC_BUTTON_TREESET,130,185,90,14
+END
+
+IDD_DIALOG_PROTOCOL DIALOGEX 0, 0, 226, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "プロトコル"
+FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+BEGIN
+    LTEXT           "登録されているプロトコル(&P):",IDC_STATIC,10,15,110,10
+    CONTROL         "",IDC_LIST_PROTOCOL,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,5,25,195,155,WS_EX_CLIENTEDGE
+    CONTROL         "上へ(&U)",IDC_BUTTON_UP,"Button",BS_OWNERDRAW | WS_TABSTOP,205,71,15,15
+    CONTROL         "下へ(&W)",IDC_BUTTON_DOWN,"Button",BS_OWNERDRAW | WS_TABSTOP,205,120,15,15
+    PUSHBUTTON      "追加(&A)...",IDC_BUTTON_ADD,5,185,50,14
+    PUSHBUTTON      "編集(&E)...",IDC_BUTTON_PEDIT,60,185,50,14
+    PUSHBUTTON      "削除(&D)",IDC_BUTTON_DELETE,115,185,50,14
+    PUSHBUTTON      "プロパティ(&R)",IDC_BUTTON_EDIT,170,185,50,14
+END
+
+IDD_DIALOG_TOOLLIST DIALOGEX 0, 0, 226, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ツール"
+FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+BEGIN
+    LTEXT           "登録されているツール(&T):",IDC_STATIC,10,15,110,10
+    CONTROL         "",IDC_LIST_TOOL,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,5,25,195,155,WS_EX_CLIENTEDGE
+    CONTROL         "上へ(&U)",IDC_BUTTON_UP,"Button",BS_OWNERDRAW | WS_TABSTOP,205,71,15,15
+    CONTROL         "下へ(&W)",IDC_BUTTON_DOWN,"Button",BS_OWNERDRAW | WS_TABSTOP,205,120,15,15
+    PUSHBUTTON      "追加(&A)...",IDC_BUTTON_ADD,5,185,50,14
+    PUSHBUTTON      "編集(&E)...",IDC_BUTTON_PEDIT,60,185,50,14
+    PUSHBUTTON      "削除(&D)",IDC_BUTTON_DELETE,115,185,50,14
+    PUSHBUTTON      "プロパティ(&R)",IDC_BUTTON_EDIT,170,185,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG_UP, DIALOG
+    BEGIN
+        RIGHTMARGIN, 245
+        BOTTOMMARGIN, 163
+    END
+
+    IDD_DIALOG_OPTION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 216
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 210
+    END
+
+    IDD_DIALOG_FOLDER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 216
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 202
+    END
+
+    IDD_DIALOG_TOOL_EXE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 290
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 232
+    END
+
+    IDD_DIALOG_TITLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 112
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 97
+    END
+
+    IDD_DIALOG_COPYMSG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 304
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 142
+    END
+
+    IDD_DIALOG_FIND, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 284
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 241
+    END
+
+    IDD_DIALOG_FINDNAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 89
+    END
+
+    IDD_DIALOG_ITEM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 220
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_DIALOG_FINDITEM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 89
+    END
+
+    IDD_DIALOG_SELECTFOLDER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 202
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 182
+    END
+
+    IDD_DIALOG_SELECTDLL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 204
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 218
+    END
+
+    IDD_DIALOG_SELECTICON, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 200
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_DIALOG_AUTOTIME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 202
+    END
+
+    IDD_DIALOG_PROTOCOL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_DIALOG_TOOLLIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,1,3,0
+ PRODUCTVERSION 1,1,3,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041104b0"
+        BEGIN
+            VALUE "FileDescription", "WWWC"
+            VALUE "FileVersion", "1.1.3.0"
+            VALUE "InternalName", "WWWC"
+            VALUE "LegalCopyright", "Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved."
+            VALUE "OriginalFilename", "WWWC.exe"
+            VALUE "ProductName", "WWWC"
+            VALUE "ProductVersion", "1.1.3.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x411, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+1                       RT_MANIFEST             "manifest.xml"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG_UP AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG_FIND AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    ID_KEY_UPDIR            "一つ上のフォルダへ"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_ALLCHECK    "すべてのアイテムをチェック"
+    ID_MENUITEM_CHECK       "チェック"
+    ID_MENUITEM_CHECKEND    "チェックを中止"
+    ID_MENUITEM_INITICON    "アイコンを初期化"
+    ID_MENUITEM_ALLINITICON "すべてのアイコンを初期化"
+    ID_MENUITEM_DELETE      "削除"
+    ID_MENUITEM_PROP        "プロパティ"
+    ID_MENUITEM_VIEW_ICON   "大きいアイコン"
+    ID_MENUITEM_VIEW_SMALLICON "小さいアイコン"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_VIEW_LIST   "一覧"
+    ID_MENUITEM_VIEW_REPORT "詳細"
+    ID_MENUITEM_VIEW_REPORT_LINE "詳細で一行選択"
+    ID_MENUITEM_ALLCHECKEND "すべてのチェックを中止"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_CUT         "切り取り"
+    ID_MENUITEM_COPY        "コピー"
+    ID_MENUITEM_ALLERRORCHECK "エラーのアイテムのみをチェック"
+    ID_MENUITEM_PASTE       "貼り付け"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_OPTION      "オプション"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_VIEWUPMSG   "更新メッセージ"
+    ID_MENUITEM_FOLDERTREECHECK "階層チェック"
+    ID_MENUITEM_SERACH      "検索"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_UNDO        "元に戻す"
+    ID_MENUITEM_PREV_HISTORY "前に戻る"
+    ID_MENUITEM_NEXT_HISTORY "次に進む"
+    ID_MENUITEM_TBNEW       "新規作成"
+END
+
+#endif    // 日本語 (日本) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

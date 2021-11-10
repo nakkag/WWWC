@@ -1,0 +1,326 @@
+###############################################################################
+#
+#これはWWWCの設定ファイルのサンプル＆解説です。
+#実際はユーザディレクトリに user.ini が自動生成されるのでこのサンプルを元に編集
+#を行ってください。
+#user.ini を編集するときはWWWCを終了しておいてください。
+#
+###############################################################################
+
+[GENERAL]
+# 日付フォーマット
+DateFormat="yyyy/MM/dd"
+# 時間フォーマット
+TimeFormat="HH:mm"
+
+[WINDOW]
+# ウィンドウ位置とサイズ
+left=0
+top=0
+right=500
+bottom=300
+# ウィンドウ内のツリービューとリストビューの境界
+SEPSIZE=150
+# ２重起動を 0-許可する 1-許可しない
+DoubleStart=1
+# ２重起動を許可しない場合、0-メッセージを表示しない 1-メッセージを表示する
+DoubleStartMsg=0
+# タスクトレイにアイコンを 0-表示しない 1-表示する
+TrayIcon=0
+# タスクトレイを 0-クリックで元のサイズに戻す 1-ダブルクリックで元のサイズに戻す
+TrayIconMode=0
+# タスクトレイをクリック(ダブルクリック)したときにウィンドウが表示状態の場合は 0-アクティブにする 1-アイコン化する
+TrayIconToggle=0
+# ウィンドウをクローズしたら 0-プログラムを終了する 1-ウィンドウを非表示にする
+TrayIconClose=0
+# ウィンドウをアイコン化したら 0-ウィンドウをアイコン化 1-ウィンドウを非表示にする
+TrayIconMin=1
+# タスクトレイにアイコンを表示しているとき、起動時にウィンドウを 0-表示する 1-表示しない
+TrayWinShow=0
+#タスクトレイから復帰するホットキーのコントロールキーの組み合わせ 0-使用しない 1-Altキー 2-Ctrlキー 4-Shiftキー
+TrayHotKeyMod=0
+#タスクトレイから復帰するホットキーのキー (大文字の英文字か数字で一文字) 例: TrayHotKeyVkey="A"
+TrayHotKeyVkey=
+# ウィンドウタイトルに表示する最終チェック開始時間
+WinTitle="[1998/10/09 11:02]"
+#終了時にごみ箱を 0-空にしない 1-空にする
+EndRecyclerClear=0
+#タイトルウィンドウを 0-表示しない 1-表示する
+TitleView=1
+#ツリービューとリストビューに設定するフォント名、未設定時はシステムのフォントを使用する
+ListFontName=
+#ツリービューとリストビューに設定するフォントのサイズ、ListFontName を設定している時のみ有効
+ListFontSize=10
+#ツリービューとリストビューに設定するフォントのキャラクタセット
+ListFontCharSet=1
+
+[TOOLBAR]
+# ツールバーの項目
+ViewTbItem="0,,1,2,5,6,,7,8,,9,10,11,,12,,13,14,,15,16,17,18,"
+# ツールバーを 0-表示しない 1-表示する
+ViewTb=1
+# ツールバー内のアニメーションのビットマップ ((22 * n) , 22)
+AniIcon=
+# ツールバーのウィンドウスタイル
+TbStyle=3104
+
+[STATUSBAR]
+# ステータスバーを 0-表示しない 1-表示する
+ViewSb=1
+#真ん中のパーツのサイズ
+PartsSize1=150
+#右のパーツのサイズ
+PartsSize2=200
+#パーツに表示する情報 1:チェックするURL 2:サイズ 3:更新日時 4:チェック日時 5:旧更新日時 6:旧サイズ 7:表示するURL 8:オプション1 9:オプション2 10:コメント 12:エラー情報 13:プロトコル情報1 12:プロトコル情報2
+PartInfo1=1
+PartInfo2=2
+PartInfo3=3
+
+[TREEVIEW]
+# ツリーのルートアイテムの名前
+RootTitle="Internet"
+# ごみ箱の名前
+RecyclerTitle="ごみ箱"
+# 起動時にツリーを 0-展開しない 1-展開する 2-前回終了時の状態
+StartExpand=0
+# 起動時の選択フォルダは 0-ルートアイテム 1-StartDirPathで指定する 2-前回終了時の状態
+StartDirOpen=0
+# 起動時に選択するフォルダのパス (StartDirOpen が 1 のときに有効)
+StartDirPath="\\internet"
+# 前回終了時に選択されていたフォルダのパス (StartDirOpen が 2 のときに有効)
+LastDirPath="\\internet\Soft"
+# フォルダ作成時に親のチェック設定を 0-継承しない 1-継承する
+SucceedFromParent=1
+# ツリービューのウィンドウスタイル
+TvWndStyle=43
+# ツリービューの背景色 (空でシステム色)
+TvBkColor=
+# ツリービューのテキストの色 (空でシステム色)
+TvTextColor=
+# アイコンのサイズ
+TvIconSize=16
+
+[LISTVIEW]
+# リストビューのアイコンの表示スタイル
+LvStyle=1
+# リストビューのソートカラム
+LvSortFlag=1
+# リストビューを 0-自動ソートしない 1-自動ソートする
+LvAutoSort=0
+# チェック終了時にリストビューを 0-自動ソートしない 1-自動ソートする (LvAutoSortが 1 のとき有効)
+LvCheckEndAutoSort=1
+# アイテムを選択しないでダブルクリックすると 0-何もしない 1-一階層上に移動する
+LvDblclkUpDir=0
+# スペースキーを押して選択した場合に 0-何もしない 1-次のアイテムを選択する (更新メッセージ、検索ウィンドウにも反映される)
+LvSpaceNextFocus=0
+# リストビューのウィンドウスタイル
+LvWndStyle=776
+# リストビューの拡張スタイル
+lvExStyle=1024
+# リストビューの背景色 (空でシステム色)
+LvBkColor=
+# リストビューのテキストの背景色 (空でシステム色)
+LvTextBkColor=
+# リストビューのテキストの色 (空でシステム色)
+LvTextColor=
+# 大きいアイコンのサイズ
+LvLIconSize=32
+# 小さいアイコンのサイズ
+LvSIconSize=16
+# リストビューの表示カラム 1:チェックするURL 2:サイズ 3:更新日時 4:チェック日時 5:旧サイズ 6:旧更新日時 7:表示するURL 8:オプション1 9:オプション2 10:コメント 11:パス 12:エラー情報 13:プロトコル情報1 14:プロトコル情報2
+LvColumn="2,3,1,10,"
+# リストビューのカラムのサイズ
+LvColSize-0=100
+LvColSize-2=100
+LvColSize-3=100
+LvColSize-1=100
+LvColSize-10=100
+
+[REBAR]
+# ReBarの背景ビットマップ
+RBBitmap=
+
+[ICON]
+# アイコンのファイルの場所とインデックス
+# 例）
+#		Dir="C:\WINNT\system32\SHELL32.dll"
+#		DirIndex=3
+#
+
+# チェック中を示すアイコン（デフォルトは虫眼鏡）
+Check=
+CheckIndex=0
+# チェックしないことを示すマーク
+NoCheck=
+NoCheckIndex=0
+# フォルダに付加する更新マーク
+DirUP=
+DirUPIndex=0
+# フォルダのアイコン
+Dir=
+DirIndex=0
+# フォルダに付加するUPありアイコン
+DirUPchild=
+DirUPchildIndex=0
+# フォルダに付加するチェックありアイコン
+CheckChild=
+CheckChildIndex=0
+# ごみ箱アイコン (空)
+Recycler=
+RecyclerIndex=0
+# ごみ箱アイコン (中身あり)
+RecyclerFull=
+RecyclerFullIndex=0
+# フォルダの最上位階層のInternetのアイコン
+Inet=
+InetIndex=0
+# 現在選択されているフォルダのアイコン
+DirOpen=
+DirOpenIndex=0
+# 更新時のアイテムのアイコン
+Up=
+UpIndex=0
+# エラー時のアイテムのアイコン
+Error=
+ErrorIndex=0
+# タイムアウト時のアイテムのアイコン
+TimeOut=
+TimeOutIndex=0
+# プロトコルが設定されていないアイテムのアイコン
+NoProtocol=
+NoProtocolIndex=0
+# チェック待ちのアイテムのアイコン
+Wait=
+WaitIndex=0
+
+[UPMSG]
+# 更新時にサウンドを 0-鳴らさない 1-鳴らす
+UPSnd=1
+# 更新時に鳴らすサウンドファイル (指定されていない場合はデフォルトのサウンド)
+WaveFile=
+# UPメッセージを 0-表示しない 1-表示する
+UPMsg=1
+# 更新が無い場合にUPメッセージを 0-表示しない 1-表示する
+NoUpMsg=0
+# UPメッセージのアイテムを空にするタイミングは、0-チェック開始時 1-チェック終了時に更新があったとき
+ClearTime=1
+# ClearTimeの条件を満たした時UPメッセージのアイテムを 0-空にする 1-ウィンドウが非表示の場合に空にする 2-空にしない
+CheckUPItemClear=1
+# 更新メッセージにアイテムが追加されると 0-ソートしない 1-ソートする
+CheckUPItemAutoSort=1
+# UPメッセージを最前面に 0-表示しない 1-表示する
+UPMsgTop=0
+# UPメッセージを 0-アクティブにしない 1-アクティブにする
+UPActive=0
+# UPメッセージの詳細を 0-展開しないで表示 1-展開して表示
+UPMsgExpand=0
+# UPメッセージを展開するときに 0-普通に展開する 1-アニメーションさせる
+UPAni=1
+# UPメッセージの位置とサイズ
+UPWinLeft=0
+UPWinTop=0
+UPWinRight=0
+UPWinBottom=140
+# UPメッセージを 0-中央に表示 1-前回表示位置で表示
+UPWinPosSave=0
+# UPメッセージを 0-デフォルトのサイズで表示 1-前回表示サイズで表示
+UPWinSizeSave=1
+# UPメッセージが中央に表示の場合に 0-表示サイズでセンタリングする 1-展開したサイズでセンタリングする
+UPWinExpandCenter=1
+# UPメッセージのリストビューの拡張スタイル
+LvUPExStyle=1120
+# UPメッセージのリストビューのソートカラム
+LvUPSortFlag=1
+# UPメッセージのリストビューの表示カラム (LvColumn参照)
+LvUPColumn="2,3,4,1,11,"
+# UPメッセージのリストビューのカラムのサイズ
+LvUPColSize-0=100
+LvUPColSize-2=100
+LvUPColSize-3=100
+LvUPColSize-4=100
+LvUPColSize-1=100
+LvUPColSize-11=100
+
+[FIND_ITEM]
+# 検索オプション
+FindSubFolder=1
+FindNoCheck=0
+FindItemFlag=31
+FindIconFlag=31
+# 検索ウィンドウの位置とサイズ
+FindWinLeft=0
+FindWinTop=0
+FindWinRight=0
+FindWinBottom=0
+# 検索ウィンドウのリストビューの拡張スタイル
+LvFindExStyle=1120
+# 検索ウィンドウのリストビューの表示カラム (LvColumn参照)
+LvFindColumn="11,2,3,1,7,10,"
+# 検索ウィンドウのリストビューのカラムのサイズ
+LvFindColSize-0=100
+LvFindColSize-2=100
+LvFindColSize-3=100
+LvFindColSize-1=100
+LvFindColSize-7=100
+LvFindColSize-10=100
+LvFindColSize-11=100
+
+[CHECK]
+# 一度にチェックするアイテムの数 (最大 30)
+CheckMax=10
+# チェック開始時に 0-アイコンを初期化しない 1-初期化する
+ReturnIcon=0
+#自動チェックを 0-行う 1-行わない
+AutoCheck=0
+#起動時にチェックを 0-行わない 1-行う
+StartCheck=0
+
+[ITEM]
+# アイテムを開いた時に 0-アイコンを初期化しない 1-DLLの戻り値によりアイコンの初期化を判定
+OpenReturnIcon=1
+# アイテムをドラッグ＆ドロップにて他アプリにアイテムを転送したときに 0-アイコンを初期化しない 1-１件の場合のみアイコンを初期化する 2-選択されているアイテム全てのアイコンを初期化する
+DnDReturnIcon=1
+# すべてのアイコンを初期化するときに 0-確認メッセージを出さない 1-確認メッセージを出す
+AllInitMsg=1
+# アイテム保存時にディスク容量を 0-チェックしない 1-チェックする
+SaveDriveCheck=1
+# アイテム作成時に 0-チェックするアイテムで追加 1-チェックしないアイテムで追加
+DefNoCheck=0
+
+[AUTOCHECK]
+#自動チェック設定の数
+Cnt=1
+#自動チェック設定
+type-0=0
+flag-0=0
+day-0=0
+week-0=0
+h-0=0
+m-0=0
+
+[PROTOCOL]
+#プロトコルの数
+ProtocolCnt=1
+#プロトコル設定
+title-0="HTTP"
+DLL-0="wwwc.dll"
+FuncHeader-0="HTTP_"
+IconFile-0=
+IconIndex-0=0
+UpIconFile-0=
+UpIconIndex-0=-1
+
+[TOOLS]
+#ツールの数
+Cnt=1
+#ツール設定
+title-0="新しいウィンドウで開く"
+FileName-0="Iexplore.exe"
+Action-0=1
+MenuIndex-0=1
+Protocol-0="http,ftp"
+CommandLine-0="%u"
+func-0=
+Ctrl-0=0
+Key-0=
+

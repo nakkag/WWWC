@@ -1,0 +1,392 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 日本語 (日本) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_HTTP           ICON                    "ico00001.ico"
+
+IDI_ICON_FILE           ICON                    "icon1.ico"
+
+IDI_ICON_OLD            ICON                    "ico00002.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_FILEPROP DIALOG 0, 0, 229, 169
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ファイルプロパティ"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "名前(&N):",IDC_STATIC,5,5,80,10
+    EDITTEXT        IDC_EDIT_TITLE,5,15,215,12,ES_AUTOHSCROLL
+    LTEXT           "パス(&P):",IDC_STATIC_URL,5,32,80,10
+    EDITTEXT        IDC_EDIT_URL,5,42,178,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照(&B)...",IDC_BUTTON_BROWS,185,42,33,12
+    LTEXT           "コメント(&C):",IDC_STATIC_URL3,5,60,115,10
+    EDITTEXT        IDC_EDIT_COMMENT,5,70,215,30,ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+    CONTROL         "更新日でチェック(&D)",IDC_CHECK_DATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,110,85,10
+    CONTROL         "サイズでチェック(&S)",IDC_CHECK_SIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,126,85,10
+    DEFPUSHBUTTON   "OK",IDOK,115,150,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,171,150,50,14
+END
+
+IDD_DIALOG_VIEW DIALOG 0, 0, 274, 205
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    DEFPUSHBUTTON   "コピー(&C)",ID_BUTTON_COPY,165,185,50,14
+    PUSHBUTTON      "閉じる(&X)",IDOK,220,185,50,14
+END
+
+IDD_DIALOG_HTTPPROP DIALOG 0, 0, 227, 229
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "全般"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    ICON            IDI_ICON_HTTP,IDC_STATIC,5,4,20,20
+    LTEXT           "名前(&N):",IDC_STATIC,45,4,50,10
+    EDITTEXT        IDC_EDIT_TITLE,45,14,175,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "ブラウザから情報を取得(&B)...",IDC_BUTTON_GETURL,125,29,95,13
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,44,214,1
+    LTEXT           "チェックするURL(&U):",IDC_STATIC_URL,5,49,115,10
+    EDITTEXT        IDC_EDIT_URL,5,59,215,12,ES_AUTOHSCROLL
+    CONTROL         "下にコピー(&D)",IDC_BUTTON_CHANGE,"Button",BS_OWNERDRAW | WS_TABSTOP,200,74,20,13
+    LTEXT           "ブラウザで開くURL(省略時はチェックするURLで開きます)(&V):",IDC_STATIC,5,80,180,10
+    EDITTEXT        IDC_EDIT_VIEWURL,5,90,215,12,ES_AUTOHSCROLL
+    LTEXT           "コメント(&C):",IDC_STATIC_URL3,5,105,115,10
+    EDITTEXT        IDC_EDIT_COMMENT,5,115,215,30,ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,150,211,1
+    LTEXT           "サイズ:",IDC_STATIC,5,155,40,10
+    EDITTEXT        IDC_EDIT_SIZE,50,155,170,10,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "更新日時:",IDC_STATIC,5,168,40,10
+    EDITTEXT        IDC_EDIT_UPDATE,50,168,170,25,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | ES_WANTRETURN | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "エラー情報:",IDC_STATIC,5,196,40,10
+    EDITTEXT        IDC_EDIT_ERRORINFO,50,196,170,10,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,207,210,1
+    LTEXT           "チェック日時:",IDC_STATIC,5,213,40,10
+    EDITTEXT        IDC_EDIT_CHECKDATE,50,213,170,10,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+END
+
+IDD_DIALOG_HTTPPROP_OPTION DIALOG 0, 0, 227, 225
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "オプション"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    GROUPBOX        "プロキシ",IDC_STATIC,5,5,215,70
+    CONTROL         "プロキシを使用しない(&D)",IDC_CHECK_NOPROXY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,15,185,10
+    CONTROL         "設定とは違うプロキシを使う(&E)",IDC_CHECK_SETPROXY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,31,185,10
+    LTEXT           "プロキシサーバ(&S):",IDC_STATIC,20,45,115,10
+    LTEXT           "ポート(&T):",IDC_STATIC,165,45,35,8
+    EDITTEXT        IDC_EDIT_PROXY,20,55,140,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PROXY_PORT,165,55,40,12,ES_AUTOHSCROLL
+    GROUPBOX        "認証",IDC_STATIC,5,81,215,95
+    CONTROL         "このURLはユーザ認証が必要(&A)",IDC_CHECK_USEPASS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,95,165,10
+    LTEXT           "ユーザ(&U):",IDC_STATIC,20,111,80,8
+    EDITTEXT        IDC_EDIT_USER,20,121,185,12,ES_AUTOHSCROLL
+    LTEXT           "パスワード(&P):",IDC_STATIC,20,141,45,8
+    EDITTEXT        IDC_EDIT_PASS,20,151,185,12,ES_PASSWORD | ES_AUTOHSCROLL
+    GROUPBOX        "Referer",IDC_STATIC,5,180,215,40
+    EDITTEXT        IDC_EDIT_REFERER,20,195,185,12,ES_AUTOHSCROLL
+END
+
+IDD_DIALOG_HTTPPROP_CHECK DIALOG 0, 0, 223, 225
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "チェック"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    GROUPBOX        "リクエスト方法",IDC_STATIC,5,5,215,40
+    CONTROL         "自動(&A) (現在 HEAD)",IDC_RADIO_REQTYPE_AUTO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,20,17,180,10
+    CONTROL         "常に GET リクエストでチェックを行う(&G)",IDC_RADIO_REQTYPE_GET,"Button",BS_AUTORADIOBUTTON,20,29,180,10
+    GROUPBOX        "チェック方法",IDC_STATIC,5,51,215,67
+    CONTROL         "更新日でチェック(&D)",IDC_CHECK_DATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,63,80,10
+    CONTROL         "サイズでチェック(&S)",IDC_CHECK_SIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,76,75,10
+    CONTROL         "HTMLタグを除いたサイズでチェック(&H)",IDC_CHECK_NOTAGSIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,30,88,135,10
+    CONTROL         "内容の変化でチェック(&F) (MD5)",IDC_CHECK_MD5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,101,120,10
+    GROUPBOX        "METAタグ チェック",IDC_STATIC,5,123,215,99
+    CONTROL         "METAタグを使ったチェックを行う(&M)",IDC_CHECK_META,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,135,185,10
+    LTEXT           "<META タイプ=""タイプ名"" コンテンツ=""data"">",IDC_STATIC,65,149,145,10
+    LTEXT           "タイプ(&T):",IDC_STATIC,20,165,35,10
+    EDITTEXT        IDC_EDIT_META_TYPE,65,161,145,12,ES_AUTOHSCROLL
+    LTEXT           "タイプ名(&N):",IDC_STATIC,20,181,40,10
+    EDITTEXT        IDC_EDIT_META_TYPENAME,65,177,145,12,ES_AUTOHSCROLL
+    LTEXT           "コンテンツ(&C):",IDC_STATIC,20,197,40,10
+    EDITTEXT        IDC_EDIT_META_CONTENT,65,193,145,12,ES_AUTOHSCROLL
+    LTEXT           "※ 省略時:",IDC_STATIC,20,211,40,10
+    LTEXT           "<META NAME=""WWWC"" CONTENT=""data"">",IDC_STATIC,65,211,145,10
+END
+
+IDD_DIALOG_PROTOCOLPROP_CHECK DIALOG 0, 0, 234, 225
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "チェック"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    GROUPBOX        "チェック",IDC_STATIC,5,5,223,60
+    LTEXT           "タイムアウトするまでの時間(&O):",IDC_STATIC,20,20,130,10
+    EDITTEXT        IDC_EDIT_TIMEOUIT,20,30,40,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "秒",IDC_STATIC,65,34,20,10
+    CONTROL         "すべて GET リクエストでチェックを行う(&G)",IDC_CHECK_REQGET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,49,130,10
+    GROUPBOX        "プロキシ",IDC_STATIC,5,70,223,145
+    CONTROL         "プロキシを使用する(&E)",IDC_CHECK_PROXY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,80,165,10
+    LTEXT           "サーバ(&S):",IDC_STATIC,20,95,80,8
+    LTEXT           "ポート(&T):",IDC_STATIC,170,95,45,8
+    EDITTEXT        IDC_EDIT_PSERVER,20,105,145,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PPORT,170,105,40,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "プロキシのキャッシュを使用しない(&C)",IDC_CHECK_NOCACHE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,125,165,10
+    CONTROL         "このプロキシはユーザ認証が必要(&A)",IDC_CHECK_USEPASS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,140,165,10
+    LTEXT           "ユーザ(&U):",IDC_STATIC,20,155,80,8
+    EDITTEXT        IDC_EDIT_USER,20,165,190,12,ES_AUTOHSCROLL
+    LTEXT           "パスワード(&P):",IDC_STATIC,20,185,45,8
+    EDITTEXT        IDC_EDIT_PASS,20,195,190,12,ES_PASSWORD | ES_AUTOHSCROLL
+END
+
+IDD_DIALOG_URLLIST DIALOGEX 0, 0, 335, 229
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ブラウザ情報一覧"
+FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+BEGIN
+    LTEXT           "ブラウザが現在開いているページ(&P):",IDC_STATIC,5,5,225,10
+    CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,0,15,335,170,WS_EX_CLIENTEDGE
+    CONTROL         "アイテムの名前に設定(&N)",IDC_CHECK_TITLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,190,130,10
+    CONTROL         "チェックするURLに設定(&U)",IDC_CHECK_CHECKURL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,203,130,10
+    CONTROL         "ブラウザで開くURLに設定(&V)",IDC_CHECK_VIEWURL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,216,130,10
+    DEFPUSHBUTTON   "OK",IDOK,220,210,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,276,210,50,14
+END
+
+IDD_DIALOG_SETBROWSER DIALOG 0, 0, 214, 99
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ブラウザ設定"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "DDEでブラウザが見つからなかった場合に起動するブラウザを設定してください。\n未設定の場合はデフォルトのブラウザを起動します。",IDC_STATIC,10,10,190,30
+    LTEXT           "ブラウザのパス(&P):",IDC_STATIC_URL,10,45,80,10
+    EDITTEXT        IDC_EDIT_PATH,10,55,160,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照(&B)...",IDC_BUTTON_BROWS,172,55,33,12
+    DEFPUSHBUTTON   "OK",IDOK,45,75,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,100,75,50,14
+    PUSHBUTTON      "DDE設定(&D)",IDC_BUTTON_SETDDE,155,75,50,14
+END
+
+IDD_DIALOG_SETDDEAPP DIALOG 0, 0, 234, 225
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ブラウザの登録"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "DDEでブラウザとやりとりを行うときのアプリケーション名を設定してください。\n上にあるものから順に検索します。",IDC_STATIC,10,10,220,30
+    LISTBOX         IDC_LIST_APP,10,45,155,165,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,175,45,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,175,63,50,14
+    PUSHBUTTON      "追加(&A)...",IDC_BUTTON_ADD,175,125,50,14
+    PUSHBUTTON      "編集(&E)...",IDC_BUTTON_EDIT,175,143,50,14
+    PUSHBUTTON      "削除(&D)",IDC_BUTTON_DELETE,175,161,50,14
+    PUSHBUTTON      "上へ(&U)",IDC_BUTTON_UP,175,179,50,14
+    PUSHBUTTON      "下へ(&W)",IDC_BUTTON_DOWN,175,197,50,14
+END
+
+IDD_DIALOG_ADDAPPNAME DIALOG 0, 0, 187, 65
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "アプリケーション名の追加"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "アプリケーション名(&N):",IDC_STATIC,5,10,105,10
+    EDITTEXT        IDC_EDIT_APPNAME,5,20,175,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,75,45,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,130,45,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG_FILEPROP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 222
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 162
+    END
+
+    IDD_DIALOG_VIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 267
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 198
+    END
+
+    IDD_DIALOG_HTTPPROP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 220
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 222
+    END
+
+    IDD_DIALOG_HTTPPROP_OPTION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 220
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 218
+    END
+
+    IDD_DIALOG_HTTPPROP_CHECK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 216
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 218
+    END
+
+    IDD_DIALOG_PROTOCOLPROP_CHECK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 227
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 218
+    END
+
+    IDD_DIALOG_URLLIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 328
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 222
+    END
+
+    IDD_DIALOG_SETBROWSER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 207
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 92
+    END
+
+    IDD_DIALOG_SETDDEAPP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 227
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 218
+    END
+
+    IDD_DIALOG_ADDAPPNAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 58
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,1,3,0
+ PRODUCTVERSION 1,1,3,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041104b0"
+        BEGIN
+            VALUE "FileDescription", "WWWC Protocol DLL"
+            VALUE "FileVersion", "1.1.3.0"
+            VALUE "InternalName", "WWWC"
+            VALUE "LegalCopyright", "Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved."
+            VALUE "OriginalFilename", "wwwc.dll"
+            VALUE "ProductName", "WWWC Protocol DLL"
+            VALUE "ProductVersion", "1.1.3.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x411, 1200
+    END
+END
+
+#endif    // 日本語 (日本) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

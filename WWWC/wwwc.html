@@ -1,0 +1,431 @@
+<HTML>
+<HEAD>
+	<TITLE>WWWC</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#800000">
+<BR><CENTER>
+
+<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
+<TR><TD>
+	<!-- Title -->
+	<H1>
+	<HR ALIGN="LEFT" SIZE="1" COLOR="#000080" NOSHADE>
+	<FONT SIZE="7" COLOR="#000000" FACE="Times">WWW</FONT><FONT SIZE="7" COLOR="#0000A0" FACE="Times">C</FONT>
+	<HR ALIGN="LEFT" SIZE="1" COLOR="#000080" NOSHADE>
+	</H1>
+</TD></TR>
+</TABLE>
+
+<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
+	<!-- 目次 -->
+	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+		<H2><FONT COLOR="#FFFFFF">目次</FONT></H2>
+	</TD></TR>
+
+	<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+		<TABLE BORDER="0" WIDTH="100%" CELLPADDING="2" CELLSPACING="2" BORDERCOLOR="#FFFFFF">
+		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+			<FONT COLOR="#FFFFFF">はじめに</FONT>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#how">WWWC とは？</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#use">用途</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#func">機能</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#install">インストール</A>
+		</TD></TR>
+
+		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+			<FONT COLOR="#FFFFFF">アイテムの作成</FONT>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#new_menu">メニューから新規作成</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#new_dnd">ドラッグ＆ドロップで追加</A>
+		</TD></TR>
+
+		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+			<FONT COLOR="#FFFFFF">チェック</FONT>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#check_item">アイテムをチェック</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#check_all">すべてのアイテムをチェック</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#up_msg">更新メッセージ</A>
+		</TD></TR>
+
+		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+			<FONT COLOR="#FFFFFF">設定</FONT>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#op_gene">全般</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#op_auto">自動チェック</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#op_protocol">プロトコル</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#op_tool">ツール</A>
+		</TD></TR>
+
+		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+			<FONT COLOR="#FFFFFF">HTTP</FONT>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#http_check">チェック方法</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#http_proxy">Proxy設定</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#http_menu">メニュー</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#http_brows">ブラウザに表示</A>
+		</TD></TR>
+
+		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+			<FONT COLOR="#FFFFFF">その他</FONT>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#cmdline">コマンドライン</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#info">サポート</A>
+		</TD></TR>
+		</TABLE>
+	</TD></TR>
+</TABLE>
+
+<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
+	<!-- はじめに -->
+	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+		<H2><FONT COLOR="#FFFFFF">はじめに</FONT></H2>
+	</TD></TR>
+
+		<!-- WWWC とは？ -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="how">WWWC とは？</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>WWWCはWindowsで動作するWebページの更新チェッカです。</P>
+			<P>よく見るWebページのURLをWWWCに登録しておくと、Webページに更新があったときに通知されます。</P>
+			<P>WWWCに登録してあるURLは最大30個同時を保ちながらチェック対象の全URLの更新チェックを行います。自分でブラウザを使用して更新されてないか見に行くより遥かに高速に更新のチェックを行うことができます。</P>
+			<P>基本的な使い方はWindowsに付属しているエクスプローラ（ファイルを操作するソフト）と同じ使い方です。</P>
+			<P>WWWCはフリーソフトウェアです。配布、転載は自由です、特に許可を取る必要はありません。</P>
+		</TD></TR>
+
+		<!-- 用途 -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="use">用途</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<UL>
+				<LI>情報を発信しているWebページをWWWCに登録して、そのWebページの更新をチェックすることができます。</LI>
+				<LI>使用しているオンラインソフトのWebページをWWWCに登録しておいて、そのオンラインソフトがバージョンアップしていないか調べることができます。</LI>
+			</UL>
+		</TD></TR>
+
+		<!-- 機能 -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="func">機能</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<UL>
+				<LI>指定の時刻や指定の間隔で自動的に更新チェックすることができます。</LI>
+				<LI>認証付きのページに対応しています。</LI>
+				<LI>Proxyを使用した更新チェックができ、Proxyの認証にも対応しています。</LI>
+				<LI>HTMLのMETAタグを使用して、更新日時やサイズ以外の更新情報を扱うことができます。</LI>
+				<LI>ドラッグ＆ドロップでエクスプローラやブラウザとURLを交換できます。</LI>
+				<LI>プロトコルのDLLを追加することによって色々なプロトコルをサポートすることができます。</LI>
+				<LI>プラグインのDLLやツールを追加することによって機能を拡張することができます。</LI>
+			</UL>
+		</TD></TR>
+
+		<!-- インストール -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="install">インストール</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>Windows XP, Vista, 7, 8, 8.1, 10で動作します。</P>
+			<P>ダウンロードしたファイルを適当なフォルダに展開して、その中の <STRONG>WWWC.exe</STRONG> を実行するだけです。</P>
+			<P>初めて起動するとWWWCのフォルダ内にユーザ名のフォルダが作成され、ユーザ毎の設定内容が保存されます。</P>
+			<P>レジストリは使用しないためアンインストールを行うときは WWWCのフォルダを削除するだけでいいです。</P>
+			<P>WWWCは、インターネットに接続できる環境というのが前提です。 </P>
+		</TD></TR>
+</TABLE>
+
+<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
+	<!-- アイテムの作成 -->
+	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+		<H2><FONT COLOR="#FFFFFF">アイテムの作成</FONT></H2>
+	</TD></TR>
+
+		<!-- メニューから新規作成 -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="new_menu">メニューから新規作成</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>WWWCのメニューの「ファイル」→「新規作成」を選択するとフォルダとプロトコル毎のアイテムを新規に作成することができます。</P>
+			<P>Ctrl+N で新規作成のメニューを表示します。</P>
+		</TD></TR>
+
+		<!-- ドラッグ＆ドロップで追加 -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="new_dnd">ドラッグ＆ドロップで追加</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>ファイルをWWWCのウィンドウにドラッグ＆ドロップすると、そのファイルからアイテムを作成します。</P>
+			<P>例えば拡張子が ～.URL のファイルをWWWCにドラッグ＆ドロップするとHTTPのアイテムを作成します。</P>
+			<P>フォルダごとドラッグ＆ドロップすると階層を含めてアイテムを追加します。</P>
+			<P>ファイルやURLをクリップボードにコピーして、WWWCで「貼り付け」を行ってもアイテムを作成することができます。</P>
+		</TD></TR>
+</TABLE>
+
+<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
+	<!-- チェック -->
+	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+		<H2><FONT COLOR="#FFFFFF">チェック</FONT></H2>
+	</TD></TR>
+
+		<!-- アイテムをチェック -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="check_item">アイテムをチェック</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>アイテムを選択して右クリックのメニューから「チェック」を選択すると選択されているアイテムの更新をチェックします。
+			チェックはツールバーやウィンドウメニューの「チェック」からもできます。</P>
+			<P>アイテムが選択されていない場合は現在開いているフォルダ内の全アイテムを更新チェックします。</P>
+			<P>フォルダが選択されている場合はそのフォルダの中のアイテムを更新チェックします。
+			しかし更に下の階層までは更新チェックしません。更に下の階層を更新チェックする場合は「階層チェック」を選択してください。</P>
+			<P>「チェック」で更新チェックを行う場合は「チェックしない」に設定しているアイテムやフォルダも更新チェックを行います。</P>
+		</TD></TR>
+
+		<!-- すべてのアイテムをチェック -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="check_all">すべてのアイテムをチェック</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>ウィンドウメニューのチェックにある「すべてのアイテムをチェック」を選択するとWWWCに登録されているすべてのアイテムを更新チェックします。</P>
+			<P>「エラーのアイテムのみをチェック」を選択するとWWWCに登録されているすべてのアイテムからエラーかタイムアウトになっているアイテム探して再チェックを行います。</P>
+			<P>「すべてのアイテムをチェック」「階層チェック」「エラーのアイテムのみをチェック」で更新チェックを行う場合は「チェックしない」に設定しているアイテムやフォルダは更新チェックを行いません。</P>
+		</TD></TR>
+
+		<!-- 更新メッセージ -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="up_msg">更新メッセージ</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>更新チェックが終了すると更新メッセージが表示されます。</P>
+			<P>更新メッセージには今回の更新チェックでアイコンが「UP」になったアイテムが一覧表示されます。</P>
+			<P>更新メッセージかWWWC本体のウィンドウでアイテムをダブルクリックすると、そのアイテムを開きます。例えばHTTPのアイテムの場合はアイテムのURLをブラウザに表示させます。</P>
+			<P>アイテムを開くとアイテムのアイコンは自動的に初期化されます。
+			アイテムを開かずにアイコンを初期化したい場合は、初期化したいアイテムを選択して「アイコンを初期化」を選択することでアイテムのアイコンが初期化されます。</P>
+		</TD></TR>
+</TABLE>
+
+<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
+	<!-- 設定 -->
+	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+		<H2><FONT COLOR="#FFFFFF">設定</FONT></H2>
+	</TD></TR>
+
+		<!-- 全般 -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="op_gene">全般</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>ウィンドウメニューの表示にある「オプション」を選択するとオプション画面が表示されます。</P>
+			<P>「全般」のタブではWWWC全般の設定を行います。</P>
+			<P>「すべてのユーザで共通のアイテム情報と設定を使用する」を設定すると別のユーザ名でWindowsにログインしても同じ設定のWWWCが使えるようになります。
+			WWWCはWindowsにログインしたユーザ名でアイテム情報と設定を管理しているため、別のユーザ名でWindowsにログインすると別の設定のWWWCになります。
+			別のログイン名でも同じ設定を使う場合にこの設定を有効にしてください。</P>
+			<P>「一度にチェックするアイテムの数」は同時チェック数の数で、ここで設定した数だけ同時に更新チェックを行います。
+			一つのアイテムのチェックが終わると次のアイテムのチェックを開始して、常にここで設定した数のチェック数を保ちます。
+			「起動時にすべてのアイテムをチェック」を設定するとWWWC起動時にすべてのアイテムのチェックを開始します。</P>
+			<P>「タスクトレイにアイコンを表示する」を設定するとタスクトレイにアイコンを表示するようになります。ウィンドウを最小化するとタスクバーから消えるようになります。
+			「起動時にウィンドウを表示しない」を設定すると起動時にウィンドウを表示しないでタスクトレイのアイコンが表示されるだけになります。</P>
+			<P>更新時の動作で「メッセージを出す」を設定すると更新チェックが終わったときに更新アイテムが存在すると更新メッセージを表示します。
+			「音を鳴らす」を設定すると更新チェックが終わって更新アイテムが存在すると音を鳴らすようにします。鳴らす音を設定することもできます。</P>
+			<P>更に細かい表示や動作の設定を行いたい場合は、WWWC.exe が存在するフォルダ内にあるユーザディレクトリ（Windowsにログインしたユーザ名）の中にある「user.ini」を編集することで可能です。
+			設定方法は「<A HREF="ini_sample.txt">ini_sample.txt</A>」を参考にしてください。設定を行うときは WWWC を終了しておいてください。</P>
+		</TD></TR>
+
+		<!-- 自動チェック -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="op_auto">自動チェック</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>「自動チェック」のタブでは自動で更新チェックを行う時間設定を行います。</P>
+			<P>「追加」ボタンで新しい設定を追加することができます。複数の設定を登録可能です。</P>
+			<P>自動チェックで登録された時刻が来ると「すべてのアイテムをチェック」の動作を行います。</P>
+			<P>フォルダのプロパティにもこれと同様の「自動チェック」の設定があります。
+			フォルダの自動チェック設定を行うと、そのフォルダはオプションの自動チェック設定が無効になり、フォルダで独立して自動チェックを行います。</P>
+			<P>分単位の自動チェック設定は行えません。メールのチェックなどで分単位で行いたい場合は、フォルダ毎の自動チェック設定を行ってください。フォルダ毎の自動チェックでは分単位の設定が行えます。</P>
+			<P><FONT COLOR="#800000">自動チェックの間隔が短いとそれだけサーバの負荷になります。更新チェックの間隔は長めにして必要以上に更新チェックを行わないようにしてください。</FONT></P>
+		</TD></TR>
+
+		<!-- プロトコル -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="op_protocol">プロトコル</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>「プロトコル」のタブではWWWCで更新チェックを行うプロトコルを設定します。</P>
+			<P>「追加」ボタンでDLLを選択してプロトコルを追加します。</P>
+			<P>「編集」ボタンでプロトコル情報の設定を行います。プロトコル毎のアイコンの変更などが行えます。</P>
+			<P>「プロパティ」ボタンでプロトコル毎の設定を行います。例えばHTTPのプロトコルを選択して「プロパティ」ボタンを押すとProxyの設定などが行えます。</P>
+		</TD></TR>
+
+		<!-- ツール -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="op_tool">ツール</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>「ツール」のタブではWWWCを拡張するソフトやプラグインを登録できます。</P>
+			<P>「追加」ボタンでツール設定画面が表示されます。
+			ツール設定画面のファイル名で DLL を選択すると自動的にプラグインとして登録します。
+			EXE ファイルやその他の拡張子のファイルを選択すると実行オプションにしたがってファイルを実行するようになります。</P>
+			<P>ツール設定で指定できるコマンドラインは、アイテム毎の情報(1～8)とWWWC全体の情報(9～12)の2種類あります。
+			アイテム毎の情報は「アイテムのメニューに表示」にチェックがあり、アイテムのメニューから呼ばれた場合にのみ有効です。
+			アイテムメニュー以外からアイテム毎にツールを実行したい場合はプラグインを作成することで可能です。</P>
+			<P>「プロパティ」ボタンでプラグイン毎の設定を行います。プラグインではないツールではプロパティの設定は行えません。</P>
+			<P>DLL をWWWCにドラッグ＆ドロップすると、そのDLLに登録されているプロトコルとツールを一度に登録することができます。</P>
+		</TD></TR>
+</TABLE>
+
+<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
+	<!-- HTTP -->
+	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+		<H2><FONT COLOR="#FFFFFF">HTTP</FONT></H2>
+	</TD></TR>
+
+		<!-- チェック方法 -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="http_check">チェック方法</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>HTTP（“http://”や“https://” で始まるURL）は標準で更新のチェックができるようになっています。</P>
+			<P>HTTPアイテムのチェックでは通常「HEAD」というヘッダを取得するリクエストを送って、サーバが返してきたヘッダから更新情報を取得しています。</P>
+			<P>しかしWebページによっては、CGIやSSIなどを使って動的にページを作成していて更新情報を取得できない場合があります。
+			その場合は「GET」というページ全体を取得するリクエストを送って、取得したページのサイズで更新の有無をチェックします。</P>
+			<P><FONT COLOR="#800000">CGIやSSIなどを使って動的にページを作成しているページをチェックするのはサーバの負荷になりますので、必要なければ「チェックしない」アイテムとしてください。</FONT></P>
+			<P>どうしてもCGIやSSIなどを使って動的にページを作成しているページを更新チェックする必要があり、
+			毎回サイズが変わってチェックが行えない場合は「<A HREF="filter_sample.txt">filter_sample.txt</A>」を参考にして「filter.txt」をWWWC.DLLと同じフォルダに作成することで、
+			チェックするページの毎回変わる部分を除去したり、新着情報部分を抽出して確実にチェックを行うこともできます。</P>
+			<UL>
+				<LI><STRONG>「更新日でチェック」</STRONG><BR>
+				更新日を取得できた場合に有効です。更新日が取得できない場合は自動的に無効になります。</LI>
+
+				<LI><STRONG>「サイズでチェック」</STRONG><BR>
+				ヘッダからサイズを取得できた場合は、そのサイズでチェックを行います。
+				ヘッダから取得できない場合や、「HTMLタグを除いたサイズでチェック」が有効な場合や、フィルタが適用された場合にはページのサイズでチェックを行います。</LI>
+
+				<LI><STRONG>「内容の変化でチェック(MD5)」</STRONG><BR>
+				取得したHTMLをMD5で要約した値にしてチェックを行います。更新日が取得できて更新が無い場合は処理されません。
+				フィルタを組み合わせて特定部分の更新チェックを行うことが可能です。</LI>
+
+				<LI><STRONG>「METAタグを使ったチェック」</STRONG><BR>
+				WebページにWWWCのMETAタグが埋め込まれている場合にこの設定を行うと、
+				METAタグに記述された内容でチェックを行い、更新日にMETAタグに記述された内容が表示されます。
+				WWWC以外のMETAタグの更新情報をチェックできるようにカスタマイズすることが可能です。</LI>
+			</UL>
+			<P>更新チェックを行うページがユーザ認証を必要とするページの場合は、アイテムのプロパティで「オプション」のタブを開き、「このURLはユーザ認証が必要」を設定してユーザとパスワードを設定してください。
+			対応している認証方式はBASIC認証(BASE64)です。</P>
+		</TD></TR>
+
+		<!-- Proxyの設定 -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="http_proxy">Proxyの設定</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>HTTPの設定はオプション画面のプロトコルのタブでプロトコル一覧から「HTTP」を選択して「プロパティ」ボタンを押して設定できます。</P>
+			<P>HTTPの設定画面からHTTPで使用するProxyの設定が行えます。</P>
+			<P>Proxyの設定は自動設定（“http://hoge/hoge.pac” のような感じ）には対応していません。
+			Proxyのサーバ名を直接指定してください。</P>
+			<P>LAN内にあるWebサーバなどはProxyを通さずに更新チェックを行う必要があります。
+			その場合は、アイテムのプロパティで「オプション」のタブを開いて、「プロキシを使用しない」を設定してください。
+			他にアイテムのプロパティで設定と違うProxyを使用するように設定することもできます。</P>
+		</TD></TR>
+
+		<!-- メニュー -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="http_menu">メニュー</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>HTTPのアイテムを右クリックするとHTTPアイテム固有のメニューが表示されます。</P>
+			<UL>
+				<LI><STRONG>「ヘッダー表示」</STRONG><BR>
+				アイテムに登録されたURLのレスポンスヘッダを表示します。
+				これで表示される「Last-Modified:」の項目で更新チェックを行います。
+				この「Last-Modified:」が付加されていない場合はHTMLのサイズで更新チェックを行います。</LI>
+
+				<LI><STRONG>「ソース表示」</STRONG><BR>
+				アイテムに登録されたURLからHTMLを受信して表示します。文字コードは自動的に変換されます。
+				「shift」キーを押しながら「ソース表示」を選択するとフィルタを適用したソースが表示され、タイトルバーに(フィルタ)の文字が表示されます。</LI>
+
+				<LI><STRONG>「タイトル取得」</STRONG><BR>
+				アイテムに登録されたURLからHTMLを受信して &lt;TITLE&gt; ～ &lt;/TITLE&gt; で囲まれた文字列をアイテムのタイトルに設定します。</LI>
+			</UL>
+			<P>オプションのツールで、ツールやプラグインを登録してアイテムのメニューに追加することができます。</P>
+		</TD></TR>
+
+		<!-- ブラウザに表示 -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="http_brows">ブラウザに表示</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>アイテムに設定されているURLをブラウザに表示するには、アイテムをダブルクリックすることでブラウザに表示することができます。
+			既にブラウザが起動している場合はそのブラウザに表示します。</P>
+			<P>アイテムをドラッグ＆ドロップで表示したいブラウザに渡すと、そのブラウザにアイテムのURLを渡します。</P>
+			<P>ブラウザで開くURL が設定されていれば、そのURLでブラウザに表示します。 ブラウザで開くURL が設定されていない場合はチェックするURLでブラウザに表示します。</P>
+			<P>新しいブラウザでURLを開きたい場合は、オプションのツールを登録する必要があります。
+			<OL>
+				<LI>オプションのツールで追加ボタンを押して Chrome、IE、Firefoxの場所を指定</LI>
+				<LI>タイトルを「新しいブラウザで開く」という感じにする</LI>
+				<LI>コマンドラインに %u といれる (Chromeの場合は「--new-window %u」といれる、Firefoxの場合は「-new-window %u」といれる)</LI>
+				<LI>実行オプションで「アイテムのメニューに表示」にチェックを入れて、適用するプロトコルで、http を入力</LI>
+				<LI>ツールを実行したときにアイコンを初期化したいときは実行オプションの「実行後にアイコンを初期化する」にチェックを入れる</LI>
+				<LI>[OK]ボタンを押して完了</LI>
+			</OL>
+			以上の設定にて <B>[新しいブラウザで開く]</B> をメニューに追加することができます。</P>
+			<P>上記の新しいブラウザで開く動作をアイテムをダブルクリックしたときの動作にしたい場合はツール設定で「アイテムをダブルクリックで実行する」にチェックを入れてください。</P>
+		</TD></TR>
+
+</TABLE>
+
+<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
+	<!-- その他 -->
+	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
+		<H2><FONT COLOR="#FFFFFF">その他</FONT></H2>
+	</TD></TR>
+
+		<!-- コマンドライン -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="cmdline">コマンドライン</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>WWWC起動時にコマンドラインを指定して起動後の動作を指定することができます。
+			<P>[形式]<BR>
+			<STRONG>WWWC.exe [/cisena] [/d:パス] [/u:ユーザ名] [ファイル...]</STRONG></P>
+			<UL>
+				/c	全てのアイテムをチェック<BR>
+				/i	全てのアイテムを初期化<BR>
+				/s	全てのチェックを中止<BR>
+				/e	初回チェック後終了<BR>
+				/n	更新があるときは初回チェック終了を無効<BR>
+				/a	既に起動しているWWWCをアクティブにしない<BR>
+			</UL>
+			<UL>
+				/d:	作業ディレクトリの指定<BR>
+				/u:	ユーザ名の指定<BR>
+			</UL>
+			<UL>
+				<LI>/c /i /s /e /n と「ファイル」は２重起動防止していてメッセージを出さない設定の場合は、既に起動しているWWWCに渡されます。</LI>
+				<LI>ファイルはItem.datやURLやプロトコル毎のファイル(例えばインターネットショートカットなど)やそれらを含むフォルダが渡せます。渡したファイルの種類を自動判別してアイテムを作成します。</LI>
+				<LI>ファイルが指定されている場合は起動後にアイテムを追加するパスを選択する画面が出ます。</LI>
+				<LI>ファイルにプラグインDLLが指定されていると追加するプラグインを選択する画面が出ます。</LI>
+				<LI>/n は /e が指定されている場合のみ有効です。</LI>
+			</UL>
+		</TD></TR>
+
+		<!-- サポート -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="info">サポート</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>最新情報、サポート情報、各種ツールなどは<STRONG><A HREF="https://www.nakka.com/wwwc/">WWWCのサイト</A></STRONG>から入手することができます。</P>
+			<P>このプログラムによって起きたいかなる障害も作者は責任を持ちません。大切なファイルはバックアップをとっておくことを強く薦めます。</P>
+		</TD></TR>
+
+</TABLE>
+
+<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
+<TR><TD>
+	<!-- Info -->
+	<HR ALIGN="LEFT" SIZE="1" COLOR="#000080" NOSHADE>
+	<CENTER>
+		<FONT FACE="Arial">
+		<P>Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved.</P>
+		- <STRONG><A HREF="https://www.nakka.com/">www.nakka.com</A></STRONG> -<BR>
+		<P>mailto:<STRONG><A HREF="mailto:nakka@nakka.com">&lt;nakka@nakka.com&gt;</A></STRONG></P>
+		</FONT>
+	</CENTER>
+</TD></TR>
+</TABLE>
+
+</CENTER>
+</BODY>
+</HTML>

@@ -1,0 +1,42 @@
+EXPORTS
+	DllInitialize         PRIVATE
+
+	GetProtocolList
+	GetToolList
+	GetToolHideOption
+
+	GetBrowserInfo
+	GetBrowserInfoList
+	DDE_OpenURL
+
+	FilterReload
+
+	HTTP_InitItem
+	HTTP_Initialize
+	HTTP_Cancel
+	HTTP_Timer
+	HTTP_Start
+	HTTP_ItemCheckEnd
+	HTTP_GetItemText
+	HTTP_CreateDropItem
+	HTTP_DropFile
+	HTTP_ExecItem
+	HTTP_Property
+	HTTP_ProtocolProperty
+	HTTP_GetInfo
+	HTTP_EndNotify
+	HTTP_FreeItem
+
+	FILE_InitItem
+	FILE_Initialize
+	FILE_Cancel
+	FILE_Timer
+	FILE_Start
+	FILE_GetItemText
+	FILE_CreateDropItem
+	FILE_ExecItem
+	FILE_Property
+	FILE_ProtocolProperty
+	FILE_GetInfo
+	FILE_EndNotify
+
