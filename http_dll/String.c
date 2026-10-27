@@ -103,7 +103,7 @@ void ePass(char *buf, char *ret)
 	char *retp;
 
 	for(p = buf, retp = ret; *p != '\0'; p++, retp += 2){
-		wsprintf(retp, "%02x", (*p) ^ 0xFF);
+		wsprintf(retp, "%02x", ((BYTE)*p) ^ 0xFF);
 	}
 	*retp = '\0';
 

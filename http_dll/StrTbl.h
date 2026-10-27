@@ -46,7 +46,8 @@
 
 #define STR_ERR_TITLE_URLOPEN			"URLを開く"
 #define STR_ERR_MSG_URLOPEN				"URLが設定されていません。"
-#define STR_ERR_MSG_URLSCHEME			"http または https のURLではないため開けません。"
+#define STR_ERR_MSG_URLQUOTE			"URLに引用符 (\") が含まれているため開けません。"
+#define STR_Q_MSG_OPENURL				"http または https 以外のURLです。開いてもよろしいですか？\n\n%s"
 
 #define STR_ERROR_URL					"URLを展開できませんでした。"
 #define STR_ERROR_GETHOST_TH			"gethostbyname用スレッドの作成に失敗しました。"

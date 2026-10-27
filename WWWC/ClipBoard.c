@@ -673,8 +673,8 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 		return FALSE;
 	}
 
-	//パスが長すぎる場合はエラー (番号を付ける分の余裕を残す)
-	if(lstrlen(Path) + 1 + lstrlen(Name) + 8 > MAX_TREEPATH){
+	//サブフォルダを含めてパスが長すぎる場合はエラー (コピー時に付加される名前の分の余裕を残す)
+	if(lstrlen(Path) + 1 + lstrlen(Name) + COPYNAME_MARGIN + GetDirChildPathLength(FromPath) > MAX_TREEPATH){
 		MessageBox(hWnd, EMSG_PATHLENGTH, EMSG_FOLDERCOPY_TITLE, MB_ICONSTOP);
 		return FALSE;
 	}
@@ -900,6 +900,12 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 				*r = *t;
 			}
 			*r = '\0';
+			//バッファに収まらないパスは使用しない
+			if(*t != '\t' && *t != '\0'){
+				*SourcePath = '\0';
+				r = buf;
+				continue;
+			}
 
 			if(*buf == FLAG_COPY || DnDFlag & DND_COPY){
 				//*SourcePath = '\0';
@@ -921,7 +927,11 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 				*r = *t;
 			}
 			*r = '\0';
-			for(;*t != '\t' && *t != '\0';t++);
+			//バッファに収まらないパスは使用しない
+			if(*t != '\t' && *t != '\0'){
+				r = buf;
+				continue;
+			}
 			if(*t == '\t'){
 				t++;
 			}
@@ -931,6 +941,10 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 				*r = *t;
 			}
 			*r = '\0';
+			if(*t != '\0'){
+				r = buf;
+				continue;
+			}
 
 			//コピー、切り取り
 			if(CopyFolder(hWnd, hItem, FromPath, Name, ret, DnDFlag) == FALSE){

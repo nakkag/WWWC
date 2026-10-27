@@ -186,8 +186,8 @@ static void CreateTreeDropFiles(HWND hWnd, HTREEITEM hItem, char *fPath, char *i
 
 BOOL DragDrop_CreateTreeDropFiles(HWND hWnd, HTREEITEM hItem, char *TempDirName)
 {
-	char DndPath[BUFSIZE];
-	char ItemPath[BUFSIZE];
+	char DndPath[PATH_BUFSIZE];
+	char ItemPath[PATH_BUFSIZE];
 	char buf[BUFSIZE];
 
 	WaitCursor(TRUE);
@@ -209,6 +209,13 @@ BOOL DragDrop_CreateTreeDropFiles(HWND hWnd, HTREEITEM hItem, char *TempDirName)
 
 	//ドロップファイル用文字列の作成
 	TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, buf);
+	//パスが長すぎるフォルダは作成しない
+	if(lstrlen(DndPath) + 1 + lstrlen(buf) >= MAX_PATH){
+		GlobalFree(DropFileNameList);
+		DropFileNameList = NULL;
+		WaitCursor(FALSE);
+		return FALSE;
+	}
 	wsprintf(ItemPath, "%s\\%s", DndPath, buf);
 	CreateDirectory(ItemPath, NULL);
 
@@ -244,8 +251,8 @@ BOOL DragDrop_CreateDropFiles(HWND hWnd, char *TempDirName)
 {
 	struct TPITEM *tpItemInfo;
 	HTREEITEM hItem;
-	char DndPath[BUFSIZE];
-	char ItemPath[BUFSIZE];
+	char DndPath[PATH_BUFSIZE];
+	char ItemPath[PATH_BUFSIZE];
 	char buf[BUFSIZE];
 	int SelectItem;
 
@@ -278,6 +285,10 @@ BOOL DragDrop_CreateDropFiles(HWND hWnd, char *TempDirName)
 			}
 
 			TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, buf);
+			//パスが長すぎるフォルダは作成しない
+			if(lstrlen(DndPath) + 1 + lstrlen(buf) >= MAX_PATH){
+				continue;
+			}
 			wsprintf(ItemPath, "%s\\%s", DndPath, buf);
 			CreateDirectory(ItemPath, NULL);
 
@@ -762,8 +773,9 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 
 	//フォルダ名からTreeViewアイテムを取得
 	if((cItem = TreeView_CheckName(GetDlgItem(hWnd, WWWC_TREE), hItem, fName)) == NULL){
-		//パスが長すぎる場合はエラー
-		if(TreeView_CheckPathLength(GetDlgItem(hWnd, WWWC_TREE), hItem, fName) == FALSE){
+		//サブフォルダを含めてパスが長すぎる場合はエラー
+		TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, buf, CuDir);
+		if(lstrlen(buf) + 1 + lstrlen(fName) + GetDirChildPathLength(Path) > MAX_TREEPATH){
 			MessageBox(hWnd, EMSG_PATHLENGTH, EMSG_FOLDERCOPY_TITLE, MB_ICONSTOP);
 			return;
 		}

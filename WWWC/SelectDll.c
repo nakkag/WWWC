@@ -143,11 +143,11 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
-		if(lParam == 0){
+		if(lParam == 0 || lstrlen((char *)lParam) >= BUFSIZE){
 			EndDialog(hDlg, FALSE);
 			break;
 		}
-		lstrcpyn(DLLPath, (char *)lParam, BUFSIZE);
+		lstrcpy(DLLPath, (char *)lParam);
 		SetWindowText(hDlg, DLLPath);
 
 		hLib = LoadLibrary(DLLPath);

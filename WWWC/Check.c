@@ -1216,10 +1216,12 @@ static void CancelItem(HWND hWnd, struct TPITEM *tpItemInfo)
 	}
 
 	tpItemInfo->IconStatus = ST_DEFAULT;
-	if(CheckItemList == NULL || Index == -1){
+	if(CheckItemList == NULL){
 		return;
 	}
-	*(CheckItemList + Index) = NULL;
+	if(Index != -1){
+		*(CheckItemList + Index) = NULL;
+	}
 
 	//表示されているアイテムの場合は表示の更新を行う
 	if(tpItemInfo->hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){

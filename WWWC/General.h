@@ -31,8 +31,9 @@
 #define MAXSIZE						32768				// バッファサイズ
 #define MAX_INI_CNT					1000				// INIファイルから読み込む項目数の上限
 #define MAX_COLUMN_CNT				100					// リストビューの列数の上限
-#define MAX_TREEPATH				(BUFSIZE - 16)		// フォルダのパスの長さの上限 (ファイル名を付加する余裕を残す)
+#define MAX_TREEPATH				(BUFSIZE - 12)		// フォルダのパスの長さの上限 (\Folder.ini を付加する余裕を残す)
 #define PATH_BUFSIZE				(MAX_PATH * 2 + 16)	// パスとファイル名を連結するバッファのサイズ
+#define COPYNAME_MARGIN				24					// コピー時にフォルダ名に付加される文字列の長さ
 
 //終端の手前でのみ2バイト文字の先頭バイトとして扱う
 #define IS_LEAD_BYTE(p)				(IsDBCSLeadByte((BYTE)*(p)) == TRUE && *((p) + 1) != '\0')
@@ -523,6 +524,7 @@ long GetFileSerchSize(char *FileName);
 BOOL GetFileMakeDay(char *FileName, char *buf);
 BOOL GetDirSerch(char *fPath);
 BOOL GetPathToFilename(char *fPath, char *ret);
+int GetDirChildPathLength(char *Path);
 int CopyDirTree(HWND hWnd, char *Path, char *NewPath, char *name, char *ret);
 BOOL DeleteDirTree(char *Path, BOOL AllFlag);
 void SetDirTree(HWND hTreeView, char *Path, HTREEITEM hItem);
@@ -615,6 +617,7 @@ int TreeView_GetChildCount(HWND hTreeView, HTREEITEM hItem);
 BOOL TreeView_IsRecyclerItem(HWND hTreeView, HTREEITEM hItem);
 void TreeView_GetPath(HWND hTreeView, HTREEITEM hItem, char *ret, char *RootString);
 BOOL TreeView_CheckPathLength(HWND hTreeView, HTREEITEM pItem, char *Name);
+int TreeView_GetChildPathLength(HWND hTreeView, HTREEITEM hItem);
 BOOL TreeView_SetName(HWND hWnd, HTREEITEM hItem, char *NewName);
 int TreeView_GetItemInfo(HWND hTreeView, HTREEITEM hItem, char *buf);
 int TreeView_GetListIndex(HWND hTreeView, HTREEITEM hItem);

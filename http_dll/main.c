@@ -335,6 +335,44 @@ int ExecItem(HWND hWnd, char *buf, char *cmdline)
 
 /******************************************************************************
 
+	ConfirmOpenURL
+
+	http, https 以外のURLを開く場合は確認を行う
+
+******************************************************************************/
+
+BOOL ConfirmOpenURL(HWND hWnd, char *URL)
+{
+	char *msg;
+	char *p;
+	BOOL ret;
+
+	if(URL == NULL || *URL == '\0'){
+		return FALSE;
+	}
+	if(IsWebURL(URL) == TRUE){
+		return TRUE;
+	}
+	//引用符を含むURLは引数を分割されるため開かない
+	for(p = URL; *p != '\0'; p++){
+		if(*p == '\"'){
+			MessageBox(hWnd, STR_ERR_MSG_URLQUOTE, STR_ERR_TITLE_URLOPEN, MB_ICONEXCLAMATION);
+			return FALSE;
+		}
+	}
+	msg = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(STR_Q_MSG_OPENURL) + lstrlen(URL) + 1);
+	if(msg == NULL){
+		return FALSE;
+	}
+	wsprintf(msg, STR_Q_MSG_OPENURL, URL);
+	ret = (MessageBox(hWnd, msg, STR_ERR_TITLE_URLOPEN, MB_ICONQUESTION | MB_YESNO) == IDYES) ? TRUE : FALSE;
+	GlobalFree(msg);
+	return ret;
+}
+
+
+/******************************************************************************
+
 	FileSelect
 
 	ファイルの選択

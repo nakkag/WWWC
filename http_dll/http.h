@@ -110,6 +110,7 @@ struct TPHOSTINFO {
 
 void ErrMsg(HWND hWnd, int ErrCode, char *Title);
 int ExecItem(HWND hWnd, char *buf, char* cmdline);
+BOOL ConfirmOpenURL(HWND hWnd, char *URL);
 int FileSelect(HWND hDlg,char *oFile,char *oFilter,char *oTitle,char *ret,char *def,int Index);
 
 #endif

@@ -1027,6 +1027,7 @@ __declspec(dllexport) int CALLBACK DDE_OpenURL(HWND hWnd, struct TPITEM **ToolIt
 													  int ToolItemListCnt, int type, int CheckType)
 {
 	char *url;
+	char *p;
 	int rc = -1;
 	int i, j;
 
@@ -1036,8 +1037,8 @@ __declspec(dllexport) int CALLBACK DDE_OpenURL(HWND hWnd, struct TPITEM **ToolIt
 		for(i = 0; i < ToolItemListCnt; i++){
 			url = ((*(ToolItemList + i))->ViewURL != NULL && *(*(ToolItemList + i))->ViewURL != '\0') ?
 				(*(ToolItemList + i))->ViewURL : (*(ToolItemList + i))->CheckURL;
-			//http, https 以外のURLはブラウザに渡さない
-			if(IsWebURL(url) == FALSE){
+			//http, https 以外のURLは確認してからブラウザに渡す
+			if(ConfirmOpenURL(hWnd, url) == FALSE){
 				continue;
 			}
 
@@ -1050,12 +1051,17 @@ __declspec(dllexport) int CALLBACK DDE_OpenURL(HWND hWnd, struct TPITEM **ToolIt
 				if(*BrowserPath == '\0'){
 					rc = ExecItem(hWnd, url, NULL);
 				}else{
-					//引数として渡すURLは引用符で囲む
-					char *param = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(url) + 3);
+					//引数として渡すURLは引用符で囲む (末尾の \ は閉じ引用符をエスケープしないよう重ねる)
+					char *param = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(url) * 2 + 3);
+					char *t;
 					if(param == NULL){
 						continue;
 					}
-					iStrCpy(iStrCpy(iStrCpy(param, "\""), url), "\"");
+					t = iStrCpy(iStrCpy(param, "\""), url);
+					for(p = url + lstrlen(url); p > url && *(p - 1) == '\\'; p--){
+						*(t++) = '\\';
+					}
+					iStrCpy(t, "\"");
 					rc = ExecItem(hWnd, BrowserPath, param);
 					GlobalFree(param);
 				}

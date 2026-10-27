@@ -172,6 +172,49 @@ BOOL GetPathToFilename(char *fPath, char *ret)
 
 /******************************************************************************
 
+	GetDirChildPathLength
+
+	サブフォルダを含めたパスの最大の長さ (指定フォルダからの相対) を取得する
+
+******************************************************************************/
+
+int GetDirChildPathLength(char *Path)
+{
+	WIN32_FIND_DATA FindData;
+	HANDLE hFindFile;
+	char sPath[PATH_BUFSIZE];
+	char buf[PATH_BUFSIZE];
+	int len, max = 0;
+
+	if(lstrlen(Path) + 2 >= PATH_BUFSIZE){
+		return PATH_BUFSIZE;
+	}
+	wsprintf(sPath, "%s\\*", Path);
+	if((hFindFile = FindFirstFile(sPath, &FindData)) == INVALID_HANDLE_VALUE){
+		return 0;
+	}
+	do{
+		if((FindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 ||
+			lstrcmp(FindData.cFileName, ".") == 0 || lstrcmp(FindData.cFileName, "..") == 0){
+			continue;
+		}
+		if(lstrlen(Path) + 1 + lstrlen(FindData.cFileName) >= PATH_BUFSIZE){
+			max = PATH_BUFSIZE;
+			break;
+		}
+		wsprintf(buf, "%s\\%s", Path, FindData.cFileName);
+		len = 1 + lstrlen(FindData.cFileName) + GetDirChildPathLength(buf);
+		if(len > max){
+			max = len;
+		}
+	} while(FindNextFile(hFindFile, &FindData) == TRUE);
+	FindClose(hFindFile);
+	return max;
+}
+
+
+/******************************************************************************
+
 	CopyDirTree
 
 	ディレクトリのコピー
@@ -656,7 +699,6 @@ struct TPITEM **ReadItemList(char *FileName, int *cnt, HTREEITEM hItem)
 	char *buf;
 	char *p;
 	long FileSize;
-	int LineCnt = 0;
 	int MaxLineCnt = 0;
 	DWORD ret;
 
@@ -692,23 +734,13 @@ struct TPITEM **ReadItemList(char *FileName, int *cnt, HTREEITEM hItem)
 	FileSize = ret;
 	*(buf + FileSize) = '\0';
 
-	//行数のカウント
+	//行数のカウント (CRのみの改行や最終行の改行なしも1行として扱う)
 	for(p = buf; *p != '\0'; p++){
-		if(*p == '\n'){
-			LineCnt++;
-		}
-		//CRのみの改行や最終行の改行なしも1行として扱うため最大行数を数える
 		if(*p == '\r' || *p == '\n'){
 			MaxLineCnt++;
 		}
 	}
 	MaxLineCnt++;
-
-	//読み込み失敗
-	if(FileSize != 0 && LineCnt == 0){
-		GlobalFree(buf);
-		return NULL;
-	}
 
 	//アイテム情報を確保
 	tpRetItemList = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * MaxLineCnt);
@@ -1160,7 +1192,7 @@ int FileSelect(HWND hDlg, char *oFile, char *oFilter, char *oTitle, char *ret, c
 static void SetExecCommandLine(HWND hWnd, char *buf, char *ret, int size, struct TPITEM *tpItemInfo)
 {
 	char FolderPath[MAX_PATH];
-	char *p, *r, *t;
+	char *p, *r, *t, *s, *e;
 
 	if(buf == NULL){
 		return;
@@ -1283,12 +1315,19 @@ static void SetExecCommandLine(HWND hWnd, char *buf, char *ret, int size, struct
 				break;
 			}
 			if(t != NULL){
+				s = r;
 				for(; *t != '\0' && r < ret + size - 1; t++){
 					//引数の区切りを変えられないよう埋め込む文字列内の引用符は除く
 					if(*t == '\"'){
 						continue;
 					}
 					*(r++) = *t;
+				}
+				//直後が引用符の場合は末尾の \ が引用符をエスケープしないよう重ねる
+				if(*(p + 1) == '\"'){
+					for(e = r; e > s && *(e - 1) == '\\' && r < ret + size - 1; e--){
+						*(r++) = '\\';
+					}
 				}
 			}
 		}

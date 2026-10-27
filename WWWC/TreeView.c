@@ -771,6 +771,31 @@ void TreeView_GetPath(HWND hTreeView, HTREEITEM hItem, char *ret, char *RootStri
 
 /******************************************************************************
 
+	TreeView_GetChildPathLength
+
+	子フォルダを含めたパスの最大の長さ (指定アイテムからの相対) を取得する
+
+******************************************************************************/
+
+int TreeView_GetChildPathLength(HWND hTreeView, HTREEITEM hItem)
+{
+	HTREEITEM cItem;
+	char buf[BUFSIZE];
+	int len, max = 0;
+
+	for(cItem = TreeView_GetChild(hTreeView, hItem); cItem != NULL; cItem = TreeView_GetNextSibling(hTreeView, cItem)){
+		TreeView_GetItemInfo(hTreeView, cItem, buf);
+		len = 1 + lstrlen(buf) + TreeView_GetChildPathLength(hTreeView, cItem);
+		if(len > max){
+			max = len;
+		}
+	}
+	return max;
+}
+
+
+/******************************************************************************
+
 	TreeView_CheckPathLength
 
 	フォルダを追加したときのパスの長さが上限以内かチェックする
@@ -833,8 +858,8 @@ BOOL TreeView_SetName(HWND hWnd, HTREEITEM hItem, char *NewName)
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE),
 		TreeView_GetParent(GetDlgItem(hWnd, WWWC_TREE), hItem), buf, CuDir);
 
-	//パスが長すぎる場合はエラーを出す
-	if(lstrlen(buf) + 1 + lstrlen(NewName) > MAX_TREEPATH){
+	//子フォルダを含めてパスが長すぎる場合はエラーを出す
+	if(lstrlen(buf) + 1 + lstrlen(NewName) + TreeView_GetChildPathLength(GetDlgItem(hWnd, WWWC_TREE), hItem) > MAX_TREEPATH){
 		MessageBox(hWnd, EMSG_PATHLENGTH, EMSG_CHANGEFILENAME_TITLE, MB_ICONSTOP);
 		return FALSE;
 	}

@@ -2346,9 +2346,8 @@ __declspec(dllexport) int CALLBACK HTTP_ExecItem(HWND hWnd, char *Action, struct
 			MessageBox(hWnd, STR_ERR_MSG_URLOPEN, STR_ERR_TITLE_URLOPEN, MB_ICONEXCLAMATION);
 			return -1;
 		}
-		//http, https 以外は実行しない
-		if(IsWebURL(p) == FALSE){
-			MessageBox(hWnd, STR_ERR_MSG_URLSCHEME, STR_ERR_TITLE_URLOPEN, MB_ICONEXCLAMATION);
+		//http, https 以外は確認してから実行する
+		if(ConfirmOpenURL(hWnd, p) == FALSE){
 			return -1;
 		}
 		rc = ExecItem(hWnd, p, NULL);
@@ -2362,9 +2361,8 @@ __declspec(dllexport) int CALLBACK HTTP_ExecItem(HWND hWnd, char *Action, struct
 			MessageBox(hWnd, STR_ERR_MSG_URLOPEN, STR_ERR_TITLE_URLOPEN, MB_ICONEXCLAMATION);
 			return -1;
 		}
-		//http, https 以外は実行しない
-		if(IsWebURL(p) == FALSE){
-			MessageBox(hWnd, STR_ERR_MSG_URLSCHEME, STR_ERR_TITLE_URLOPEN, MB_ICONEXCLAMATION);
+		//http, https 以外は確認してから実行する
+		if(ConfirmOpenURL(hWnd, p) == FALSE){
 			return -1;
 		}
 		rc = ExecItem(hWnd, p, NULL);
