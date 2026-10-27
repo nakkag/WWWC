@@ -76,7 +76,7 @@ void BadNameCheck(char *buf, char NewChar)
 
 	p = buf;
 	while(*p != '\0'){
-		if(IsDBCSLeadByte((BYTE)*p) == FALSE){
+		if(!IS_LEAD_BYTE(p)){
 			if(*p == '\\' || *p == '/' || *p == ':' || *p == ',' || *p == ';' || *p == '*' ||
 				*p == '?' || *p == '\"' || *p == '<' || *p == '>' || *p == '|'){
 				*p = NewChar;
@@ -414,8 +414,13 @@ int GetURL(char *URL, char *server, char *path, int DefPort, char *user, char *p
 
 	for(p = server; *p != '@' && *p != '\0'; p++);
 	if(*p == '@'){
+		*us = '\0';
+		*ps = '\0';
 		r = us;
 		for(p = server; *p != ':' && *p != '@' && *p != '\0'; p++){
+			if(r - us >= BUFSIZE - 1){
+				return -1;
+			}
 			*(r++) = *p;
 		}
 		*r = '\0';
@@ -423,6 +428,9 @@ int GetURL(char *URL, char *server, char *path, int DefPort, char *user, char *p
 			p++;
 			r = ps;
 			for(; *p != '@' && *p != '\0'; p++){
+				if(r - ps >= BUFSIZE - 1){
+					return -1;
+				}
 				*(r++) = *p;
 			}
 			*r = '\0';
@@ -436,20 +444,23 @@ int GetURL(char *URL, char *server, char *path, int DefPort, char *user, char *p
 		if(*p == '@'){
 			p++;
 		}
-		lstrcpy(server, p);
+		MoveMemory(server, p, lstrlen(p) + 1);
 	}
 
 	/* サーバ名:ポート となっている場合は分割する */
 	for(p = server; *p != ':' && *p != '\0'; p++);
 	if(*p == ':'){
 		for(t = p + 1, r = wk; *t != '\0'; t++, r++){
-			if(*t < '0' || *t > '9'){
+			if(*t < '0' || *t > '9' || r - wk >= 5){
 				return -1;
 			}
 			*r = *t;
 		}
 		*r = '\0';
 		port = atoi(wk);
+		if(port > 65535){
+			return -1;
+		}
 
 		*p = '\0';
 	}
@@ -622,6 +633,30 @@ void DelCrLf(char *buf)
 
 	lstrcpy(buf, ret);
 	GlobalFree(ret);
+}
+
+
+/******************************************************************************
+
+	DelCtrlChar
+
+	制御文字を空白に変換する
+
+******************************************************************************/
+
+void DelCtrlChar(char *buf)
+{
+	char *p;
+
+	if(buf == NULL){
+		return;
+	}
+	//SJISの2バイト目に制御文字は含まれないため1バイトずつ判定する
+	for(p = buf; *p != '\0'; p++){
+		if((unsigned char)*p < 0x20 || *p == 0x7F){
+			*p = ' ';
+		}
+	}
 }
 
 
@@ -859,7 +894,7 @@ char *GetMETATag(char *buf, char *type, char *name, char *contentname)
 	while(*p != '\0'){
 		if(*p != '<'){
 			//タグの開始まで移動する
-			if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+			if(IS_LEAD_BYTE(p)){
 				p++;
 			}
 			p++;
@@ -875,7 +910,7 @@ char *GetMETATag(char *buf, char *type, char *name, char *contentname)
 
 		//タグの終わりまで移動する
 		for(r = p; *r != '>' && *r != '\0'; r++){
-			if(IsDBCSLeadByte((BYTE)*r) == TRUE){
+			if(IS_LEAD_BYTE(r)){
 				r++;
 			}
 		}
@@ -949,7 +984,7 @@ int GetTagContentSize(char *buf, char *tag)
 			}
 
 			for(; *p != '>' && *p != '\0'; p++){
-				if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+				if(IS_LEAD_BYTE(p)){
 					p++;
 				}
 			}
@@ -961,7 +996,7 @@ int GetTagContentSize(char *buf, char *tag)
 
 		//指定のタグでない場合はスキップ
 		if(ContentFlag == FALSE){
-			if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+			if(IS_LEAD_BYTE(p)){
 				p++;
 			}
 			p++;
@@ -981,7 +1016,7 @@ int GetTagContentSize(char *buf, char *tag)
 			break;
 
 		default:
-			if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+			if(IS_LEAD_BYTE(p)){
 				ret++;
 				p++;
 			}
@@ -1022,7 +1057,7 @@ BOOL GetTagContent(char *buf, char *tag, char *content)
 			}
 
 			for(; *p != '>' && *p != '\0'; p++){
-				if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+				if(IS_LEAD_BYTE(p)){
 					p++;
 				}
 			}
@@ -1034,7 +1069,7 @@ BOOL GetTagContent(char *buf, char *tag, char *content)
 
 		//指定のタグでない場合はスキップ
 		if(ContentFlag == FALSE){
-			if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+			if(IS_LEAD_BYTE(p)){
 				p++;
 			}
 			p++;
@@ -1054,7 +1089,7 @@ BOOL GetTagContent(char *buf, char *tag, char *content)
 			break;
 
 		default:
-			if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+			if(IS_LEAD_BYTE(p)){
 				*(r++) = *(p++);
 			}
 			*(r++) = *(p++);
@@ -1120,7 +1155,7 @@ int DelTagSize(char *buf)
 		default:
 			if(Tag == FALSE && CommentFlag == FALSE){
 				//タグ内では無い場合
-				if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+				if(IS_LEAD_BYTE(p)){
 					p++;
 					retlen++;
 				}
@@ -1128,7 +1163,7 @@ int DelTagSize(char *buf)
 				break;
 			}
 			//タグ内の場合
-			if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+			if(IS_LEAD_BYTE(p)){
 				p++;
 			}
 			break;
@@ -1154,7 +1189,7 @@ void ConvHTMLChar(char *buf)
 	r = t = buf;
 
 	while(*r != '\0'){
-		if(IsDBCSLeadByte((BYTE)*r) == TRUE){
+		if(IS_LEAD_BYTE(r)){
 			*(t++) = *(r++);
 			*(t++) = *(r++);
 			continue;
@@ -1193,7 +1228,8 @@ void ConvHTMLChar(char *buf)
 				*(t++) = 'c';
 			}else if(*r == '#'){
 				for(s = r + 1; *s >= '0' && *s <= '9'; s++);
-				if(*s != ';'){
+				//制御文字や範囲外の値は変換しない
+				if(*s != ';' || s - (r + 1) > 3 || atoi(r + 1) < 0x20 || atoi(r + 1) > 0x7E){
 					r--;
 					*(t++) = *(r++);
 				}else{
@@ -1420,7 +1456,7 @@ int DateConv(char *buf, char *ret)
 	}else{
 		p = DateFormat;
 	}
-	if(GetDateFormat(0, 0, &gTime, p, fDay, BUFSIZE - 1) == 0){
+	if(GetDateFormat(0, 0, &gTime, p, fDay, BUFSIZE / 2 - 1) == 0){
 		return -1;
 	}
 
@@ -1429,7 +1465,7 @@ int DateConv(char *buf, char *ret)
 	}else{
 		p = TimeFormat;
 	}
-	if(GetTimeFormat(0, 0, &gTime, p, fTime, BUFSIZE - 1) == 0){
+	if(GetTimeFormat(0, 0, &gTime, p, fTime, BUFSIZE / 2 - 1) == 0){
 		return -1;
 	}
 
@@ -1457,7 +1493,7 @@ int CreateDateTime(char *ret)
 	}else{
 		p = DateFormat;
 	}
-	if(GetDateFormat(0, 0, NULL, p, fDay, BUFSIZE - 1) == 0){
+	if(GetDateFormat(0, 0, NULL, p, fDay, BUFSIZE / 2 - 1) == 0){
 		return -1;
 	}
 
@@ -1466,7 +1502,7 @@ int CreateDateTime(char *ret)
 	}else{
 		p = TimeFormat;
 	}
-	if(GetTimeFormat(0, 0, NULL, p, fTime, BUFSIZE - 1) == 0){
+	if(GetTimeFormat(0, 0, NULL, p, fTime, BUFSIZE / 2 - 1) == 0){
 		return -1;
 	}
 
@@ -1568,6 +1604,26 @@ void SjisShift(int *ph, int *pl)
 
 /******************************************************************************
 
+	NextChar
+
+	文字を取得して次の文字に移動する (終端では移動しない)
+
+******************************************************************************/
+
+static int NextChar(char **p)
+{
+	int c;
+
+	c = **p;
+	if(c != '\0'){
+		(*p)++;
+	}
+	return c;
+}
+
+
+/******************************************************************************
+
 	JIS_SJIS
 
 	JISをSJISに変換する
@@ -1591,8 +1647,8 @@ char *JIS_SJIS(char *buf, char *ret)
 		j++;
 		c = *(p++);
 		if(c == ESC){
-			if((c = *(p++)) == '$'){
-				if((c = *(p++)) == '@' || c == 'B'){
+			if((c = NextChar(&p)) == '$'){
+				if((c = NextChar(&p)) == '@' || c == 'B'){
 					jiskanji = TRUE;
 				}else{
 					*(r++) = ESC;
@@ -1602,7 +1658,7 @@ char *JIS_SJIS(char *buf, char *ret)
 					}
 				}
 			}else if(c == '('){
-				if((c = *(p++)) == 'H' || c == 'J' || c == 'B'){
+				if((c = NextChar(&p)) == 'H' || c == 'J' || c == 'B'){
 					jiskanji = FALSE;
 				}else{
 					*(r++) = ESC;
@@ -1612,13 +1668,13 @@ char *JIS_SJIS(char *buf, char *ret)
 					}
 				}
 			}else if(c == '*'){
-				if((c = *(p++)) == 'B'){
+				if((c = NextChar(&p)) == 'B'){
 					hankaku = FALSE;
 				}else if(c == 'I'){
 					hankaku = TRUE;
 				}
 			}else if(hankaku == TRUE && c == 'N'){
-				c = *(p++);
+				c = NextChar(&p);
 				*(r++) = c + 0x80;
 			}else if(c == 'K'){
 				jiskanji = TRUE;
@@ -1631,7 +1687,7 @@ char *JIS_SJIS(char *buf, char *ret)
 				}
 			}
 		}else if(jiskanji && c >= 0x21 && c <= 0x7E){
-			if((d = *(p++)) >= 0x21 && d <= 0x7E){
+			if((d = NextChar(&p)) >= 0x21 && d <= 0x7E){
 				SjisShift((int *)&c, (int *)&d);
 			}
 			*(r++) = c;
@@ -1639,7 +1695,7 @@ char *JIS_SJIS(char *buf, char *ret)
 				*(r++) = d;
 			}
 		}else if(c >= 0xA1 && c <= 0xFE){
-			if((d = *(p++)) >= 0xA1 && d <= 0xFE){
+			if((d = NextChar(&p)) >= 0xA1 && d <= 0xFE){
 				d &= 0x7E;
 				c &= 0x7E;
 				SjisShift((int *)&c, (int *)&d);
@@ -1716,8 +1772,8 @@ int GetKanjiType(unsigned char *str)
     unsigned char b1, b2, b3;
 
     b1 = *str++;
-    b2 = *str++;
-    b3 = *str;
+    b2 = (b1 != '\0') ? *str++ : 0;
+    b3 = (b2 != '\0') ? *str : 0;
     if (b1 == 0x1b) {
         if (b2 == '$' && b3 == 'B') return 16;
         if (b2 == '$' && b3 == '@') return 32;
@@ -2029,7 +2085,7 @@ int GetHtml2RtfSize(char *buf)
 			break;
 
 		default:
-			if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+			if(IS_LEAD_BYTE(p)){
 				len += 8;
 			}else{
 				if(cfFlag == TRUE){
@@ -2182,7 +2238,7 @@ void Html2Rtf(char *buf, char *ret)
 			break;
 
 		default:
-			if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+			if(IS_LEAD_BYTE(p)){
 				wsprintf(r, "\\'%2x", (unsigned char)*(p++));
 				r += 4;
 				wsprintf(r, "\\'%2x", (unsigned char)*p);

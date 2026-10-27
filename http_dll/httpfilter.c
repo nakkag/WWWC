@@ -75,7 +75,7 @@ static char *FindStr(char *buf, char *Str, int len, BOOL first, BOOL icase)
 		if(((icase == FALSE) ? lstrcmpn : lstrcmpni)(Str, p, len) == 0){
 			return p;
 		}
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			p++;
 			continue;
 		}
@@ -114,7 +114,7 @@ static char *ConvStr(char *buf)
 	if(ret == NULL) return ret;
 
 	for(p = buf, r = ret; *p != '\0'; p++){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			*(r++) = *(p++);
 			*(r++) = *p;
 		}else if(*p == '\\' && *(p + 1) != '\0'){
@@ -152,7 +152,7 @@ static void CRLFConv(char *buf)
 	char *p, *r;
 
 	for(p = r = buf; *p != '\0'; p++){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			*(r++) = *(p++);
 			*(r++) = *p;
 			continue;

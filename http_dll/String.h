@@ -33,6 +33,7 @@ char *CreateMoveURL(char *FromURL, char *ToURL);
 BOOL GetOptionString(char *buf, char *ret, int num);
 int GetOptionInt(char *buf, int num);
 void DelCrLf(char *buf);
+void DelCtrlChar(char *buf);
 char *StrNextContent(char *p);
 int GetHeadContentSize(char *buf, char *str);
 BOOL GetHeadContent(char *buf, char *str, char *ret);

@@ -363,6 +363,7 @@ static char *GetTitle(char *buf)
 	//タイトルタグのサイズを取得
 	len = GetTagContentSize(SjisBuf, TITLE_TAG);
 	if(len == 0){
+		GlobalFree(SjisBuf);
 		return NULL;
 	}
 
@@ -377,10 +378,11 @@ static char *GetTitle(char *buf)
 
 	if(rc == FALSE){
 		GlobalFree(ret);
-		ret = NULL;
+		return NULL;
 	}
 	//特殊文字の変換
 	ConvHTMLChar(ret);
+	DelCtrlChar(ret);
 	return ret;
 }
 
@@ -404,7 +406,7 @@ static void SetErrorString(struct TPITEM *tpItemInfo, char *buf, BOOL HeadFlag)
 
 	r = buf;
 	if(HeadFlag == TRUE){
-		for(; *r != ' '; r++);
+		for(; *r != ' ' && *r != '\0'; r++);
 		r = (*r == ' ') ? r + 1 : buf;
 	}
 
@@ -418,6 +420,7 @@ static void SetErrorString(struct TPITEM *tpItemInfo, char *buf, BOOL HeadFlag)
 		*(t++) = *(r++);
 	}
 	*t = '\0';
+	DelCtrlChar(tpItemInfo->ErrStatus);
 }
 
 
@@ -541,6 +544,7 @@ static int GetMetaString(struct TPITEM *tpItemInfo)
 	if((MetaContent = GetMETATag(p, type, name, content)) != NULL){
 		//特殊文字の変換
 		ConvHTMLChar(MetaContent);
+		DelCtrlChar(MetaContent);
 
 		if(LresultCmp(tpItemInfo->Date, MetaContent) != 0){
 			CmpMsg = ST_UP;
@@ -600,12 +604,17 @@ static int Head_GetDate(struct TPITEM *tpItemInfo, int CmpOption, BOOL *DateRet)
 	}
 
 	len = GetHeadContentSize(tpHTTP->buf, "Last-Modified:");
+	if(len > BUFSIZE - 2){
+		*DateRet = FALSE;
+		return ST_DEFAULT;
+	}
 	headcontent = (char *)HeapAlloc(GetProcessHeap(), 0, len + 2);
 	if(headcontent == NULL){
 		return ST_DEFAULT;
 	}
 	*DateRet = GetHeadContent(tpHTTP->buf, "Last-Modified:", headcontent);
 	if(*DateRet == TRUE){
+		DelCtrlChar(headcontent);
 		if(CmpOption == 1 && tpItemInfo->DLLData1 != NULL && *tpItemInfo->DLLData1 != '\0' &&
 			lstrcmp(tpItemInfo->DLLData1, headcontent) != 0){
 			CmpMsg = ST_UP;
@@ -627,16 +636,16 @@ static int Head_GetDate(struct TPITEM *tpItemInfo, int CmpOption, BOOL *DateRet)
 			tpItemInfo->OldDate = CreateOldData(tpItemInfo->Date);
 
 			//日付形式の変換
-			if(DateConv(headcontent, chtime) == 0){
-				lstrcpy(headcontent, chtime);
+			if(DateConv(headcontent, chtime) != 0){
+				lstrcpy(chtime, headcontent);
 			}
 			/* アイテムに今回のチェック内容をセットする */
 			if(tpItemInfo->Date != NULL){
 				GlobalFree(tpItemInfo->Date);
 			}
-			tpItemInfo->Date = (char *)GlobalAlloc(GMEM_FIXED, sizeof(char) * lstrlen(headcontent) + ((CmpMsg == ST_UP) ? 2 : 1));
+			tpItemInfo->Date = (char *)GlobalAlloc(GMEM_FIXED, sizeof(char) * lstrlen(chtime) + ((CmpMsg == ST_UP) ? 2 : 1));
 			if(tpItemInfo->Date != NULL){
-				lstrcpy(tpItemInfo->Date, headcontent);
+				lstrcpy(tpItemInfo->Date, chtime);
 				if(CmpMsg == ST_UP){
 					//日付の変更を示す記号の付加
 					lstrcat(tpItemInfo->Date, "*");
@@ -672,12 +681,17 @@ static int Head_GetSize(struct TPITEM *tpItemInfo, int CmpOption, int SetDate, B
 
 	/* サイズを取得する */
 	len = GetHeadContentSize(tpHTTP->buf, "Content-Length:");
+	if(len > BUFSIZE - 2){
+		*SizeRet = FALSE;
+		return ST_DEFAULT;
+	}
 	headcontent = (char *)HeapAlloc(GetProcessHeap(), 0, len + 2);
 	if(headcontent == NULL){
 		return ST_DEFAULT;
 	}
 	*SizeRet = GetHeadContent(tpHTTP->buf, "Content-Length:", headcontent);
 	if(*SizeRet == TRUE){
+		DelCtrlChar(headcontent);
 		/* 前回チェック時のものと比較する */
 		if(CmpOption == 1 && LresultCmp(tpItemInfo->Size, headcontent) != 0){
 			CmpMsg = ST_UP;
@@ -894,7 +908,7 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 		return CHECK_ERROR;
 	}
 	p++;
-	for(r = tmp; *p != ' ' && *p != '\0'; p++, r++){
+	for(r = tmp; *p != ' ' && *p != '\r' && *p != '\n' && *p != '\0' && r - tmp < BUFSIZE - 1; p++, r++){
 		*r = *p;
 	}
 	*r = '\0';
@@ -927,7 +941,9 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 					GlobalFree(tpItemInfo->Title);
 				}
 				tpItemInfo->Title = GlobalAlloc(GPTR, lstrlen(titlebuf) + 1);
-				lstrcpy(tpItemInfo->Title, titlebuf);
+				if(tpItemInfo->Title != NULL){
+					lstrcpy(tpItemInfo->Title, titlebuf);
+				}
 				GlobalFree(titlebuf);
 				tpItemInfo->RefreshFlag = TRUE;
 			}
@@ -1026,6 +1042,14 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 		len = GetHeadContentSize(tpHTTP->buf, "Location:");
 		headcontent = (char *)GlobalAlloc(GPTR, len + 1);
 		if(headcontent != NULL && GetHeadContent(tpHTTP->buf, "Location:", headcontent) == TRUE){
+			DelCtrlChar(headcontent);
+			//http, https 以外への移動は行わない
+			if(lstrcmpni(headcontent, "http://", 7) != 0 && lstrcmpni(headcontent, "https://", 8) != 0){
+				GlobalFree(headcontent);
+				SetErrorString(tpItemInfo, tpHTTP->buf, TRUE);
+				SendMessage(hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
+				break;
+			}
 			tpItemInfo->Param4++;
 			if(tpItemInfo->Param2 != 0){
 				GlobalFree((HGLOBAL)tpItemInfo->Param2);
@@ -1061,6 +1085,7 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 		len = GetHeadContentSize(tpHTTP->buf, "Location:");
 		headcontent = (char *)GlobalAlloc(GPTR, len + 1);
 		if(headcontent != NULL && GetHeadContent(tpHTTP->buf, "Location:", headcontent) == TRUE){
+			DelCtrlChar(headcontent);
 			tpItemInfo->Param4++;
 			if(tpItemInfo->Param2 != 0){
 				GlobalFree((HGLOBAL)tpItemInfo->Param2);
@@ -1561,20 +1586,26 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 	struct TPHTTP *tpHTTP;
 	HINTERNET hSession, hConnect, hRequest;
 	URL_COMPONENTS urlComponents;
-	WCHAR szHostName[256], szUrlPath[2048];
+	WCHAR szHostName[256];
+	WCHAR *szUrlPath;
 	WCHAR *wp;
 	DWORD dwSize;
 	WCHAR *header;
-	WCHAR url[2048];
+	WCHAR *url;
 	WCHAR *sendHeader;
 	WCHAR *s;
-	char BaseStr1[BUFSIZE];
-	char BaseStr2[BUFSIZE];
+	char BaseStr1[BUFSIZE * 2 + 2];
+	char BaseStr2[BUFSIZE * 3];
+	char ProxyAuth[BUFSIZE * 3];
 	char user[BUFSIZE];
 	char pass[BUFSIZE];
 	char referer[BUFSIZE];
 	char buf[BUFSIZE];
+	long bufLen, bufCap;
 	int ProxyFlag;
+	BOOL UseProxy;
+	BOOL Secure;
+	int wlen;
 
 	SetLastError(NO_ERROR);
 
@@ -1584,11 +1615,14 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 		return -1;
 	}
 	ProxyFlag = GetOptionInt(tpItemInfo->Option2, OP2_NOPROXY);
-	if ((ProxyFlag == 0 && Proxy == 1) || ProxyFlag == 2) {
+	UseProxy = ((ProxyFlag == 0 && Proxy == 1) || ProxyFlag == 2) ? TRUE : FALSE;
+	if (UseProxy == TRUE) {
 		WCHAR wproxy[2048];
 		char proxy[2048];
 		wsprintf(proxy, "http://%s:%d", tpHTTP->SvName, tpHTTP->Port);
-		MultiByteToWideChar(CP_ACP, 0, proxy, -1, wproxy, 2048);
+		if (MultiByteToWideChar(CP_ACP, 0, proxy, -1, wproxy, 2048) == 0) {
+			*wproxy = L'\0';
+		}
 		hSession = WinHttpOpen(USER_AGENT, WINHTTP_ACCESS_TYPE_NAMED_PROXY, wproxy, WINHTTP_NO_PROXY_BYPASS, 0);
 	} else {
 		hSession = WinHttpOpen(USER_AGENT, WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
@@ -1602,16 +1636,15 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 		return -1;
 	}
 
-	ZeroMemory(&urlComponents, sizeof(URL_COMPONENTS));
-	urlComponents.dwStructSize = sizeof(URL_COMPONENTS);
-	urlComponents.lpszHostName = szHostName;
-	urlComponents.dwHostNameLength = sizeof(szHostName) / sizeof(WCHAR);
-	urlComponents.lpszUrlPath = szUrlPath;
-	urlComponents.dwUrlPathLength = sizeof(szUrlPath) / sizeof(WCHAR);
-
-	MultiByteToWideChar(CP_ACP, 0, (char *)tpItemInfo->Param2, -1, url, 2048);
-	if (!WinHttpCrackUrl(url, wcslen(url), 0, &urlComponents)) {
-		SetHttpError(tpItemInfo, STR_ERROR_CONNECT, "WinHttpCrackUrl");
+	//URLの変換 (長さに応じて確保)
+	wlen = MultiByteToWideChar(CP_ACP, 0, (char *)tpItemInfo->Param2, -1, NULL, 0);
+	url = (wlen > 0) ? (WCHAR *)HeapAlloc(GetProcessHeap(), 0, wlen * sizeof(WCHAR)) : NULL;
+	szUrlPath = (wlen > 0) ? (WCHAR *)HeapAlloc(GetProcessHeap(), 0, wlen * sizeof(WCHAR)) : NULL;
+	if (url == NULL || szUrlPath == NULL ||
+		MultiByteToWideChar(CP_ACP, 0, (char *)tpItemInfo->Param2, -1, url, wlen) == 0) {
+		SetHttpError(tpItemInfo, STR_ERROR_CONNECT, "MultiByteToWideChar");
+		if (url != NULL) HeapFree(GetProcessHeap(), 0, url);
+		if (szUrlPath != NULL) HeapFree(GetProcessHeap(), 0, szUrlPath);
 		WinHttpCloseHandle(hSession);
 		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
 		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
@@ -1619,16 +1652,38 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 		HTTP_FreeItem(tpItemInfo);
 		return -1;
 	}
+
+	ZeroMemory(&urlComponents, sizeof(URL_COMPONENTS));
+	urlComponents.dwStructSize = sizeof(URL_COMPONENTS);
+	urlComponents.lpszHostName = szHostName;
+	urlComponents.dwHostNameLength = sizeof(szHostName) / sizeof(WCHAR);
+	urlComponents.lpszUrlPath = szUrlPath;
+	urlComponents.dwUrlPathLength = wlen;
+
+	if (!WinHttpCrackUrl(url, wcslen(url), 0, &urlComponents)) {
+		SetHttpError(tpItemInfo, STR_ERROR_CONNECT, "WinHttpCrackUrl");
+		HeapFree(GetProcessHeap(), 0, url);
+		HeapFree(GetProcessHeap(), 0, szUrlPath);
+		WinHttpCloseHandle(hSession);
+		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
+		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
+		tpHTTP->hThread = NULL;
+		HTTP_FreeItem(tpItemInfo);
+		return -1;
+	}
+	HeapFree(GetProcessHeap(), 0, url);
 	for (wp = szUrlPath; *wp != L'\0'; wp++) {
 		if (*wp == L'#') {
 			*wp = L'\0';
 			break;
 		}
 	}
+	Secure = (INTERNET_SCHEME_HTTPS == urlComponents.nScheme) ? TRUE : FALSE;
 
 	hConnect = WinHttpConnect(hSession, szHostName, urlComponents.nPort, 0);
 	if (hConnect == NULL) {
 		SetHttpError(tpItemInfo, STR_ERROR_CONNECT, "WinHttpConnect");
+		HeapFree(GetProcessHeap(), 0, szUrlPath);
 		WinHttpCloseHandle(hSession);
 		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
 		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
@@ -1640,7 +1695,8 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 	hRequest = WinHttpOpenRequest(hConnect,
 		(tpItemInfo->user2 == REQUEST_HEAD) ? L"HEAD" : L"GET",
 		szUrlPath, NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES,
-		(INTERNET_SCHEME_HTTPS == urlComponents.nScheme) ? WINHTTP_FLAG_SECURE : 0);
+		(Secure == TRUE) ? WINHTTP_FLAG_SECURE : 0);
+	HeapFree(GetProcessHeap(), 0, szUrlPath);
 	if (hRequest == NULL) {
 		SetHttpError(tpItemInfo, STR_ERROR_SEND, "WinHttpOpenRequest");
 		WinHttpCloseHandle(hConnect);
@@ -1651,22 +1707,38 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 		HTTP_FreeItem(tpItemInfo);
 		return -1;
 	}
-	DWORD dwFlags =
-		SECURITY_FLAG_IGNORE_UNKNOWN_CA |
-		SECURITY_FLAG_IGNORE_CERT_WRONG_USAGE |
-		SECURITY_FLAG_IGNORE_CERT_CN_INVALID |
-		SECURITY_FLAG_IGNORE_CERT_DATE_INVALID;
-	WinHttpSetOption(hRequest, WINHTTP_OPTION_SECURITY_FLAGS, &dwFlags, sizeof(dwFlags));
 
-	dwSize = BUFSIZE;
-	if (Proxy == 1 && pUsePass == 1) {
-		dwSize += (lstrlen(pUser) + 1 + lstrlen(pPass)) * 13 / 10;
+	//プロキシ認証
+	*ProxyAuth = '\0';
+	if (UseProxy == TRUE && pUsePass == 1) {
+		if (Secure == TRUE) {
+			//HTTPSではヘッダが接続先サーバに送られるためプロキシ用の資格情報として設定する
+			WCHAR wbuf[BUFSIZE];
+			if (MultiByteToWideChar(CP_ACP, 0, pUser, -1, wbuf, BUFSIZE) > 0) {
+				WinHttpSetOption(hRequest, WINHTTP_OPTION_PROXY_USERNAME, wbuf, lstrlenW(wbuf));
+			}
+			if (MultiByteToWideChar(CP_ACP, 0, pPass, -1, wbuf, BUFSIZE) > 0) {
+				WinHttpSetOption(hRequest, WINHTTP_OPTION_PROXY_PASSWORD, wbuf, lstrlenW(wbuf));
+			}
+			SecureZeroMemory(wbuf, sizeof(wbuf));
+		} else {
+			wsprintf(BaseStr1, "%s:%s", pUser, pPass);
+			eBase(BaseStr1, ProxyAuth);
+		}
 	}
-	if (GetOptionString(tpItemInfo->Option2, referer, OP2_REFERER) == TRUE) {
-		dwSize += lstrlen(referer);
+	//Referer
+	if (GetOptionString(tpItemInfo->Option2, referer, OP2_REFERER) == FALSE) {
+		*referer = '\0';
 	}
+	//ページ認証
+	*user = '\0';
+	*pass = '\0';
+	*BaseStr2 = '\0';
 	if (tpHTTP->user[0] != '\0') {
-		dwSize += (lstrlen(tpHTTP->user) + 1 + lstrlen(tpHTTP->pass)) * 13 / 10;
+		lstrcpyn(user, tpHTTP->user, BUFSIZE);
+		lstrcpyn(pass, tpHTTP->pass, BUFSIZE);
+		wsprintf(BaseStr1, "%s:%s", user, pass);
+		eBase(BaseStr1, BaseStr2);
 	}
 	if (GetOptionInt(tpItemInfo->Option2, OP2_USEPASS) == 1) {
 		if (GetOptionString(tpItemInfo->Option2, user, OP2_USER) == FALSE) {
@@ -1677,9 +1749,31 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 		} else {
 			dPass(BaseStr2, pass);
 		}
-		dwSize += (lstrlen(user) + 1 + lstrlen(pass)) * 13 / 10;
+		wsprintf(BaseStr1, "%s:%s", user, pass);
+		eBase(BaseStr1, BaseStr2);
+	}
+	SecureZeroMemory(BaseStr1, sizeof(BaseStr1));
+	SecureZeroMemory(pass, sizeof(pass));
+
+	//送信ヘッダのサイズ (固定文字列分は BUFSIZE に含む)
+	dwSize = BUFSIZE + lstrlen(ProxyAuth) + lstrlen(referer) + lstrlen(BaseStr2);
+	if (tpItemInfo->DLLData1 != NULL) {
+		dwSize += lstrlen(tpItemInfo->DLLData1);
 	}
 	sendHeader = (WCHAR *)HeapAlloc(GetProcessHeap(), 0, dwSize * sizeof(WCHAR));
+	if (sendHeader == NULL) {
+		SetHttpError(tpItemInfo, STR_ERROR_MEMORY, "HeapAlloc");
+		SecureZeroMemory(ProxyAuth, sizeof(ProxyAuth));
+		SecureZeroMemory(BaseStr2, sizeof(BaseStr2));
+		WinHttpCloseHandle(hRequest);
+		WinHttpCloseHandle(hConnect);
+		WinHttpCloseHandle(hSession);
+		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
+		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
+		tpHTTP->hThread = NULL;
+		HTTP_FreeItem(tpItemInfo);
+		return -1;
+	}
 	s = iStrCpyW(sendHeader, "Accept: */*");
 	//If-Modified-Since
 	if (tpItemInfo->user2 == REQUEST_GET && tpItemInfo->Param3 == 0 &&
@@ -1693,52 +1787,30 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 		s = iStrCpyW(s, tpItemInfo->DLLData1);
 	}
 	//キャッシュ制御
-	if (Proxy == 1 && pNoCache == 1) {
+	if (UseProxy == TRUE && pNoCache == 1) {
 		s = iStrCpyW(s, "\r\nPragma: no-cache\r\nCache-Control: no-cache");
 	}
 	//プロキシ認証
-	if (Proxy == 1 && pUsePass == 1) {
-		wsprintf(BaseStr1, "%s:%s", pUser, pPass);
-		eBase(BaseStr1, BaseStr2);
-
+	if (*ProxyAuth != '\0') {
 		s = iStrCpyW(s, "\r\nProxy-Authorization: Basic ");
-		s = iStrCpyW(s, BaseStr2);
+		s = iStrCpyW(s, ProxyAuth);
 	}
 	//Referer
-	if (GetOptionString(tpItemInfo->Option2, referer, OP2_REFERER) == TRUE) {
+	if (*referer != '\0') {
 		s = iStrCpyW(s, "\r\nReferer: ");
 		s = iStrCpyW(s, referer);
 	}
 	//ページ認証
-	*BaseStr2 = '\0';
-	if (tpHTTP->user[0] != '\0') {
-		lstrcpy(user, tpHTTP->user);
-
-		if (tpHTTP->pass[0] != '\0') {
-			lstrcpy(pass, tpHTTP->pass);
-		}
-		wsprintf(BaseStr1, "%s:%s", user, pass);
-		eBase(BaseStr1, BaseStr2);
-	}
-	if (GetOptionInt(tpItemInfo->Option2, OP2_USEPASS) == 1) {
-		if (GetOptionString(tpItemInfo->Option2, user, OP2_USER) == FALSE) {
-			*user = '\0';
-		}
-		if (GetOptionString(tpItemInfo->Option2, BaseStr2, OP2_PASS) == FALSE) {
-			*pass = '\0';
-		} else {
-			dPass(BaseStr2, pass);
-		}
-		wsprintf(BaseStr1, "%s:%s", user, pass);
-		eBase(BaseStr1, BaseStr2);
-	}
 	if (*BaseStr2 != '\0') {
 		s = iStrCpyW(s, "\r\nAuthorization: Basic ");
 		s = iStrCpyW(s, BaseStr2);
 	}
+	SecureZeroMemory(ProxyAuth, sizeof(ProxyAuth));
+	SecureZeroMemory(BaseStr2, sizeof(BaseStr2));
 
 	if (!WinHttpSendRequest(hRequest, sendHeader, -1, WINHTTP_NO_REQUEST_DATA, 0, WINHTTP_IGNORE_REQUEST_TOTAL_LENGTH, 0)) {
 		SetHttpError(tpItemInfo, STR_ERROR_SEND, "WinHttpSendRequest");
+		SecureZeroMemory(sendHeader, dwSize * sizeof(WCHAR));
 		HeapFree(GetProcessHeap(), 0, sendHeader);
 		WinHttpCloseHandle(hRequest);
 		WinHttpCloseHandle(hConnect);
@@ -1749,6 +1821,7 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 		HTTP_FreeItem(tpItemInfo);
 		return -1;
 	}
+	SecureZeroMemory(sendHeader, dwSize * sizeof(WCHAR));
 	HeapFree(GetProcessHeap(), 0, sendHeader);
 	if (WinHttpReceiveResponse(hRequest, NULL) == FALSE) {
 		SetHttpError(tpItemInfo, STR_ERROR_RECV, "WinHttpReceiveResponse");
@@ -1786,9 +1859,25 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 		HTTP_FreeItem(tpItemInfo);
 		return -1;
 	}
-	header = (WCHAR *)HeapAlloc(GetProcessHeap(), 0, dwSize);
-	if (WinHttpQueryHeaders(hRequest, WINHTTP_QUERY_RAW_HEADERS_CRLF, WINHTTP_HEADER_NAME_BY_INDEX, header, &dwSize, WINHTTP_NO_HEADER_INDEX) == FALSE) {
+	header = (WCHAR *)HeapAlloc(GetProcessHeap(), 0, dwSize + sizeof(WCHAR));
+	if (header == NULL || WinHttpQueryHeaders(hRequest, WINHTTP_QUERY_RAW_HEADERS_CRLF, WINHTTP_HEADER_NAME_BY_INDEX, header, &dwSize, WINHTTP_NO_HEADER_INDEX) == FALSE) {
 		SetHttpError(tpItemInfo, STR_ERROR_RECV, "WinHttpQueryHeaders");
+		if (header != NULL) HeapFree(GetProcessHeap(), 0, header);
+		WinHttpCloseHandle(hRequest);
+		WinHttpCloseHandle(hConnect);
+		WinHttpCloseHandle(hSession);
+		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
+		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
+		tpHTTP->hThread = NULL;
+		HTTP_FreeItem(tpItemInfo);
+		return -1;
+	}
+	header[dwSize / sizeof(WCHAR)] = L'\0';
+	int clen = WideCharToMultiByte(CP_ACP, 0, header, -1, NULL, 0, NULL, NULL);
+	char *cbuf = (clen > 0) ? (char *)GlobalAlloc(GMEM_FIXED, (clen + 1) * sizeof(char)) : NULL;
+	if (cbuf == NULL || WideCharToMultiByte(CP_ACP, 0, header, -1, cbuf, clen, NULL, NULL) == 0) {
+		SetHttpError(tpItemInfo, STR_ERROR_RECV, "WideCharToMultiByte");
+		if (cbuf != NULL) GlobalFree(cbuf);
 		HeapFree(GetProcessHeap(), 0, header);
 		WinHttpCloseHandle(hRequest);
 		WinHttpCloseHandle(hConnect);
@@ -1799,13 +1888,12 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 		HTTP_FreeItem(tpItemInfo);
 		return -1;
 	}
-	int clen = WideCharToMultiByte(CP_ACP, 0, header, -1, NULL, 0, NULL, NULL);
-	char *cbuf = (char *)GlobalAlloc(GMEM_FIXED, (clen + 1) * sizeof(char));
-	WideCharToMultiByte(CP_ACP, 0, header, -1, cbuf, clen, NULL, NULL);
 	HeapFree(GetProcessHeap(), 0, header);
 	if (tpHTTP->buf != NULL) GlobalFree((HGLOBAL)tpHTTP->buf);
 	tpHTTP->Size = clen;
 	tpHTTP->buf = cbuf;
+	bufLen = lstrlen(cbuf);
+	bufCap = clen + 1;
 	if (tpHTTP->HeadCheckFlag == FALSE && CheckHead(tpItemInfo, tpHTTP) == TRUE) {
 		WinHttpCloseHandle(hRequest);
 		WinHttpCloseHandle(hConnect);
@@ -1818,6 +1906,7 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 	}
 	while (1) {
 		DWORD dwSize = 0;
+		DWORD dwRead = 0;
 		if (!WinHttpQueryDataAvailable(hRequest, &dwSize)) {
 			SetHttpError(tpItemInfo, STR_ERROR_RECV, "WinHttpQueryDataAvailable");
 			WinHttpCloseHandle(hRequest);
@@ -1826,9 +1915,14 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 			SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
 			SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
 			tpHTTP->hThread = NULL;
+			HTTP_FreeItem(tpItemInfo);
 			return -1;
 		}
 		if (dwSize == 0) {
+			break;
+		}
+		//最大受信サイズを超える場合は受信を打ち切る
+		if (dwSize > MAX_RECVSIZE || tpHTTP->Size > MAX_RECVSIZE - (long)dwSize) {
 			break;
 		}
 
@@ -1836,7 +1930,7 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 		if (pszBuffer == NULL) {
 			break;
 		}
-		if (!WinHttpReadData(hRequest, pszBuffer, dwSize, NULL)) {
+		if (!WinHttpReadData(hRequest, pszBuffer, dwSize, &dwRead)) {
 			SetHttpError(tpItemInfo, STR_ERROR_RECV, "WinHttpReadData");
 			HeapFree(GetProcessHeap(), 0, pszBuffer);
 			WinHttpCloseHandle(hRequest);
@@ -1848,24 +1942,43 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 			HTTP_FreeItem(tpItemInfo);
 			return -1;
 		}
-		pszBuffer[dwSize] = '\0';
-		tpHTTP->Size += dwSize;
+		if (dwRead == 0) {
+			HeapFree(GetProcessHeap(), 0, pszBuffer);
+			break;
+		}
+		pszBuffer[dwRead] = '\0';
+		tpHTTP->Size += dwRead;
 
 		wsprintf(buf, STR_STATUS_RECV, tpHTTP->Size);
 		SetSBText(tpHTTP->hWnd, tpItemInfo, buf);
 
-		char *wkbuf = (char *)GlobalAlloc(GMEM_FIXED, tpHTTP->Size + 1);
-		if (wkbuf != NULL) {
-			char *p = iStrCpy(wkbuf, tpHTTP->buf);
-			lstrcpy(p, pszBuffer);
-			if (tpHTTP->buf != NULL) GlobalFree((HGLOBAL)tpHTTP->buf);
-			tpHTTP->buf = wkbuf;
-			if (tpHTTP->HeadCheckFlag == FALSE && CheckHead(tpItemInfo, tpHTTP) == TRUE) {
+		//受信データを追加 (NULを含む場合はNULまでを追加する)
+		//バッファは受信バイト数 (Size) + 1 以上を確保する
+		int addLen = lstrlen((char *)pszBuffer);
+		if (tpHTTP->Size + 1 > bufCap) {
+			long newCap = bufCap * 2;
+			if (newCap > MAX_RECVSIZE + 1) {
+				newCap = MAX_RECVSIZE + 1;
+			}
+			if (newCap < tpHTTP->Size + 1) {
+				newCap = tpHTTP->Size + 1;
+			}
+			char *wkbuf = (char *)GlobalAlloc(GMEM_FIXED, newCap);
+			if (wkbuf == NULL) {
 				HeapFree(GetProcessHeap(), 0, pszBuffer);
 				break;
 			}
+			CopyMemory(wkbuf, tpHTTP->buf, bufLen + 1);
+			GlobalFree((HGLOBAL)tpHTTP->buf);
+			tpHTTP->buf = wkbuf;
+			bufCap = newCap;
 		}
+		CopyMemory(tpHTTP->buf + bufLen, pszBuffer, addLen + 1);
+		bufLen += addLen;
 		HeapFree(GetProcessHeap(), 0, pszBuffer);
+		if (tpHTTP->HeadCheckFlag == FALSE && CheckHead(tpItemInfo, tpHTTP) == TRUE) {
+			break;
+		}
 	}
 	WinHttpCloseHandle(hRequest);
 	WinHttpCloseHandle(hConnect);
@@ -2129,6 +2242,9 @@ __declspec(dllexport) BOOL CALLBACK HTTP_CreateDropItem(struct TPITEM *tpItemInf
 
 	URL = NULL;
 
+	if(tpItemInfo->Title == NULL || BUFSIZE - lstrlen(buf) - 6 <= 1){
+		return FALSE;
+	}
 	lstrcpyn(ItemName, tpItemInfo->Title, BUFSIZE - lstrlen(buf) - 6);
 	BadNameCheck(ItemName, '-');
 

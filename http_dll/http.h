@@ -32,6 +32,10 @@
 #define BUFSIZE							256
 #define MAXSIZE							32768
 #define RECVSIZE						32768				/* 受信サイズ */
+#define MAX_RECVSIZE					(32 * 1024 * 1024)	/* 最大受信サイズ */
+
+//終端の手前でのみ2バイト文字の先頭バイトとして扱う
+#define IS_LEAD_BYTE(p)					(IsDBCSLeadByte((BYTE)*(p)) == TRUE && *((p) + 1) != '\0')
 
 #define OP1_REQTYPE						0
 #define OP1_NODATE						1
