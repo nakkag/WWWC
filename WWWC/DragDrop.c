@@ -134,9 +134,9 @@ static BOOL CreateDropFile(struct TPITEM *tpItemInfo, char *fPath, char *iPath, 
 static void CreateTreeDropFiles(HWND hWnd, HTREEITEM hItem, char *fPath, char *iPath)
 {
 	struct TPTREE *tpTreeInfo;
-	char ItemPath[BUFSIZE];
+	char ItemPath[PATH_BUFSIZE];
 	char buf[BUFSIZE];
-	char tmp[BUFSIZE];
+	char tmp[PATH_BUFSIZE];
 	HTREEITEM cItem;
 	int ItemCnt, i;
 
@@ -160,6 +160,11 @@ static void CreateTreeDropFiles(HWND hWnd, HTREEITEM hItem, char *fPath, char *i
 	cItem = TreeView_GetChild(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	while(cItem != NULL){
 		TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), cItem, buf);
+		//パスが長すぎるフォルダは作成しない
+		if(lstrlen(fPath) + 1 + lstrlen(iPath) + 1 + lstrlen(buf) >= MAX_PATH){
+			cItem = TreeView_GetNextSibling(GetDlgItem(hWnd, WWWC_TREE), cItem);
+			continue;
+		}
 		wsprintf(tmp, "%s\\%s", iPath, buf);
 		wsprintf(ItemPath, "%s\\%s", fPath, tmp);
 		CreateDirectory(ItemPath, NULL);
@@ -602,6 +607,11 @@ BOOL DragDrop_GetDropItem(HWND hWnd, HGLOBAL hMem, int dwEffect, HTREEITEM hItem
 		WaitCursor(FALSE);
 		return FALSE;
 	}
+	if(IsTerminatedMem(hMem, buf) == FALSE){
+		GlobalUnlock(hMem);
+		WaitCursor(FALSE);
+		return FALSE;
+	}
 	ret = Clipboard_Get_WF_String(hWnd, hItem, buf, dwEffect);
 	GlobalUnlock(hMem);
 
@@ -634,7 +644,7 @@ void DragDrop_GetDropItemFiles(HWND hWnd, char *buf, HTREEITEM hItem)
 	p = buf;
 	r = NULL;
 	while(*p != '\0'){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			p++;
 		}else if(*p == '.'){
 			r = p;
@@ -741,9 +751,9 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 {
 	WIN32_FIND_DATA FindData;
 	HANDLE hFindFile;
-	char sPath[BUFSIZE];
+	char sPath[PATH_BUFSIZE];
 	char fName[BUFSIZE];
-	char buf[BUFSIZE];
+	char buf[PATH_BUFSIZE];
 	HTREEITEM cItem;
 
 	if(GetPathToFilename(Path, fName) == FALSE){
@@ -752,6 +762,11 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 
 	//フォルダ名からTreeViewアイテムを取得
 	if((cItem = TreeView_CheckName(GetDlgItem(hWnd, WWWC_TREE), hItem, fName)) == NULL){
+		//パスが長すぎる場合はエラー
+		if(TreeView_CheckPathLength(GetDlgItem(hWnd, WWWC_TREE), hItem, fName) == FALSE){
+			MessageBox(hWnd, EMSG_PATHLENGTH, EMSG_FOLDERCOPY_TITLE, MB_ICONSTOP);
+			return;
+		}
 		//追加先のフォルダを含むパスの場合はエラー
 		TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, buf, CuDir);
 		if(lstrcmpni(Path, buf, lstrlen(Path)) == 0){
@@ -794,7 +809,10 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 		wsprintf(buf, "%s\\%s", Path, FindData.cFileName);
 
 		if((FindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0){
-			DragDrop_GetDropItemFiles(hWnd, buf, cItem);
+			//フォルダ内のDLLは読み込まない
+			if(str_match("*.dll", buf) == FALSE){
+				DragDrop_GetDropItemFiles(hWnd, buf, cItem);
+			}
 			continue;
 		}
 
@@ -897,7 +915,7 @@ long DragDrop_NotifyProc(HWND hWnd, WPARAM wParam, LPARAM lParam)
 		{
 		case CF_TEXT:
 			p = GlobalLock(pdtn->hMem);
-			if(GetProtocolIndex(p) != -1){
+			if(IsTerminatedMem(pdtn->hMem, p) == TRUE && GetProtocolIndex(p) != -1){
 				DnDCur = FMT_TEXT;
 			}
 			GlobalUnlock(pdtn->hMem);
@@ -982,7 +1000,7 @@ long DragDrop_NotifyProc(HWND hWnd, WPARAM wParam, LPARAM lParam)
 			{
 			case CF_TEXT:
 				p = GlobalLock(pdtn->hMem);
-				if(GetProtocolIndex(p) != -1){
+				if(IsTerminatedMem(pdtn->hMem, p) == TRUE && GetProtocolIndex(p) != -1){
 					_SetForegroundWindow(hWnd);
 					Item_UrlAdd(hWnd, NEWITEMNAME, p, 0, NULL);
 				}

@@ -92,7 +92,7 @@ int LvCheckEndAutoSort;
 int LvDblclkUpDir;
 int LvSpaceNextFocus;
 char LvColumn[BUFSIZE];
-int LvColSize[100];
+int LvColSize[MAX_COLUMN_CNT];
 int LvColCnt;
 int LvWndStyle;
 char LvBkColor[BUFSIZE];
@@ -154,7 +154,7 @@ int UPWinSizeSave;
 int UPWinExpandCenter;
 int LvUPExStyle;
 int LvUPSortFlag;
-int LvUPColSize[100];
+int LvUPColSize[MAX_COLUMN_CNT];
 int LvUPColCnt;
 char LvUPColumn[BUFSIZE];
 
@@ -167,7 +167,7 @@ int FindWinTop;
 int FindWinRight;
 int FindWinBottom;
 int LvFindExStyle;
-int LvFindColSize[100];
+int LvFindColSize[MAX_COLUMN_CNT];
 int LvFindColCnt;
 char LvFindColumn[BUFSIZE];
 
@@ -197,6 +197,30 @@ extern struct TP_TOOLS *ToolList;
 extern int ToolListCnt;
 extern struct TPCHECKTIME *tpCheckTime;
 extern int tpCheckTimeCnt;
+
+
+/******************************************************************************
+
+	CheckColumnString
+
+	列の設定文字列が列サイズの配列数を超える場合は既定値にする
+
+******************************************************************************/
+
+static void CheckColumnString(char *buf, char *def)
+{
+	char *p;
+	int cnt = 0;
+
+	for(p = buf; *p != '\0'; p++){
+		if(*p == ','){
+			cnt++;
+		}
+	}
+	if(cnt >= MAX_COLUMN_CNT){
+		lstrcpy(buf, def);
+	}
+}
 
 
 /******************************************************************************
@@ -289,6 +313,7 @@ void GetINI(void)
 	LvLIconSize = profile_get_int("LISTVIEW", "LvLIconSize", LICONSIZE, app_path);
 	LvSIconSize = profile_get_int("LISTVIEW", "LvSIconSize", SICONSIZE, app_path);
 	profile_get_string("LISTVIEW", "LvColumn", "2,3,1,10,", LvColumn, BUFSIZE - 1, app_path);
+	CheckColumnString(LvColumn, "2,3,1,10,");
 	ZeroMemory(LvColSize, sizeof(LvColSize));
 
 	*LvColSize = profile_get_int("LISTVIEW", "LvColSize-0", 100, app_path);
@@ -371,6 +396,7 @@ void GetINI(void)
 	LvUPExStyle = profile_get_int("UPMSG", "LvUPExStyle", 0x20 + 0x40 + 0x400, app_path);
 	LvUPSortFlag = profile_get_int("UPMSG", "LvUPSortFlag", 1, app_path);
 	profile_get_string("UPMSG", "LvUPColumn", "2,3,4,1,11,", LvUPColumn, BUFSIZE - 1, app_path);
+	CheckColumnString(LvUPColumn, "2,3,4,1,11,");
 	ZeroMemory(LvUPColSize, sizeof(LvUPColSize));
 
 	*LvUPColSize = profile_get_int("UPMSG", "LvUPColSize-0", 100, app_path);
@@ -409,6 +435,7 @@ void GetINI(void)
 	FindWinBottom = profile_get_int("FIND_ITEM", "FindWinBottom", 0, app_path);
 	LvFindExStyle = profile_get_int("FIND_ITEM", "LvFindExStyle", 0x20 + 0x40 + 0x400, app_path);
 	profile_get_string("FIND_ITEM", "LvFindColumn", "11,2,3,1,7,10,", LvFindColumn, BUFSIZE - 1, app_path);
+	CheckColumnString(LvFindColumn, "11,2,3,1,7,10,");
 	ZeroMemory(LvFindColSize, sizeof(LvFindColSize));
 
 	*LvFindColSize = profile_get_int("FIND_ITEM", "LvFindColSize-0", 100, app_path);
@@ -694,6 +721,9 @@ void GetProtocolInfo(void)
 	profile_initialize(app_path, TRUE);
 
 	ProtocolCnt = profile_get_int("PROTOCOL", "ProtocolCnt", 0, app_path);
+	if(ProtocolCnt < 0 || ProtocolCnt > MAX_INI_CNT){
+		ProtocolCnt = 0;
+	}
 
 	if(tpProtocol != NULL){
 		if(gCheckFlag == 0){
@@ -805,6 +835,9 @@ void GetAutoTime(void)
 	profile_initialize(app_path, TRUE);
 
 	TimeItemCnt = profile_get_int("AUTOCHECK", "Cnt", 0, app_path);
+	if(TimeItemCnt < 0 || TimeItemCnt > MAX_INI_CNT){
+		TimeItemCnt = 0;
+	}
 
 	if(TimeItemCnt == 0){
 		tpCheckTime = NULL;
@@ -829,6 +862,9 @@ void GetAutoTime(void)
 			tpCheckTime[i].day = profile_get_int("AUTOCHECK", buf, 0, app_path);
 			wsprintf(buf, "week-%d", i);
 			tpCheckTime[i].week = profile_get_int("AUTOCHECK", buf, 0, app_path);
+			if(tpCheckTime[i].week < 0 || tpCheckTime[i].week > 6){
+				tpCheckTime[i].week = 0;
+			}
 			wsprintf(buf, "h-%d", i);
 			tpCheckTime[i].h = profile_get_int("AUTOCHECK", buf, 0, app_path);
 			wsprintf(buf, "m-%d", i);
@@ -914,6 +950,9 @@ void GetToolList(void)
 	profile_initialize(app_path, TRUE);
 
 	ToolItemCnt = profile_get_int("TOOLS", "Cnt", 0, app_path);
+	if(ToolItemCnt < 0 || ToolItemCnt > MAX_INI_CNT){
+		ToolItemCnt = 0;
+	}
 
 	if(ToolItemCnt == 0){
 		ToolList = NULL;
@@ -1063,6 +1102,9 @@ void GetDirInfo(HWND hTreeView, char *path, HTREEITEM hItem)
 	}
 
 	TimeItemCnt = profile_get_int("AUTOCHECK", "Cnt", 0, app_path);
+	if(TimeItemCnt < 0 || TimeItemCnt > MAX_INI_CNT){
+		TimeItemCnt = 0;
+	}
 
 	if(TimeItemCnt == 0){
 		tpTreeInfo->tpCheckTime = NULL;
@@ -1087,6 +1129,9 @@ void GetDirInfo(HWND hTreeView, char *path, HTREEITEM hItem)
 			tpTreeInfo->tpCheckTime[i].day = profile_get_int("AUTOCHECK", buf, 0, app_path);
 			wsprintf(buf, "week-%d", i);
 			tpTreeInfo->tpCheckTime[i].week = profile_get_int("AUTOCHECK", buf, 0, app_path);
+			if(tpTreeInfo->tpCheckTime[i].week < 0 || tpTreeInfo->tpCheckTime[i].week > 6){
+				tpTreeInfo->tpCheckTime[i].week = 0;
+			}
 			wsprintf(buf, "h-%d", i);
 			tpTreeInfo->tpCheckTime[i].h = profile_get_int("AUTOCHECK", buf, 0, app_path);
 			wsprintf(buf, "m-%d", i);

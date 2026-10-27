@@ -165,7 +165,7 @@ void InitUndo(HWND hWnd, char *path, HTREEITEM hItem, int mode)
 		wsprintf(buf, "\\\\Internet%s", path + lstrlen(CuDir));
 		p = r = buf;
 		while(*p != '\0'){
-			if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+			if(IS_LEAD_BYTE(p)){
 				p++;
 			}else if(*p == '\\' || *p == '/'){
 				r = p;

@@ -330,18 +330,21 @@ BOOL profile_initialize(const TCHAR *file_path, const BOOL read_flag)
 			}
 			if (*p == TEXT('#')) {
 				// コメント
-				for (s = tmp; p < r; p++, s++) {
+				for (s = tmp; p < r && s < tmp + BUF_SIZE - 1; p++, s++) {
 					*s = *p;
 				}
 				*s = TEXT('\0');
 				key_add((section_info + section_count - 1), tmp, TEXT(""), TRUE);
 			} else {
 				// キーの追加
-				for (s = tmp; p < r; p++, s++) {
+				for (s = tmp; p < r; p++) {
 					if (*p == TEXT('=')) {
 						break;
 					}
-					*s = *p;
+					// バッファを超えるキー名は切り詰める
+					if (s < tmp + BUF_SIZE - 1) {
+						*(s++) = *p;
+					}
 				}
 				*s = TEXT('\0');
 				if (*p == TEXT('=')) {

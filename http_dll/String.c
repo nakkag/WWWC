@@ -127,7 +127,7 @@ void dPass(char *buf, char *ret)
 	tmp[2] = '\0';
 
 	i = 0;
-	for(p = buf; *p != '\0'; p += 2){
+	for(p = buf; *p != '\0' && *(p + 1) != '\0'; p += 2){
 		*tmp = *p;
 		*(tmp + 1) = *(p + 1);
 		ret[i++] = (unsigned char)strtol(tmp, NULL, 16) ^ 0xFF;
@@ -475,6 +475,33 @@ int GetURL(char *URL, char *server, char *path, int DefPort, char *user, char *p
 
 /******************************************************************************
 
+	IsWebURL
+
+	http, https のURLかどうかチェックする (引用符を含むものは除く)
+
+******************************************************************************/
+
+BOOL IsWebURL(char *URL)
+{
+	char *p;
+
+	if(URL == NULL){
+		return FALSE;
+	}
+	if(lstrcmpni(URL, "http://", 7) != 0 && lstrcmpni(URL, "https://", 8) != 0){
+		return FALSE;
+	}
+	for(p = URL; *p != '\0'; p++){
+		if(*p == '\"'){
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+
+
+/******************************************************************************
+
 	CreateMoveURL
 
 	移動先のURLを作成
@@ -537,7 +564,7 @@ char *CreateMoveURL(char *FromURL, char *ToURL)
 
 	GetOptionString
 
-	オプションの文字列を取得する
+	オプションの文字列を取得する (ret は BUFSIZE 以上、超える部分は切り捨て)
 
 ******************************************************************************/
 
@@ -562,7 +589,7 @@ BOOL GetOptionString(char *buf, char *ret, int num)
 			p++;
 			*ret = '\0';
 			r = ret;
-		}else{
+		}else if(r < ret + BUFSIZE - 1){
 			*(r++) = *p;
 		}
 	}
@@ -601,7 +628,7 @@ int GetOptionInt(char *buf, int num)
 			p++;
 			*ret = '\0';
 			r = ret;
-		}else{
+		}else if(r < ret + BUFSIZE - 1){
 			*(r++) = *p;
 		}
 	}

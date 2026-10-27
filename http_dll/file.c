@@ -161,7 +161,7 @@ __declspec(dllexport) int CALLBACK FILE_Start(HWND hWnd, struct TPITEM *tpItemIn
 		}else{
 			p = DateFormat;
 		}
-		if(GetDateFormat(0, 0, &fSysTime, p, fDay, BUFSIZE - 1) == 0){
+		if(GetDateFormat(0, 0, &fSysTime, p, fDay, BUFSIZE / 2 - 1) == 0){
 			SendMessage(hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
 			return CHECK_END;
 		}
@@ -170,7 +170,7 @@ __declspec(dllexport) int CALLBACK FILE_Start(HWND hWnd, struct TPITEM *tpItemIn
 		}else{
 			p = TimeFormat;
 		}
-		if(GetTimeFormat(0, 0, &fSysTime, p, fTime, BUFSIZE - 1) == 0){
+		if(GetTimeFormat(0, 0, &fSysTime, p, fTime, BUFSIZE / 2 - 1) == 0){
 			SendMessage(hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
 			return CHECK_END;
 		}
@@ -329,7 +329,7 @@ static BOOL CALLBACK FilePropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_URL), WM_SETTEXT, 0, (LPARAM)tmp);
 
 			for(r = p = buf; *p != '\0'; p++){
-				if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+				if(IS_LEAD_BYTE(p)){
 					p++;
 				}else if(*p == '\\' || *p == '/'){
 					r = p;

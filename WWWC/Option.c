@@ -695,7 +695,7 @@ int ViewFolderProperties(HWND hWnd, HTREEITEM hItem)
 	PROPSHEETHEADER psh;
 	HPROPSHEETPAGE hpsp[PROP_CNT_FOLDER];
 	char buf[BUFSIZE];
-	char name[BUFSIZE];
+	char name[BUFSIZE * 2];
 
 	TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, buf);
 	wsprintf(name, STR_PROPTITLE, buf);

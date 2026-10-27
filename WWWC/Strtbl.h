@@ -83,6 +83,8 @@
 
 //ClipBoard.c
 #define EMSG_FOLDERCOPY_TITLE			"フォルダのコピーのエラー"
+#define EMSG_PATHLENGTH					"フォルダのパスが長すぎるため処理できません。"
+#define EMSG_PATHLENGTH_TITLE			"フォルダのエラー"
 #define EMSG_FOLDERCOPY_CUR				"%s をコピーできません。送り側と受け側のフォルダが同じです。"
 #define EMSG_FOLDERCOPY_SUB				"%s をコピーできません。受け側のフォルダは、送り側フォルダのサブフォルダです。"
 #define EMSG_FOLDERCOPY_ERR				"フォルダのコピーに失敗しました。"

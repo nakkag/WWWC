@@ -314,7 +314,7 @@ static int GetAutoCheckString(struct TPCHECKTIME *tpTimeInfo, char *ret)
 		break;
 
 	case AUTOTIME_WEEK:
-		wsprintf(ret, LISTSTR_WEEK, strWeek[tpTimeInfo->week], tpTimeInfo->h, tpTimeInfo->m);
+		wsprintf(ret, LISTSTR_WEEK, strWeek[(tpTimeInfo->week >= 0 && tpTimeInfo->week <= 6) ? tpTimeInfo->week : 0], tpTimeInfo->h, tpTimeInfo->m);
 		return 1;
 
 	case AUTOTIME_MON:

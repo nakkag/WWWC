@@ -176,6 +176,31 @@ int lstrcmpni(char *buf1, char *buf2, int len)
 
 /******************************************************************************
 
+	IsTerminatedMem
+
+	メモリ内の文字列がNULで終端されているかチェックする
+
+******************************************************************************/
+
+BOOL IsTerminatedMem(HANDLE hMem, char *buf)
+{
+	SIZE_T size, i;
+
+	if(hMem == NULL || buf == NULL){
+		return FALSE;
+	}
+	size = GlobalSize(hMem);
+	for(i = 0; i < size; i++){
+		if(*(buf + i) == '\0'){
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+
+/******************************************************************************
+
 	str_match
 
 	2つの文字列をワイルドカード(*)を使って比較を行う
@@ -184,6 +209,9 @@ int lstrcmpni(char *buf1, char *buf2, int len)
 
 BOOL str_match(const TCHAR *ptn, const TCHAR *str)
 {
+	if (ptn == NULL || str == NULL) {
+		return FALSE;
+	}
 	switch (*ptn) {
 	case TEXT('\0'):
 		return (*str == TEXT('\0'));
@@ -286,7 +314,7 @@ int FileNameCheck(char *buf)
 	p = buf;
 
 	while(*p != '\0'){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			//２バイトコードの場合
 			p++;
 
@@ -328,7 +356,7 @@ void FileNameConv(char *buf, char NewChar)
 	p = buf;
 
 	while(*p != '\0'){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			//２バイトコードの場合
 			p++;
 
@@ -367,7 +395,7 @@ void EscToCode(char *buf)
 	char *p, *r;
 
 	for(p = buf, r = buf; *p != '\0'; p++){
-		if(IsDBCSLeadByte(*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			*(r++) = *(p++);
 			*(r++) = *p;
 		}else if(*p == '\\' && *(p + 1) == 'n'){
@@ -404,7 +432,7 @@ char *CodeToEsc(char *buf)
 	}
 	//改行、タブを変換
 	for(p = buf, r = ret ;*p != '\0'; p++){
-		if(IsDBCSLeadByte(*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			*(r++) = *(p++);
 			*(r++) = *p;
 			continue;
@@ -452,7 +480,7 @@ void GetNumString(char *buf, char *ret)
 
 	//数字文字のみを戻り値のバッファに設定
 	for(p = buf, r = ret;*p != '\0';p++){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			//２バイトコードの場合
 			p++;
 

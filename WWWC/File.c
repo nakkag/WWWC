@@ -55,7 +55,7 @@ extern int SaveDriveCheck;
 **************************************************************************/
 
 static char *AllocItemStr(char *t, char **ret);
-static void SetExecCommandLine(HWND hWnd, char *buf, char *ret, struct TPITEM *tpItemInfo);
+static void SetExecCommandLine(HWND hWnd, char *buf, char *ret, int size, struct TPITEM *tpItemInfo);
 
 
 /******************************************************************************
@@ -165,7 +165,7 @@ BOOL GetPathToFilename(char *fPath, char *ret)
 	}
 	FindClose(hFindFile);
 
-	lstrcpy(ret, FindData.cFileName);
+	lstrcpyn(ret, FindData.cFileName, BUFSIZE);
 	return TRUE;
 }
 
@@ -184,10 +184,10 @@ int CopyDirTree(HWND hWnd, char *Path, char *NewPath, char *name, char *ret)
 	WIN32_FIND_DATA FindData;
 	HANDLE hFindFile;
 	HTREEITEM hItem;
-	char sPath[MAX_PATH];
-	char nPath[MAX_PATH];
-	char buf[MAX_PATH];
-	char buf2[MAX_PATH];
+	char sPath[PATH_BUFSIZE];
+	char nPath[PATH_BUFSIZE];
+	char buf[PATH_BUFSIZE];
+	char buf2[PATH_BUFSIZE];
 	char *ItemPath;
 	int cnt = 1;
 	int FromCnt, i;
@@ -203,7 +203,7 @@ int CopyDirTree(HWND hWnd, char *Path, char *NewPath, char *name, char *ret)
 		while(GetDirSerch(nPath) == TRUE){
 			wsprintf(nPath, "%s\\%s", NewPath, buf);
 			if(ret != NULL){
-				lstrcpy(ret, buf);
+				lstrcpyn(ret, buf, BUFSIZE);
 			}
 			//コピーに失敗し続ける場合はエラーとする
 			cnt++;
@@ -305,8 +305,8 @@ BOOL DeleteDirTree(char *Path, BOOL AllFlag)
 {
 	WIN32_FIND_DATA FindData;
 	HANDLE hFindFile;
-	char sPath[MAX_PATH];
-	char buf[MAX_PATH];
+	char sPath[PATH_BUFSIZE];
+	char buf[PATH_BUFSIZE];
 
 	if(Path == NULL || *Path == '\0'){
 		return FALSE;
@@ -351,8 +351,8 @@ void SetDirTree(HWND hTreeView, char *Path, HTREEITEM hItem)
 {
 	WIN32_FIND_DATA FindData;
 	HANDLE hFindFile;
-	char sPath[MAX_PATH];
-	char buf[MAX_PATH];
+	char sPath[PATH_BUFSIZE];
+	char buf[PATH_BUFSIZE];
 	HTREEITEM pItem;
 
 	wsprintf(sPath, "%s\\*", Path);
@@ -366,6 +366,10 @@ void SetDirTree(HWND hTreeView, char *Path, HTREEITEM hItem)
 			continue;
 		}
 		if(lstrcmp(FindData.cFileName, ".") == 0 || lstrcmp(FindData.cFileName, "..") == 0){
+			continue;
+		}
+		//パスが長すぎるフォルダは扱わない
+		if(lstrlen(Path) + 1 + lstrlen(FindData.cFileName) > MAX_TREEPATH){
 			continue;
 		}
 		wsprintf(buf, "%s\\%s", Path, FindData.cFileName);
@@ -427,8 +431,8 @@ void SaveDirTree(HWND hTreeView, char *Path, HTREEITEM hItem)
 {
 	WIN32_FIND_DATA FindData;
 	HANDLE hFindFile;
-	char sPath[MAX_PATH];
-	char buf[MAX_PATH];
+	char sPath[PATH_BUFSIZE];
+	char buf[PATH_BUFSIZE];
 	HTREEITEM pItem;
 
 	wsprintf(sPath, "%s\\*", Path);
@@ -442,6 +446,10 @@ void SaveDirTree(HWND hTreeView, char *Path, HTREEITEM hItem)
 			continue;
 		}
 		if(lstrcmp(FindData.cFileName, ".") == 0 || lstrcmp(FindData.cFileName, "..") == 0){
+			continue;
+		}
+		//パスが長すぎるフォルダは扱わない
+		if(lstrlen(Path) + 1 + lstrlen(FindData.cFileName) > MAX_TREEPATH){
 			continue;
 		}
 		//フォルダ情報の保存
@@ -474,7 +482,7 @@ void mkDirStr(char *buf)
 	p = buf;
 	r = tmp;
 	while(*p != '\0'){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			*(r++) = *(p++);
 			*(r++) = *(p++);
 		}else if(*p == '\\' || *p == '/'){
@@ -570,8 +578,10 @@ char *LineSetItemInfo(struct TPITEM *tpItemList, char *t)
 	if(*t != '\t') return t;
 
 	//Status
-	for(t++, r = Tmpbuf;*t != '\t' && *t != '\r' && *t != '\n' && *t != '\0';t++, r++){
-		*r = *t;
+	for(t++, r = Tmpbuf;*t != '\t' && *t != '\r' && *t != '\n' && *t != '\0';t++){
+		if(r < Tmpbuf + BUFSIZE - 1){
+			*(r++) = *t;
+		}
 	}
 	*r = '\0';
 	tpItemList->Status = atoi(Tmpbuf);
@@ -606,8 +616,10 @@ char *LineSetItemInfo(struct TPITEM *tpItemList, char *t)
 	if(*t != '\t') return t;
 
 	//Status
-	for(t++, r = Tmpbuf;*t != '\t' && *t != '\r' && *t != '\n' && *t != '\0';t++, r++){
-		*r = *t;
+	for(t++, r = Tmpbuf;*t != '\t' && *t != '\r' && *t != '\n' && *t != '\0';t++){
+		if(r < Tmpbuf + BUFSIZE - 1){
+			*(r++) = *t;
+		}
 	}
 	*r = '\0';
 	tpItemList->CheckSt = atoi(Tmpbuf);
@@ -645,6 +657,7 @@ struct TPITEM **ReadItemList(char *FileName, int *cnt, HTREEITEM hItem)
 	char *p;
 	long FileSize;
 	int LineCnt = 0;
+	int MaxLineCnt = 0;
 	DWORD ret;
 
 	*cnt = 0;
@@ -684,8 +697,12 @@ struct TPITEM **ReadItemList(char *FileName, int *cnt, HTREEITEM hItem)
 		if(*p == '\n'){
 			LineCnt++;
 		}
+		//CRのみの改行や最終行の改行なしも1行として扱うため最大行数を数える
+		if(*p == '\r' || *p == '\n'){
+			MaxLineCnt++;
+		}
 	}
-	*cnt = LineCnt;
+	MaxLineCnt++;
 
 	//読み込み失敗
 	if(FileSize != 0 && LineCnt == 0){
@@ -694,14 +711,14 @@ struct TPITEM **ReadItemList(char *FileName, int *cnt, HTREEITEM hItem)
 	}
 
 	//アイテム情報を確保
-	tpRetItemList = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * (*cnt));
+	tpRetItemList = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * MaxLineCnt);
 	if(tpRetItemList == NULL){
 		abort();
 	}
 	tpItemList = tpRetItemList;
 	//アイテム情報を取得
 	p = buf;
-	while(*p != '\0'){
+	while(*p != '\0' && tpItemList - tpRetItemList < MaxLineCnt){
 		if((*tpItemList = (struct TPITEM *)GlobalAlloc(GPTR, sizeof(struct TPITEM))) == NULL){
 			abort();
 		}
@@ -713,6 +730,7 @@ struct TPITEM **ReadItemList(char *FileName, int *cnt, HTREEITEM hItem)
 		for(; (*p == '\r' || *p == '\n'); p++);
 		tpItemList++;
 	}
+	*cnt = tpItemList - tpRetItemList;
 
 	GlobalFree(buf);
 	return tpRetItemList;
@@ -808,6 +826,29 @@ int ItemSize(struct TPITEM *tpItemInfo)
 
 /******************************************************************************
 
+	iStrCpyField
+
+	アイテムの項目をコピーする (区切り文字のタブと改行は空白に変換)
+
+******************************************************************************/
+
+static char *iStrCpyField(char *ret, char *buf)
+{
+	if(buf == NULL){
+		*ret = '\0';
+		return ret;
+	}
+	while(*buf != '\0'){
+		*(ret++) = (*buf == '\t' || *buf == '\r' || *buf == '\n') ? ' ' : *buf;
+		buf++;
+	}
+	*ret = '\0';
+	return ret;
+}
+
+
+/******************************************************************************
+
 	SetItemString
 
 	アイテム情報からアイテムの文字列を作成する
@@ -822,54 +863,54 @@ char *SetItemString(struct TPITEM *tpItemInfo, char *p)
 		return p;
 	}
 
-	p = iStrCpy(p, tpItemInfo->Title);
+	p = iStrCpyField(p, tpItemInfo->Title);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->CheckURL);
+	p = iStrCpyField(p, tpItemInfo->CheckURL);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->Size);
+	p = iStrCpyField(p, tpItemInfo->Size);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->Date);
+	p = iStrCpyField(p, tpItemInfo->Date);
 	*(p++) = '\t';
 
 	wsprintf(Tmpbuf, "%ld", (tpItemInfo->Status < 10) ? tpItemInfo->Status : 0);
 	p = iStrCpy(p, Tmpbuf);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->CheckDate);
+	p = iStrCpyField(p, tpItemInfo->CheckDate);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->OldSize);
+	p = iStrCpyField(p, tpItemInfo->OldSize);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->OldDate);
+	p = iStrCpyField(p, tpItemInfo->OldDate);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->ViewURL);
+	p = iStrCpyField(p, tpItemInfo->ViewURL);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->Option1);
+	p = iStrCpyField(p, tpItemInfo->Option1);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->Option2);
+	p = iStrCpyField(p, tpItemInfo->Option2);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->Comment);
+	p = iStrCpyField(p, tpItemInfo->Comment);
 	*(p++) = '\t';
 
 	wsprintf(Tmpbuf, "%ld", (tpItemInfo->CheckSt < 10) ? tpItemInfo->CheckSt : 0);
 	p = iStrCpy(p, Tmpbuf);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->ErrStatus);
+	p = iStrCpyField(p, tpItemInfo->ErrStatus);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->DLLData1);
+	p = iStrCpyField(p, tpItemInfo->DLLData1);
 	*(p++) = '\t';
 
-	p = iStrCpy(p, tpItemInfo->DLLData2);
+	p = iStrCpyField(p, tpItemInfo->DLLData2);
 
 	*(p++) = '\r';
 	*(p++) = '\n';
@@ -1116,7 +1157,7 @@ int FileSelect(HWND hDlg, char *oFile, char *oFilter, char *oTitle, char *ret, c
 
 ******************************************************************************/
 
-static void SetExecCommandLine(HWND hWnd, char *buf, char *ret, struct TPITEM *tpItemInfo)
+static void SetExecCommandLine(HWND hWnd, char *buf, char *ret, int size, struct TPITEM *tpItemInfo)
 {
 	char FolderPath[MAX_PATH];
 	char *p, *r, *t;
@@ -1126,8 +1167,8 @@ static void SetExecCommandLine(HWND hWnd, char *buf, char *ret, struct TPITEM *t
 	}
 
 	// %文字 の変換を行う
-	for(p = buf, r = ret;*p != '\0';p++){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+	for(p = buf, r = ret;*p != '\0' && r < ret + size - 2;p++){
+		if(IS_LEAD_BYTE(p)){
 			*(r++) = *(p++);
 			*(r++) = *p;
 
@@ -1242,8 +1283,13 @@ static void SetExecCommandLine(HWND hWnd, char *buf, char *ret, struct TPITEM *t
 				break;
 			}
 			if(t != NULL){
-				while(*(r++) = *(t++));
-				r--;
+				for(; *t != '\0' && r < ret + size - 1; t++){
+					//引数の区切りを変えられないよう埋め込む文字列内の引用符は除く
+					if(*t == '\"'){
+						continue;
+					}
+					*(r++) = *t;
+				}
 			}
 		}
 	}
@@ -1262,7 +1308,7 @@ static void SetExecCommandLine(HWND hWnd, char *buf, char *ret, struct TPITEM *t
 int ExecItemFile(HWND hWnd, char *FileName, char *CommandLine, struct TPITEM *tpItemInfo, int SyncFlag)
 {
 	SHELLEXECUTEINFO sei;
-	char buf[MAX_PATH];
+	char buf[MAXSIZE];
 	char *ExeFilePath;
 	char *CommnadLineString;
 	int ret;
@@ -1270,7 +1316,7 @@ int ExecItemFile(HWND hWnd, char *FileName, char *CommandLine, struct TPITEM *tp
 
 	*buf = '\0';
 	//コマンドラインの作成
-	SetExecCommandLine(hWnd, CommandLine, buf, tpItemInfo);
+	SetExecCommandLine(hWnd, CommandLine, buf, MAXSIZE, tpItemInfo);
 
 	ExeFilePath = FileName;
 	CommnadLineString = buf;

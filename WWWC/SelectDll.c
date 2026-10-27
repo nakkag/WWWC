@@ -147,7 +147,7 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 			EndDialog(hDlg, FALSE);
 			break;
 		}
-		lstrcpy(DLLPath, (char *)lParam);
+		lstrcpyn(DLLPath, (char *)lParam, BUFSIZE);
 		SetWindowText(hDlg, DLLPath);
 
 		hLib = LoadLibrary(DLLPath);

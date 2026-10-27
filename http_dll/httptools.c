@@ -21,6 +21,7 @@
 #include <commctrl.h>
 #include <DDEML.H>
 
+#include "String.h"
 #include "httptools.h"
 #include "http.h"
 #include "StrTbl.h"
@@ -93,9 +94,9 @@ static void GetDDEStr(char *buf, char *URL, char *Title, char *Frame)
 		p++;
 	}
 	for(r = URL; *p != '\"' && *p != '\0'; p++){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			*(r++) = *(p++);
-		}else if(*p == '\\'){
+		}else if(*p == '\\' && *(p + 1) != '\0'){
 			p++;
 		}
 		*(r++) = *p;
@@ -105,9 +106,9 @@ static void GetDDEStr(char *buf, char *URL, char *Title, char *Frame)
 	for(; (*p == '\"' || *p == ',') && *p != '\0'; p++);
 
 	for(r = Title; *p != '\"' && *p != '\0'; p++){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			*(r++) = *(p++);
-		}else if(*p == '\\'){
+		}else if(*p == '\\' && *(p + 1) != '\0'){
 			p++;
 		}
 		*(r++) = *p;
@@ -117,9 +118,9 @@ static void GetDDEStr(char *buf, char *URL, char *Title, char *Frame)
 	for(; (*p == '\"' || *p == ',') && *p != '\0'; p++);
 
 	for(r = Frame; *p != '\"' && *p != '\0'; p++){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			*(r++) = *(p++);
-		}else if(*p == '\\'){
+		}else if(*p == '\\' && *(p + 1) != '\0'){
 			p++;
 		}
 		*(r++) = *p;
@@ -519,7 +520,7 @@ static int GetURLInfo(HWND hWnd, UINT sMsg, char *browser)
 
 	gbuf = (char *)GlobalAlloc(GPTR, MAXSIZE);
 
-	while(dwActivateID[i] != 0){
+	while(i < sizeof(dwActivateID) / sizeof(DWORD) && dwActivateID[i] != 0){
 		wsprintf(tmp,"%d",dwActivateID[i]);
 		hszParam = DdeCreateStringHandle(m_dwDDEID, tmp, 0);
 
@@ -914,7 +915,7 @@ BOOL DDE_SetBrowseURL(HWND hWnd, char *browser, char *URL)
 	HSZ hszParam;
 	HCONV hConv;
 	HDDEDATA hDDEData;
-	char sParam[BUFSIZE];
+	char *sParam;
 	DWORD m_dwDDEID;
 
 	m_dwDDEID = 0L;
@@ -937,8 +938,15 @@ BOOL DDE_SetBrowseURL(HWND hWnd, char *browser, char *URL)
 
 	// 0xFFFFFFFF は最後にアクティブだったブラウザを指す。
 	//ブラウザのIDを指定するとそのブラウザにURLを送る。
-	wsprintf(sParam, "\"%s\",,0xFFFFFFFF,0x0,,,", URL);
+	sParam = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(URL) + lstrlen("\"\",,0xFFFFFFFF,0x0,,,") + 1);
+	if(sParam == NULL){
+		DdeDisconnect(hConv);
+		DdeUninitialize(m_dwDDEID);
+		return FALSE;
+	}
+	iStrCpy(iStrCpy(iStrCpy(sParam, "\""), URL), "\",,0xFFFFFFFF,0x0,,,");
 	hszParam = DdeCreateStringHandle(m_dwDDEID, (LPCSTR)sParam, 0);
+	GlobalFree(sParam);
 	//Client Transaction
 	hDDEData = DdeClientTransaction(NULL, 0, hConv, hszParam, CF_TEXT, XTYP_REQUEST, 10000L, NULL);
 	DdeFreeStringHandle(m_dwDDEID, hszParam);
@@ -1028,6 +1036,10 @@ __declspec(dllexport) int CALLBACK DDE_OpenURL(HWND hWnd, struct TPITEM **ToolIt
 		for(i = 0; i < ToolItemListCnt; i++){
 			url = ((*(ToolItemList + i))->ViewURL != NULL && *(*(ToolItemList + i))->ViewURL != '\0') ?
 				(*(ToolItemList + i))->ViewURL : (*(ToolItemList + i))->CheckURL;
+			//http, https 以外のURLはブラウザに渡さない
+			if(IsWebURL(url) == FALSE){
+				continue;
+			}
 
 			for(j = 0; j < AppCnt; j++){
 				if(DDE_SetBrowseURL(hWnd, AppName[j], url) == TRUE){
@@ -1038,7 +1050,14 @@ __declspec(dllexport) int CALLBACK DDE_OpenURL(HWND hWnd, struct TPITEM **ToolIt
 				if(*BrowserPath == '\0'){
 					rc = ExecItem(hWnd, url, NULL);
 				}else{
-					rc = ExecItem(hWnd, BrowserPath, url);
+					//引数として渡すURLは引用符で囲む
+					char *param = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(url) + 3);
+					if(param == NULL){
+						continue;
+					}
+					iStrCpy(iStrCpy(iStrCpy(param, "\""), url), "\"");
+					rc = ExecItem(hWnd, BrowserPath, param);
+					GlobalFree(param);
 				}
 			}
 		}

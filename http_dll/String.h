@@ -29,6 +29,7 @@ WCHAR *iStrCpyW(WCHAR *ret, char *buf);
 BOOL str_match(const TCHAR *ptn, const TCHAR *str);
 int LresultCmp(char *Oldbuf, char *Newbuf);
 int GetURL(char *URL, char *server, char *path, int DefPort, char *user, char *pass);
+BOOL IsWebURL(char *URL);
 char *CreateMoveURL(char *FromURL, char *ToURL);
 BOOL GetOptionString(char *buf, char *ret, int num);
 int GetOptionInt(char *buf, int num);

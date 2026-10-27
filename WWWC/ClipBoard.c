@@ -673,6 +673,11 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 		return FALSE;
 	}
 
+	//パスが長すぎる場合はエラー (番号を付ける分の余裕を残す)
+	if(lstrlen(Path) + 1 + lstrlen(Name) + 8 > MAX_TREEPATH){
+		MessageBox(hWnd, EMSG_PATHLENGTH, EMSG_FOLDERCOPY_TITLE, MB_ICONSTOP);
+		return FALSE;
+	}
 	lstrcpy(DirName, Name);
 	wsprintf(CopyPath, "%s\\%s", Path, DirName);
 
@@ -874,7 +879,8 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 	r = buf;
 	for(p = Data;*p != '\0';p++){
 		if(*p != '\r'){
-			if(*p != '\n'){
+			//バッファを超える行は切り詰める
+			if(*p != '\n' && r < buf + MAXSIZE - 1){
 				*(r++) = *p;
 			}
 			continue;
@@ -890,7 +896,7 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 			t = buf + 1;
 			//パス
 			r = SourcePath;
-			for(;*t != '\t' && *t != '\0';t++, r++){
+			for(;*t != '\t' && *t != '\0' && r < SourcePath + BUFSIZE - 1;t++, r++){
 				*r = *t;
 			}
 			*r = '\0';
@@ -911,16 +917,17 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 			t = buf + 1;
 
 			r = FromPath;
-			for(;*t != '\t' && *t != '\0';t++, r++){
+			for(;*t != '\t' && *t != '\0' && r < FromPath + BUFSIZE - 1;t++, r++){
 				*r = *t;
 			}
 			*r = '\0';
+			for(;*t != '\t' && *t != '\0';t++);
 			if(*t == '\t'){
 				t++;
 			}
 			//名前
 			r = Name;
-			for(;*t != '\0';t++, r++){
+			for(;*t != '\0' && r < Name + BUFSIZE - 1;t++, r++){
 				*r = *t;
 			}
 			*r = '\0';
@@ -1083,7 +1090,7 @@ void Clipboard_GetData(HWND hWnd)
 			break;
 		}
 		//プロトコルを識別できた場合はアイテムとして追加
-		if(GetProtocolIndex(buf) != -1){
+		if(IsTerminatedMem(hClip, buf) == TRUE && GetProtocolIndex(buf) != -1){
 			SetFocus(GetDlgItem(hWnd, WWWC_LIST));
 			Item_UrlAdd(hWnd, NEWITEMNAME, buf, 0, NULL);
 		}
@@ -1100,6 +1107,10 @@ void Clipboard_GetData(HWND hWnd)
 
 		hClip = GetClipboardData(WWWC_ClipFormat);
 		if((buf = GlobalLock(hClip)) == NULL){
+			break;
+		}
+		if(IsTerminatedMem(hClip, buf) == FALSE){
+			GlobalUnlock(hClip);
 			break;
 		}
 		SetFocus(GetDlgItem(hWnd, WWWC_LIST));

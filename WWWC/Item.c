@@ -712,7 +712,7 @@ static void SetCopyItemInfo(struct TPITEM *tpItemInfo, HWND IconWnd, HWND InfoWn
 	HICON hIcon;
 	char Size[BUFSIZE];
 	char Date[BUFSIZE];
-	char buf[BUFSIZE];
+	char buf[BUFSIZE * 3];
 	int i, iIndex;
 
 	if(tpItemInfo->CheckURL != NULL){
@@ -758,8 +758,9 @@ static void SetCopyItemInfo(struct TPITEM *tpItemInfo, HWND IconWnd, HWND InfoWn
 static BOOL CALLBACK UpdateMsgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	HICON hIcon;
-	char buf[BUFSIZE * 2];
+	char buf[BUFSIZE * 3];
 	char FolderName[BUFSIZE];
+	char Title[BUFSIZE];
 	struct TPITEM **tpMsgItemList;
 
 	switch (uMsg)
@@ -769,7 +770,8 @@ static BOOL CALLBACK UpdateMsgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 		//タイトル
 		if((*tpMsgItemList)->Title != NULL && (*tpMsgItemList)->hItem != NULL){
 			TreeView_GetItemInfo(GetDlgItem(WWWCWnd, WWWC_TREE), (*tpMsgItemList)->hItem, FolderName);
-			wsprintf(buf, STR_UPDATEMSG, FolderName, (*tpMsgItemList)->Title);
+			lstrcpyn(Title, (*tpMsgItemList)->Title, BUFSIZE);
+			wsprintf(buf, STR_UPDATEMSG, FolderName, Title);
 			SetWindowText(GetDlgItem(hDlg, IDC_STATIC_COPYMSG_TITLE), buf);
 		}
 
@@ -1044,7 +1046,7 @@ BOOL Item_UrlAdd(HWND hWnd, char *Title, char *buf, int NameFlag, HTREEITEM hIte
 			break;
 		}
 		for(r = url; *p != '\0'; p++){
-			if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+			if(IS_LEAD_BYTE(p)){
 				//２バイトコードの場合
 				*(r++) = *(p++);
 				*(r++) = *p;
@@ -1966,7 +1968,11 @@ BOOL DeleteItem(HWND hWnd)
 				0, tmp, BUFSIZE - 1);
 			wsprintf(msg, QMSG_FOLDERDELETE, tmp);
 		}else{
-			wsprintf(msg, QMSG_ITEMDELETE, tpItemInfo->Title);
+			*tmp = '\0';
+			if(tpItemInfo->Title != NULL){
+				lstrcpyn(tmp, tpItemInfo->Title, BUFSIZE);
+			}
+			wsprintf(msg, QMSG_ITEMDELETE, tmp);
 		}
 		if(MessageBox(hWnd, msg, QMSG_DELETE_TITLE, MB_ICONEXCLAMATION | MB_YESNO) == IDNO){
 			return FALSE;

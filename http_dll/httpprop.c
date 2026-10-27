@@ -263,7 +263,7 @@ static BOOL CALLBACK PropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 			buf = (char *)GlobalAlloc(GPTR, lstrlen(tpItemInfo->Comment) + 1);
 			if(buf != NULL){
 				for(p = tpItemInfo->Comment, r = buf ;*p != '\0'; p++){
-					if(IsDBCSLeadByte(*p) == TRUE){
+					if(IS_LEAD_BYTE(p)){
 						*(r++) = *(p++);
 						*(r++) = *p;
 					}else if(*p == '\\' && *(p + 1) == 'n'){
@@ -285,7 +285,8 @@ static BOOL CALLBACK PropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 
 		/* サイズ */
 		if(tpItemInfo->Size != NULL){
-			wsprintf(tmp, "%s バイト", tpItemInfo->Size);
+			lstrcpyn(tmp, tpItemInfo->Size, BUFSIZE - 16);
+			lstrcat(tmp, " バイト");
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_SIZE), WM_SETTEXT, 0, (LPARAM)tmp);
 		}
 
@@ -684,7 +685,8 @@ static BOOL CALLBACK PropertyOptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PROXY), WM_GETTEXT, BUFSIZE - 1, (LPARAM)proxy);
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PROXY_PORT), WM_GETTEXT, BUFSIZE - 1, (LPARAM)port);
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_USER), WM_GETTEXT, BUFSIZE - 1, (LPARAM)user);
-			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PASS), WM_GETTEXT, BUFSIZE - 1, (LPARAM)buf);
+			//暗号化すると2倍の長さになるため半分までとする
+			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PASS), WM_GETTEXT, BUFSIZE / 2, (LPARAM)buf);
 			ePass(buf, pass);
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_REFERER), WM_GETTEXT, BUFSIZE - 1, (LPARAM)referer);
 
@@ -885,7 +887,8 @@ static BOOL CALLBACK ProtocolPropertyCheckProc(HWND hDlg, UINT uMsg, WPARAM wPar
 
 			pUsePass = IsDlgButtonChecked(hDlg, IDC_CHECK_USEPASS);
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_USER), WM_GETTEXT, BUFSIZE - 1, (LPARAM)pUser);
-			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PASS), WM_GETTEXT, BUFSIZE - 1, (LPARAM)pPass);
+			//暗号化すると2倍の長さになるため半分までとする
+			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PASS), WM_GETTEXT, BUFSIZE / 2, (LPARAM)pPass);
 
 			wsprintf(buf, "%ld", TimeOut);
 			WritePrivateProfileString("CHECK", "TimeOut", buf, app_path);

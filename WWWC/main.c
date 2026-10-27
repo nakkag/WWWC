@@ -368,7 +368,7 @@ void SetTrayInitIcon(HWND hWnd)
 
 void SetWinTitle(HWND hWnd)
 {
-	char buf[BUFSIZE];
+	char buf[BUFSIZE * 2];
 
 	if(*WinTitle != '\0'){
 		wsprintf(buf, APP_NAME" - %s", WinTitle);
@@ -436,7 +436,7 @@ static void ShowHelp(HWND hWnd)
 	GetModuleFileName(g_hinst, buf, BUFSIZE - 1);
 	p = r = buf;
 	while(*p != '\0'){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			p++;
 		}else if(*p == '\\' || *p == '/'){
 			r = p;
@@ -1175,6 +1175,11 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		break;
 
 	case WM_COPYDATA:
+		//NULで終端された文字列のみ受け付ける
+		if(lParam == 0 || ((PCOPYDATASTRUCT)lParam)->lpData == NULL || ((PCOPYDATASTRUCT)lParam)->cbData == 0 ||
+			*((char *)((PCOPYDATASTRUCT)lParam)->lpData + ((PCOPYDATASTRUCT)lParam)->cbData - 1) != '\0'){
+			break;
+		}
 		CommandLineFunc(hWnd, ((PCOPYDATASTRUCT)lParam)->lpData);
 		break;
 
@@ -2288,7 +2293,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 static void DelLastYen(char *p)
 {
 	while(*p != '\0'){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			p++;
 		}else if((*p == '\\' || *p == '/') && *(p + 1) == '\0'){
 			*p = '\0';
@@ -2318,7 +2323,7 @@ static void GetAppPath(HINSTANCE hinst)
 	GetModuleFileName(hinst, DefDirPath, BUFSIZE - 1);
 	r = p = DefDirPath;
 	while(*p != '\0'){
-		if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+		if(IS_LEAD_BYTE(p)){
 			p++;
 		}else if(*p == '\\' || *p == '/'){
 			r = p;
@@ -2547,7 +2552,6 @@ static void StartCommandLine(char *StrCmdLine)
 
 		if(*p != '/'){
 			if(*p == '"'){
-				p++;
 				for(p++; *p != '\0' && *p != '"'; p++);
 			}else{
 				for(; *p != '\0' && *p != ' '; p++);
@@ -2577,7 +2581,7 @@ static void StartCommandLine(char *StrCmdLine)
 				}else{
 					for(r = p; *r != '\0' && *r != ' '; r++);
 				}
-				lstrcpyn(CmdDirPath, p, r - p + 1);
+				lstrcpyn(CmdDirPath, p, (r - p + 1 < BUFSIZE) ? r - p + 1 : BUFSIZE);
 				p = r;
 				if(*p == '\"') p++;
 				break;
@@ -2594,7 +2598,7 @@ static void StartCommandLine(char *StrCmdLine)
 				}else{
 					for(r = p; *r != '\0' && *r != ' '; r++);
 				}
-				lstrcpyn(CmdUser, p, r - p + 1);
+				lstrcpyn(CmdUser, p, (r - p + 1 < BUFSIZE) ? r - p + 1 : BUFSIZE);
 				p = r;
 				if(*p == '\"') p++;
 				break;
@@ -2771,6 +2775,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	INITCOMMONCONTROLSEX iccex;
 	HINSTANCE hLib;
 	FARPROC _InitCommonControlsEx;
+	FARPROC _SetDllDirectory;
 
 	if((hMutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, MUTEX)) == NULL){
 		hMutex = CreateMutex(NULL, TRUE, MUTEX);
@@ -2779,6 +2784,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		hMutex = NULL;
 	}
 	g_hinst = hInstance;
+
+	//DLLの検索パスからカレントディレクトリを除外する
+	_SetDllDirectory = GetProcAddress(GetModuleHandle("kernel32.dll"), "SetDllDirectoryA");
+	if(_SetDllDirectory != NULL){
+		_SetDllDirectory("");
+	}
 
 	StartCommandLine(lpCmdLine);
 	GetAppPath(hInstance);

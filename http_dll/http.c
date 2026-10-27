@@ -2232,6 +2232,10 @@ __declspec(dllexport) BOOL CALLBACK HTTP_CreateDropItem(struct TPITEM *tpItemInf
 		return FALSE;
 	}
 
+	//パスがバッファに収まらない場合は作成しない
+	if(lstrlen(fPath) + 1 + ((iPath != NULL) ? lstrlen(iPath) : 0) >= BUFSIZE){
+		return FALSE;
+	}
 	if(iPath != NULL){
 		p = iStrCpy(buf, fPath);
 		p = iStrCpy(p, "\\");
@@ -2285,7 +2289,7 @@ __declspec(dllexport) int CALLBACK HTTP_DropFile(HWND hWnd, char *FileType, char
 		GetPrivateProfileString("InternetShortcut", "URL", "", URL, MAXSIZE - 1, FilePath);
 
 		for(r = p = FilePath; *p != '\0'; p++){
-			if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+			if(IS_LEAD_BYTE(p)){
 				p++;
 			}else if(*p == '\\' || *p == '/'){
 				r = p + 1;
@@ -2342,6 +2346,11 @@ __declspec(dllexport) int CALLBACK HTTP_ExecItem(HWND hWnd, char *Action, struct
 			MessageBox(hWnd, STR_ERR_MSG_URLOPEN, STR_ERR_TITLE_URLOPEN, MB_ICONEXCLAMATION);
 			return -1;
 		}
+		//http, https 以外は実行しない
+		if(IsWebURL(p) == FALSE){
+			MessageBox(hWnd, STR_ERR_MSG_URLSCHEME, STR_ERR_TITLE_URLOPEN, MB_ICONEXCLAMATION);
+			return -1;
+		}
 		rc = ExecItem(hWnd, p, NULL);
 
 	}else if(lstrcmp(Action, "checkopen") == 0){
@@ -2351,6 +2360,11 @@ __declspec(dllexport) int CALLBACK HTTP_ExecItem(HWND hWnd, char *Action, struct
 		}
 		if(p == NULL || *p == '\0'){
 			MessageBox(hWnd, STR_ERR_MSG_URLOPEN, STR_ERR_TITLE_URLOPEN, MB_ICONEXCLAMATION);
+			return -1;
+		}
+		//http, https 以外は実行しない
+		if(IsWebURL(p) == FALSE){
+			MessageBox(hWnd, STR_ERR_MSG_URLSCHEME, STR_ERR_TITLE_URLOPEN, MB_ICONEXCLAMATION);
 			return -1;
 		}
 		rc = ExecItem(hWnd, p, NULL);

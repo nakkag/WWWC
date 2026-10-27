@@ -830,7 +830,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 					//É^ÉCÉgÉãÇÃê›íË
 					r = "";
 					for(p = buf; *p != '\0'; p++){
-						if(IsDBCSLeadByte((BYTE)*p) == TRUE){
+						if(IS_LEAD_BYTE(p)){
 							p++;
 							continue;
 						}

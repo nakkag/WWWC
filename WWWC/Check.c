@@ -158,6 +158,9 @@ static int GetItemInfoToIndex(struct TPITEM *tpItemInfo)
 {
 	int i;
 
+	if(CheckItemList == NULL){
+		return -1;
+	}
 	for(i = 0;i < CheckMax;i++){
 		if(*(CheckItemList + i) == NULL){
 			continue;
@@ -781,6 +784,8 @@ static int CheckStartItem(HWND hWnd, struct TPITEM *tpItemInfo, int ProtocolInde
 
 	//チェック終了
 	case CHECK_END:
+	//不明な戻り値はチェック終了として扱う
+	default:
 		tpItemInfo->IconStatus = ST_DEFAULT;
 		TreeView_SetIconState(hWnd, tpItemInfo->hItem, 0);
 		NotifyItemCheckEnd(hWnd, tpItemInfo);
@@ -1188,12 +1193,16 @@ static void CancelItem(HWND hWnd, struct TPITEM *tpItemInfo)
 	ProtocolIndex = GetProtocolIndex(tpItemInfo->CheckURL);
 	if(ProtocolIndex == -1){
 		tpItemInfo->IconStatus = ST_DEFAULT;
-		*(CheckItemList + Index) = NULL;
+		if(CheckItemList != NULL && Index != -1){
+			*(CheckItemList + Index) = NULL;
+		}
 		return;
 	}
 	if((tpProtocol + ProtocolIndex)->lib == NULL){
 		tpItemInfo->IconStatus = ST_DEFAULT;
-		*(CheckItemList + Index) = NULL;
+		if(CheckItemList != NULL && Index != -1){
+			*(CheckItemList + Index) = NULL;
+		}
 		return;
 	}
 
@@ -1207,7 +1216,7 @@ static void CancelItem(HWND hWnd, struct TPITEM *tpItemInfo)
 	}
 
 	tpItemInfo->IconStatus = ST_DEFAULT;
-	if(CheckItemList == NULL){
+	if(CheckItemList == NULL || Index == -1){
 		return;
 	}
 	*(CheckItemList + Index) = NULL;

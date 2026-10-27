@@ -323,6 +323,12 @@ BOOL TreeView_NewFolderItem(HWND hWnd)
 	int i;
 
 	//新しいフォルダの名前を作成して実際にフォルダを作成する
+	lstrcpy(name, NEWFOLDER" (99999)");
+	if(TreeView_CheckPathLength(GetDlgItem(hWnd, WWWC_TREE),
+		TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), name) == FALSE){
+		MessageBox(hWnd, EMSG_PATHLENGTH, EMSG_PATHLENGTH_TITLE, MB_ICONSTOP);
+		return FALSE;
+	}
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE),
 		TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), buf, CuDir);
 	lstrcpy(name, NEWFOLDER);
@@ -332,6 +338,10 @@ BOOL TreeView_NewFolderItem(HWND hWnd)
 	i = 1;
 	while(CreateDirectory(path, NULL) == FALSE){
 		i++;
+		if(i > 99999){
+			ErrMsg(hWnd, GetLastError(), NULL);
+			return FALSE;
+		}
 		wsprintf(name, "%s (%d)", NEWFOLDER, i);
 		wsprintf(path, "%s\\%s", buf, name);
 	}
@@ -559,7 +569,7 @@ HTREEITEM TreeView_FindItemPath(HWND hTreeView, HTREEITEM hItem, char *path)
 	//ルートの場合
 	if((*p == '\\' && *(p + 1) == '\\') || (*p == '/' && *(p + 1) == '/')){
 		for(p = path + 2; *p != '\0'; p++){
-			if(IsDBCSLeadByte((BYTE)*p) == FALSE){
+			if(!IS_LEAD_BYTE(p)){
 				if(*p == '\\' || *p == '/'){
 					break;
 				}
@@ -576,9 +586,9 @@ HTREEITEM TreeView_FindItemPath(HWND hTreeView, HTREEITEM hItem, char *path)
 		return hItem;
 	}
 
-	//パスを展開
-	for(r = buf; *p != '\0'; p++, r++){
-		if(IsDBCSLeadByte((BYTE)*p) == FALSE){
+	//パスを展開 (バッファを超える名前は切り詰める)
+	for(r = buf; *p != '\0' && r < buf + BUFSIZE - 2; p++, r++){
+		if(!IS_LEAD_BYTE(p)){
 			if(*p == '\\' || *p == '/'){
 				break;
 			}
@@ -720,11 +730,12 @@ void TreeView_GetPath(HWND hTreeView, HTREEITEM hItem, char *ret, char *RootStri
 	HTREEITEM pItem;
 	char buf[BUFSIZE];
 	char tvName[BUFSIZE];
-	char work[BUFSIZE];
+	char work[BUFSIZE * 2];
+	BOOL OverFlag = FALSE;
 
 	//ルートアイテムの場合はそのままパスを返す
 	if(hItem == RootItem){
-		lstrcpy(ret, RootString);
+		lstrcpyn(ret, RootString, BUFSIZE);
 		return;
 	}
 
@@ -733,15 +744,45 @@ void TreeView_GetPath(HWND hTreeView, HTREEITEM hItem, char *ret, char *RootStri
 		return;
 	}
 	pItem = TreeView_GetParent(hTreeView, hItem);
-	while(pItem != RootItem){
+	while(pItem != RootItem && pItem != NULL){
 		TreeView_GetItemInfo(hTreeView, pItem, tvName);
+		if(lstrlen(tvName) + 1 + lstrlen(buf) > BUFSIZE - 1){
+			OverFlag = TRUE;
+			break;
+		}
 		wsprintf(work, "%s\\%s", tvName, buf);
 		lstrcpy(buf, work);
 
 		pItem = TreeView_GetParent(hTreeView, pItem);
 	}
+	if(OverFlag == TRUE || lstrlen(RootString) + 1 + lstrlen(buf) > BUFSIZE - 1){
+		if(RootString == CuDir){
+			//実フォルダのパスを切り詰めると別のフォルダを操作してしまうため終了する
+			abort();
+		}
+		//表示用のパスは切り詰める
+		lstrcpyn(ret, RootString, BUFSIZE);
+		return;
+	}
 	//指定の文字列と結合
 	wsprintf(ret, "%s\\%s", RootString, buf);
+}
+
+
+/******************************************************************************
+
+	TreeView_CheckPathLength
+
+	フォルダを追加したときのパスの長さが上限以内かチェックする
+
+******************************************************************************/
+
+BOOL TreeView_CheckPathLength(HWND hTreeView, HTREEITEM pItem, char *Name)
+{
+	char buf[BUFSIZE];
+
+	TreeView_GetPath(hTreeView, pItem, buf, CuDir);
+	return (lstrlen(buf) + 1 + lstrlen(Name) <= MAX_TREEPATH) ? TRUE : FALSE;
 }
 
 
@@ -791,6 +832,12 @@ BOOL TreeView_SetName(HWND hWnd, HTREEITEM hItem, char *NewName)
 	*buf = '\0';
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE),
 		TreeView_GetParent(GetDlgItem(hWnd, WWWC_TREE), hItem), buf, CuDir);
+
+	//パスが長すぎる場合はエラーを出す
+	if(lstrlen(buf) + 1 + lstrlen(NewName) > MAX_TREEPATH){
+		MessageBox(hWnd, EMSG_PATHLENGTH, EMSG_CHANGEFILENAME_TITLE, MB_ICONSTOP);
+		return FALSE;
+	}
 
 	//古いパスと新しいパスを作成する
 	TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, Tmpbuf);
