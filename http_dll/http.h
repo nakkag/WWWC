@@ -110,6 +110,7 @@ struct TPHTTP{
 	char *ErrDef;
 	char *ErrFunc;
 	DWORD ProgressTick;					/* 受信状況の通知時刻 */
+	HMODULE hModule;					/* スレッドが保持するDLLの参照 */
 	struct TPHTTP *Next;				/* 実行中のリスト */
 	struct TPHTTP *Prev;
 };

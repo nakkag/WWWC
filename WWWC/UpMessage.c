@@ -703,7 +703,20 @@ BOOL MainItemProp(HWND hWnd)
 	//本体のアイテムに反映
 	for(i = 0; i < tpTreeInfo->ItemListCnt; i++){
 		if(tpItemInfo == *(tpTreeInfo->ItemList + i)){
-			FreeItemInfo(tpItemInfo, TRUE);
+			//DLLが管理する情報は本体のアイテムの現在の値を引き継ぐ
+			PropItemInfo->IconStatus = tpItemInfo->IconStatus;
+			PropItemInfo->Soc1 = tpItemInfo->Soc1;
+			PropItemInfo->Soc2 = tpItemInfo->Soc2;
+			PropItemInfo->hGetHost1 = tpItemInfo->hGetHost1;
+			PropItemInfo->hGetHost2 = tpItemInfo->hGetHost2;
+			PropItemInfo->Param1 = tpItemInfo->Param1;
+			PropItemInfo->Param2 = tpItemInfo->Param2;
+			PropItemInfo->Param3 = tpItemInfo->Param3;
+			PropItemInfo->Param4 = tpItemInfo->Param4;
+			PropItemInfo->user1 = tpItemInfo->user1;
+			PropItemInfo->user2 = tpItemInfo->user2;
+
+			FreeItemInfo(tpItemInfo, FALSE);
 			CopyMemory(tpItemInfo, PropItemInfo, sizeof(struct TPITEM));
 			break;
 		}

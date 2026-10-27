@@ -511,8 +511,12 @@ BOOL IsWebURL(char *URL)
 char *CreateMoveURL(char *FromURL, char *ToURL)
 {
 	char *ret;
-	char *p, *r;
+	char *p, *q, *r, *e;
+	int SchemeLen;
 
+	if(FromURL == NULL || ToURL == NULL){
+		return NULL;
+	}
 	if(lstrcmpni(ToURL, "http://", 7) == 0 ||
 		lstrcmpni(ToURL, "https://", 8) == 0){
 		//完全なURL
@@ -522,40 +526,67 @@ char *CreateMoveURL(char *FromURL, char *ToURL)
 	}
 
 	if(lstrcmpni(FromURL, "http://", 7) == 0){
+		SchemeLen = 5;
 		r = FromURL + 7;
 	}else if(lstrcmpni(FromURL, "https://", 8) == 0){
+		SchemeLen = 6;
 		r = FromURL + 8;
 	}else{
 		return NULL;
 	}
+
+	//http, https 以外のスキームのURLには移動しない
+	for(p = ToURL; (*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') ||
+		(*p >= '0' && *p <= '9') || *p == '+' || *p == '-' || *p == '.'; p++);
+	if(p != ToURL && *p == ':'){
+		return NULL;
+	}
+
+	//サーバ名の終わり
+	for(e = r; *e != '\0' && *e != '/' && *e != '?' && *e != '#'; e++);
+
+	if(*ToURL == '/' && *(ToURL + 1) == '/'){
+		//スキームのみ現在のURLを使用
+		ret = GlobalAlloc(GPTR, SchemeLen + lstrlen(ToURL) + 1);
+		if(ret == NULL){
+			return NULL;
+		}
+		lstrcpyn(ret, FromURL, SchemeLen + 1);
+		lstrcat(ret, ToURL);
+		return ret;
+	}
+
 	if(*ToURL == '/'){
 		//ルートから変更
-		for(p = r; *p != '\0' && *p != '/'; p++);
+		p = e;
+
+	}else if(*ToURL == '?' || *ToURL == '#'){
+		//パスはそのままでクエリ (またはフラグメント) を変更
+		for(p = e; *p != '\0' && *p != '#' && (*ToURL == '#' || *p != '?'); p++);
 
 	}else{
-		//ページのみ変更
-		for(p = FromURL + lstrlen(FromURL); p > r && *p != '/'; p--);
-		if(p == r){
+		//ページのみ変更 (クエリより前の最後の / の次から置き換える)
+		for(q = e; *q != '\0' && *q != '?' && *q != '#'; q++);
+		for(p = q; p > e && *(p - 1) != '/'; p--);
+		if(p == e){
 			//ページ指定なし
-			ret = GlobalAlloc(GPTR, lstrlen(FromURL) + 1 + lstrlen(ToURL) + 1);
+			ret = GlobalAlloc(GPTR, (e - FromURL) + 1 + lstrlen(ToURL) + 1);
 			if(ret == NULL){
 				return NULL;
 			}
-			p = iStrCpy(ret, FromURL);
-			p = iStrCpy(p, "/");
-			p = iStrCpy(p, ToURL);
+			lstrcpyn(ret, FromURL, e - FromURL + 1);
+			lstrcat(ret, "/");
+			lstrcat(ret, ToURL);
 			return ret;
-		}else{
-			p++;
 		}
 	}
 
-	ret = GlobalAlloc(GPTR, (p - FromURL + 1) + lstrlen(ToURL) + 1);
+	ret = GlobalAlloc(GPTR, (p - FromURL) + lstrlen(ToURL) + 1);
 	if(ret == NULL){
 		return NULL;
 	}
 	lstrcpyn(ret, FromURL, p - FromURL + 1);
-	lstrcpy(ret + (p - FromURL), ToURL);
+	lstrcat(ret, ToURL);
 	return ret;
 }
 

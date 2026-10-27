@@ -79,6 +79,7 @@ static CRITICAL_SECTION ListCs;					/* 実行中のリストの排他 */
 static BOOL ListCsInit;
 static struct TPHTTP *ActiveList;				/* 実行中のリスト */
 static LONG ThreadCnt;							/* 実行中のスレッド数 */
+static struct TPITEM *ToolItemInfo;				/* ツールの処理として開始するアイテム */
 
 
 //外部参照
@@ -133,6 +134,8 @@ static void ReleaseHTTP(struct TPHTTP *tpHTTP);
 static void CloseRequestHandles(struct TPHTTP *tpHTTP);
 static void CancelHTTP(struct TPHTTP *tpHTTP);
 static BOOL IsSameOrigin(char *URL1, char *URL2);
+static WCHAR *AllocWideString(char *buf);
+static void FreeWideString(WCHAR **str);
 static BOOL HasItemAuth(struct TPITEM *tpItemInfo);
 
 //Drag & Dropb
@@ -1078,7 +1081,7 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 		headcontent = (char *)GlobalAlloc(GPTR, len + 1);
 		if(headcontent != NULL && GetHeadContent(tpHTTP->buf, "Location:", headcontent) == TRUE){
 			DelCtrlChar(headcontent);
-			//現在のURLを基準に移動先のURLを作成 (http, https 以外は NULL)
+			//現在のURLを基準に移動先のURLを作成 (http, https 以外のスキームは NULL)
 			p = CreateMoveURL((tpItemInfo->Param2 != 0) ? (char *)tpItemInfo->Param2 : tpItemInfo->CheckURL, headcontent);
 			GlobalFree(headcontent);
 			if(p == NULL){
@@ -1089,9 +1092,9 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 			tpItemInfo->Param4++;
 
 			//恒久的な移動の場合はチェックするURLを変更する
-			//認証情報を使用するアイテムは別の接続先に認証情報を送らないよう同じ接続先の場合のみ変更する
-			if((Status == 301 || Status == 308) &&
-				(HasItemAuth(tpItemInfo) == FALSE || IsSameOrigin(p, tpItemInfo->CheckURL) == TRUE)){
+			//認証情報を使用するアイテムは、認証情報の送信先が変わらないよう変更しない
+			//ツールの処理 (表示するURLを使用する場合がある) では変更しない
+			if((Status == 301 || Status == 308) && tpItemInfo->Param3 == 0 && HasItemAuth(tpItemInfo) == FALSE){
 				r = (char *)GlobalAlloc(GPTR, lstrlen(p) + 1);
 				if(r != NULL){
 					lstrcpy(r, p);
@@ -1281,6 +1284,10 @@ __declspec(dllexport) int CALLBACK HTTP_Initialize(HWND hWnd, struct TPITEM *tpI
 		GlobalFree((HGLOBAL)tpItemInfo->Param2);
 		tpItemInfo->Param2 = 0;
 	}
+	//ツールの処理として開始する場合以外は処理の種類を初期化
+	if(tpItemInfo != ToolItemInfo){
+		tpItemInfo->Param3 = 0;
+	}
 	tpItemInfo->user1 = 0;
 	tpItemInfo->user2 = 0;
 	tpItemInfo->Param4 = 0;
@@ -1350,18 +1357,24 @@ __declspec(dllexport) int CALLBACK HTTP_Cancel(HWND hWnd, struct TPITEM *tpItemI
 
 __declspec(dllexport) int CALLBACK HTTP_Timer(HWND hWnd, struct TPITEM *tpItemInfo)
 {
+	BOOL ToolFlag;
+
 	if(tpItemInfo->user1 == -1){
 		return CHECK_SUCCEED;
 	}
 	tpItemInfo->user1++;
 	if(tpItemInfo->user1 == TimeOut){
-		if(tpItemInfo->Param3 == 1 || tpItemInfo->Param3 == 2){
+		ToolFlag = (tpItemInfo->Param3 == 1 || tpItemInfo->Param3 == 2) ? TRUE : FALSE;
+		if(ToolFlag == TRUE){
 			tpItemInfo->user1 = -1;
-			MessageBox(hWnd, STR_ERROR_TIMEOUT, tpItemInfo->CheckURL, MB_ICONERROR);
 		}
 		//受信を中止 (スレッドは強制終了せず、WinHTTPのハンドルを閉じて終了させる)
+		//メッセージボックス表示中に受信結果が処理されないよう、表示より先に中止する
 		HTTP_FreeItem(tpItemInfo);
 		SendMessage(hWnd, WM_CHECK_RESULT, ST_TIMEOUT, (LPARAM)tpItemInfo);
+		if(ToolFlag == TRUE){
+			MessageBox(hWnd, STR_ERROR_TIMEOUT, tpItemInfo->CheckURL, MB_ICONERROR);
+		}
 		return CHECK_END;
 	}
 	return CHECK_SUCCEED;
@@ -1704,6 +1717,38 @@ static void CancelHTTP(struct TPHTTP *tpHTTP)
 
 /******************************************************************************
 
+	CrackOrigin
+
+	URLからスキーム、サーバ名、ポート番号を取得する
+
+******************************************************************************/
+
+static BOOL CrackOrigin(char *URL, int *Scheme, WCHAR *HostName, DWORD HostNameLength, INTERNET_PORT *Port)
+{
+	URL_COMPONENTS urlComponents;
+	WCHAR *wURL;
+	BOOL ret;
+
+	wURL = AllocWideString(URL);
+	if(wURL == NULL){
+		return FALSE;
+	}
+	ZeroMemory(&urlComponents, sizeof(URL_COMPONENTS));
+	urlComponents.dwStructSize = sizeof(URL_COMPONENTS);
+	urlComponents.lpszHostName = HostName;
+	urlComponents.dwHostNameLength = HostNameLength;
+	ret = WinHttpCrackUrl(wURL, 0, 0, &urlComponents);
+	FreeWideString(&wURL);
+	if(ret == FALSE){
+		return FALSE;
+	}
+	*Scheme = urlComponents.nScheme;
+	*Port = urlComponents.nPort;
+	return TRUE;
+}
+
+/******************************************************************************
+
 	IsSameOrigin
 
 	スキーム、サーバ名、ポート番号が同じURLかどうかチェックする
@@ -1712,29 +1757,19 @@ static void CancelHTTP(struct TPHTTP *tpHTTP)
 
 static BOOL IsSameOrigin(char *URL1, char *URL2)
 {
-	char *sv1, *sv2;
-	int port1, port2;
-	BOOL secure1, secure2;
-	BOOL ret = FALSE;
+	WCHAR Host1[256], Host2[256];
+	INTERNET_PORT Port1, Port2;
+	int Scheme1, Scheme2;
 
 	if(URL1 == NULL || URL2 == NULL){
 		return FALSE;
 	}
-	secure1 = (lstrcmpni(URL1, "https://", 8) == 0) ? TRUE : FALSE;
-	secure2 = (lstrcmpni(URL2, "https://", 8) == 0) ? TRUE : FALSE;
-	if(secure1 != secure2){
+	//接続先の判定はリクエストと同じ WinHttpCrackUrl で行う
+	if(CrackOrigin(URL1, &Scheme1, Host1, sizeof(Host1) / sizeof(WCHAR), &Port1) == FALSE ||
+		CrackOrigin(URL2, &Scheme2, Host2, sizeof(Host2) / sizeof(WCHAR), &Port2) == FALSE){
 		return FALSE;
 	}
-	sv1 = (char *)GlobalAlloc(GPTR, lstrlen(URL1) + 1);
-	sv2 = (char *)GlobalAlloc(GPTR, lstrlen(URL2) + 1);
-	if(sv1 != NULL && sv2 != NULL){
-		port1 = GetURL(URL1, sv1, NULL, (secure1 == TRUE) ? 443 : 80, NULL, NULL);
-		port2 = GetURL(URL2, sv2, NULL, (secure2 == TRUE) ? 443 : 80, NULL, NULL);
-		ret = (port1 != -1 && port1 == port2 && lstrcmpi(sv1, sv2) == 0) ? TRUE : FALSE;
-	}
-	if(sv1 != NULL) GlobalFree(sv1);
-	if(sv2 != NULL) GlobalFree(sv2);
-	return ret;
+	return (Scheme1 == Scheme2 && Port1 == Port2 && lstrcmpiW(Host1, Host2) == 0) ? TRUE : FALSE;
 }
 
 
@@ -2278,6 +2313,7 @@ static BOOL HTTP_Request(struct TPHTTP *tpHTTP)
 static DWORD WINAPI HTTP_Thread(LPVOID lpParam)
 {
 	struct TPHTTP *tpHTTP = (struct TPHTTP *)lpParam;
+	HMODULE hModule = tpHTTP->hModule;
 	BOOL CancelFlag;
 
 	SetLastError(NO_ERROR);
@@ -2309,6 +2345,8 @@ static DWORD WINAPI HTTP_Thread(LPVOID lpParam)
 		ReleaseHTTP(tpHTTP);
 	}
 	InterlockedDecrement(&ThreadCnt);
+	//スレッドの終了までDLLが解放されないよう取得した参照を解放して終了する
+	FreeLibraryAndExitThread(hModule, 0);
 	return 0;
 }
 
@@ -2329,22 +2367,38 @@ static void HTTP_Complete(struct TPHTTP *tpHTTP)
 
 	if(tpHTTP->ErrDef != NULL){
 		SetHttpError(tpItemInfo, tpHTTP->ErrDef, tpHTTP->ErrFunc, tpHTTP->ErrCode);
-		SendMessage(hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		HTTP_FreeItem(tpItemInfo);
+		if(tpHTTP->ErrCode == ERROR_WINHTTP_TIMEOUT){
+			//WinHTTPのタイムアウトはタイムアウトとして通知する
+			SendMessage(hWnd, WM_CHECK_END, CHECK_END, (LPARAM)tpItemInfo);
+			ret = ST_TIMEOUT;
+		}else{
+			SendMessage(hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
+			ret = ST_ERROR;
+		}
+		//通知中 (メッセージボックス表示中など) に中止された場合はアイテムを参照しない
+		if(tpHTTP->CancelFlag == TRUE || (struct TPHTTP *)tpItemInfo->Param1 != tpHTTP){
+			return;
+		}
+		SendMessage(hWnd, WM_CHECK_RESULT, ret, (LPARAM)tpItemInfo);
+		if(tpHTTP->CancelFlag == FALSE && (struct TPHTTP *)tpItemInfo->Param1 == tpHTTP){
+			HTTP_FreeItem(tpItemInfo);
+		}
 		return;
 	}
 	ret = HeaderFunc(hWnd, tpItemInfo);
 	if(ret == CHECK_NO){
-		//再チェックする場合は移動先のURL (Param2) を残す
+		//再チェックする場合は移動先のURL (Param2) と処理の種類 (Param3) を残す
 		tpItemInfo->Param1 = 0;
-		tpItemInfo->Param3 = 0;
 		CancelHTTP(tpHTTP);
 		ReleaseHTTP(tpHTTP);
 		SendMessage(hWnd, WM_CHECK_END, ret, (LPARAM)tpItemInfo);
 		return;
 	}
 	SendMessage(hWnd, WM_CHECK_END, ret, (LPARAM)tpItemInfo);
+	//通知中 (メッセージボックス表示中など) に中止された場合はアイテムを参照しない
+	if(tpHTTP->CancelFlag == TRUE || (struct TPHTTP *)tpItemInfo->Param1 != tpHTTP){
+		return;
+	}
 	SetSBText(hWnd, tpItemInfo, STR_STATUS_CHECKEND);
 	HTTP_FreeItem(tpItemInfo);
 }
@@ -2419,6 +2473,11 @@ static BOOL Start_HTTP_Thread(struct TPHTTP *tpHTTP)
 		}
 	}
 
+	//スレッドの実行中にDLLが解放されないよう参照を取得する
+	if(GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCSTR)HTTP_Thread, &tpHTTP->hModule) == FALSE){
+		return FALSE;
+	}
+
 	//スレッドの参照
 	InterlockedIncrement(&tpHTTP->RefCnt);
 	InterlockedIncrement(&ThreadCnt);
@@ -2447,6 +2506,8 @@ static BOOL Start_HTTP_Thread(struct TPHTTP *tpHTTP)
 		LeaveCriticalSection(&ListCs);
 		InterlockedDecrement(&ThreadCnt);
 		InterlockedDecrement(&tpHTTP->RefCnt);
+		FreeLibrary(tpHTTP->hModule);
+		tpHTTP->hModule = NULL;
 		return FALSE;
 	}
 	return TRUE;
@@ -2464,6 +2525,14 @@ static BOOL Start_HTTP_Thread(struct TPHTTP *tpHTTP)
 __declspec(dllexport) int CALLBACK HTTP_Start(HWND hWnd, struct TPITEM *tpItemInfo)
 {
 	struct TPHTTP *tpHTTP;
+
+	//前回の受信が残っている場合は中止する
+	if(tpItemInfo->Param1 != 0){
+		tpHTTP = (struct TPHTTP *)tpItemInfo->Param1;
+		tpItemInfo->Param1 = 0;
+		CancelHTTP(tpHTTP);
+		ReleaseHTTP(tpHTTP);
+	}
 
 	tpHTTP = AllocHTTP(hWnd, tpItemInfo);
 	if(tpHTTP == NULL){
@@ -2816,17 +2885,23 @@ __declspec(dllexport) int CALLBACK HTTP_ExecItem(HWND hWnd, char *Action, struct
 	}else if(lstrcmp(Action, "header") == 0){
 		//ヘッダ表示
 		tpItemInfo->Param3 = 1;
+		ToolItemInfo = tpItemInfo;
 		SendMessage(hWnd, WM_ITEMCHECK, 0, (LPARAM)tpItemInfo);
+		ToolItemInfo = NULL;
 
 	}else if(lstrcmp(Action, "source") == 0){
 		//ソース表示
 		tpItemInfo->Param3 = 2;
+		ToolItemInfo = tpItemInfo;
 		SendMessage(hWnd, WM_ITEMCHECK, 0, (LPARAM)tpItemInfo);
+		ToolItemInfo = NULL;
 
 	}else if(lstrcmp(Action, "gettitle") == 0){
 		//タイトル取得
 		tpItemInfo->Param3 = 3;
+		ToolItemInfo = tpItemInfo;
 		SendMessage(hWnd, WM_ITEMCHECK, 0, (LPARAM)tpItemInfo);
+		ToolItemInfo = NULL;
 	}
 	// 1 を返すとアイコンを初期化する。
 	return rc;

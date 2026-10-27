@@ -404,6 +404,18 @@ void Item_ContentCopy(struct TPITEM *NewItemInfo, struct TPITEM *TmpItemInfo)
 	//構造体のコピー
 	CopyMemory(NewItemInfo, TmpItemInfo, sizeof(struct TPITEM));
 
+	//DLLが管理する情報はコピーしない (コピー元と同じポインタを二重に解放しないため)
+	NewItemInfo->Soc1 = 0;
+	NewItemInfo->Soc2 = 0;
+	NewItemInfo->hGetHost1 = NULL;
+	NewItemInfo->hGetHost2 = NULL;
+	NewItemInfo->Param1 = 0;
+	NewItemInfo->Param2 = 0;
+	NewItemInfo->Param3 = 0;
+	NewItemInfo->Param4 = 0;
+	NewItemInfo->user1 = 0;
+	NewItemInfo->user2 = 0;
+
 	//アイテム情報のコピー
 	NewItemInfo->Title = AllocCopy(TmpItemInfo->Title);
 	NewItemInfo->CheckURL = AllocCopy(TmpItemInfo->CheckURL);
@@ -1502,7 +1514,8 @@ BOOL Item_Property(HWND hWnd)
 			PropItemInfo->user2 = tpItemInfo->user2;
 			PropItemInfo->RefreshFlag = tpItemInfo->RefreshFlag;
 
-			FreeItemInfo(tpItemInfo, TRUE);
+			//DLLが管理する情報は引き継ぐため、DLLの解放処理は呼ばない
+			FreeItemInfo(tpItemInfo, FALSE);
 			CopyMemory(tpItemInfo, PropItemInfo, sizeof(struct TPITEM));
 			break;
 		}

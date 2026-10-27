@@ -263,6 +263,9 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
 					if(AddProtocol(&tpProtocolInfo) == FALSE){
 						ErrMsg(hDlg, GetLastError(), NULL);
+						if(tpProtocolInfo.lib != NULL){
+							FreeLibrary(tpProtocolInfo.lib);
+						}
 						EndDialog(hDlg, FALSE);
 						break;
 					}
@@ -293,6 +296,9 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
 					if(AddTool(&tpSetTool) == FALSE){
 						ErrMsg(hDlg, GetLastError(), NULL);
+						if(tpSetTool.lib != NULL){
+							FreeLibrary(tpSetTool.lib);
+						}
 						EndDialog(hDlg, FALSE);
 						break;
 					}
