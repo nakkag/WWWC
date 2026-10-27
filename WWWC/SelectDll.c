@@ -258,7 +258,8 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 					tpProtocolInfo.IconIndex = tpProtocolSet.IconIndex;
 					lstrcpy(tpProtocolInfo.UpIconFile, tpProtocolSet.UpIconFile);
 					tpProtocolInfo.UpIconIndex = tpProtocolSet.UpIconIndex;
-					tpProtocolInfo.lib = hLib;
+					//解放時にプロトコルごとに FreeLibrary されるため参照を個別に取得する
+					tpProtocolInfo.lib = LoadLibrary(DLLPath);
 
 					if(AddProtocol(&tpProtocolInfo) == FALSE){
 						ErrMsg(hDlg, GetLastError(), NULL);
@@ -287,7 +288,8 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 					ZeroMemory(&tpSetTool, sizeof(struct TP_TOOLS));
 					CopyMemory(&tpSetTool, &GetTool, sizeof(struct TP_GETTOOL));
 					lstrcpy(tpSetTool.FileName, DLLPath);
-					tpSetTool.lib = hLib;
+					//解放時にツールごとに FreeLibrary されるため参照を個別に取得する
+					tpSetTool.lib = LoadLibrary(DLLPath);
 
 					if(AddTool(&tpSetTool) == FALSE){
 						ErrMsg(hDlg, GetLastError(), NULL);
@@ -311,6 +313,7 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 			SetNewItemMenu(WWWCWnd);
 			SetProtocolMenu(WWWCWnd);
 
+			FreeLibrary(hLib);
 			EndDialog(hDlg, TRUE);
 			break;
 		}
@@ -333,7 +336,44 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
 BOOL SelectDll(HWND hWnd, char *DLLPath)
 {
-	return DialogBoxParam(g_hinst, MAKEINTRESOURCE(IDD_DIALOG_SELECTDLL), hWnd, SelectDllProc, (LPARAM)DLLPath);
+	char FullPath[BUFSIZE];
+	char *FilePart;
+	char *msg;
+	DWORD len, attr;
+	int ret;
+
+	if(DLLPath == NULL || *DLLPath == '\0'){
+		return FALSE;
+	}
+
+	//検索パスから別のDLLが読み込まれないようフルパスに変換する
+	len = GetFullPathName(DLLPath, BUFSIZE, FullPath, &FilePart);
+	if(len == 0 || len >= BUFSIZE){
+		MessageBox(hWnd, EMSG_DLLPATH, EMSG_DLL_TITLE, MB_OK | MB_ICONEXCLAMATION);
+		return FALSE;
+	}
+	attr = GetFileAttributes(FullPath);
+	if(attr == 0xFFFFFFFF){
+		ErrMsg(hWnd, GetLastError(), EMSG_DLL_TITLE);
+		return FALSE;
+	}
+	if(attr & FILE_ATTRIBUTE_DIRECTORY){
+		MessageBox(hWnd, EMSG_DLLPATH, EMSG_DLL_TITLE, MB_OK | MB_ICONEXCLAMATION);
+		return FALSE;
+	}
+
+	//DLLを読み込むとDLL内のコードが実行されるため読み込む前に確認する
+	msg = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(QMSG_LOADDLL) + lstrlen(FullPath) + 1);
+	if(msg == NULL){
+		return FALSE;
+	}
+	wsprintf(msg, QMSG_LOADDLL, FullPath);
+	ret = MessageBox(hWnd, msg, EMSG_DLL_TITLE, MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2);
+	GlobalFree(msg);
+	if(ret != IDYES){
+		return FALSE;
+	}
+	return DialogBoxParam(g_hinst, MAKEINTRESOURCE(IDD_DIALOG_SELECTDLL), hWnd, SelectDllProc, (LPARAM)FullPath);
 }
 
 /* End of source */

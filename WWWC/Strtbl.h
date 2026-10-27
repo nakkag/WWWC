@@ -194,6 +194,8 @@
 #define EMSG_DLL_TITLE					"DLL"
 #define EMSG_DLL						"DLLからプロトコルとツールの情報が見つかりませんでした。"
 #define EMSG_SELECT						"追加するプロトコル及びツールを選択してください。"
+#define EMSG_DLLPATH						"DLLのパスが不正です。"
+#define QMSG_LOADDLL					"次のDLLを読み込みます。\nDLLを読み込むとDLL内のプログラムが実行されます。信頼できるDLLの場合のみ読み込んでください。\n\n%s\n\n読み込みますか？"
 
 //SelectIcon.c
 #define FILEFILTER_ICON					"アイコン ファイル\0*.ico;*.exe;*.dll;*.icl\0" \

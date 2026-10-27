@@ -87,6 +87,31 @@ struct TPHTTP{
 
 	char *user;
 	char *pass;
+
+	//以下はチェック処理のスレッドとの共有情報
+	struct TPITEM *tpItemInfo;			/* チェック中のアイテム (メインスレッドでのみ参照) */
+	LONG RefCnt;						/* 参照カウント (アイテムとスレッドと通知メッセージ) */
+	CRITICAL_SECTION cs;				/* スレッドとの排他 */
+	BOOL CancelFlag;					/* 中止 (アイテムから切り離し済み) */
+	void *hSession;						/* WinHTTPのハンドル */
+	void *hConnect;
+	void *hRequest;
+	WCHAR *ReqURL;						/* 要求するURL */
+	WCHAR *ProxyName;					/* プロキシ (使用しない場合はNULL) */
+	WCHAR *SendHeader;					/* 送信ヘッダ */
+	WCHAR *ProxyUser;					/* HTTPS接続時のプロキシ認証 */
+	WCHAR *ProxyPass;
+	BOOL HeadRequest;					/* HEADリクエスト */
+	BOOL NoRedirect;					/* 自動リダイレクトを行わない */
+	BOOL NeedBody;						/* 本文をすべて受信する */
+	int Mode;							/* 処理の種類 (Param3) */
+	DWORD TimeOutMs;					/* タイムアウト (ミリ秒) */
+	DWORD ErrCode;						/* エラー情報 */
+	char *ErrDef;
+	char *ErrFunc;
+	DWORD ProgressTick;					/* 受信状況の通知時刻 */
+	struct TPHTTP *Next;				/* 実行中のリスト */
+	struct TPHTTP *Prev;
 };
 
 struct TPGETHOSTBYNAME{

@@ -53,6 +53,15 @@
 
 #define USER_AGENT			L"WWWC/1.13"
 
+#define WM_HTTP_DONE		(WM_USER + 1300)		/* スレッドの終了通知 */
+#define WM_HTTP_PROGRESS	(WM_USER + 1301)		/* 受信状況の通知 */
+#define NOTIFY_WINDOW_CLASS	"WWWC_HTTP_Notify"
+#define THREAD_END_WAIT		5000					/* 終了時にスレッドを待つ時間 (ミリ秒) */
+
+#ifndef HWND_MESSAGE
+#define HWND_MESSAGE		((HWND)-3)
+#endif
+
 
 /**************************************************************************
 	Global Variables
@@ -64,6 +73,12 @@ static struct TPHOSTINFO *tpHostInfo;
 static int HostInfoCnt;
 
 HWND hWndList[100];
+
+static HWND hNotifyWnd;							/* スレッドからの通知を受け取るウィンドウ */
+static CRITICAL_SECTION ListCs;					/* 実行中のリストの排他 */
+static BOOL ListCsInit;
+static struct TPHTTP *ActiveList;				/* 実行中のリスト */
+static LONG ThreadCnt;							/* 実行中のスレッド数 */
 
 
 //外部参照
@@ -101,6 +116,7 @@ static char *GetTitle(char *buf);
 
 //Check
 static void SetErrorString(struct TPITEM *tpItemInfo, char *buf, BOOL HeadFlag);
+static void SetHttpError(struct TPITEM *tpItemInfo, char *def, char *func, DWORD err);
 static char *CreateOldData(char *buf);
 static int GetMetaString(struct TPITEM *tpItemInfo);
 static int Head_GetDate(struct TPITEM *tpItemInfo, int CmpOption, BOOL *DateRet);
@@ -109,10 +125,15 @@ static int Get_GetSize(struct TPITEM *tpItemInfo, int CmpOption, int SetDate);
 static int Get_MD5Check(struct TPITEM *tpItemInfo, int SetDate);
 static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo);
 static void SetSBText(HWND hWnd, struct TPITEM *tpItemInfo, char *msg);
-static BOOL CheckHead(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP);
+static BOOL CheckHead(struct TPHTTP *tpHTTP);
 static void FreeURLData(struct TPHTTP *tpHTTP);
 static BOOL GetServerPort(HWND hWnd, struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP);
 static BOOL CheckServer(HWND hWnd, char *RealServer);
+static void ReleaseHTTP(struct TPHTTP *tpHTTP);
+static void CloseRequestHandles(struct TPHTTP *tpHTTP);
+static void CancelHTTP(struct TPHTTP *tpHTTP);
+static BOOL IsSameOrigin(char *URL1, char *URL2);
+static BOOL HasItemAuth(struct TPITEM *tpItemInfo);
 
 //Drag & Dropb
 static BOOL WriteInternetShortcut(char *URL, char *path);
@@ -433,15 +454,17 @@ static void SetErrorString(struct TPITEM *tpItemInfo, char *buf, BOOL HeadFlag)
 
 ******************************************************************************/
 
-static void SetHttpError(struct TPITEM *tpItemInfo, char *def, char *func)
+static void SetHttpError(struct TPITEM *tpItemInfo, char *def, char *func, DWORD err)
 {
-	DWORD err;
 	char *msg = NULL;
 	char *buf;
 
-	err = GetLastError();
 	if (err == NO_ERROR) {
 		buf = (char *)HeapAlloc(GetProcessHeap(), 0, lstrlen(def) + 2 + lstrlen(func) + 1);
+		if (buf == NULL) {
+			if (msg != NULL) LocalFree(msg);
+			return;
+		}
 		wsprintf(buf, "%s :%s", def, func);
 		SetErrorString(tpItemInfo, buf, FALSE);
 		HeapFree(GetProcessHeap(), 0, buf);
@@ -458,12 +481,20 @@ static void SetHttpError(struct TPITEM *tpItemInfo, char *def, char *func)
 			}
 		}
 		buf = (char *)HeapAlloc(GetProcessHeap(), 0, lstrlen(msg) + 2 + 10 + 3 + lstrlen(func) + 1);
+		if (buf == NULL) {
+			if (msg != NULL) LocalFree(msg);
+			return;
+		}
 		wsprintf(buf, "%s (%u): %s", msg, err, func);
 		SetErrorString(tpItemInfo, buf, FALSE);
 		HeapFree(GetProcessHeap(), 0, buf);
 		LocalFree(msg);
 	} else {
 		buf = (char *)HeapAlloc(GetProcessHeap(), 0, lstrlen(def) + 2 + 10 + 3 + lstrlen(func) + 1);
+		if (buf == NULL) {
+			if (msg != NULL) LocalFree(msg);
+			return;
+		}
 		wsprintf(buf, "%s (%u): %s", def, err, func);
 		SetErrorString(tpItemInfo, buf, FALSE);
 		HeapFree(GetProcessHeap(), 0, buf);
@@ -923,7 +954,7 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 	case 1:
 	case 2:
 		//ヘッダ、ソース表示
-		if(Status == 301 || Status == 302){
+		if(Status == 301 || Status == 302 || Status == 303 || Status == 307 || Status == 308){
 			break;
 		}
 		//チェックの終了をWWWCに通知
@@ -931,7 +962,7 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 		return CHECK_END;
 
 	case 3:
-		if(Status == 301 || Status == 302){
+		if(Status == 301 || Status == 302 || Status == 303 || Status == 307 || Status == 308){
 			break;
 		}
 		//タイトル取得
@@ -1033,6 +1064,10 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 		break;
 
 	case 301:	/* 移動の場合 */
+	case 302:
+	case 303:
+	case 307:
+	case 308:
 		if(tpItemInfo->Param4 > 10){
 			tpItemInfo->Param4 = 0;
 			SetErrorString(tpItemInfo, STR_ERROR_MOVE, FALSE);
@@ -1043,55 +1078,33 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 		headcontent = (char *)GlobalAlloc(GPTR, len + 1);
 		if(headcontent != NULL && GetHeadContent(tpHTTP->buf, "Location:", headcontent) == TRUE){
 			DelCtrlChar(headcontent);
-			//http, https 以外への移動は行わない
-			if(lstrcmpni(headcontent, "http://", 7) != 0 && lstrcmpni(headcontent, "https://", 8) != 0){
-				GlobalFree(headcontent);
+			//現在のURLを基準に移動先のURLを作成 (http, https 以外は NULL)
+			p = CreateMoveURL((tpItemInfo->Param2 != 0) ? (char *)tpItemInfo->Param2 : tpItemInfo->CheckURL, headcontent);
+			GlobalFree(headcontent);
+			if(p == NULL){
 				SetErrorString(tpItemInfo, tpHTTP->buf, TRUE);
 				SendMessage(hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
 				break;
 			}
 			tpItemInfo->Param4++;
+
+			//恒久的な移動の場合はチェックするURLを変更する
+			//認証情報を使用するアイテムは別の接続先に認証情報を送らないよう同じ接続先の場合のみ変更する
+			if((Status == 301 || Status == 308) &&
+				(HasItemAuth(tpItemInfo) == FALSE || IsSameOrigin(p, tpItemInfo->CheckURL) == TRUE)){
+				r = (char *)GlobalAlloc(GPTR, lstrlen(p) + 1);
+				if(r != NULL){
+					lstrcpy(r, p);
+					if(tpItemInfo->CheckURL != NULL){
+						GlobalFree((HGLOBAL)tpItemInfo->CheckURL);
+					}
+					tpItemInfo->CheckURL = r;
+				}
+			}
 			if(tpItemInfo->Param2 != 0){
 				GlobalFree((HGLOBAL)tpItemInfo->Param2);
 			}
-			tpItemInfo->Param2 = (long)GlobalAlloc(GPTR, lstrlen(headcontent) + 1);
-			if(tpItemInfo->Param2 != 0) lstrcpy((char*)tpItemInfo->Param2, headcontent);
-
-			//チェックするURLを変更
-			if(tpItemInfo->CheckURL != NULL){
-				GlobalFree((HGLOBAL)tpItemInfo->CheckURL);
-			}
-			tpItemInfo->CheckURL = (char *)GlobalAlloc(GPTR, lstrlen(headcontent) + 1);
-			if(tpItemInfo->CheckURL != NULL) lstrcpy(tpItemInfo->CheckURL, headcontent);
-			GlobalFree(headcontent);
-
-			//リクエストの初期化
-			return CHECK_NO;
-		}else{
-			if(headcontent != NULL) GlobalFree(headcontent);
-			SetErrorString(tpItemInfo, tpHTTP->buf, TRUE);
-			SendMessage(hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		}
-		break;
-
-	case 302:	/* 移動の場合 */
-	case 307:
-		if(tpItemInfo->Param4 > 10){
-			tpItemInfo->Param4 = 0;
-			SetErrorString(tpItemInfo, STR_ERROR_MOVE, FALSE);
-			SendMessage(hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-			break;
-		}
-		len = GetHeadContentSize(tpHTTP->buf, "Location:");
-		headcontent = (char *)GlobalAlloc(GPTR, len + 1);
-		if(headcontent != NULL && GetHeadContent(tpHTTP->buf, "Location:", headcontent) == TRUE){
-			DelCtrlChar(headcontent);
-			tpItemInfo->Param4++;
-			if(tpItemInfo->Param2 != 0){
-				GlobalFree((HGLOBAL)tpItemInfo->Param2);
-			}
-			tpItemInfo->Param2 = (long)CreateMoveURL(tpHTTP->Path, headcontent);
-			GlobalFree(headcontent);
+			tpItemInfo->Param2 = (long)p;
 
 			//リクエストの初期化
 			return CHECK_NO;
@@ -1156,15 +1169,12 @@ static void SetSBText(HWND hWnd, struct TPITEM *tpItemInfo, char *msg)
 
 ******************************************************************************/
 
-static BOOL CheckHead(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
+static BOOL CheckHead(struct TPHTTP *tpHTTP)
 {
 	char *p;
 
 	//すべて受信する必要がある場合
-	if(tpItemInfo->Param3 >= 2 || tpHTTP->FilterFlag == TRUE ||
-		GetOptionInt(tpItemInfo->Option1, OP1_META) == 1 ||
-		GetOptionInt(tpItemInfo->Option1, OP1_MD5) == 1 ||
-		GetOptionInt(tpItemInfo->Option1, OP1_NOTAGSIZE) == 1){
+	if(tpHTTP->NeedBody == TRUE){
 		tpHTTP->HeadCheckFlag = TRUE;
 		return FALSE;
 	}
@@ -1182,12 +1192,12 @@ static BOOL CheckHead(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
 	}
 
 	//ヘッダ表示の場合は受信を打ち切る
-	if(tpItemInfo->Param3 == 1){
+	if(tpHTTP->Mode == 1){
 		return TRUE;
 	}
 
 	//ヘッダにサイズが設定されているかチェック
-	if(tpItemInfo->Param3 == 0 && GetHeadContentSize(tpHTTP->buf, "Content-Length:") <= 0){
+	if(tpHTTP->Mode == 0 && GetHeadContentSize(tpHTTP->buf, "Content-Length:") <= 0){
 		tpHTTP->HeadCheckFlag = TRUE;
 		return FALSE;
 	}
@@ -1205,13 +1215,14 @@ static BOOL CheckHead(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
 
 __declspec(dllexport) int CALLBACK HTTP_FreeItem(struct TPITEM *tpItemInfo)
 {
+	struct TPHTTP *tpHTTP;
+
 	if(tpItemInfo->Param1 != 0){
-		if((HGLOBAL)((struct TPHTTP *)tpItemInfo->Param1)->buf != NULL){
-			GlobalFree((HGLOBAL)((struct TPHTTP *)tpItemInfo->Param1)->buf);
-		}
-		FreeURLData((struct TPHTTP *)tpItemInfo->Param1);
-		GlobalFree((HGLOBAL)tpItemInfo->Param1);
+		//受信中の場合は中止してアイテムから切り離す (スレッドが終了した時点で解放される)
+		tpHTTP = (struct TPHTTP *)tpItemInfo->Param1;
 		tpItemInfo->Param1 = 0;
+		CancelHTTP(tpHTTP);
+		ReleaseHTTP(tpHTTP);
 	}
 	if(tpItemInfo->Param2 != 0){
 		GlobalFree((HGLOBAL)tpItemInfo->Param2);
@@ -1265,6 +1276,11 @@ __declspec(dllexport) int CALLBACK HTTP_InitItem(HWND hWnd, struct TPITEM *tpIte
 
 __declspec(dllexport) int CALLBACK HTTP_Initialize(HWND hWnd, struct TPITEM *tpItemInfo)
 {
+	//前回のチェックで残った移動先のURLを解放
+	if(tpItemInfo->Param1 == 0 && tpItemInfo->Param2 != 0){
+		GlobalFree((HGLOBAL)tpItemInfo->Param2);
+		tpItemInfo->Param2 = 0;
+	}
 	tpItemInfo->user1 = 0;
 	tpItemInfo->user2 = 0;
 	tpItemInfo->Param4 = 0;
@@ -1290,6 +1306,12 @@ __declspec(dllexport) int CALLBACK HTTP_Cancel(HWND hWnd, struct TPITEM *tpItemI
 	if (tpHTTP == NULL) {
 		return 0;
 	}
+	//受信を中止してからバッファを参照する (中止後はスレッドはバッファを変更しない)
+	EnterCriticalSection(&tpHTTP->cs);
+	tpHTTP->CancelFlag = TRUE;
+	CloseRequestHandles(tpHTTP);
+	LeaveCriticalSection(&tpHTTP->cs);
+
 	switch(tpItemInfo->Param3){
 	case 1:
 	case 2:
@@ -1300,7 +1322,7 @@ __declspec(dllexport) int CALLBACK HTTP_Cancel(HWND hWnd, struct TPITEM *tpItemI
 
 	case 3:
 		//タイトル取得
-		if((titlebuf = GetTitle(tpHTTP->buf + HeaderSize(tpHTTP->buf))) != NULL){
+		if(tpHTTP->buf != NULL && (titlebuf = GetTitle(tpHTTP->buf + HeaderSize(tpHTTP->buf))) != NULL){
 			if(tpItemInfo->Title != NULL){
 				GlobalFree(tpItemInfo->Title);
 			}
@@ -1312,10 +1334,6 @@ __declspec(dllexport) int CALLBACK HTTP_Cancel(HWND hWnd, struct TPITEM *tpItemI
 			tpItemInfo->RefreshFlag = TRUE;
 		}
 		break;
-	}
-	if (tpHTTP->hThread != NULL) {
-		TerminateThread(tpHTTP->hThread, 0);
-		tpHTTP->hThread = NULL;
 	}
 	HTTP_FreeItem(tpItemInfo);
 	return 0;
@@ -1332,8 +1350,6 @@ __declspec(dllexport) int CALLBACK HTTP_Cancel(HWND hWnd, struct TPITEM *tpItemI
 
 __declspec(dllexport) int CALLBACK HTTP_Timer(HWND hWnd, struct TPITEM *tpItemInfo)
 {
-	struct TPHTTP *tpHTTP;
-
 	if(tpItemInfo->user1 == -1){
 		return CHECK_SUCCEED;
 	}
@@ -1343,11 +1359,7 @@ __declspec(dllexport) int CALLBACK HTTP_Timer(HWND hWnd, struct TPITEM *tpItemIn
 			tpItemInfo->user1 = -1;
 			MessageBox(hWnd, STR_ERROR_TIMEOUT, tpItemInfo->CheckURL, MB_ICONERROR);
 		}
-		tpHTTP = (struct TPHTTP *)tpItemInfo->Param1;
-		if (tpHTTP != NULL && tpHTTP->hThread != NULL) {
-			TerminateThread(tpHTTP->hThread, 0);
-			tpHTTP->hThread = NULL;
-		}
+		//受信を中止 (スレッドは強制終了せず、WinHTTPのハンドルを閉じて終了させる)
 		HTTP_FreeItem(tpItemInfo);
 		SendMessage(hWnd, WM_CHECK_RESULT, ST_TIMEOUT, (LPARAM)tpItemInfo);
 		return CHECK_END;
@@ -1575,178 +1587,310 @@ static BOOL CheckServer(HWND hWnd, char *RealServer)
 
 /******************************************************************************
 
-	HTTP_Thread
+	AllocHTTP
 
-	HTTP処理スレッド
+	チェック情報の確保 (アイテムからの参照を1つ持つ)
 
 ******************************************************************************/
 
-static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
+static struct TPHTTP *AllocHTTP(HWND hWnd, struct TPITEM *tpItemInfo)
 {
 	struct TPHTTP *tpHTTP;
-	HINTERNET hSession, hConnect, hRequest;
-	URL_COMPONENTS urlComponents;
-	WCHAR szHostName[256];
-	WCHAR *szUrlPath;
-	WCHAR *wp;
-	DWORD dwSize;
-	WCHAR *header;
-	WCHAR *url;
-	WCHAR *sendHeader;
-	WCHAR *s;
+
+	tpHTTP = (struct TPHTTP *)GlobalAlloc(GPTR, sizeof(struct TPHTTP));
+	if(tpHTTP == NULL){
+		return NULL;
+	}
+	InitializeCriticalSection(&tpHTTP->cs);
+	tpHTTP->RefCnt = 1;
+	tpHTTP->hWnd = hWnd;
+	tpHTTP->tpItemInfo = tpItemInfo;
+	return tpHTTP;
+}
+
+
+/******************************************************************************
+
+	FreeWideString
+
+	ワイド文字列を消去して解放
+
+******************************************************************************/
+
+static void FreeWideString(WCHAR **str)
+{
+	if(*str != NULL){
+		SecureZeroMemory(*str, lstrlenW(*str) * sizeof(WCHAR));
+		HeapFree(GetProcessHeap(), 0, *str);
+		*str = NULL;
+	}
+}
+
+
+/******************************************************************************
+
+	CloseRequestHandles
+
+	WinHTTPのハンドルを閉じる (cs を取得して呼ぶ)
+
+******************************************************************************/
+
+static void CloseRequestHandles(struct TPHTTP *tpHTTP)
+{
+	if(tpHTTP->hRequest != NULL){
+		WinHttpCloseHandle(tpHTTP->hRequest);
+		tpHTTP->hRequest = NULL;
+	}
+	if(tpHTTP->hConnect != NULL){
+		WinHttpCloseHandle(tpHTTP->hConnect);
+		tpHTTP->hConnect = NULL;
+	}
+	if(tpHTTP->hSession != NULL){
+		WinHttpCloseHandle(tpHTTP->hSession);
+		tpHTTP->hSession = NULL;
+	}
+}
+
+
+/******************************************************************************
+
+	ReleaseHTTP
+
+	チェック情報の参照を解放し、参照が無くなった場合は削除する
+
+******************************************************************************/
+
+static void ReleaseHTTP(struct TPHTTP *tpHTTP)
+{
+	if(InterlockedDecrement(&tpHTTP->RefCnt) != 0){
+		return;
+	}
+	CloseRequestHandles(tpHTTP);
+	if(tpHTTP->hThread != NULL){
+		CloseHandle(tpHTTP->hThread);
+	}
+	if(tpHTTP->buf != NULL){
+		GlobalFree((HGLOBAL)tpHTTP->buf);
+	}
+	FreeURLData(tpHTTP);
+	FreeWideString(&tpHTTP->ReqURL);
+	FreeWideString(&tpHTTP->ProxyName);
+	FreeWideString(&tpHTTP->SendHeader);
+	FreeWideString(&tpHTTP->ProxyUser);
+	FreeWideString(&tpHTTP->ProxyPass);
+	DeleteCriticalSection(&tpHTTP->cs);
+	GlobalFree((HGLOBAL)tpHTTP);
+}
+
+
+/******************************************************************************
+
+	CancelHTTP
+
+	受信を中止してアイテムから切り離す (メインスレッドから呼ぶ)
+
+******************************************************************************/
+
+static void CancelHTTP(struct TPHTTP *tpHTTP)
+{
+	EnterCriticalSection(&tpHTTP->cs);
+	tpHTTP->CancelFlag = TRUE;
+	tpHTTP->tpItemInfo = NULL;
+	//ハンドルを閉じると処理中のWinHTTPの関数は失敗して戻る
+	CloseRequestHandles(tpHTTP);
+	LeaveCriticalSection(&tpHTTP->cs);
+}
+
+
+/******************************************************************************
+
+	IsSameOrigin
+
+	スキーム、サーバ名、ポート番号が同じURLかどうかチェックする
+
+******************************************************************************/
+
+static BOOL IsSameOrigin(char *URL1, char *URL2)
+{
+	char *sv1, *sv2;
+	int port1, port2;
+	BOOL secure1, secure2;
+	BOOL ret = FALSE;
+
+	if(URL1 == NULL || URL2 == NULL){
+		return FALSE;
+	}
+	secure1 = (lstrcmpni(URL1, "https://", 8) == 0) ? TRUE : FALSE;
+	secure2 = (lstrcmpni(URL2, "https://", 8) == 0) ? TRUE : FALSE;
+	if(secure1 != secure2){
+		return FALSE;
+	}
+	sv1 = (char *)GlobalAlloc(GPTR, lstrlen(URL1) + 1);
+	sv2 = (char *)GlobalAlloc(GPTR, lstrlen(URL2) + 1);
+	if(sv1 != NULL && sv2 != NULL){
+		port1 = GetURL(URL1, sv1, NULL, (secure1 == TRUE) ? 443 : 80, NULL, NULL);
+		port2 = GetURL(URL2, sv2, NULL, (secure2 == TRUE) ? 443 : 80, NULL, NULL);
+		ret = (port1 != -1 && port1 == port2 && lstrcmpi(sv1, sv2) == 0) ? TRUE : FALSE;
+	}
+	if(sv1 != NULL) GlobalFree(sv1);
+	if(sv2 != NULL) GlobalFree(sv2);
+	return ret;
+}
+
+
+/******************************************************************************
+
+	HasItemAuth
+
+	アイテムに認証情報が設定されているかチェックする
+
+******************************************************************************/
+
+static BOOL HasItemAuth(struct TPITEM *tpItemInfo)
+{
+	char *sv, *user;
+	BOOL ret = FALSE;
+
+	if(GetOptionInt(tpItemInfo->Option2, OP2_USEPASS) == 1){
+		return TRUE;
+	}
+	if(tpItemInfo->CheckURL == NULL){
+		return FALSE;
+	}
+	sv = (char *)GlobalAlloc(GPTR, lstrlen(tpItemInfo->CheckURL) + 1);
+	user = (char *)GlobalAlloc(GPTR, lstrlen(tpItemInfo->CheckURL) + 1);
+	if(sv != NULL && user != NULL){
+		ret = (GetURL(tpItemInfo->CheckURL, sv, NULL, 80, user, NULL) != -1 && *user != '\0') ? TRUE : FALSE;
+	}
+	if(sv != NULL) GlobalFree(sv);
+	if(user != NULL) GlobalFree(user);
+	return ret;
+}
+
+
+/******************************************************************************
+
+	AllocWideString
+
+	ワイド文字列に変換して確保
+
+******************************************************************************/
+
+static WCHAR *AllocWideString(char *buf)
+{
+	WCHAR *ret;
+	int len;
+
+	len = MultiByteToWideChar(CP_ACP, 0, buf, -1, NULL, 0);
+	if(len <= 0){
+		return NULL;
+	}
+	ret = (WCHAR *)HeapAlloc(GetProcessHeap(), 0, len * sizeof(WCHAR));
+	if(ret == NULL){
+		return NULL;
+	}
+	if(MultiByteToWideChar(CP_ACP, 0, buf, -1, ret, len) == 0){
+		HeapFree(GetProcessHeap(), 0, ret);
+		return NULL;
+	}
+	return ret;
+}
+
+
+/******************************************************************************
+
+	BuildRequest
+
+	リクエストの情報を作成する (スレッドからアイテムを参照しないよう事前に作成)
+
+******************************************************************************/
+
+static BOOL BuildRequest(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
+{
 	char BaseStr1[BUFSIZE * 2 + 2];
 	char BaseStr2[BUFSIZE * 3];
 	char ProxyAuth[BUFSIZE * 3];
 	char user[BUFSIZE];
 	char pass[BUFSIZE];
 	char referer[BUFSIZE];
-	char buf[BUFSIZE];
-	long bufLen, bufCap;
-	int ProxyFlag;
-	BOOL UseProxy;
+	char proxy[BUFSIZE * 2];
+	char *sv;
+	WCHAR *s;
+	DWORD dwSize;
 	BOOL Secure;
-	int wlen;
+	BOOL AuthFlag;
+	int ProxyFlag;
 
-	SetLastError(NO_ERROR);
-
-	tpHTTP = (struct TPHTTP *)tpItemInfo->Param1;
-	if (tpHTTP == NULL) {
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
+	//要求するURL
+	tpHTTP->ReqURL = AllocWideString((char *)tpItemInfo->Param2);
+	if(tpHTTP->ReqURL == NULL){
+		return FALSE;
 	}
+	Secure = (lstrcmpni((char *)tpItemInfo->Param2, "https://", 8) == 0) ? TRUE : FALSE;
+
+	//プロキシ
 	ProxyFlag = GetOptionInt(tpItemInfo->Option2, OP2_NOPROXY);
-	UseProxy = ((ProxyFlag == 0 && Proxy == 1) || ProxyFlag == 2) ? TRUE : FALSE;
-	if (UseProxy == TRUE) {
-		WCHAR wproxy[2048];
-		char proxy[2048];
+	if((ProxyFlag == 0 && Proxy == 1) || ProxyFlag == 2){
 		wsprintf(proxy, "http://%s:%d", tpHTTP->SvName, tpHTTP->Port);
-		if (MultiByteToWideChar(CP_ACP, 0, proxy, -1, wproxy, 2048) == 0) {
-			*wproxy = L'\0';
-		}
-		hSession = WinHttpOpen(USER_AGENT, WINHTTP_ACCESS_TYPE_NAMED_PROXY, wproxy, WINHTTP_NO_PROXY_BYPASS, 0);
-	} else {
-		hSession = WinHttpOpen(USER_AGENT, WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
-	}
-	if (hSession == NULL) {
-		SetHttpError(tpItemInfo, STR_ERROR_CONNECT, "WinHttpOpen");
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
-	}
-
-	//URLの変換 (長さに応じて確保)
-	wlen = MultiByteToWideChar(CP_ACP, 0, (char *)tpItemInfo->Param2, -1, NULL, 0);
-	url = (wlen > 0) ? (WCHAR *)HeapAlloc(GetProcessHeap(), 0, wlen * sizeof(WCHAR)) : NULL;
-	szUrlPath = (wlen > 0) ? (WCHAR *)HeapAlloc(GetProcessHeap(), 0, wlen * sizeof(WCHAR)) : NULL;
-	if (url == NULL || szUrlPath == NULL ||
-		MultiByteToWideChar(CP_ACP, 0, (char *)tpItemInfo->Param2, -1, url, wlen) == 0) {
-		SetHttpError(tpItemInfo, STR_ERROR_CONNECT, "MultiByteToWideChar");
-		if (url != NULL) HeapFree(GetProcessHeap(), 0, url);
-		if (szUrlPath != NULL) HeapFree(GetProcessHeap(), 0, szUrlPath);
-		WinHttpCloseHandle(hSession);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
-	}
-
-	ZeroMemory(&urlComponents, sizeof(URL_COMPONENTS));
-	urlComponents.dwStructSize = sizeof(URL_COMPONENTS);
-	urlComponents.lpszHostName = szHostName;
-	urlComponents.dwHostNameLength = sizeof(szHostName) / sizeof(WCHAR);
-	urlComponents.lpszUrlPath = szUrlPath;
-	urlComponents.dwUrlPathLength = wlen;
-
-	if (!WinHttpCrackUrl(url, wcslen(url), 0, &urlComponents)) {
-		SetHttpError(tpItemInfo, STR_ERROR_CONNECT, "WinHttpCrackUrl");
-		HeapFree(GetProcessHeap(), 0, url);
-		HeapFree(GetProcessHeap(), 0, szUrlPath);
-		WinHttpCloseHandle(hSession);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
-	}
-	HeapFree(GetProcessHeap(), 0, url);
-	for (wp = szUrlPath; *wp != L'\0'; wp++) {
-		if (*wp == L'#') {
-			*wp = L'\0';
-			break;
+		tpHTTP->ProxyName = AllocWideString(proxy);
+		if(tpHTTP->ProxyName == NULL){
+			return FALSE;
 		}
 	}
-	Secure = (INTERNET_SCHEME_HTTPS == urlComponents.nScheme) ? TRUE : FALSE;
 
-	hConnect = WinHttpConnect(hSession, szHostName, urlComponents.nPort, 0);
-	if (hConnect == NULL) {
-		SetHttpError(tpItemInfo, STR_ERROR_CONNECT, "WinHttpConnect");
-		HeapFree(GetProcessHeap(), 0, szUrlPath);
-		WinHttpCloseHandle(hSession);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
-	}
-
-	hRequest = WinHttpOpenRequest(hConnect,
-		(tpItemInfo->user2 == REQUEST_HEAD) ? L"HEAD" : L"GET",
-		szUrlPath, NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES,
-		(Secure == TRUE) ? WINHTTP_FLAG_SECURE : 0);
-	HeapFree(GetProcessHeap(), 0, szUrlPath);
-	if (hRequest == NULL) {
-		SetHttpError(tpItemInfo, STR_ERROR_SEND, "WinHttpOpenRequest");
-		WinHttpCloseHandle(hConnect);
-		WinHttpCloseHandle(hSession);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
-	}
+	//処理の種類
+	tpHTTP->HeadRequest = (tpItemInfo->user2 == REQUEST_HEAD) ? TRUE : FALSE;
+	tpHTTP->Mode = tpItemInfo->Param3;
+	tpHTTP->NeedBody = (tpItemInfo->Param3 >= 2 || tpHTTP->FilterFlag == TRUE ||
+		GetOptionInt(tpItemInfo->Option1, OP1_META) == 1 ||
+		GetOptionInt(tpItemInfo->Option1, OP1_MD5) == 1 ||
+		GetOptionInt(tpItemInfo->Option1, OP1_NOTAGSIZE) == 1) ? TRUE : FALSE;
+	tpHTTP->TimeOutMs = (TimeOut > 0) ? TimeOut * 1000 : 0;
 
 	//プロキシ認証
 	*ProxyAuth = '\0';
-	if (UseProxy == TRUE && pUsePass == 1) {
-		if (Secure == TRUE) {
+	if(tpHTTP->ProxyName != NULL && pUsePass == 1){
+		if(Secure == TRUE){
 			//HTTPSではヘッダが接続先サーバに送られるためプロキシ用の資格情報として設定する
-			WCHAR wbuf[BUFSIZE];
-			if (MultiByteToWideChar(CP_ACP, 0, pUser, -1, wbuf, BUFSIZE) > 0) {
-				WinHttpSetOption(hRequest, WINHTTP_OPTION_PROXY_USERNAME, wbuf, lstrlenW(wbuf));
-			}
-			if (MultiByteToWideChar(CP_ACP, 0, pPass, -1, wbuf, BUFSIZE) > 0) {
-				WinHttpSetOption(hRequest, WINHTTP_OPTION_PROXY_PASSWORD, wbuf, lstrlenW(wbuf));
-			}
-			SecureZeroMemory(wbuf, sizeof(wbuf));
-		} else {
+			tpHTTP->ProxyUser = AllocWideString(pUser);
+			tpHTTP->ProxyPass = AllocWideString(pPass);
+		}else{
 			wsprintf(BaseStr1, "%s:%s", pUser, pPass);
 			eBase(BaseStr1, ProxyAuth);
 		}
 	}
 	//Referer
-	if (GetOptionString(tpItemInfo->Option2, referer, OP2_REFERER) == FALSE) {
+	if(GetOptionString(tpItemInfo->Option2, referer, OP2_REFERER) == FALSE){
 		*referer = '\0';
 	}
+
 	//ページ認証
+	//アイテムに設定した認証情報は、チェックするURLと同じ接続先 (スキーム、サーバ、ポート) にのみ送る
+	AuthFlag = IsSameOrigin((char *)tpItemInfo->Param2, tpItemInfo->CheckURL);
 	*user = '\0';
 	*pass = '\0';
 	*BaseStr2 = '\0';
-	if (tpHTTP->user[0] != '\0') {
+	if(tpHTTP->user[0] != '\0'){
+		//要求するURLに含まれる認証情報
 		lstrcpyn(user, tpHTTP->user, BUFSIZE);
 		lstrcpyn(pass, tpHTTP->pass, BUFSIZE);
+	}else if(AuthFlag == TRUE && tpItemInfo->CheckURL != NULL &&
+		(sv = (char *)GlobalAlloc(GPTR, lstrlen(tpItemInfo->CheckURL) + 1)) != NULL){
+		//チェックするURLに含まれる認証情報
+		GetURL(tpItemInfo->CheckURL, sv, NULL, 80, user, pass);
+		GlobalFree(sv);
+	}
+	if(*user != '\0'){
 		wsprintf(BaseStr1, "%s:%s", user, pass);
 		eBase(BaseStr1, BaseStr2);
 	}
-	if (GetOptionInt(tpItemInfo->Option2, OP2_USEPASS) == 1) {
-		if (GetOptionString(tpItemInfo->Option2, user, OP2_USER) == FALSE) {
+	if(AuthFlag == TRUE && GetOptionInt(tpItemInfo->Option2, OP2_USEPASS) == 1){
+		if(GetOptionString(tpItemInfo->Option2, user, OP2_USER) == FALSE){
 			*user = '\0';
 		}
-		if (GetOptionString(tpItemInfo->Option2, BaseStr2, OP2_PASS) == FALSE) {
+		if(GetOptionString(tpItemInfo->Option2, BaseStr2, OP2_PASS) == FALSE){
 			*pass = '\0';
-		} else {
+		}else{
 			dPass(BaseStr2, pass);
 		}
 		wsprintf(BaseStr1, "%s:%s", user, pass);
@@ -1754,217 +1898,352 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 	}
 	SecureZeroMemory(BaseStr1, sizeof(BaseStr1));
 	SecureZeroMemory(pass, sizeof(pass));
+	//認証情報を送る場合はリダイレクト先に送られないよう自動リダイレクトを行わない
+	tpHTTP->NoRedirect = (*BaseStr2 != '\0') ? TRUE : FALSE;
 
 	//送信ヘッダのサイズ (固定文字列分は BUFSIZE に含む)
 	dwSize = BUFSIZE + lstrlen(ProxyAuth) + lstrlen(referer) + lstrlen(BaseStr2);
-	if (tpItemInfo->DLLData1 != NULL) {
+	if(tpItemInfo->DLLData1 != NULL){
 		dwSize += lstrlen(tpItemInfo->DLLData1);
 	}
-	sendHeader = (WCHAR *)HeapAlloc(GetProcessHeap(), 0, dwSize * sizeof(WCHAR));
-	if (sendHeader == NULL) {
-		SetHttpError(tpItemInfo, STR_ERROR_MEMORY, "HeapAlloc");
+	tpHTTP->SendHeader = (WCHAR *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dwSize * sizeof(WCHAR));
+	if(tpHTTP->SendHeader == NULL){
 		SecureZeroMemory(ProxyAuth, sizeof(ProxyAuth));
 		SecureZeroMemory(BaseStr2, sizeof(BaseStr2));
-		WinHttpCloseHandle(hRequest);
-		WinHttpCloseHandle(hConnect);
-		WinHttpCloseHandle(hSession);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
+		return FALSE;
 	}
-	s = iStrCpyW(sendHeader, "Accept: */*");
+	s = iStrCpyW(tpHTTP->SendHeader, "Accept: */*");
 	//If-Modified-Since
-	if (tpItemInfo->user2 == REQUEST_GET && tpItemInfo->Param3 == 0 &&
+	if(tpItemInfo->user2 == REQUEST_GET && tpItemInfo->Param3 == 0 &&
 		tpItemInfo->DLLData1 != NULL && *tpItemInfo->DLLData1 != '\0' &&
 		GetOptionInt(tpItemInfo->Option1, OP1_NODATE) == 0 &&
 		GetOptionInt(tpItemInfo->Option1, OP1_META) == 0 &&
 		GetOptionInt(tpItemInfo->Option1, OP1_MD5) == 0 &&
-		GetOptionInt(tpItemInfo->Option1, OP1_NOTAGSIZE) == 0) {
+		GetOptionInt(tpItemInfo->Option1, OP1_NOTAGSIZE) == 0){
 		//GETで更新日でチェックする場合は強制的にIMSを発行
 		s = iStrCpyW(s, "\r\nIf-Modified-Since: ");
 		s = iStrCpyW(s, tpItemInfo->DLLData1);
 	}
 	//キャッシュ制御
-	if (UseProxy == TRUE && pNoCache == 1) {
+	if(tpHTTP->ProxyName != NULL && pNoCache == 1){
 		s = iStrCpyW(s, "\r\nPragma: no-cache\r\nCache-Control: no-cache");
 	}
 	//プロキシ認証
-	if (*ProxyAuth != '\0') {
+	if(*ProxyAuth != '\0'){
 		s = iStrCpyW(s, "\r\nProxy-Authorization: Basic ");
 		s = iStrCpyW(s, ProxyAuth);
 	}
 	//Referer
-	if (*referer != '\0') {
+	if(*referer != '\0'){
 		s = iStrCpyW(s, "\r\nReferer: ");
 		s = iStrCpyW(s, referer);
 	}
 	//ページ認証
-	if (*BaseStr2 != '\0') {
+	if(*BaseStr2 != '\0'){
 		s = iStrCpyW(s, "\r\nAuthorization: Basic ");
 		s = iStrCpyW(s, BaseStr2);
 	}
 	SecureZeroMemory(ProxyAuth, sizeof(ProxyAuth));
 	SecureZeroMemory(BaseStr2, sizeof(BaseStr2));
+	return TRUE;
+}
 
-	if (!WinHttpSendRequest(hRequest, sendHeader, -1, WINHTTP_NO_REQUEST_DATA, 0, WINHTTP_IGNORE_REQUEST_TOTAL_LENGTH, 0)) {
-		SetHttpError(tpItemInfo, STR_ERROR_SEND, "WinHttpSendRequest");
-		SecureZeroMemory(sendHeader, dwSize * sizeof(WCHAR));
-		HeapFree(GetProcessHeap(), 0, sendHeader);
-		WinHttpCloseHandle(hRequest);
-		WinHttpCloseHandle(hConnect);
-		WinHttpCloseHandle(hSession);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
+
+/******************************************************************************
+
+	SetThreadError
+
+	スレッドで発生したエラーを記録する
+
+******************************************************************************/
+
+static void SetThreadError(struct TPHTTP *tpHTTP, char *def, char *func)
+{
+	tpHTTP->ErrCode = GetLastError();
+	tpHTTP->ErrDef = def;
+	tpHTTP->ErrFunc = func;
+}
+
+
+/******************************************************************************
+
+	StoreHandle
+
+	WinHTTPのハンドルを保存する (中止されている場合は閉じて FALSE を返す)
+
+******************************************************************************/
+
+static BOOL StoreHandle(struct TPHTTP *tpHTTP, void **field, HINTERNET hInternet)
+{
+	EnterCriticalSection(&tpHTTP->cs);
+	if(tpHTTP->CancelFlag == TRUE){
+		LeaveCriticalSection(&tpHTTP->cs);
+		WinHttpCloseHandle(hInternet);
+		return FALSE;
 	}
-	SecureZeroMemory(sendHeader, dwSize * sizeof(WCHAR));
-	HeapFree(GetProcessHeap(), 0, sendHeader);
-	if (WinHttpReceiveResponse(hRequest, NULL) == FALSE) {
-		SetHttpError(tpItemInfo, STR_ERROR_RECV, "WinHttpReceiveResponse");
-		WinHttpCloseHandle(hRequest);
-		WinHttpCloseHandle(hConnect);
-		WinHttpCloseHandle(hSession);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
+	*field = hInternet;
+	LeaveCriticalSection(&tpHTTP->cs);
+	return TRUE;
+}
+
+
+/******************************************************************************
+
+	GetRequestHandle
+
+	WinHTTPのハンドルを取得する (中止されている場合は NULL)
+
+******************************************************************************/
+
+static HINTERNET GetRequestHandle(struct TPHTTP *tpHTTP, void **field)
+{
+	HINTERNET hInternet;
+
+	EnterCriticalSection(&tpHTTP->cs);
+	hInternet = (tpHTTP->CancelFlag == TRUE) ? NULL : *field;
+	LeaveCriticalSection(&tpHTTP->cs);
+	return hInternet;
+}
+
+
+/******************************************************************************
+
+	PostProgress
+
+	受信状況をメインスレッドに通知する
+
+******************************************************************************/
+
+static void PostProgress(struct TPHTTP *tpHTTP)
+{
+	DWORD tick = GetTickCount();
+
+	if(tick - tpHTTP->ProgressTick < 200){
+		return;
 	}
-	dwSize = 0;
-	if (WinHttpQueryHeaders(hRequest, WINHTTP_QUERY_RAW_HEADERS_CRLF, WINHTTP_HEADER_NAME_BY_INDEX, NULL, &dwSize, WINHTTP_NO_HEADER_INDEX) == FALSE) {
-		if (GetLastError() != ERROR_INSUFFICIENT_BUFFER) {
-			SetHttpError(tpItemInfo, STR_ERROR_RECV, "WinHttpQueryHeaders(Size)");
-			WinHttpCloseHandle(hRequest);
-			WinHttpCloseHandle(hConnect);
-			WinHttpCloseHandle(hSession);
-			SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-			SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-			tpHTTP->hThread = NULL;
-			HTTP_FreeItem(tpItemInfo);
-			return -1;
+	tpHTTP->ProgressTick = tick;
+	InterlockedIncrement(&tpHTTP->RefCnt);
+	if(PostMessage(hNotifyWnd, WM_HTTP_PROGRESS, (WPARAM)tpHTTP->Size, (LPARAM)tpHTTP) == FALSE){
+		ReleaseHTTP(tpHTTP);
+	}
+}
+
+
+/******************************************************************************
+
+	HTTP_Request
+
+	HTTPの送受信 (スレッドで実行、アイテムは参照しない)
+
+******************************************************************************/
+
+static BOOL HTTP_Request(struct TPHTTP *tpHTTP)
+{
+	HINTERNET hInternet;
+	URL_COMPONENTS urlComponents;
+	WCHAR szHostName[256];
+	WCHAR *szUrlPath;
+	WCHAR *header;
+	WCHAR *wp;
+	DWORD dwSize;
+	DWORD dwFlags;
+	DWORD len;
+	long bufLen, bufCap;
+	BOOL Secure;
+
+	//セッションの開始
+	if(tpHTTP->ProxyName != NULL){
+		hInternet = WinHttpOpen(USER_AGENT, WINHTTP_ACCESS_TYPE_NAMED_PROXY, tpHTTP->ProxyName, WINHTTP_NO_PROXY_BYPASS, 0);
+	}else{
+		hInternet = WinHttpOpen(USER_AGENT, WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+	}
+	if(hInternet == NULL){
+		SetThreadError(tpHTTP, STR_ERROR_CONNECT, "WinHttpOpen");
+		return FALSE;
+	}
+	if(StoreHandle(tpHTTP, &tpHTTP->hSession, hInternet) == FALSE){
+		return FALSE;
+	}
+	if(tpHTTP->TimeOutMs > 0){
+		WinHttpSetTimeouts(hInternet, tpHTTP->TimeOutMs, tpHTTP->TimeOutMs, tpHTTP->TimeOutMs, tpHTTP->TimeOutMs);
+	}
+
+	//URLの解析
+	len = lstrlenW(tpHTTP->ReqURL) + 1;
+	szUrlPath = (WCHAR *)HeapAlloc(GetProcessHeap(), 0, len * sizeof(WCHAR));
+	if(szUrlPath == NULL){
+		SetThreadError(tpHTTP, STR_ERROR_MEMORY, "HeapAlloc");
+		return FALSE;
+	}
+	ZeroMemory(&urlComponents, sizeof(URL_COMPONENTS));
+	urlComponents.dwStructSize = sizeof(URL_COMPONENTS);
+	urlComponents.lpszHostName = szHostName;
+	urlComponents.dwHostNameLength = sizeof(szHostName) / sizeof(WCHAR);
+	urlComponents.lpszUrlPath = szUrlPath;
+	urlComponents.dwUrlPathLength = len;
+	if(!WinHttpCrackUrl(tpHTTP->ReqURL, len - 1, 0, &urlComponents)){
+		SetThreadError(tpHTTP, STR_ERROR_CONNECT, "WinHttpCrackUrl");
+		HeapFree(GetProcessHeap(), 0, szUrlPath);
+		return FALSE;
+	}
+	for(wp = szUrlPath; *wp != L'\0'; wp++){
+		if(*wp == L'#'){
+			*wp = L'\0';
+			break;
 		}
 	}
-	if (dwSize <= 12) {
-		SetHttpError(tpItemInfo, STR_ERROR_RECV, "WinHttpQueryHeaders(dwSize)");
-		WinHttpCloseHandle(hRequest);
-		WinHttpCloseHandle(hConnect);
-		WinHttpCloseHandle(hSession);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
+	Secure = (INTERNET_SCHEME_HTTPS == urlComponents.nScheme) ? TRUE : FALSE;
+
+	//接続
+	if((hInternet = GetRequestHandle(tpHTTP, &tpHTTP->hSession)) == NULL ||
+		(hInternet = WinHttpConnect(hInternet, szHostName, urlComponents.nPort, 0)) == NULL){
+		SetThreadError(tpHTTP, STR_ERROR_CONNECT, "WinHttpConnect");
+		HeapFree(GetProcessHeap(), 0, szUrlPath);
+		return FALSE;
+	}
+	if(StoreHandle(tpHTTP, &tpHTTP->hConnect, hInternet) == FALSE){
+		HeapFree(GetProcessHeap(), 0, szUrlPath);
+		return FALSE;
+	}
+
+	//リクエストの作成
+	hInternet = WinHttpOpenRequest(hInternet,
+		(tpHTTP->HeadRequest == TRUE) ? L"HEAD" : L"GET",
+		szUrlPath, NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES,
+		(Secure == TRUE) ? WINHTTP_FLAG_SECURE : 0);
+	HeapFree(GetProcessHeap(), 0, szUrlPath);
+	if(hInternet == NULL){
+		SetThreadError(tpHTTP, STR_ERROR_SEND, "WinHttpOpenRequest");
+		return FALSE;
+	}
+	if(StoreHandle(tpHTTP, &tpHTTP->hRequest, hInternet) == FALSE){
+		return FALSE;
+	}
+
+	//HTTPSでのプロキシ認証
+	if(Secure == TRUE && tpHTTP->ProxyUser != NULL && tpHTTP->ProxyPass != NULL){
+		WinHttpSetOption(hInternet, WINHTTP_OPTION_PROXY_USERNAME, tpHTTP->ProxyUser, lstrlenW(tpHTTP->ProxyUser));
+		WinHttpSetOption(hInternet, WINHTTP_OPTION_PROXY_PASSWORD, tpHTTP->ProxyPass, lstrlenW(tpHTTP->ProxyPass));
+	}
+	//認証情報を送る場合は自動リダイレクトを行わない (リダイレクトはチェック処理側で行う)
+	if(tpHTTP->NoRedirect == TRUE){
+		dwFlags = WINHTTP_OPTION_REDIRECT_POLICY_NEVER;
+		WinHttpSetOption(hInternet, WINHTTP_OPTION_REDIRECT_POLICY, &dwFlags, sizeof(dwFlags));
+	}
+
+	//送信
+	if(!WinHttpSendRequest(hInternet, tpHTTP->SendHeader, -1, WINHTTP_NO_REQUEST_DATA, 0, WINHTTP_IGNORE_REQUEST_TOTAL_LENGTH, 0)){
+		SetThreadError(tpHTTP, STR_ERROR_SEND, "WinHttpSendRequest");
+		return FALSE;
+	}
+	if(WinHttpReceiveResponse(hInternet, NULL) == FALSE){
+		SetThreadError(tpHTTP, STR_ERROR_RECV, "WinHttpReceiveResponse");
+		return FALSE;
+	}
+
+	//ヘッダの取得
+	dwSize = 0;
+	if(WinHttpQueryHeaders(hInternet, WINHTTP_QUERY_RAW_HEADERS_CRLF, WINHTTP_HEADER_NAME_BY_INDEX, NULL, &dwSize, WINHTTP_NO_HEADER_INDEX) == FALSE &&
+		GetLastError() != ERROR_INSUFFICIENT_BUFFER){
+		SetThreadError(tpHTTP, STR_ERROR_RECV, "WinHttpQueryHeaders(Size)");
+		return FALSE;
+	}
+	if(dwSize <= 12){
+		SetThreadError(tpHTTP, STR_ERROR_RECV, "WinHttpQueryHeaders(dwSize)");
+		return FALSE;
 	}
 	header = (WCHAR *)HeapAlloc(GetProcessHeap(), 0, dwSize + sizeof(WCHAR));
-	if (header == NULL || WinHttpQueryHeaders(hRequest, WINHTTP_QUERY_RAW_HEADERS_CRLF, WINHTTP_HEADER_NAME_BY_INDEX, header, &dwSize, WINHTTP_NO_HEADER_INDEX) == FALSE) {
-		SetHttpError(tpItemInfo, STR_ERROR_RECV, "WinHttpQueryHeaders");
-		if (header != NULL) HeapFree(GetProcessHeap(), 0, header);
-		WinHttpCloseHandle(hRequest);
-		WinHttpCloseHandle(hConnect);
-		WinHttpCloseHandle(hSession);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
+	if(header == NULL || WinHttpQueryHeaders(hInternet, WINHTTP_QUERY_RAW_HEADERS_CRLF, WINHTTP_HEADER_NAME_BY_INDEX, header, &dwSize, WINHTTP_NO_HEADER_INDEX) == FALSE){
+		SetThreadError(tpHTTP, STR_ERROR_RECV, "WinHttpQueryHeaders");
+		if(header != NULL) HeapFree(GetProcessHeap(), 0, header);
+		return FALSE;
 	}
 	header[dwSize / sizeof(WCHAR)] = L'\0';
 	int clen = WideCharToMultiByte(CP_ACP, 0, header, -1, NULL, 0, NULL, NULL);
 	char *cbuf = (clen > 0) ? (char *)GlobalAlloc(GMEM_FIXED, (clen + 1) * sizeof(char)) : NULL;
-	if (cbuf == NULL || WideCharToMultiByte(CP_ACP, 0, header, -1, cbuf, clen, NULL, NULL) == 0) {
-		SetHttpError(tpItemInfo, STR_ERROR_RECV, "WideCharToMultiByte");
-		if (cbuf != NULL) GlobalFree(cbuf);
+	if(cbuf == NULL || WideCharToMultiByte(CP_ACP, 0, header, -1, cbuf, clen, NULL, NULL) == 0){
+		SetThreadError(tpHTTP, STR_ERROR_RECV, "WideCharToMultiByte");
+		if(cbuf != NULL) GlobalFree(cbuf);
 		HeapFree(GetProcessHeap(), 0, header);
-		WinHttpCloseHandle(hRequest);
-		WinHttpCloseHandle(hConnect);
-		WinHttpCloseHandle(hSession);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return -1;
+		return FALSE;
 	}
 	HeapFree(GetProcessHeap(), 0, header);
-	if (tpHTTP->buf != NULL) GlobalFree((HGLOBAL)tpHTTP->buf);
+
+	EnterCriticalSection(&tpHTTP->cs);
+	if(tpHTTP->CancelFlag == TRUE){
+		LeaveCriticalSection(&tpHTTP->cs);
+		GlobalFree(cbuf);
+		return FALSE;
+	}
+	if(tpHTTP->buf != NULL) GlobalFree((HGLOBAL)tpHTTP->buf);
 	tpHTTP->Size = clen;
 	tpHTTP->buf = cbuf;
 	bufLen = lstrlen(cbuf);
 	bufCap = clen + 1;
-	if (tpHTTP->HeadCheckFlag == FALSE && CheckHead(tpItemInfo, tpHTTP) == TRUE) {
-		WinHttpCloseHandle(hRequest);
-		WinHttpCloseHandle(hConnect);
-		WinHttpCloseHandle(hSession);
-		SendMessage(tpHTTP->hWnd, WM_CHECK_END, HeaderFunc(tpHTTP->hWnd, tpItemInfo), (LPARAM)tpItemInfo);
-		SetSBText(tpHTTP->hWnd, tpItemInfo, STR_STATUS_CHECKEND);
-		tpHTTP->hThread = NULL;
-		HTTP_FreeItem(tpItemInfo);
-		return 0;
+	if(tpHTTP->HeadCheckFlag == FALSE && CheckHead(tpHTTP) == TRUE){
+		LeaveCriticalSection(&tpHTTP->cs);
+		return TRUE;
 	}
-	while (1) {
-		DWORD dwSize = 0;
+	LeaveCriticalSection(&tpHTTP->cs);
+
+	//本文の受信
+	while(1){
 		DWORD dwRead = 0;
-		if (!WinHttpQueryDataAvailable(hRequest, &dwSize)) {
-			SetHttpError(tpItemInfo, STR_ERROR_RECV, "WinHttpQueryDataAvailable");
-			WinHttpCloseHandle(hRequest);
-			WinHttpCloseHandle(hConnect);
-			WinHttpCloseHandle(hSession);
-			SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-			SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-			tpHTTP->hThread = NULL;
-			HTTP_FreeItem(tpItemInfo);
-			return -1;
+
+		dwSize = 0;
+		if((hInternet = GetRequestHandle(tpHTTP, &tpHTTP->hRequest)) == NULL){
+			return FALSE;
 		}
-		if (dwSize == 0) {
+		if(!WinHttpQueryDataAvailable(hInternet, &dwSize)){
+			SetThreadError(tpHTTP, STR_ERROR_RECV, "WinHttpQueryDataAvailable");
+			return FALSE;
+		}
+		if(dwSize == 0){
 			break;
 		}
 		//最大受信サイズを超える場合は受信を打ち切る
-		if (dwSize > MAX_RECVSIZE || tpHTTP->Size > MAX_RECVSIZE - (long)dwSize) {
+		if(dwSize > MAX_RECVSIZE || tpHTTP->Size > MAX_RECVSIZE - (long)dwSize){
 			break;
 		}
 
 		BYTE *pszBuffer = (LPBYTE)HeapAlloc(GetProcessHeap(), 0, dwSize + 1);
-		if (pszBuffer == NULL) {
+		if(pszBuffer == NULL){
 			break;
 		}
-		if (!WinHttpReadData(hRequest, pszBuffer, dwSize, &dwRead)) {
-			SetHttpError(tpItemInfo, STR_ERROR_RECV, "WinHttpReadData");
+		if(!WinHttpReadData(hInternet, pszBuffer, dwSize, &dwRead)){
+			SetThreadError(tpHTTP, STR_ERROR_RECV, "WinHttpReadData");
 			HeapFree(GetProcessHeap(), 0, pszBuffer);
-			WinHttpCloseHandle(hRequest);
-			WinHttpCloseHandle(hConnect);
-			WinHttpCloseHandle(hSession);
-			SendMessage(tpHTTP->hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
-			SendMessage(tpHTTP->hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
-			tpHTTP->hThread = NULL;
-			HTTP_FreeItem(tpItemInfo);
-			return -1;
+			return FALSE;
 		}
-		if (dwRead == 0) {
+		if(dwRead == 0){
 			HeapFree(GetProcessHeap(), 0, pszBuffer);
 			break;
 		}
 		pszBuffer[dwRead] = '\0';
-		tpHTTP->Size += dwRead;
 
-		wsprintf(buf, STR_STATUS_RECV, tpHTTP->Size);
-		SetSBText(tpHTTP->hWnd, tpItemInfo, buf);
+		EnterCriticalSection(&tpHTTP->cs);
+		if(tpHTTP->CancelFlag == TRUE){
+			LeaveCriticalSection(&tpHTTP->cs);
+			HeapFree(GetProcessHeap(), 0, pszBuffer);
+			return FALSE;
+		}
+		tpHTTP->Size += dwRead;
 
 		//受信データを追加 (NULを含む場合はNULまでを追加する)
 		//バッファは受信バイト数 (Size) + 1 以上を確保する
 		int addLen = lstrlen((char *)pszBuffer);
-		if (tpHTTP->Size + 1 > bufCap) {
+		if(tpHTTP->Size + 1 > bufCap){
 			long newCap = bufCap * 2;
-			if (newCap > MAX_RECVSIZE + 1) {
+			if(newCap > MAX_RECVSIZE + 1){
 				newCap = MAX_RECVSIZE + 1;
 			}
-			if (newCap < tpHTTP->Size + 1) {
+			if(newCap < tpHTTP->Size + 1){
 				newCap = tpHTTP->Size + 1;
 			}
 			char *wkbuf = (char *)GlobalAlloc(GMEM_FIXED, newCap);
-			if (wkbuf == NULL) {
+			if(wkbuf == NULL){
+				tpHTTP->Size -= dwRead;
+				LeaveCriticalSection(&tpHTTP->cs);
 				HeapFree(GetProcessHeap(), 0, pszBuffer);
 				break;
 			}
@@ -1976,19 +2255,136 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 		CopyMemory(tpHTTP->buf + bufLen, pszBuffer, addLen + 1);
 		bufLen += addLen;
 		HeapFree(GetProcessHeap(), 0, pszBuffer);
-		if (tpHTTP->HeadCheckFlag == FALSE && CheckHead(tpItemInfo, tpHTTP) == TRUE) {
+		if(tpHTTP->HeadCheckFlag == FALSE && CheckHead(tpHTTP) == TRUE){
+			LeaveCriticalSection(&tpHTTP->cs);
 			break;
 		}
-	}
-	WinHttpCloseHandle(hRequest);
-	WinHttpCloseHandle(hConnect);
-	WinHttpCloseHandle(hSession);
+		LeaveCriticalSection(&tpHTTP->cs);
 
-	SendMessage(tpHTTP->hWnd, WM_CHECK_END, HeaderFunc(tpHTTP->hWnd, tpItemInfo), (LPARAM)tpItemInfo);
-	SetSBText(tpHTTP->hWnd, tpItemInfo, STR_STATUS_CHECKEND);
-	tpHTTP->hThread = NULL;
-	HTTP_FreeItem(tpItemInfo);
+		PostProgress(tpHTTP);
+	}
+	return TRUE;
+}
+
+
+/******************************************************************************
+
+	HTTP_Thread
+
+	HTTP処理スレッド
+
+******************************************************************************/
+
+static DWORD WINAPI HTTP_Thread(LPVOID lpParam)
+{
+	struct TPHTTP *tpHTTP = (struct TPHTTP *)lpParam;
+	BOOL CancelFlag;
+
+	SetLastError(NO_ERROR);
+	if(HTTP_Request(tpHTTP) == FALSE && tpHTTP->ErrDef == NULL){
+		//中止された場合
+		SetThreadError(tpHTTP, STR_ERROR_RECV, "Cancel");
+	}
+
+	EnterCriticalSection(&tpHTTP->cs);
+	CloseRequestHandles(tpHTTP);
+	CancelFlag = tpHTTP->CancelFlag;
+	LeaveCriticalSection(&tpHTTP->cs);
+
+	//実行中のリストから削除
+	EnterCriticalSection(&ListCs);
+	if(tpHTTP->Prev != NULL){
+		tpHTTP->Prev->Next = tpHTTP->Next;
+	}else{
+		ActiveList = tpHTTP->Next;
+	}
+	if(tpHTTP->Next != NULL){
+		tpHTTP->Next->Prev = tpHTTP->Prev;
+	}
+	tpHTTP->Next = tpHTTP->Prev = NULL;
+	LeaveCriticalSection(&ListCs);
+
+	//結果の処理はメインスレッドで行う (スレッドの参照はメッセージに引き継ぐ)
+	if(CancelFlag == TRUE || PostMessage(hNotifyWnd, WM_HTTP_DONE, 0, (LPARAM)tpHTTP) == FALSE){
+		ReleaseHTTP(tpHTTP);
+	}
+	InterlockedDecrement(&ThreadCnt);
 	return 0;
+}
+
+
+/******************************************************************************
+
+	HTTP_Complete
+
+	スレッドの処理結果をアイテムに設定する (メインスレッドで実行)
+
+******************************************************************************/
+
+static void HTTP_Complete(struct TPHTTP *tpHTTP)
+{
+	struct TPITEM *tpItemInfo = tpHTTP->tpItemInfo;
+	HWND hWnd = tpHTTP->hWnd;
+	int ret;
+
+	if(tpHTTP->ErrDef != NULL){
+		SetHttpError(tpItemInfo, tpHTTP->ErrDef, tpHTTP->ErrFunc, tpHTTP->ErrCode);
+		SendMessage(hWnd, WM_CHECK_END, CHECK_ERROR, (LPARAM)tpItemInfo);
+		SendMessage(hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
+		HTTP_FreeItem(tpItemInfo);
+		return;
+	}
+	ret = HeaderFunc(hWnd, tpItemInfo);
+	if(ret == CHECK_NO){
+		//再チェックする場合は移動先のURL (Param2) を残す
+		tpItemInfo->Param1 = 0;
+		tpItemInfo->Param3 = 0;
+		CancelHTTP(tpHTTP);
+		ReleaseHTTP(tpHTTP);
+		SendMessage(hWnd, WM_CHECK_END, ret, (LPARAM)tpItemInfo);
+		return;
+	}
+	SendMessage(hWnd, WM_CHECK_END, ret, (LPARAM)tpItemInfo);
+	SetSBText(hWnd, tpItemInfo, STR_STATUS_CHECKEND);
+	HTTP_FreeItem(tpItemInfo);
+}
+
+
+/******************************************************************************
+
+	NotifyWndProc
+
+	スレッドからの通知を受け取るウィンドウプロシージャ
+
+******************************************************************************/
+
+static LRESULT CALLBACK NotifyWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	struct TPHTTP *tpHTTP;
+	char buf[BUFSIZE];
+
+	switch(uMsg)
+	{
+	case WM_HTTP_DONE:
+		tpHTTP = (struct TPHTTP *)lParam;
+		//中止 (アイテムから切り離し) されていない場合のみ結果を処理する
+		if(tpHTTP->CancelFlag == FALSE && tpHTTP->tpItemInfo != NULL &&
+			(struct TPHTTP *)tpHTTP->tpItemInfo->Param1 == tpHTTP){
+			HTTP_Complete(tpHTTP);
+		}
+		ReleaseHTTP(tpHTTP);
+		return 0;
+
+	case WM_HTTP_PROGRESS:
+		tpHTTP = (struct TPHTTP *)lParam;
+		if(tpHTTP->CancelFlag == FALSE && tpHTTP->tpItemInfo != NULL){
+			wsprintf(buf, STR_STATUS_RECV, (long)wParam);
+			SetSBText(tpHTTP->hWnd, tpHTTP->tpItemInfo, buf);
+		}
+		ReleaseHTTP(tpHTTP);
+		return 0;
+	}
+	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
 
@@ -2000,17 +2396,59 @@ static unsigned int CALLBACK HTTP_Thread(struct TPITEM *tpItemInfo)
 
 ******************************************************************************/
 
-static BOOL Start_HTTP_Thread(const HWND hWnd, struct TPITEM *tpItemInfo)
+static BOOL Start_HTTP_Thread(struct TPHTTP *tpHTTP)
 {
-	struct TPHTTP *tpHTTP;
-	int threadId;
+	WNDCLASS wc;
+	DWORD threadId;
 
-	tpHTTP = (struct TPHTTP *)tpItemInfo->Param1;
-	if (tpHTTP == NULL) {
+	if(ListCsInit == FALSE){
+		InitializeCriticalSection(&ListCs);
+		ListCsInit = TRUE;
+	}
+
+	//スレッドからの通知を受け取るウィンドウの作成 (メインスレッドで作成する)
+	if(hNotifyWnd == NULL){
+		ZeroMemory(&wc, sizeof(WNDCLASS));
+		wc.lpfnWndProc = NotifyWndProc;
+		wc.hInstance = ghinst;
+		wc.lpszClassName = NOTIFY_WINDOW_CLASS;
+		RegisterClass(&wc);
+		hNotifyWnd = CreateWindow(NOTIFY_WINDOW_CLASS, "", 0, 0, 0, 0, 0, HWND_MESSAGE, NULL, ghinst, NULL);
+		if(hNotifyWnd == NULL){
+			return FALSE;
+		}
+	}
+
+	//スレッドの参照
+	InterlockedIncrement(&tpHTTP->RefCnt);
+	InterlockedIncrement(&ThreadCnt);
+
+	EnterCriticalSection(&ListCs);
+	tpHTTP->Prev = NULL;
+	tpHTTP->Next = ActiveList;
+	if(ActiveList != NULL){
+		ActiveList->Prev = tpHTTP;
+	}
+	ActiveList = tpHTTP;
+	LeaveCriticalSection(&ListCs);
+
+	tpHTTP->hThread = CreateThread(NULL, 0, HTTP_Thread, (LPVOID)tpHTTP, 0, &threadId);
+	if(tpHTTP->hThread == NULL){
+		EnterCriticalSection(&ListCs);
+		if(tpHTTP->Prev != NULL){
+			tpHTTP->Prev->Next = tpHTTP->Next;
+		}else{
+			ActiveList = tpHTTP->Next;
+		}
+		if(tpHTTP->Next != NULL){
+			tpHTTP->Next->Prev = tpHTTP->Prev;
+		}
+		tpHTTP->Next = tpHTTP->Prev = NULL;
+		LeaveCriticalSection(&ListCs);
+		InterlockedDecrement(&ThreadCnt);
+		InterlockedDecrement(&tpHTTP->RefCnt);
 		return FALSE;
 	}
-	tpHTTP->hWnd = hWnd;
-	tpHTTP->hThread = CreateThread(NULL, 0, HTTP_Thread, (void *)tpItemInfo, 0, (unsigned *)&threadId);
 	return TRUE;
 }
 
@@ -2027,7 +2465,7 @@ __declspec(dllexport) int CALLBACK HTTP_Start(HWND hWnd, struct TPITEM *tpItemIn
 {
 	struct TPHTTP *tpHTTP;
 
-	tpHTTP = (struct TPHTTP *)GlobalAlloc(GPTR, sizeof(struct TPHTTP));
+	tpHTTP = AllocHTTP(hWnd, tpItemInfo);
 	if(tpHTTP == NULL){
 		return CHECK_ERROR;
 	}
@@ -2087,15 +2525,23 @@ __declspec(dllexport) int CALLBACK HTTP_Start(HWND hWnd, struct TPITEM *tpItemIn
 
 	/* 既に同じサーバへチェックを行っている場合はチェックをしない */
 	if(CheckServer(hWnd, tpHTTP->hSvName) == TRUE){
-		FreeURLData(tpHTTP);
-		GlobalFree(tpHTTP);
 		tpItemInfo->Param1 = 0;
+		ReleaseHTTP(tpHTTP);
 		return CHECK_NO;
+	}
+
+	//リクエストの作成 (スレッドからアイテムを参照しないよう事前に作成する)
+	if(BuildRequest(tpItemInfo, tpHTTP) == FALSE){
+		SetErrorString(tpItemInfo, STR_ERROR_MEMORY, FALSE);
+		HTTP_FreeItem(tpItemInfo);
+		return CHECK_ERROR;
 	}
 
 	SetSBText(hWnd, tpItemInfo, STR_STATUS_CONNECT);
 
-	if (Start_HTTP_Thread(hWnd, tpItemInfo) == FALSE) {
+	if(Start_HTTP_Thread(tpHTTP) == FALSE){
+		SetHttpError(tpItemInfo, STR_ERROR_CONNECT, "CreateThread", GetLastError());
+		HTTP_FreeItem(tpItemInfo);
 		return CHECK_ERROR;
 	}
 	return CHECK_SUCCEED;
@@ -2461,12 +2907,33 @@ __declspec(dllexport) int CALLBACK HTTP_EndNotify(void)
 #ifdef THGHN
 	HANDLE hEvent;
 #endif
+	struct TPHTTP *tpHTTP;
 	int i;
 
 	for(i = 0; i < 100; i++){
 		if(hWndList[i] != NULL){
 			SendMessage(hWndList[i], WM_CLOSE, 0, 0);
 		}
+	}
+
+	//実行中の受信を中止してスレッドの終了を待つ
+	if(ListCsInit == TRUE){
+		EnterCriticalSection(&ListCs);
+		for(tpHTTP = ActiveList; tpHTTP != NULL; tpHTTP = tpHTTP->Next){
+			EnterCriticalSection(&tpHTTP->cs);
+			tpHTTP->CancelFlag = TRUE;
+			CloseRequestHandles(tpHTTP);
+			LeaveCriticalSection(&tpHTTP->cs);
+		}
+		LeaveCriticalSection(&ListCs);
+		for(i = 0; i < THREAD_END_WAIT / 50 && ThreadCnt > 0; i++){
+			Sleep(50);
+		}
+	}
+	if(hNotifyWnd != NULL){
+		DestroyWindow(hNotifyWnd);
+		hNotifyWnd = NULL;
+		UnregisterClass(NOTIFY_WINDOW_CLASS, ghinst);
 	}
 
 #ifdef THGHN
