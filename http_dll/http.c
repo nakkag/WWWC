@@ -4,7 +4,7 @@
 
 	http.c
 
-	Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		https://www.nakka.com/
 		nakka@nakka.com
 
@@ -36,6 +36,7 @@
 #include "resource.h"
 #include "global.h"
 #include "md5.h"
+#include "archive.h"
 
 
 /**************************************************************************
@@ -49,9 +50,8 @@
 #define REQUEST_HEAD		0
 #define REQUEST_GET			1
 
-#define HTTP_MENU_CNT		6
+#define HTTP_MENU_CNT		7
 
-#define USER_AGENT			L"WWWC/1.20"
 
 #define WM_HTTP_DONE		(WM_USER + 1300)		/* スレッドの終了通知 */
 #define WM_HTTP_PROGRESS	(WM_USER + 1301)		/* 受信状況の通知 */
@@ -986,7 +986,8 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 	}
 
 	if(Status == 304){
-		//更新が無かった場合
+		//更新が無かった場合 (アーカイブが無い場合はアーカイブする)
+		Archive_Request(hWnd, tpItemInfo, FALSE);
 		SendMessage(hWnd, WM_CHECK_RESULT, ST_DEFAULT, (LPARAM)tpItemInfo);
 		return CHECK_END;
 	}
@@ -1015,6 +1016,8 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 				}
 				return CHECK_NO;
 			}else{
+				//更新があった場合またはアーカイブが無い場合はアーカイブする
+				Archive_Request(hWnd, tpItemInfo, ((CmpMsg & ST_UP) != 0) ? TRUE : FALSE);
 				//チェックの終了をWWWCに通知
 				SendMessage(hWnd, WM_CHECK_RESULT, CmpMsg, (LPARAM)tpItemInfo);
 			}
@@ -1059,6 +1062,8 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 			//MD5のダイジェスト値でチェック
 			CmpMsg |= Get_MD5Check(tpItemInfo, SetDate);
 		}
+		//更新があった場合またはアーカイブが無い場合はアーカイブする
+		Archive_Request(hWnd, tpItemInfo, ((CmpMsg & ST_UP) != 0) ? TRUE : FALSE);
 		//チェックの終了をWWWCに通知
 		SendMessage(hWnd, WM_CHECK_RESULT, CmpMsg, (LPARAM)tpItemInfo);
 		break;
@@ -1688,6 +1693,7 @@ static void ReleaseHTTP(struct TPHTTP *tpHTTP)
 	FreeWideString(&tpHTTP->SendHeader);
 	FreeWideString(&tpHTTP->ProxyUser);
 	FreeWideString(&tpHTTP->ProxyPass);
+	FreeWideString(&tpHTTP->UserAgent);
 	DeleteCriticalSection(&tpHTTP->cs);
 	GlobalFree((HGLOBAL)tpHTTP);
 }
@@ -1845,6 +1851,7 @@ static BOOL BuildRequest(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
 	char pass[BUFSIZE];
 	char epass[PASS_BUFSIZE];
 	char referer[BUFSIZE];
+	char ua[BUFSIZE];
 	char proxy[BUFSIZE * 2];
 	char *sv;
 	WCHAR *s;
@@ -1890,6 +1897,13 @@ static BOOL BuildRequest(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
 	//Referer
 	if(GetOptionString(tpItemInfo->Option2, referer, OP2_REFERER) == FALSE){
 		*referer = '\0';
+	}
+	//User-Agent
+	if(GetOptionString(tpItemInfo->Option2, ua, OP2_USERAGENT) == TRUE){
+		NormalizeUserAgent(ua);
+		if(*ua != '\0' && (tpHTTP->UserAgent = AllocWideString(ua)) == NULL){
+			return FALSE;
+		}
 	}
 
 	//ページ認証
@@ -2063,6 +2077,7 @@ static void PostProgress(struct TPHTTP *tpHTTP)
 static BOOL HTTP_Request(struct TPHTTP *tpHTTP)
 {
 	HINTERNET hInternet;
+	const WCHAR *agent;
 	URL_COMPONENTS urlComponents;
 	WCHAR szHostName[256];
 	WCHAR *szUrlPath;
@@ -2075,10 +2090,11 @@ static BOOL HTTP_Request(struct TPHTTP *tpHTTP)
 	BOOL Secure;
 
 	//セッションの開始
+	agent = (tpHTTP->UserAgent != NULL) ? tpHTTP->UserAgent : USER_AGENT;
 	if(tpHTTP->ProxyName != NULL){
-		hInternet = WinHttpOpen(USER_AGENT, WINHTTP_ACCESS_TYPE_NAMED_PROXY, tpHTTP->ProxyName, WINHTTP_NO_PROXY_BYPASS, 0);
+		hInternet = WinHttpOpen(agent, WINHTTP_ACCESS_TYPE_NAMED_PROXY, tpHTTP->ProxyName, WINHTTP_NO_PROXY_BYPASS, 0);
 	}else{
-		hInternet = WinHttpOpen(USER_AGENT, WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+		hInternet = WinHttpOpen(agent, WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
 	}
 	if(hInternet == NULL){
 		SetThreadError(tpHTTP, STR_ERROR_CONNECT, "WinHttpOpen");
@@ -2871,6 +2887,10 @@ __declspec(dllexport) int CALLBACK HTTP_ExecItem(HWND hWnd, char *Action, struct
 		}
 		rc = ExecItem(hWnd, p, NULL);
 
+	}else if(lstrcmp(Action, ARCHIVE_ACTION) == 0){
+		//アーカイブを開く
+		rc = Archive_Open(hWnd, tpItemInfo);
+
 	}else if(lstrcmp(Action, "header") == 0){
 		//ヘッダ表示
 		tpItemInfo->Param3 = 1;
@@ -2899,6 +2919,24 @@ __declspec(dllexport) int CALLBACK HTTP_ExecItem(HWND hWnd, char *Action, struct
 
 /******************************************************************************
 
+	HTTP_GetMenuState
+
+	メニューの状態 (0 で有効、1 で無効)
+
+******************************************************************************/
+
+__declspec(dllexport) int CALLBACK HTTP_GetMenuState(HWND hWnd, char *Action, struct TPITEM *tpItemInfo)
+{
+	if(Action != NULL && lstrcmp(Action, ARCHIVE_ACTION) == 0){
+		//アーカイブが無い場合は無効
+		return (Archive_Exists(hWnd, tpItemInfo) == TRUE) ? 0 : 1;
+	}
+	return 0;
+}
+
+
+/******************************************************************************
+
 	HTTP_GetInfo
 
 	プロトコル情報
@@ -2912,6 +2950,9 @@ __declspec(dllexport) int CALLBACK HTTP_GetInfo(struct TPPROTOCOLINFO *tpInfo)
 #ifdef THGHN
 	CreateEvent(NULL, TRUE, TRUE, "GHBN_EVENT");
 #endif
+
+	//終了通知の後に読み込み直された場合はアーカイブの取得を再開する
+	Archive_Restart();
 
 	lstrcpy(tpInfo->Scheme, "http://\thttps://");
 	lstrcpy(tpInfo->NewMenu, STR_GETINFO_HTTP_NEWMENU);
@@ -2928,6 +2969,12 @@ __declspec(dllexport) int CALLBACK HTTP_GetInfo(struct TPPROTOCOLINFO *tpInfo)
 	i++;
 	lstrcpy(tpInfo->tpMenu[i].Name, STR_GETINFO_HTTP_CHECKOPEN);
 	lstrcpy(tpInfo->tpMenu[i].Action, "checkopen");
+	tpInfo->tpMenu[i].Default = FALSE;
+	tpInfo->tpMenu[i].Flag = 0;
+
+	i++;
+	lstrcpy(tpInfo->tpMenu[i].Name, STR_GETINFO_HTTP_OPENARCHIVE);
+	lstrcpy(tpInfo->tpMenu[i].Action, ARCHIVE_ACTION);
 	tpInfo->tpMenu[i].Default = FALSE;
 	tpInfo->tpMenu[i].Flag = 0;
 
@@ -2979,6 +3026,9 @@ __declspec(dllexport) int CALLBACK HTTP_EndNotify(void)
 			SendMessage(hWndList[i], WM_CLOSE, 0, 0);
 		}
 	}
+
+	//アーカイブの取得を中止する
+	Archive_End();
 
 	//実行中の受信を中止してスレッドの終了を待つ
 	if(ListCsInit == TRUE){

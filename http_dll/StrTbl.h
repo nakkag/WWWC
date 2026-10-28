@@ -4,7 +4,7 @@
 
 	StrTbl.h
 
-	Copyright (C) 1996-2003 by Nakashima Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		http://www.nakka.com/
 		nakka@nakka.com
 
@@ -70,6 +70,17 @@
 #define STR_GETINFO_HTTP_NEWMENU		"HTTPアイテムの追加(&H)..."
 #define STR_GETINFO_HTTP_OPEN			"開く(&O)"
 #define STR_GETINFO_HTTP_CHECKOPEN		"チェックするURLで開く(&U)"
+#define STR_GETINFO_HTTP_OPENARCHIVE		"アーカイブを開く(&A)"
+#define STR_ERR_MSG_ARCHIVE_NONE			"このアイテムのアーカイブはありません。"
+#define STR_ERR_TITLE_ARCHIVE				"アーカイブ"
+#define STR_MSG_ARCHIVE_NOFOLDER			"アーカイブはまだ作成されていません。"
+#define STR_Q_MSG_ARCHIVE_DELETE			"このアイテムのアーカイブ (保存したすべての世代) を削除しますか？"
+#define STR_MSG_ARCHIVE_DELETED			"アーカイブを削除しました。"
+#define STR_ERR_MSG_ARCHIVE_BUSY			"アーカイブを取得中のため削除できません。しばらくしてから再度実行してください。"
+#define STR_ERR_MSG_ARCHIVE_DELETE		"アーカイブの一部を削除できませんでした。"
+#define STR_Q_MSG_ARCHIVE_CHANGED		"アーカイブするデータの設定を変更しました。\n既存のアーカイブは変更前の設定で保存されています。\n\nアーカイブを削除しますか？\n(削除すると次のチェックで新しい設定のアーカイブを作成します)"
+#define STR_ARCHIVE_INDEX_TITLE			"アーカイブ - "
+#define STR_ARCHIVE_INDEX_LATEST			" (最新)"
 #define STR_GETINFO_HTTP_HEADER			"ヘッダー表示(&H)"
 #define STR_GETINFO_HTTP_SOURCE			"ソース表示(&S)"
 #define STR_GETINFO_HTTP_GETTITLE		"タイトル取得(&L)"
@@ -83,14 +94,13 @@
 #define STR_TITLE_SETHTTP				"HTTPプロトコルの設定"
 
 //httptools.c
-#define STR_ERR_TITLE_DDEEINIT			"DDE初期化"
-#define STR_ERR_MSG_DDEEINIT			"DDEの初期化に失敗しました。"
 
-#define STR_ERR_TITLE_DDE				"ブラウザ情報の取得"
-#define STR_ERR_MSG_DDE					"ブラウザが起動されていないか、ブラウザ情報の取得に失敗しました。"
+#define STR_ERR_TITLE_BROWSER			"ブラウザ情報の取得"
+#define STR_ERR_MSG_BROWSER				"ブラウザで表示しているページが見つかりませんでした。\n\nMicrosoft Edge、Google Chrome などの Chromium 系のブラウザと Firefox に対応しています。"
+#define STR_MSG_BROWSER_INFO			"ブラウザのウィンドウで表示しているページのURLとタイトルを取得します。設定する項目はありません。\n\nMicrosoft Edge、Google Chrome などの Chromium 系のブラウザと Firefox に対応しています。タブが複数ある場合は、表示しているタブのページを取得します。"
 
 #define ST_LV_COL_TITLE					"タイトル"
-#define ST_LV_COL_FLAME					"フレーム"
+#define ST_LV_COL_BROWSER				"ブラウザ"
 #define ST_LV_COL_URL					"URL"
 
 //file.c

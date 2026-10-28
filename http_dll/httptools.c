@@ -4,7 +4,7 @@
 
 	httptools.c
 
-	Copyright (C) 1996-2003 by Nakashima Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		http://www.nakka.com/
 		nakka@nakka.com
 
@@ -19,7 +19,6 @@
 #include <windows.h>
 #undef  _INC_OLE
 #include <commctrl.h>
-#include <DDEML.H>
 
 #include "String.h"
 #include "httptools.h"
@@ -27,11 +26,14 @@
 #include "StrTbl.h"
 #include "wwwcdll.h"
 #include "resource.h"
+#include "browser.h"
 
 
 /**************************************************************************
 	Define
 **************************************************************************/
+
+#define TITLE_MAX			1024						/* アイテムのタイトルの最大 */
 
 
 /**************************************************************************
@@ -44,328 +46,36 @@ extern HINSTANCE ghinst;
 
 extern char BrowserPath[];
 
-extern char AppName[30][BUFSIZE];
-extern int AppCnt;
-
 
 /**************************************************************************
 	Local Function Prototypes
 **************************************************************************/
 
-//DDE
-static HDDEDATA CALLBACK DDECallback(WORD wType, WORD wFmt, HCONV hConv, HSZ hsz1, HSZ hsz2, HDDEDATA hData, DWORD lData1, DWORD lData2);
-static void GetDDEStr(char *buf, char *URL, char *Title, char *Frame);
-static int GetActiveURLInfo(HWND hWnd, char *browser, char *Title, char *URL);
-static int GetURLInfo(HWND hWnd, UINT sMsg, char *browser);
 static int SetListItem(HWND hListView, char *buf, int Img, long lp, int iItem);
 static LRESULT DialogLvNotifyProc(HWND hWnd, LPARAM lParam, HWND hListView);
+static int GetPages(HWND hWnd, BROWSER_PAGE **pages, BOOL First);
 
 
 /******************************************************************************
 
-	DDECallback
+	GetPages
 
-	DDEコールバック
-
-******************************************************************************/
-
-static HDDEDATA CALLBACK DDECallback(WORD wType, WORD wFmt, HCONV hConv, HSZ hsz1,
-									 HSZ hsz2, HDDEDATA hData, DWORD lData1, DWORD lData2)
-{
-	return (HDDEDATA)0;
-}
-
-
-/******************************************************************************
-
-	GetDDEStr
-
-	DDEにて取得した文字列を分解する
+	ブラウザで表示しているページを取得する (見つからない場合はメッセージを表示)
 
 ******************************************************************************/
 
-static void GetDDEStr(char *buf, char *URL, char *Title, char *Frame)
+static int GetPages(HWND hWnd, BROWSER_PAGE **pages, BOOL First)
 {
-	char *p, *r;
+	HCURSOR hCursor;
+	int cnt;
 
-	p = buf;
-
-	if(*p == '\"'){
-		p++;
+	hCursor = SetCursor(LoadCursor(NULL, IDC_WAIT));
+	cnt = Browser_GetPages(pages, First);
+	SetCursor(hCursor);
+	if(cnt <= 0){
+		MessageBox(hWnd, STR_ERR_MSG_BROWSER, STR_ERR_TITLE_BROWSER, MB_ICONWARNING | MB_OK);
 	}
-	for(r = URL; *p != '\"' && *p != '\0'; p++){
-		if(IS_LEAD_BYTE(p)){
-			*(r++) = *(p++);
-		}else if(*p == '\\' && *(p + 1) != '\0'){
-			p++;
-		}
-		*(r++) = *p;
-	}
-	*r = '\0';
-
-	for(; (*p == '\"' || *p == ',') && *p != '\0'; p++);
-
-	for(r = Title; *p != '\"' && *p != '\0'; p++){
-		if(IS_LEAD_BYTE(p)){
-			*(r++) = *(p++);
-		}else if(*p == '\\' && *(p + 1) != '\0'){
-			p++;
-		}
-		*(r++) = *p;
-	}
-	*r = '\0';
-
-	for(; (*p == '\"' || *p == ',') && *p != '\0'; p++);
-
-	for(r = Frame; *p != '\"' && *p != '\0'; p++){
-		if(IS_LEAD_BYTE(p)){
-			*(r++) = *(p++);
-		}else if(*p == '\\' && *(p + 1) != '\0'){
-			p++;
-		}
-		*(r++) = *p;
-	}
-	*r = '\0';
-}
-
-
-/******************************************************************************
-
-	AddAppNameProc
-
-	アプリケーション名の追加ダイアログ
-
-******************************************************************************/
-
-static BOOL CALLBACK AddAppNameProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	char *buf;
-
-	switch (uMsg)
-	{
-	case WM_INITDIALOG:
-		if((char *)lParam == NULL){
-			EndDialog(hDlg, FALSE);
-			break;
-		}
-		SetWindowLong(hDlg, GWL_USERDATA, lParam);
-		SendMessage(GetDlgItem(hDlg, IDC_EDIT_APPNAME), WM_SETTEXT, 0, lParam);
-		break;
-
-	case WM_CLOSE:
-		EndDialog(hDlg, FALSE);
-		break;
-
-	case WM_COMMAND:
-		switch(wParam)
-		{
-		case IDOK:
-			buf = (char *)GetWindowLong(hDlg, GWL_USERDATA);
-			if(buf == NULL){
-				EndDialog(hDlg, FALSE);
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_EDIT_APPNAME), WM_GETTEXT, BUFSIZE - 1, (LPARAM)buf);
-			EndDialog(hDlg, TRUE);
-			break;
-
-		case IDCANCEL:
-			EndDialog(hDlg, FALSE);
-			break;
-		}
-		break;
-
-	default:
-		return FALSE;
-	}
-	return TRUE;
-}
-
-
-/******************************************************************************
-
-	SetDDEAppProc
-
-	DDEのアプリケーション名を登録するダイアログ
-
-******************************************************************************/
-
-static BOOL CALLBACK SetDDEAppProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	char buf[BUFSIZE];
-	int i;
-
-	switch (uMsg)
-	{
-	case WM_INITDIALOG:
-		for(i = 0; i < AppCnt; i++){
-			if(*(AppName[i]) != '\0'){
-				SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_ADDSTRING, 0, (LPARAM)AppName[i]);
-			}
-		}
-		break;
-
-	case WM_CLOSE:
-		EndDialog(hDlg, FALSE);
-		break;
-
-	case WM_COMMAND:
-		switch(wParam)
-		{
-		case IDC_BUTTON_ADD:
-			if(SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCOUNT, 0, 0) >= 30){
-				break;
-			}
-			*buf = '\0';
-			if(DialogBoxParam(ghinst, MAKEINTRESOURCE(IDD_DIALOG_ADDAPPNAME), hDlg, AddAppNameProc, (LPARAM)buf) == FALSE){
-				break;
-			}
-			if(*buf == '\0'){
-				break;
-			}
-			i = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_ADDSTRING, 0, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_SETCURSEL, i, 0);
-			break;
-
-		case IDC_BUTTON_EDIT:
-			i = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCURSEL, 0, 0);
-			if(i < 0){
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETTEXT, i, (LPARAM)buf);
-			if(DialogBoxParam(ghinst, MAKEINTRESOURCE(IDD_DIALOG_ADDAPPNAME), hDlg, AddAppNameProc, (LPARAM)buf) == FALSE){
-				break;
-			}
-			if(*buf == '\0'){
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_DELETESTRING, i, 0);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_INSERTSTRING, i, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_SETCURSEL, i, 0);
-			break;
-
-		case IDC_BUTTON_DELETE:
-			i = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCURSEL, 0, 0);
-			if(i < 0 || MessageBox(hDlg, STR_Q_MSG_DEL, STR_Q_TITLE_DEL, MB_ICONQUESTION | MB_YESNO) == IDNO){
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_DELETESTRING, i, 0);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_SETCURSEL, i, 0);
-			break;
-
-		case IDC_BUTTON_UP:
-			i = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCURSEL, 0, 0);
-			if(i <= 0){
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETTEXT, i, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_DELETESTRING, i, 0);
-			i--;
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_INSERTSTRING, i, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_SETCURSEL, i, 0);
-			break;
-
-		case IDC_BUTTON_DOWN:
-			i = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCURSEL, 0, 0);
-			if(i < 0 || i >= SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCOUNT, 0, 0) - 1){
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETTEXT, i, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_DELETESTRING, i, 0);
-			i++;
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_INSERTSTRING, i, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_SETCURSEL, i, 0);
-			break;
-
-		case IDOK:
-			AppCnt = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCOUNT, 0, 0);
-			if(AppCnt > 30) AppCnt = 30;
-
-			WritePrivateProfileString("DDE", NULL, NULL, app_path);
-
-			wsprintf(buf, "%ld",AppCnt);
-			WritePrivateProfileString("DDE", "AppCnt", buf, app_path);
-
-			for(i = 0; i < AppCnt; i++){
-				SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETTEXT, i, (LPARAM)AppName[i]);
-				wsprintf(buf, "AppName_%d", i);
-				WritePrivateProfileString("DDE", buf, AppName[i], app_path);
-			}
-			EndDialog(hDlg, TRUE);
-			break;
-
-		case IDCANCEL:
-			EndDialog(hDlg, FALSE);
-			break;
-		}
-		break;
-	default:
-		return FALSE;
-	}
-	return TRUE;
-}
-
-
-/******************************************************************************
-
-	GetActiveURLInfo
-
-	最後にアクティブだったブラウザが表示していたURLとページタイトルを取得
-
-******************************************************************************/
-
-static int GetActiveURLInfo(HWND hWnd, char *browser, char *Title, char *URL)
-{
-	HSZ hszService;
-	HSZ hszTopic;
-	HCONV hConv;
-	HSZ hszParam;
-	HDDEDATA hDDEData;
-	char *gbuf;
-	char tmp[MAXSIZE];
-	DWORD m_dwDDEID;
-
-	m_dwDDEID = 0L;
-	if(DdeInitialize(&m_dwDDEID, (PFNCALLBACK)MakeProcInstance((FARPROC)DDECallback, AfxGetInstanceHandle()),
-		CBF_SKIP_ALLNOTIFICATIONS | APPCMD_CLIENTONLY, 0L) != DMLERR_NO_ERROR){
-		MessageBox(hWnd, STR_ERR_MSG_DDEEINIT, STR_ERR_TITLE_DDEEINIT, MB_ICONWARNING | MB_OK);
-		return 0;
-	}
-
-	hszService = DdeCreateStringHandle(m_dwDDEID, browser, 0);
-	hszTopic = DdeCreateStringHandle(m_dwDDEID, "WWW_GetWindowInfo", 0);
-	hszParam = DdeCreateStringHandle(m_dwDDEID, "0xFFFFFFFF", 0);
-
-	//DDE接続
-	hConv = DdeConnect(m_dwDDEID, hszService, hszTopic, NULL);
-	if(hConv == 0){
-		DdeFreeStringHandle(m_dwDDEID, hszParam);
-		DdeFreeStringHandle(m_dwDDEID, hszTopic);
-		DdeFreeStringHandle(m_dwDDEID, hszService);
-		DdeUninitialize(m_dwDDEID);
-		return 0;
-	}
-
-	//トランザクションの開始
-	hDDEData = DdeClientTransaction(NULL, 0, hConv, hszParam, CF_TEXT, XTYP_REQUEST, 10000L, NULL);
-
-	//データの取得
-	gbuf = (char *)GlobalAlloc(GPTR, MAXSIZE);
-	DdeGetData(hDDEData, (LPBYTE)gbuf, MAXSIZE - 1, 0);
-	GetDDEStr((char *)gbuf, URL, Title, tmp);
-
-	//解放
-	GlobalFree(gbuf);
-
-	DdeFreeDataHandle(hDDEData);
-	DdeFreeStringHandle(m_dwDDEID, hszParam);
-	DdeFreeStringHandle(m_dwDDEID, hszTopic);
-	DdeFreeStringHandle(m_dwDDEID, hszService);
-
-	//DDE切断
-	DdeDisconnect(hConv);
-	DdeUninitialize(m_dwDDEID);
-	return 1;
+	return cnt;
 }
 
 
@@ -373,7 +83,7 @@ static int GetActiveURLInfo(HWND hWnd, char *browser, char *Title, char *URL)
 
 	GetBrowserInfo
 
-	最後にアクティブだったブラウザの情報を取得
+	最後にアクティブだったブラウザで表示しているページからアイテムを作成する
 
 ******************************************************************************/
 
@@ -381,12 +91,13 @@ __declspec(dllexport) int CALLBACK GetBrowserInfo(HWND hWnd, struct TPITEM **Too
 												  int ToolItemListCnt, int type, int CheckType)
 {
 	struct TPITEM **ItemList;
-	char Title[MAXSIZE], URL[MAXSIZE];
-	int i;
+	BROWSER_PAGE *pages;
+	char Title[TITLE_MAX];
+	int cnt;
 
 	//プロパティ
 	if(type == TOOL_EXEC_PORP){
-		DialogBoxParam(ghinst, MAKEINTRESOURCE(IDD_DIALOG_SETDDEAPP), hWnd, SetDDEAppProc, 0);
+		MessageBox(hWnd, STR_MSG_BROWSER_INFO, STR_ERR_TITLE_BROWSER, MB_ICONINFORMATION | MB_OK);
 		return 1;
 	}
 
@@ -396,26 +107,22 @@ __declspec(dllexport) int CALLBACK GetBrowserInfo(HWND hWnd, struct TPITEM **Too
 	}
 
 	//最後にアクティブだったブラウザのURLとタイトルを取得
-	//IEを検索後Netscapeを検索
-	for(i = 0; i < AppCnt; i++){
-		if(GetActiveURLInfo(hWnd, AppName[i], Title, URL) != 0){
-			break;
-		}
-	}
-	if(i >= AppCnt){
-		MessageBox(hWnd, STR_ERR_MSG_DDE, STR_ERR_TITLE_DDE, MB_ICONWARNING | MB_OK);
+	if((cnt = GetPages(hWnd, &pages, TRUE)) <= 0){
 		return 0;
 	}
+	lstrcpyn(Title, pages[0].Title, TITLE_MAX);
 
 	//アイテムリストを確保
 	ItemList = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *));
 	if(ItemList == NULL){
+		Browser_FreePages(pages, cnt);
 		return 0;
 	}
 	//アイテム情報を確保
 	*ItemList = (struct TPITEM *)GlobalAlloc(GPTR, sizeof(struct TPITEM));
 	if(*ItemList == NULL){
 		GlobalFree(ItemList);
+		Browser_FreePages(pages, cnt);
 		return 0;
 	}
 
@@ -424,130 +131,27 @@ __declspec(dllexport) int CALLBACK GetBrowserInfo(HWND hWnd, struct TPITEM **Too
 	if((*(ItemList))->Title == NULL){
 		GlobalFree(*ItemList);
 		GlobalFree(ItemList);
+		Browser_FreePages(pages, cnt);
 		return 0;
 	}
 	lstrcpy((*(ItemList))->Title, Title);
 
 	//URLを設定
-	(*(ItemList))->CheckURL = (char *)GlobalAlloc(GPTR, sizeof(char) * lstrlen(URL) + 1);
+	(*(ItemList))->CheckURL = (char *)GlobalAlloc(GPTR, sizeof(char) * lstrlen(pages[0].Url) + 1);
 	if((*(ItemList))->CheckURL == NULL){
 		GlobalFree((*(ItemList))->Title);
 		GlobalFree(*ItemList);
 		GlobalFree(ItemList);
+		Browser_FreePages(pages, cnt);
 		return 0;
 	}
-	lstrcpy((*(ItemList))->CheckURL, URL);
+	lstrcpy((*(ItemList))->CheckURL, pages[0].Url);
+	Browser_FreePages(pages, cnt);
 
 	//本体に追加するようにメッセージを送信
 	SendMessage(hWnd, WM_SETITEMLIST, 1, (LPARAM)ItemList);
 
 	GlobalFree(ItemList);
-	return 1;
-}
-
-
-/******************************************************************************
-
-	GetURLInfo
-
-	全てのブラウザの情報を取得
-
-******************************************************************************/
-
-static int GetURLInfo(HWND hWnd, UINT sMsg, char *browser)
-{
-	HSZ hszService;
-	HSZ hszTopic;
-	HCONV hConv;
-	HSZ hszParam;
-	HDDEDATA hDDEData;
-	DWORD dwActivateID[500];
-	char tmp[BUFSIZE];
-	char *gbuf;
-	int i;
-	DWORD m_dwDDEID;
-
-	m_dwDDEID = 0L;
-	if(DdeInitialize(&m_dwDDEID, (PFNCALLBACK)MakeProcInstance((FARPROC)DDECallback, AfxGetInstanceHandle()),
-		CBF_SKIP_ALLNOTIFICATIONS | APPCMD_CLIENTONLY, 0L) != DMLERR_NO_ERROR){
-		MessageBox(hWnd, STR_ERR_MSG_DDEEINIT, STR_ERR_TITLE_DDEEINIT, MB_ICONWARNING | MB_OK);
-		return 0;
-	}
-
-	//ブラウザを列挙する
-	hszService = DdeCreateStringHandle(m_dwDDEID, browser, 0);
-	hszTopic = DdeCreateStringHandle(m_dwDDEID, "WWW_ListWindows", 0);
-	hszParam = DdeCreateStringHandle(m_dwDDEID, "0xFFFFFFFF", 0);
-
-	//DDE接続
-	hConv = DdeConnect(m_dwDDEID, hszService, hszTopic, NULL);
-	if(hConv == 0){
-		DdeFreeStringHandle(m_dwDDEID, hszParam);
-		DdeFreeStringHandle(m_dwDDEID, hszTopic);
-		DdeFreeStringHandle(m_dwDDEID, hszService);
-		DdeUninitialize(m_dwDDEID);
-		return 0;
-	}
-
-	//トランザクションの開始
-	hDDEData = DdeClientTransaction(NULL, 0, hConv, hszParam, CF_TEXT, XTYP_REQUEST, 10000L, NULL);
-
-	//ブラウザのIDを取得
-	memset(dwActivateID, 0, sizeof(dwActivateID));
-	DdeGetData(hDDEData, (LPBYTE)dwActivateID, sizeof(dwActivateID), 0);
-
-	//解放
-	DdeFreeDataHandle(hDDEData);
-	DdeFreeStringHandle(m_dwDDEID, hszParam);
-	DdeFreeStringHandle(m_dwDDEID, hszTopic);
-
-	//DDE切断
-	DdeDisconnect(hConv);
-
-
-	//ブラウザ情報を取得する
-	hszTopic = DdeCreateStringHandle(m_dwDDEID, "WWW_GetWindowInfo", 0);
-
-	//DDE接続
-	hConv = DdeConnect(m_dwDDEID, hszService, hszTopic, NULL);
-	if(hConv == 0){
-		DdeFreeStringHandle(m_dwDDEID, hszTopic);
-		DdeFreeStringHandle(m_dwDDEID, hszService);
-		DdeUninitialize(m_dwDDEID);
-		return 0;
-	}
-	i = 0;
-
-	gbuf = (char *)GlobalAlloc(GPTR, MAXSIZE);
-
-	while(i < sizeof(dwActivateID) / sizeof(DWORD) && dwActivateID[i] != 0){
-		wsprintf(tmp,"%d",dwActivateID[i]);
-		hszParam = DdeCreateStringHandle(m_dwDDEID, tmp, 0);
-
-		//トランザクションの開始
-		hDDEData = DdeClientTransaction(NULL, 0, hConv, hszParam, CF_TEXT, XTYP_REQUEST, 10000L, NULL);
-
-		//ブラウザ情報の取得
-		DdeGetData(hDDEData, (LPBYTE)gbuf, MAXSIZE - 1, 0);
-
-		//ウィンドウに取得した情報を送信
-		SendMessage(hWnd, sMsg, 0, (LPARAM)gbuf);
-
-		//解放
-		DdeFreeDataHandle(hDDEData);
-		DdeFreeStringHandle(m_dwDDEID, hszParam);
-		i++;
-	}
-
-	//解放
-	GlobalFree(gbuf);
-
-	DdeFreeStringHandle(m_dwDDEID, hszTopic);
-	DdeFreeStringHandle(m_dwDDEID, hszService);
-
-	//DDE切断
-	DdeDisconnect(hConv);
-	DdeUninitialize(m_dwDDEID);
 	return 1;
 }
 
@@ -629,13 +233,13 @@ static LRESULT DialogLvNotifyProc(HWND hWnd, LPARAM lParam, HWND hListView)
 BOOL CALLBACK URLListroc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	struct TPITEM **ItemList;
+	BROWSER_PAGE *pages;
 	LV_COLUMN lvc;
 	HWND pWnd;
 	char Title[MAXSIZE];
-	char Frame[MAXSIZE];
 	char URL[MAXSIZE];
 	int SelectItem;
-	int i, ret;
+	int i, cnt;
 
 	switch (uMsg)
 	{
@@ -652,8 +256,8 @@ BOOL CALLBACK URLListroc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST), i, &lvc);
 
 		i++;
-		lvc.cx = 100;
-		lvc.pszText = ST_LV_COL_FLAME;
+		lvc.cx = 110;
+		lvc.pszText = ST_LV_COL_BROWSER;
 		lvc.iSubItem = i;
 		ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST), i ,&lvc);
 
@@ -670,15 +274,17 @@ BOOL CALLBACK URLListroc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |
 			SendMessage(GetDlgItem(hDlg, IDC_LIST), LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0));
 
-		//ブラウザ情報取得
-		ret = 0;
-		for(i = 0; i < AppCnt; i++){
-			ret |= GetURLInfo(hDlg, WM_GETBROUSERINFO, AppName[i]);
-		}
-		if(ret == 0 || ListView_GetItemCount(GetDlgItem(hDlg, IDC_LIST)) == 0){
-			MessageBox(hDlg, STR_ERR_MSG_DDE, STR_ERR_TITLE_DDE, MB_ICONWARNING | MB_OK);
+		//ブラウザで表示しているページを取得
+		if((cnt = GetPages(hDlg, &pages, FALSE)) <= 0){
 			EndDialog(hDlg, FALSE);
+			break;
 		}
+		for(i = 0; i < cnt; i++){
+			int index = SetListItem(GetDlgItem(hDlg, IDC_LIST), pages[i].Title, 0, 0, -1);
+			ListView_SetItemText(GetDlgItem(hDlg, IDC_LIST), index, 1, pages[i].Browser);
+			ListView_SetItemText(GetDlgItem(hDlg, IDC_LIST), index, 2, pages[i].Url);
+		}
+		Browser_FreePages(pages, cnt);
 
 		CheckDlgButton(hDlg, IDC_CHECK_TITLE, 1);
 		CheckDlgButton(hDlg, IDC_CHECK_CHECKURL, 1);
@@ -694,19 +300,6 @@ BOOL CALLBACK URLListroc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				GetWindowLong(GetDlgItem(hDlg, IDC_LIST), GWL_STYLE) | LVS_SINGLESEL);
 		}
 		ListView_SetItemState(GetDlgItem(hDlg, IDC_LIST), 0, LVIS_FOCUSED, LVIS_FOCUSED);
-		break;
-
-	case WM_GETBROUSERINFO:
-		//ブラウザ情報文字列を分解
-		GetDDEStr((char *)lParam, URL, Title, Frame);
-		if(*Title == '\0' && *URL == '\0'){
-			break;
-		}
-
-		//リストビューに追加する
-		i = SetListItem(GetDlgItem(hDlg, IDC_LIST), Title, 0, 0, -1);
-		ListView_SetItemText(GetDlgItem(hDlg, IDC_LIST), i, 1, Frame);
-		ListView_SetItemText(GetDlgItem(hDlg, IDC_LIST), i, 2, URL);
 		break;
 
 	case WM_NOTIFY:
@@ -824,7 +417,7 @@ __declspec(dllexport) int CALLBACK GetBrowserInfoList(HWND hWnd, struct TPITEM *
 {
 	//プロパティ
 	if(type == TOOL_EXEC_PORP){
-		DialogBoxParam(ghinst, MAKEINTRESOURCE(IDD_DIALOG_SETDDEAPP), hWnd, SetDDEAppProc, 0);
+		MessageBox(hWnd, STR_MSG_BROWSER_INFO, STR_ERR_TITLE_BROWSER, MB_ICONINFORMATION | MB_OK);
 		return 1;
 	}
 
@@ -838,125 +431,6 @@ __declspec(dllexport) int CALLBACK GetBrowserInfoList(HWND hWnd, struct TPITEM *
 		return 0;
 	}
 	return 1;
-}
-
-
-/******************************************************************************
-
-	DDE_SetActiveBrowser
-
-	最後にアクティブだったブラウザをアクティブにする
-
-******************************************************************************/
-
-DWORD DDE_SetActiveBrowser(HWND hWnd, char *browser)
-{
-	HSZ hszService;
-	HSZ hszTopic;
-	HSZ hszParam;
-	HCONV hConv;
-	HDDEDATA hDDEData;
-	DWORD dwActivateID = 0;
-	DWORD m_dwDDEID;
-
-	m_dwDDEID = 0L;
-	if(DdeInitialize(&m_dwDDEID, (PFNCALLBACK)MakeProcInstance((FARPROC)DDECallback, AfxGetInstanceHandle()),
-		CBF_SKIP_ALLNOTIFICATIONS | APPCMD_CLIENTONLY, 0L) != DMLERR_NO_ERROR){
-		MessageBox(hWnd, STR_ERR_MSG_DDEEINIT, STR_ERR_TITLE_DDEEINIT, MB_ICONWARNING | MB_OK);
-		return 0;
-	}
-
-	hszService = DdeCreateStringHandle(m_dwDDEID, browser,0);
-	hszTopic = DdeCreateStringHandle(m_dwDDEID, "WWW_Activate", 0);
-	//DDE Connect
-	hConv = DdeConnect(m_dwDDEID, hszService, hszTopic, NULL);
-	DdeFreeStringHandle(m_dwDDEID, hszTopic);
-	DdeFreeStringHandle(m_dwDDEID, hszService);
-	if(hConv == 0){
-		DdeUninitialize(m_dwDDEID);
-		return 0;
-	}
-
-	// 0xFFFFFFFF は最後にアクティブだったブラウザを指す。
-	// ブラウザのIDを指定するとそのブラウザをアクティブにする。
-	hszParam = DdeCreateStringHandle(m_dwDDEID, "0xFFFFFFFF,0x0", 0);
-	//Client Transaction
-	hDDEData = DdeClientTransaction(NULL, 0, hConv, hszParam, CF_TEXT, XTYP_REQUEST, 10000L, NULL);
-	DdeFreeStringHandle(m_dwDDEID, hszParam);
-	if(hDDEData == 0){
-		DdeDisconnect(hConv);
-		DdeUninitialize(m_dwDDEID);
-		return 0;
-	}
-
-	//Get Data
-	//アクティブにしたブラウザのIDを取得
-	DdeGetData(hDDEData, (LPBYTE)&dwActivateID, sizeof(DWORD), 0);
-
-    DdeFreeDataHandle(hDDEData);
-	DdeDisconnect(hConv);
-	DdeUninitialize(m_dwDDEID);
-	return dwActivateID;
-}
-
-
-/******************************************************************************
-
-	DDE_SetBrowseURL
-
-	最後にアクティブだったブラウザにURLを送る
-
-******************************************************************************/
-
-BOOL DDE_SetBrowseURL(HWND hWnd, char *browser, char *URL)
-{
-	HSZ hszService;
-	HSZ hszTopic;
-	HSZ hszParam;
-	HCONV hConv;
-	HDDEDATA hDDEData;
-	char *sParam;
-	DWORD m_dwDDEID;
-
-	m_dwDDEID = 0L;
-	if(DdeInitialize(&m_dwDDEID, (PFNCALLBACK)MakeProcInstance((FARPROC)DDECallback, AfxGetInstanceHandle()),
-		CBF_SKIP_ALLNOTIFICATIONS | APPCMD_CLIENTONLY, 0L) != DMLERR_NO_ERROR){
-		MessageBox(hWnd, STR_ERR_MSG_DDEEINIT, STR_ERR_TITLE_DDEEINIT, MB_ICONWARNING | MB_OK);
-		return FALSE;
-	}
-
-	hszService = DdeCreateStringHandle(m_dwDDEID, browser, 0);
-	hszTopic = DdeCreateStringHandle(m_dwDDEID, "WWW_OpenURL", 0);
-	//DDE Connect
-	hConv = DdeConnect(m_dwDDEID, hszService, hszTopic, NULL);
-	DdeFreeStringHandle(m_dwDDEID, hszService);
-	DdeFreeStringHandle(m_dwDDEID, hszTopic);
-	if(hConv == 0){
-		DdeUninitialize(m_dwDDEID);
-		return FALSE;
-	}
-
-	// 0xFFFFFFFF は最後にアクティブだったブラウザを指す。
-	//ブラウザのIDを指定するとそのブラウザにURLを送る。
-	sParam = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(URL) + lstrlen("\"\",,0xFFFFFFFF,0x0,,,") + 1);
-	if(sParam == NULL){
-		DdeDisconnect(hConv);
-		DdeUninitialize(m_dwDDEID);
-		return FALSE;
-	}
-	iStrCpy(iStrCpy(iStrCpy(sParam, "\""), URL), "\",,0xFFFFFFFF,0x0,,,");
-	hszParam = DdeCreateStringHandle(m_dwDDEID, (LPCSTR)sParam, 0);
-	GlobalFree(sParam);
-	//Client Transaction
-	hDDEData = DdeClientTransaction(NULL, 0, hConv, hszParam, CF_TEXT, XTYP_REQUEST, 10000L, NULL);
-	DdeFreeStringHandle(m_dwDDEID, hszParam);
-
-    DdeFreeDataHandle(hDDEData);
-	DdeDisconnect(hConv);
-	DdeUninitialize(m_dwDDEID);
-
-	DDE_SetActiveBrowser(hWnd, browser);
-	return TRUE;
 }
 
 
@@ -985,10 +459,6 @@ static BOOL CALLBACK SetBrowserProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 	case WM_COMMAND:
 		switch(wParam)
 		{
-		case IDC_BUTTON_SETDDE:
-			DialogBoxParam(ghinst, MAKEINTRESOURCE(IDD_DIALOG_SETDDEAPP), hDlg, SetDDEAppProc, 0);
-			break;
-
 		case IDC_BUTTON_BROWS:
 			if(FileSelect(hDlg, "*.exe", STR_FILTER_EXESELECT, STR_TITLE_FILESELECT, buf, NULL, 1) == -1){
 				break;
@@ -1018,7 +488,8 @@ static BOOL CALLBACK SetBrowserProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 
 	DDE_OpenURL
 
-	ブラウザにURLを送る
+	ブラウザでURLを開く (以前はDDEを使用していたため関数名はそのまま)
+	既定のブラウザ (または設定したブラウザ) に渡すと、起動しているブラウザで開かれる
 
 ******************************************************************************/
 
@@ -1028,7 +499,7 @@ __declspec(dllexport) int CALLBACK DDE_OpenURL(HWND hWnd, struct TPITEM **ToolIt
 	char *url;
 	char *p;
 	int rc = -1;
-	int i, j;
+	int i;
 
 	switch(type)
 	{
@@ -1041,29 +512,22 @@ __declspec(dllexport) int CALLBACK DDE_OpenURL(HWND hWnd, struct TPITEM **ToolIt
 				continue;
 			}
 
-			for(j = 0; j < AppCnt; j++){
-				if(DDE_SetBrowseURL(hWnd, AppName[j], url) == TRUE){
-					break;
+			if(*BrowserPath == '\0'){
+				rc = ExecItem(hWnd, url, NULL);
+			}else{
+				//引数として渡すURLは引用符で囲む (末尾の \ は閉じ引用符をエスケープしないよう重ねる)
+				char *param = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(url) * 2 + 3);
+				char *t;
+				if(param == NULL){
+					continue;
 				}
-			}
-			if(j >= AppCnt){
-				if(*BrowserPath == '\0'){
-					rc = ExecItem(hWnd, url, NULL);
-				}else{
-					//引数として渡すURLは引用符で囲む (末尾の \ は閉じ引用符をエスケープしないよう重ねる)
-					char *param = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(url) * 2 + 3);
-					char *t;
-					if(param == NULL){
-						continue;
-					}
-					t = iStrCpy(iStrCpy(param, "\""), url);
-					for(p = url + lstrlen(url); p > url && *(p - 1) == '\\'; p--){
-						*(t++) = '\\';
-					}
-					iStrCpy(t, "\"");
-					rc = ExecItem(hWnd, BrowserPath, param);
-					GlobalFree(param);
+				t = iStrCpy(iStrCpy(param, "\""), url);
+				for(p = url + lstrlen(url); p > url && *(p - 1) == '\\'; p--){
+					*(t++) = '\\';
 				}
+				iStrCpy(t, "\"");
+				rc = ExecItem(hWnd, BrowserPath, param);
+				GlobalFree(param);
 			}
 		}
 		break;

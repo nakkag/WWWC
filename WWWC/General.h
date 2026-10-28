@@ -4,7 +4,7 @@
 
 	General.h
 
-	Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		https://www.nakka.com/
 		nakka@nakka.com
 
@@ -40,7 +40,7 @@
 
 #define APP_NAME					"WWWC"
 #define APP_VERSION					"1.2.0"
-#define APP_COPYRIGHT				"Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved."
+#define APP_COPYRIGHT				"Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved."
 #define APP_URL						"https://www.nakka.com/"
 #define APP_MAIL					"nakka@nakka.com"
 #define BANNER_URL					""
@@ -742,6 +742,7 @@ void SetProtocolInfo(void);
 void EndProtocolNotify(void);
 void SetNewItemMenu(HWND hWnd);
 void DeleteProtocolMenuItem(HMENU pMenu);
+void SetProtocolItemMenuState(HWND hWnd, HMENU pMenu, BOOL UpWndFlag);
 void SetProtocolItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag, BOOL UpWndFlag);
 void SetProtocolMenu(HWND hWnd);
 void SetProtocolImage(HWND hWnd);

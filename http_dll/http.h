@@ -4,7 +4,7 @@
 
 	http.h
 
-	Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		https://www.nakka.com/
 		nakka@nakka.com
 
@@ -16,8 +16,6 @@
 /**************************************************************************
 	Define
 **************************************************************************/
-
-#define WM_GETBROUSERINFO				(WM_USER + 1)
 
 #define IDC_EDIT_VIEW					100
 
@@ -56,6 +54,14 @@
 #define OP2_USER						5
 #define OP2_PASS						6
 #define OP2_REFERER						7
+#define OP2_NOARCHIVE						8				/* アーカイブしない */
+#define OP2_ARCHIVE_NOIMAGE				9				/* 画像をアーカイブしない */
+#define OP2_ARCHIVE_NOCSS					10				/* CSSをアーカイブしない */
+#define OP2_ARCHIVE_JS					11				/* JavaScriptをアーカイブする */
+#define OP2_ARCHIVE_GEN					12				/* 保存する世代数 (0 は 1) */
+#define OP2_USERAGENT					13				/* User-Agent (空の場合は USER_AGENT) */
+
+#define USER_AGENT						L"WWWC/1.20"
 
 #define LVM_FIRST						0x1000      // ListView messages
 #define LVM_SETEXTENDEDLISTVIEWSTYLE	(LVM_FIRST + 54)
@@ -102,6 +108,7 @@ struct TPHTTP{
 	WCHAR *SendHeader;					/* 送信ヘッダ */
 	WCHAR *ProxyUser;					/* HTTPS接続時のプロキシ認証 */
 	WCHAR *ProxyPass;
+	WCHAR *UserAgent;					/* アイテムの User-Agent (NULL の場合は USER_AGENT) */
 	BOOL HeadRequest;					/* HEADリクエスト */
 	BOOL NoRedirect;					/* 自動リダイレクトを行わない */
 	BOOL NeedBody;						/* 本文をすべて受信する */

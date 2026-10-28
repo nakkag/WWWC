@@ -5,7 +5,7 @@
 	wwwcdll.h
 	Ver 1.1.0
 
-	Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		https://www.nakka.com/
 		nakka@nakka.com
 

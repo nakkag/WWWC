@@ -4,7 +4,7 @@
 
 	String.c
 
-	Copyright (C) 1996-2003 by Nakashima Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		http://www.nakka.com/
 		nakka@nakka.com
 
@@ -22,7 +22,6 @@
 #include <winsock.h>
 #include <commctrl.h>
 #include <richedit.h>
-#include <DDEML.H>
 #include <process.h>
 #include <time.h>
 
@@ -699,6 +698,109 @@ BOOL GetOptionStringEx(char *buf, char *ret, int size, int num)
 	}
 	*r = '\0';
 	return ((i == num) ? ((*ret == '\0') ? FALSE : TRUE) : FALSE);
+}
+
+
+/******************************************************************************
+
+	NormalizeUserAgent
+
+	User-Agent に使えない文字を除く
+	(制御文字と8ビット文字を除き、項目の区切りにならないよう ; を続けない)
+
+******************************************************************************/
+
+void NormalizeUserAgent(char *buf)
+{
+	char *p, *r;
+
+	for(p = r = buf; *p != '\0'; p++){
+		//2バイト文字は後続バイトも含めて除く
+		if(IsDBCSLeadByte((BYTE)*p) == TRUE && *(p + 1) != '\0'){
+			p++;
+			continue;
+		}
+		if((unsigned char)*p < 0x20 || (unsigned char)*p >= 0x7F){
+			continue;
+		}
+		if(*p == ';' && r > buf && *(r - 1) == ';'){
+			continue;
+		}
+		*(r++) = *p;
+	}
+	//末尾の空白と ; を除く
+	for(; r > buf && (*(r - 1) == ' ' || *(r - 1) == ';'); r--);
+	*r = '\0';
+	//先頭の空白を除く
+	for(p = buf; *p == ' '; p++);
+	if(p != buf){
+		MoveMemory(buf, p, lstrlen(p) + 1);
+	}
+}
+
+
+/******************************************************************************
+
+	ReplaceOptionFields
+
+	オプションの指定の項目を置き換えた文字列を作成する (他の項目はそのまま残す)
+
+******************************************************************************/
+
+char *ReplaceOptionFields(char *buf, int start, int cnt, char **vals)
+{
+#define MAX_OPTION_FIELD	64
+	char *fs[MAX_OPTION_FIELD];
+	int fl[MAX_OPTION_FIELD];
+	char *p, *ret, *r;
+	int n = 0, total, i, len;
+
+	if(start < 0 || cnt <= 0 || start + cnt > MAX_OPTION_FIELD){
+		return NULL;
+	}
+	//項目に分割
+	if(buf != NULL && *buf != '\0'){
+		p = buf;
+		while(n < MAX_OPTION_FIELD){
+			fs[n] = p;
+			for(; *p != '\0' && !(*p == ';' && *(p + 1) == ';'); p++);
+			fl[n] = (int)(p - fs[n]);
+			n++;
+			if(*p == '\0'){
+				break;
+			}
+			p += 2;
+		}
+	}
+	total = (n > start + cnt) ? n : start + cnt;
+	len = 1;
+	for(i = 0; i < total; i++){
+		len += 2;
+		if(i >= start && i < start + cnt){
+			len += lstrlen(vals[i - start]);
+		}else if(i < n){
+			len += fl[i];
+		}
+	}
+	ret = (char *)GlobalAlloc(GPTR, len);
+	if(ret == NULL){
+		return NULL;
+	}
+	r = ret;
+	for(i = 0; i < total; i++){
+		if(i > 0){
+			*(r++) = ';';
+			*(r++) = ';';
+		}
+		if(i >= start && i < start + cnt){
+			r = iStrCpy(r, vals[i - start]);
+		}else if(i < n){
+			CopyMemory(r, fs[i], fl[i]);
+			r += fl[i];
+		}
+	}
+	*r = '\0';
+	return ret;
 }
 
 

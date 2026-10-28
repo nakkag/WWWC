@@ -21,6 +21,15 @@
     <ClCompile Include="String.c">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="browser.c">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="archive.c">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="archivehtml.c">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="file.c">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -51,6 +60,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="wwwcdll.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="browser.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="archive.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="global.h">

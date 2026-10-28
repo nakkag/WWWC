@@ -4,7 +4,7 @@
 
 	String.h
 
-	Copyright (C) 1996-2003 by Nakashima Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		http://www.nakka.com/
 		nakka@nakka.com
 
@@ -32,6 +32,8 @@ BOOL IsWebURL(char *URL);
 char *CreateMoveURL(char *FromURL, char *ToURL);
 BOOL GetOptionString(char *buf, char *ret, int num);
 BOOL GetOptionStringEx(char *buf, char *ret, int size, int num);
+char *ReplaceOptionFields(char *buf, int start, int cnt, char **vals);
+void NormalizeUserAgent(char *buf);
 int GetOptionInt(char *buf, int num);
 void DelCrLf(char *buf);
 void DelCtrlChar(char *buf);

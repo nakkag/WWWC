@@ -75,6 +75,8 @@
 		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
 			<A HREF="#http_menu">メニュー</A>
 		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<A HREF="#http_archive">アーカイブ</A>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
 			<A HREF="#http_brows">ブラウザに表示</A>
 		</TD></TR>
 
@@ -135,7 +137,7 @@
 		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
 			<H3><A NAME="install">インストール</A></H3>
 		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>Windows XP, Vista, 7, 8, 8.1, 10で動作します。</P>
+			<P>Windows 7, 8, 8.1, 10, 11で動作します。</P>
 			<P>ダウンロードしたファイルを適当なフォルダに展開して、その中の <STRONG>WWWC.exe</STRONG> を実行するだけです。</P>
 			<P>初めて起動するとWWWCのフォルダ内にユーザ名のフォルダが作成され、ユーザ毎の設定内容が保存されます。</P>
 			<P>レジストリは使用しないためアンインストールを行うときは WWWCのフォルダを削除するだけでいいです。</P>
@@ -309,6 +311,7 @@
 			</UL>
 			<P>更新チェックを行うページがユーザ認証を必要とするページの場合は、アイテムのプロパティで「オプション」のタブを開き、「このURLはユーザ認証が必要」を設定してユーザとパスワードを設定してください。
 			対応している認証方式はBASIC認証(BASE64)です。</P>
+			<P>アイテムのプロパティの「オプション」のタブの「User-Agent」で、そのアイテムのチェックとアーカイブで送信する User-Agent を設定できます。空欄の場合は WWWC の User-Agent を送信します。半角の英数字と記号以外の文字は除かれます。</P>
 		</TD></TR>
 
 		<!-- Proxyの設定 -->
@@ -330,6 +333,10 @@
 		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
 			<P>HTTPのアイテムを右クリックするとHTTPアイテム固有のメニューが表示されます。</P>
 			<UL>
+				<LI><STRONG>「アーカイブを開く」</STRONG><BR>
+				チェックした時に保存したページ (アーカイブ) をブラウザで開きます。
+				ページが無くなった場合などに以前の内容を見ることができます。アーカイブが無い場合は選択できません。</LI>
+
 				<LI><STRONG>「ヘッダー表示」</STRONG><BR>
 				アイテムに登録されたURLのレスポンスヘッダを表示します。
 				これで表示される「Last-Modified:」の項目で更新チェックを行います。
@@ -343,6 +350,22 @@
 				アイテムに登録されたURLからHTMLを受信して &lt;TITLE&gt; ～ &lt;/TITLE&gt; で囲まれた文字列をアイテムのタイトルに設定します。</LI>
 			</UL>
 			<P>オプションのツールで、ツールやプラグインを登録してアイテムのメニューに追加することができます。</P>
+		</TD></TR>
+
+		<!-- アーカイブ -->
+		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
+			<H3><A NAME="http_archive">アーカイブ</A></H3>
+		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
+			<P>チェックに成功したページを、更新があった時 (またはまだアーカイブが無い時) にユーザディレクトリと同じ場所にある「ユーザ名.archive」フォルダに保存します。
+			アイテムのメニューの「アーカイブを開く」で保存したページを開けます。</P>
+			<P>アイテムのプロパティの「アーカイブ」のタブで、アーカイブするかどうか、画像、スタイルシート(CSS)、JavaScript を保存するかどうかと、保存する世代数を設定できます。
+			初期設定はアーカイブする、画像とCSSは保存する、JavaScript は保存しない、世代数は 1 (最新のみ) です。
+			同じタブの「アーカイブを削除」でそのアイテムのアーカイブを削除できます。
+			認証が必要なページはアーカイブしません。アイテムに認証 (ユーザ名とパスワード) を設定した場合や、URL にユーザ名を含む場合はアーカイブを行いません。
+			画像、スタイルシート、JavaScript の設定を変更した場合は、既存のアーカイブを削除するか確認します。削除すると次のチェックで新しい設定のアーカイブを作成します。
+			JavaScript を保存しない場合は、ページ内のスクリプトやイベント属性を削除して保存し、アーカイブを開いたときにスクリプトが実行されないようにします。埋め込まれた他のページ (iframe) でもスクリプトは実行されません。
+			画像は前回から変更があった場合のみ取得し直します。世代数を 2 以上にした場合は、アーカイブを開くと保存した日時の一覧が表示されます。</P>
+			<P>「ツール」→「オプション」→「プロトコル」で HTTP の設定を開き、「アーカイブ」のタブの「アーカイブを使用する」をオフにすると、すべてのアイテムでアーカイブを行いません。</P>
 		</TD></TR>
 
 		<!-- ブラウザに表示 -->
@@ -418,7 +441,7 @@
 	<HR ALIGN="LEFT" SIZE="1" COLOR="#000080" NOSHADE>
 	<CENTER>
 		<FONT FACE="Arial">
-		<P>Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved.</P>
+		<P>Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.</P>
 		- <STRONG><A HREF="https://www.nakka.com/">www.nakka.com</A></STRONG> -<BR>
 		<P>mailto:<STRONG><A HREF="mailto:nakka@nakka.com">&lt;nakka@nakka.com&gt;</A></STRONG></P>
 		</FONT>

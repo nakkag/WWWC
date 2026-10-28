@@ -4,7 +4,7 @@
 
 	Menu.c
 
-	Copyright (C) 1996-2003 by Nakashima Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		http://www.nakka.com/
 		nakka@nakka.com
 
@@ -608,6 +608,59 @@ static BOOL SetFolderItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag)
 
 /******************************************************************************
 
+	SetProtocolItemMenuState
+
+	アイテムメニューの有効、無効を設定する
+	(同じプロトコルのアイテムではメニューを作り直さないため、選択が変わるたびに設定する)
+
+******************************************************************************/
+
+void SetProtocolItemMenuState(HWND hWnd, HMENU pMenu, BOOL UpWndFlag)
+{
+	struct TPITEM *tpItemInfo;
+	FARPROC Func_GetMenuState = NULL;
+	char buf[BUFSIZE];
+	int SelectItem;
+	int ProtocolIndex;
+	int i;
+	BOOL Enable;
+
+	SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_FOCUSED);
+	if(ListView_GetItemState(GetDlgItem(hWnd, WWWC_LIST), SelectItem, LVIS_SELECTED) != LVIS_SELECTED){
+		SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED);
+	}
+	tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), SelectItem);
+	if(tpItemInfo == NULL){
+		return;
+	}
+	ProtocolIndex = GetProtocolIndex(tpItemInfo->CheckURL);
+	if(ProtocolIndex == -1 || tpProtocol[ProtocolIndex].tpMenu == NULL){
+		return;
+	}
+	//メニューの状態を返す関数 (無い場合はすべて有効)
+	if(tpProtocol[ProtocolIndex].lib != NULL && lstrlen(tpProtocol[ProtocolIndex].FuncHeader) + lstrlen("GetMenuState") < BUFSIZE){
+		wsprintf(buf, "%sGetMenuState", tpProtocol[ProtocolIndex].FuncHeader);
+		Func_GetMenuState = GetProcAddress((HMODULE)tpProtocol[ProtocolIndex].lib, buf);
+	}
+	for(i = 0; i < tpProtocol[ProtocolIndex].tpMenuCnt; i++){
+		if(GetMenuState(pMenu, ID_MENU_ACTION + i, MF_BYCOMMAND) == (UINT)-1){
+			continue;
+		}
+		Enable = TRUE;
+		if(UpWndFlag == 1 && tpProtocol[ProtocolIndex].tpMenu[i].Flag == 1){
+			Enable = FALSE;
+		}
+		if(Enable == TRUE && Func_GetMenuState != NULL &&
+			Func_GetMenuState(hWnd, tpProtocol[ProtocolIndex].tpMenu[i].Action, tpItemInfo) != 0){
+			Enable = FALSE;
+		}
+		EnableMenuItem(pMenu, ID_MENU_ACTION + i, MF_BYCOMMAND | ((Enable == TRUE) ? MF_ENABLED : MF_GRAYED));
+	}
+}
+
+
+/******************************************************************************
+
 	SetProtocolItemMenu
 
 	アイテムメニューの設定
@@ -677,9 +730,6 @@ void SetProtocolItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag, BOOL UpWndFlag)
 			if(ItemFlag == 1 && DefIndex == -1 && tpProtocol[ProtocolIndex].tpMenu[i].Default == TRUE){
 				DefIndex = ID_MENU_ACTION + i;
 			}
-			if(UpWndFlag == 1 && tpProtocol[ProtocolIndex].tpMenu[i].Flag == 1){
-				EnableMenuItem(pMenu, ID_MENU_ACTION + i, 1);
-			}
 		}
 	}
 	InsertMenu(pMenu, ii, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
@@ -690,6 +740,7 @@ void SetProtocolItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag, BOOL UpWndFlag)
 	}else if(DefIndex != -1){
 		SetMenuDefaultItem(pMenu, DefIndex, 0);
 	}
+	SetProtocolItemMenuState(hWnd, pMenu, UpWndFlag);
 }
 
 
@@ -719,6 +770,9 @@ void SetProtocolMenu(HWND hWnd)
 			SetProtocolItemMenu(hWnd, GetSubMenu(hPOPUP, MENU_POP_ITEM), TRUE, FALSE);
 		}
 	}
+	//メニューを作り直さない場合も選択したアイテムに合わせて有効、無効を設定する
+	SetProtocolItemMenuState(hWnd, GetSubMenu(GetMenu(hWnd), MENU_HWND_FILE), FALSE);
+	SetProtocolItemMenuState(hWnd, GetSubMenu(hPOPUP, MENU_POP_ITEM), FALSE);
 	SetEnableMenu(hWnd);
 	SetEnableToolItemMenu(GetSubMenu(hPOPUP, MENU_POP_ITEM));
 }

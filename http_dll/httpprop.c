@@ -4,7 +4,7 @@
 
 	httpprop.c
 
-	Copyright (C) 1996-2008 by Nakashima Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		http://www.nakka.com/
 		nakka@nakka.com
 
@@ -26,6 +26,7 @@
 #include "StrTbl.h"
 #include "wwwcdll.h"
 #include "resource.h"
+#include "archive.h"
 
 
 /**************************************************************************
@@ -63,11 +64,10 @@ extern char pServer[];
 extern int pPort;
 extern int pNoCache;
 extern int pUsePass;
+extern int ArchiveGlobal;
 extern char pUser[];
 extern char pPass[];
 
-extern char AppName[30][BUFSIZE];
-extern int AppCnt;
 
 
 /**************************************************************************
@@ -84,6 +84,8 @@ static void ReqTypeEnable(HWND hDlg);
 static BOOL CALLBACK PropertyCheckProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 static BOOL CALLBACK PropertyOptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 static BOOL CALLBACK ProtocolPropertyCheckProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+static BOOL CALLBACK PropertyArchiveProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+static BOOL CALLBACK ProtocolPropertyArchiveProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 
 /******************************************************************************
@@ -593,7 +595,10 @@ static BOOL CALLBACK PropertyOptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 	char pass[BUFSIZE];
 	char epass[PASS_BUFSIZE];
 	char referer[BUFSIZE];
-	char *p;
+	char ua[BUFSIZE];
+	char nb[16], sb[16], ub[16];
+	char *vals[8];
+	char *opt, *opt2;
 	BOOL EnableFlag;
 
 	switch (uMsg)
@@ -605,6 +610,7 @@ static BOOL CALLBACK PropertyOptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_PROXY), EM_LIMITTEXT, BUFSIZE - 2, 0);
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_PROXY_PORT), EM_LIMITTEXT, BUFSIZE - 2, 0);
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_REFERER), EM_LIMITTEXT, BUFSIZE - 2, 0);
+		SendMessage(GetDlgItem(hDlg, IDC_EDIT_USERAGENT), EM_LIMITTEXT, BUFSIZE - 2, 0);
 
 		CheckDlgButton(hDlg, IDC_CHECK_NOPROXY, GetOptionInt(tpItemInfo->Option2, OP2_NOPROXY));
 		CheckDlgButton(hDlg, IDC_CHECK_SETPROXY, GetOptionInt(tpItemInfo->Option2, OP2_SETPROXY));
@@ -631,6 +637,10 @@ static BOOL CALLBACK PropertyOptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 
 		if(GetOptionString(tpItemInfo->Option2, buf, OP2_REFERER) == TRUE){
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_REFERER), WM_SETTEXT, 0, (LPARAM)buf);
+		}
+
+		if(GetOptionString(tpItemInfo->Option2, buf, OP2_USERAGENT) == TRUE){
+			SendMessage(GetDlgItem(hDlg, IDC_EDIT_USERAGENT), WM_SETTEXT, 0, (LPARAM)buf);
 		}
 
 		if(IsDlgButtonChecked(hDlg, IDC_CHECK_NOPROXY) != 0){
@@ -693,27 +703,233 @@ static BOOL CALLBACK PropertyOptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 			EncodePassword(pass, epass, PASS_BUFSIZE);
 			SecureZeroMemory(pass, sizeof(pass));
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_REFERER), WM_GETTEXT, BUFSIZE - 1, (LPARAM)referer);
+			*ua = '\0';
+			SendMessage(GetDlgItem(hDlg, IDC_EDIT_USERAGENT), WM_GETTEXT, BUFSIZE - 1, (LPARAM)ua);
+			NormalizeUserAgent(ua);
 
-			if(tpItemInfo->Option2 != NULL){
-				GlobalFree(tpItemInfo->Option2);
+			//アーカイブの設定など、以降の項目はそのまま残す
+			wsprintf(nb, "%d", IsDlgButtonChecked(hDlg, IDC_CHECK_NOPROXY));
+			wsprintf(sb, "%d", IsDlgButtonChecked(hDlg, IDC_CHECK_SETPROXY));
+			wsprintf(ub, "%d", IsDlgButtonChecked(hDlg, IDC_CHECK_USEPASS));
+			vals[OP2_NOPROXY] = nb;
+			vals[OP2_SETPROXY] = sb;
+			vals[OP2_PROXY] = proxy;
+			vals[OP2_PORT] = port;
+			vals[OP2_USEPASS] = ub;
+			vals[OP2_USER] = user;
+			vals[OP2_PASS] = epass;
+			vals[OP2_REFERER] = referer;
+			opt = ReplaceOptionFields(tpItemInfo->Option2, 0, 8, vals);
+			SecureZeroMemory(epass, sizeof(epass));
+			if(opt != NULL){
+				//User-Agent (アーカイブの設定の後の項目)
+				vals[0] = ua;
+				opt2 = ReplaceOptionFields(opt, OP2_USERAGENT, 1, vals);
+				if(opt2 != NULL){
+					SecureZeroMemory(opt, lstrlen(opt));
+					GlobalFree(opt);
+					opt = opt2;
+				}
+				if(tpItemInfo->Option2 != NULL){
+					GlobalFree(tpItemInfo->Option2);
+				}
+				tpItemInfo->Option2 = opt;
 			}
-			tpItemInfo->Option2 = (char *)GlobalAlloc(GPTR,
-				18 + lstrlen(proxy) + lstrlen(port) + lstrlen(user) + lstrlen(epass) + lstrlen(referer));
-			if(tpItemInfo->Option2 != NULL){
-				//wsprintf の長さの上限を超えないよう連結して作成する
-				wsprintf(buf, "%d;;%d;;", IsDlgButtonChecked(hDlg, IDC_CHECK_NOPROXY), IsDlgButtonChecked(hDlg, IDC_CHECK_SETPROXY));
-				p = iStrCpy(tpItemInfo->Option2, buf);
-				p = iStrCpy(p, proxy);
-				p = iStrCpy(p, ";;");
-				p = iStrCpy(p, port);
-				wsprintf(buf, ";;%d;;", IsDlgButtonChecked(hDlg, IDC_CHECK_USEPASS));
-				p = iStrCpy(p, buf);
-				p = iStrCpy(p, user);
-				p = iStrCpy(p, ";;");
-				p = iStrCpy(p, epass);
-				p = iStrCpy(p, ";;");
-				p = iStrCpy(p, referer);
+			break;
+		}
+		break;
+
+	default:
+		return FALSE;
+	}
+	return TRUE;
+}
+
+
+/******************************************************************************
+
+	ArchiveEnable
+
+	アーカイブの設定の有効、無効を切り替える
+
+******************************************************************************/
+
+static void ArchiveEnable(HWND hDlg)
+{
+	BOOL flag = (IsDlgButtonChecked(hDlg, IDC_CHECK_ARCHIVE) == 1) ? TRUE : FALSE;
+
+	EnableWindow(GetDlgItem(hDlg, IDC_CHECK_ARCHIVE_IMAGE), flag);
+	EnableWindow(GetDlgItem(hDlg, IDC_CHECK_ARCHIVE_CSS), flag);
+	EnableWindow(GetDlgItem(hDlg, IDC_CHECK_ARCHIVE_JS), flag);
+	EnableWindow(GetDlgItem(hDlg, IDC_EDIT_ARCHIVE_GEN), flag);
+}
+
+
+/******************************************************************************
+
+	PropertyArchiveProc
+
+	アイテムのアーカイブ設定ダイアログ (Option2 の OP2_NOARCHIVE 以降に保存)
+
+******************************************************************************/
+
+static BOOL CALLBACK PropertyArchiveProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	struct TPITEM *tpItemInfo;
+	char val[5][16];
+	char *vals[5];
+	char *opt;
+	int i, gen;
+	BOOL changed;
+
+	switch (uMsg)
+	{
+	case WM_INITDIALOG:
+		tpItemInfo = GetItemInfo(GetParent(hDlg));
+		if(tpItemInfo == NULL){
+			break;
+		}
+		CheckDlgButton(hDlg, IDC_CHECK_ARCHIVE, (GetOptionInt(tpItemInfo->Option2, OP2_NOARCHIVE) == 1) ? 0 : 1);
+		CheckDlgButton(hDlg, IDC_CHECK_ARCHIVE_IMAGE, (GetOptionInt(tpItemInfo->Option2, OP2_ARCHIVE_NOIMAGE) == 1) ? 0 : 1);
+		CheckDlgButton(hDlg, IDC_CHECK_ARCHIVE_CSS, (GetOptionInt(tpItemInfo->Option2, OP2_ARCHIVE_NOCSS) == 1) ? 0 : 1);
+		CheckDlgButton(hDlg, IDC_CHECK_ARCHIVE_JS, (GetOptionInt(tpItemInfo->Option2, OP2_ARCHIVE_JS) == 1) ? 1 : 0);
+		gen = GetOptionInt(tpItemInfo->Option2, OP2_ARCHIVE_GEN);
+		gen = (gen < 1) ? 1 : ((gen > ARCHIVE_GEN_MAX) ? ARCHIVE_GEN_MAX : gen);
+		SendDlgItemMessage(hDlg, IDC_EDIT_ARCHIVE_GEN, EM_LIMITTEXT, 2, 0);
+		SetDlgItemInt(hDlg, IDC_EDIT_ARCHIVE_GEN, gen, FALSE);
+		ShowWindow(GetDlgItem(hDlg, IDC_STATIC_ARCHIVE_GLOBAL), (ArchiveGlobal == 0) ? SW_SHOW : SW_HIDE);
+		ShowWindow(GetDlgItem(hDlg, IDC_STATIC_ARCHIVE_AUTH), (Archive_IsAuthItem(tpItemInfo) == TRUE) ? SW_SHOW : SW_HIDE);
+		//アーカイブが無い場合は削除できない
+		EnableWindow(GetDlgItem(hDlg, IDC_BUTTON_ARCHIVE_DELETE), Archive_Exists(hDlg, tpItemInfo));
+		ArchiveEnable(hDlg);
+		break;
+
+	case WM_NOTIFY:
+		return OptionNotifyProc(hDlg, uMsg, wParam, lParam);
+
+	case WM_COMMAND:
+		switch(wParam)
+		{
+		case IDC_CHECK_ARCHIVE:
+			ArchiveEnable(hDlg);
+			break;
+
+		case IDC_BUTTON_ARCHIVE_DELETE:
+			//アーカイブの削除 (確認後すぐに削除する)
+			tpItemInfo = GetItemInfo(GetParent(hDlg));
+			if(tpItemInfo == NULL ||
+				MessageBox(hDlg, STR_Q_MSG_ARCHIVE_DELETE, STR_ERR_TITLE_ARCHIVE, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2) != IDYES){
+				break;
 			}
+			switch(Archive_Delete(hDlg, tpItemInfo))
+			{
+			case 1:
+			case 0:
+				MessageBox(hDlg, STR_MSG_ARCHIVE_DELETED, STR_ERR_TITLE_ARCHIVE, MB_ICONINFORMATION);
+				break;
+			case -1:
+				MessageBox(hDlg, STR_ERR_MSG_ARCHIVE_BUSY, STR_ERR_TITLE_ARCHIVE, MB_ICONEXCLAMATION);
+				break;
+			default:
+				MessageBox(hDlg, STR_ERR_MSG_ARCHIVE_DELETE, STR_ERR_TITLE_ARCHIVE, MB_ICONEXCLAMATION);
+				break;
+			}
+			EnableWindow(GetDlgItem(hDlg, IDC_BUTTON_ARCHIVE_DELETE), Archive_Exists(hDlg, tpItemInfo));
+			break;
+
+		case IDOK:
+			tpItemInfo = GetItemInfo(GetParent(hDlg));
+			if(tpItemInfo == NULL){
+				break;
+			}
+			gen = GetDlgItemInt(hDlg, IDC_EDIT_ARCHIVE_GEN, NULL, FALSE);
+			gen = (gen < 1) ? 1 : ((gen > ARCHIVE_GEN_MAX) ? ARCHIVE_GEN_MAX : gen);
+			wsprintf(val[0], "%d", (IsDlgButtonChecked(hDlg, IDC_CHECK_ARCHIVE) == 1) ? 0 : 1);
+			wsprintf(val[1], "%d", (IsDlgButtonChecked(hDlg, IDC_CHECK_ARCHIVE_IMAGE) == 1) ? 0 : 1);
+			wsprintf(val[2], "%d", (IsDlgButtonChecked(hDlg, IDC_CHECK_ARCHIVE_CSS) == 1) ? 0 : 1);
+			wsprintf(val[3], "%d", (IsDlgButtonChecked(hDlg, IDC_CHECK_ARCHIVE_JS) == 1) ? 1 : 0);
+			wsprintf(val[4], "%d", gen);
+			for(i = 0; i < 5; i++){
+				vals[i] = val[i];
+			}
+			//アーカイブするデータの設定が変わったか
+			changed = (IsDlgButtonChecked(hDlg, IDC_CHECK_ARCHIVE) == 1 && (
+				GetOptionInt(tpItemInfo->Option2, OP2_ARCHIVE_NOIMAGE) != ((val[1][0] == '1') ? 1 : 0) ||
+				GetOptionInt(tpItemInfo->Option2, OP2_ARCHIVE_NOCSS) != ((val[2][0] == '1') ? 1 : 0) ||
+				GetOptionInt(tpItemInfo->Option2, OP2_ARCHIVE_JS) != ((val[3][0] == '1') ? 1 : 0))) ? TRUE : FALSE;
+			opt = ReplaceOptionFields(tpItemInfo->Option2, OP2_NOARCHIVE, 5, vals);
+			if(opt != NULL){
+				if(tpItemInfo->Option2 != NULL){
+					GlobalFree(tpItemInfo->Option2);
+				}
+				tpItemInfo->Option2 = opt;
+			}
+			//変更前の設定のアーカイブを削除する (次のチェックで作成される)
+			if(changed == TRUE && Archive_Exists(hDlg, tpItemInfo) == TRUE &&
+				MessageBox(hDlg, STR_Q_MSG_ARCHIVE_CHANGED, STR_ERR_TITLE_ARCHIVE, MB_ICONQUESTION | MB_YESNO) == IDYES){
+				switch(Archive_Delete(hDlg, tpItemInfo))
+				{
+				case 1:
+				case 0:
+					break;
+				case -1:
+					MessageBox(hDlg, STR_ERR_MSG_ARCHIVE_BUSY, STR_ERR_TITLE_ARCHIVE, MB_ICONEXCLAMATION);
+					break;
+				default:
+					MessageBox(hDlg, STR_ERR_MSG_ARCHIVE_DELETE, STR_ERR_TITLE_ARCHIVE, MB_ICONEXCLAMATION);
+					break;
+				}
+			}
+			break;
+		}
+		break;
+
+	default:
+		return FALSE;
+	}
+	return TRUE;
+}
+
+
+/******************************************************************************
+
+	ProtocolPropertyArchiveProc
+
+	プロトコルのアーカイブ設定ダイアログ
+
+******************************************************************************/
+
+static BOOL CALLBACK ProtocolPropertyArchiveProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	char buf[BUFSIZE];
+	char path[MAX_PATH];
+	DWORD attr;
+
+	switch (uMsg)
+	{
+	case WM_INITDIALOG:
+		CheckDlgButton(hDlg, IDC_CHECK_ARCHIVE_GLOBAL, (ArchiveGlobal != 0) ? 1 : 0);
+		break;
+
+	case WM_NOTIFY:
+		return OptionNotifyProc(hDlg, uMsg, wParam, lParam);
+
+	case WM_COMMAND:
+		switch(wParam)
+		{
+		case IDC_BUTTON_ARCHIVE_FOLDER:
+			if(Archive_GetRoot(GetParent(hDlg), path) == FALSE ||
+				(attr = GetFileAttributes(path)) == INVALID_FILE_ATTRIBUTES || (attr & FILE_ATTRIBUTE_DIRECTORY) == 0){
+				MessageBox(hDlg, STR_MSG_ARCHIVE_NOFOLDER, STR_ERR_TITLE_ARCHIVE, MB_ICONINFORMATION);
+				break;
+			}
+			ExecItem(hDlg, path, NULL);
+			break;
+
+		case IDOK:
+			ArchiveGlobal = (IsDlgButtonChecked(hDlg, IDC_CHECK_ARCHIVE_GLOBAL) == 1) ? 1 : 0;
+			wsprintf(buf, "%d", ArchiveGlobal);
+			WritePrivateProfileString("ARCHIVE", "Enable", buf, app_path);
 			break;
 		}
 		break;
@@ -738,7 +954,7 @@ __declspec(dllexport) int CALLBACK HTTP_Property(HWND hWnd, struct TPITEM *tpIte
 #define sizeof_PROPSHEETHEADER		40	//古いコモンコントロール対策
 	PROPSHEETPAGE psp;
 	PROPSHEETHEADER psh;
-	HPROPSHEETPAGE hpsp[3];
+	HPROPSHEETPAGE hpsp[4];
 	char *title;
 	int i;
 
@@ -778,6 +994,10 @@ __declspec(dllexport) int CALLBACK HTTP_Property(HWND hWnd, struct TPITEM *tpIte
 	psp.pszTemplate = MAKEINTRESOURCE(IDD_DIALOG_HTTPPROP_OPTION);
 	psp.pfnDlgProc = PropertyOptionProc;
 	hpsp[2] = CreatePropertySheetPage(&psp);
+
+	psp.pszTemplate = MAKEINTRESOURCE(IDD_DIALOG_HTTPPROP_ARCHIVE);
+	psp.pfnDlgProc = PropertyArchiveProc;
+	hpsp[3] = CreatePropertySheetPage(&psp);
 
 	ZeroMemory(&psh, sizeof(PROPSHEETHEADER));
 	psh.dwSize = sizeof_PROPSHEETHEADER;
@@ -934,180 +1154,6 @@ static BOOL CALLBACK ProtocolPropertyCheckProc(HWND hDlg, UINT uMsg, WPARAM wPar
 
 /******************************************************************************
 
-	AddAppNameProc
-
-	アプリケーション名の追加ダイアログ
-
-******************************************************************************/
-
-static BOOL CALLBACK AddAppNameProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	char *buf;
-
-	switch (uMsg)
-	{
-	case WM_INITDIALOG:
-		if((char *)lParam == NULL){
-			EndDialog(hDlg, FALSE);
-			break;
-		}
-		SetWindowLong(hDlg, GWL_USERDATA, lParam);
-		SendMessage(GetDlgItem(hDlg, IDC_EDIT_APPNAME), WM_SETTEXT, 0, lParam);
-		break;
-
-	case WM_CLOSE:
-		EndDialog(hDlg, FALSE);
-		break;
-
-	case WM_COMMAND:
-		switch(wParam)
-		{
-		case IDOK:
-			buf = (char *)GetWindowLong(hDlg, GWL_USERDATA);
-			if(buf == NULL){
-				EndDialog(hDlg, FALSE);
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_EDIT_APPNAME), WM_GETTEXT, BUFSIZE - 1, (LPARAM)buf);
-			EndDialog(hDlg, TRUE);
-			break;
-
-		case IDCANCEL:
-			EndDialog(hDlg, FALSE);
-			break;
-		}
-		break;
-
-	default:
-		return FALSE;
-	}
-	return TRUE;
-}
-
-
-/******************************************************************************
-
-	SetDDEAppProc
-
-	DDEのアプリケーション名を登録するダイアログ
-
-******************************************************************************/
-
-static BOOL CALLBACK SetDDEAppProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	char buf[BUFSIZE];
-	int i;
-
-	switch (uMsg)
-	{
-	case WM_INITDIALOG:
-		for(i = 0; i < AppCnt; i++){
-			if(*(AppName[i]) != '\0'){
-				SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_ADDSTRING, 0, (LPARAM)AppName[i]);
-			}
-		}
-		ShowWindow(GetDlgItem(hDlg, IDOK), SW_HIDE);
-		ShowWindow(GetDlgItem(hDlg, IDCANCEL), SW_HIDE);
-		break;
-
-	case WM_NOTIFY:
-		return OptionNotifyProc(hDlg, uMsg, wParam, lParam);
-
-	case WM_COMMAND:
-		switch(wParam)
-		{
-		case IDC_BUTTON_ADD:
-			if(SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCOUNT, 0, 0) >= 30){
-				break;
-			}
-			*buf = '\0';
-			if(DialogBoxParam(ghinst, MAKEINTRESOURCE(IDD_DIALOG_ADDAPPNAME), hDlg, AddAppNameProc, (LPARAM)buf) == FALSE){
-				break;
-			}
-			if(*buf == '\0'){
-				break;
-			}
-			i = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_ADDSTRING, 0, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_SETCURSEL, i, 0);
-			break;
-
-		case IDC_BUTTON_EDIT:
-			i = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCURSEL, 0, 0);
-			if(i < 0){
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETTEXT, i, (LPARAM)buf);
-			if(DialogBoxParam(ghinst, MAKEINTRESOURCE(IDD_DIALOG_ADDAPPNAME), hDlg, AddAppNameProc, (LPARAM)buf) == FALSE){
-				break;
-			}
-			if(*buf == '\0'){
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_DELETESTRING, i, 0);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_INSERTSTRING, i, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_SETCURSEL, i, 0);
-			break;
-
-		case IDC_BUTTON_DELETE:
-			i = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCURSEL, 0, 0);
-			if(i < 0 || MessageBox(hDlg, STR_Q_MSG_DEL, STR_Q_TITLE_DEL, MB_ICONQUESTION | MB_YESNO) == IDNO){
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_DELETESTRING, i, 0);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_SETCURSEL, i, 0);
-			break;
-
-		case IDC_BUTTON_UP:
-			i = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCURSEL, 0, 0);
-			if(i <= 0){
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETTEXT, i, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_DELETESTRING, i, 0);
-			i--;
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_INSERTSTRING, i, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_SETCURSEL, i, 0);
-			break;
-
-		case IDC_BUTTON_DOWN:
-			i = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCURSEL, 0, 0);
-			if(i < 0 || i >= SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCOUNT, 0, 0) - 1){
-				break;
-			}
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETTEXT, i, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_DELETESTRING, i, 0);
-			i++;
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_INSERTSTRING, i, (LPARAM)buf);
-			SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_SETCURSEL, i, 0);
-			break;
-
-		case IDOK:
-			AppCnt = SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETCOUNT, 0, 0);
-			if(AppCnt > 30) AppCnt = 30;
-
-			WritePrivateProfileString("DDE", NULL, NULL, app_path);
-
-			wsprintf(buf, "%ld",AppCnt);
-			WritePrivateProfileString("DDE", "AppCnt", buf, app_path);
-
-			for(i = 0; i < AppCnt; i++){
-				SendMessage(GetDlgItem(hDlg, IDC_LIST_APP), LB_GETTEXT, i, (LPARAM)AppName[i]);
-				wsprintf(buf, "AppName_%d", i);
-				WritePrivateProfileString("DDE", buf, AppName[i], app_path);
-			}
-			EndDialog(hDlg, TRUE);
-			break;
-		}
-		break;
-	default:
-		return FALSE;
-	}
-	return TRUE;
-}
-
-
-/******************************************************************************
-
 	ViewProtocolProperties
 
 	プロトコルのプロパティ表示
@@ -1129,8 +1175,8 @@ __declspec(dllexport) int CALLBACK HTTP_ProtocolProperty(HWND hWnd)
 	psp.pfnDlgProc = ProtocolPropertyCheckProc;
 	hpsp[0] = CreatePropertySheetPage(&psp);
 
-	psp.pszTemplate = MAKEINTRESOURCE(IDD_DIALOG_SETDDEAPP);
-	psp.pfnDlgProc = SetDDEAppProc;
+	psp.pszTemplate = MAKEINTRESOURCE(IDD_DIALOG_PROTOCOLPROP_ARCHIVE);
+	psp.pfnDlgProc = ProtocolPropertyArchiveProc;
 	hpsp[1] = CreatePropertySheetPage(&psp);
 
 	ZeroMemory(&psh, sizeof(PROPSHEETHEADER));

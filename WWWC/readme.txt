@@ -25,6 +25,13 @@ WWWCはWindowsで動作するWebページの更新チェッカです。
 ■ 更新履歴
 
 ・Ver 1.1.3 -> Ver 1.2.0
+	・チェックしたページをアーカイブして、後から「アーカイブを開く」で
+	  見られるようにした。設定はHTTPアイテムのプロパティの「アーカイブ」で
+	  行い、HTTPのプロトコルの設定ですべてのアーカイブを無効にできる。
+	・ブラウザ情報の取得をDDEからUI Automationに変更し、Microsoft Edge、
+	  Google Chrome などのChromium系のブラウザとFirefoxに対応した。
+	  「既存のブラウザに開く」は既定のブラウザ (設定したブラウザ) で開く
+	  ようにした。DDEの設定は削除した。
 	・パスワードの保存形式を変更した。Windowsのユーザごとに暗号化するため、
 	  他のユーザや他のPCでは読み込めない。設定やアイテムを共有する場合は
 	  wwwc.iniの[HTTP]のPassProtectを0にする。
@@ -191,7 +198,7 @@ documentation and/or software.
 
 ------------------------
 
-Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved.
+Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 	https://www.nakka.com/
 	nakka@nakka.com
 

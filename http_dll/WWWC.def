@@ -26,6 +26,7 @@ EXPORTS
 	HTTP_GetInfo
 	HTTP_EndNotify
 	HTTP_FreeItem
+	HTTP_GetMenuState
 
 	FILE_InitItem
 	FILE_Initialize

@@ -5,7 +5,6 @@
 #define IDI_ICON_HTTP                   1
 #define ID_BUTTON_COPY                  2
 #define IDC_BUTTON_UP                   3
-#define IDC_BUTTON_SETDDE               3
 #define IDC_BUTTON_DOWN                 4
 #define IDC_BUTTON_ADD                  5
 #define IDC_BUTTON_DELETE               6
@@ -17,10 +16,10 @@
 #define IDD_DIALOG_HTTPPROP_OPTION      107
 #define IDD_DIALOG_HTTPPROP_CHECK       108
 #define IDD_DIALOG_PROTOCOLPROP_CHECK   109
+#define IDD_DIALOG_HTTPPROP_ARCHIVE       117
+#define IDD_DIALOG_PROTOCOLPROP_ARCHIVE   118
 #define IDD_DIALOG_URLLIST              110
 #define IDD_DIALOG_SETBROWSER           111
-#define IDD_DIALOG_SETDDEAPP            112
-#define IDD_DIALOG_ADDAPPNAME           113
 #define IDI_ICON1                       116
 #define IDI_ICON_OLD                    116
 #define IDC_EDIT_TITLE                  1000
@@ -49,6 +48,17 @@
 #define IDC_CHECK_SETPROXY              1016
 #define IDC_CHECK_NOPROXY               1017
 #define IDC_EDIT_TIMEOUIT               1019
+#define IDC_CHECK_ARCHIVE                 1048
+#define IDC_CHECK_ARCHIVE_IMAGE           1049
+#define IDC_CHECK_ARCHIVE_CSS             1050
+#define IDC_CHECK_ARCHIVE_JS              1051
+#define IDC_EDIT_ARCHIVE_GEN              1052
+#define IDC_STATIC_ARCHIVE_GLOBAL         1053
+#define IDC_CHECK_ARCHIVE_GLOBAL          1054
+#define IDC_BUTTON_ARCHIVE_FOLDER         1055
+#define IDC_BUTTON_ARCHIVE_DELETE         1056
+#define IDC_STATIC_ARCHIVE_AUTH           1057
+#define IDC_EDIT_USERAGENT                1058
 #define IDC_CHECK_NOCACHE               1020
 #define IDC_LIST                        1021
 #define IDC_BUTTON_GETURL               1022
@@ -59,8 +69,6 @@
 #define IDC_RADIO_REQTYPE_AUTO          1028
 #define IDC_RADIO_REQTYPE_GET           1029
 #define IDC_BUTTON_CHANGE               1031
-#define IDC_LIST_APP                    1032
-#define IDC_EDIT_APPNAME                1035
 #define IDC_CHECK_DATE                  1039
 #define IDC_CHECK_SIZE                  1040
 #define IDC_CHECK_MD5                   1042
@@ -72,9 +80,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        117
+#define _APS_NEXT_RESOURCE_VALUE        119
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1048
+#define _APS_NEXT_CONTROL_VALUE         1059
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

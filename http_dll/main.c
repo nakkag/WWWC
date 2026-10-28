@@ -4,7 +4,7 @@
 
 	main.c
 
-	Copyright (C) 1996-2003 by Nakashima Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		http://www.nakka.com/
 		nakka@nakka.com
 
@@ -27,6 +27,7 @@
 #include "http.h"
 #include "StrTbl.h"
 #include "wwwcdll.h"
+#include "archive.h"
 
 #include "resource.h"
 
@@ -60,12 +61,11 @@ char BrowserPath[BUFSIZE];
 int TimeZone;
 int HostNoCache;
 int PassProtect;
+int ArchiveGlobal;
 
 char DateFormat[BUFSIZE];
 char TimeFormat[BUFSIZE];
 
-char AppName[30][BUFSIZE];
-int AppCnt;
 
 extern FILTER *FilterInfo;
 
@@ -84,7 +84,6 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 	char CuDir[BUFSIZE];
 	char buf[BUFSIZE];
 	char pbuf[PASS_BUFSIZE];
-	int i;
 
 	GetModuleFileName(ghinst, CuDir, BUFSIZE - 1);
 	p = r = CuDir;
@@ -110,6 +109,8 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 	HostNoCache = GetPrivateProfileInt("HTTP", "HostNoCache", 0, app_path);
 	//パスワードを Windows のユーザに紐付けて暗号化して保存する (0 で従来の形式)
 	PassProtect = GetPrivateProfileInt("HTTP", "PassProtect", 1, app_path);
+	//ページのアーカイブ (0 ですべてのアイテムでアーカイブしない)
+	ArchiveGlobal = GetPrivateProfileInt("ARCHIVE", "Enable", 1, app_path);
 
 	WritePrivateProfileString("FORMAT", "DateFormat", DateFormat, app_path);
 	WritePrivateProfileString("FORMAT", "TimeFormat", TimeFormat, app_path);
@@ -119,6 +120,8 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 	WritePrivateProfileString("HTTP", "HostNoCache", buf, app_path);
 	wsprintf(buf, "%ld", PassProtect);
 	WritePrivateProfileString("HTTP", "PassProtect", buf, app_path);
+	wsprintf(buf, "%ld", ArchiveGlobal);
+	WritePrivateProfileString("ARCHIVE", "Enable", buf, app_path);
 
 	CheckType = GetPrivateProfileInt("CHECK", "CheckType", 0, app_path);
 	TimeOut = GetPrivateProfileInt("CHECK", "TimeOut", 60, app_path);
@@ -135,24 +138,10 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 
 	GetPrivateProfileString("HTTP", "BrowserPath", "", BrowserPath, BUFSIZE - 1, app_path);
 
-	AppCnt = GetPrivateProfileInt("DDE", "AppCnt", -1, app_path);
-	if(AppCnt < 0){
-		AppCnt = 4;
-		lstrcpy(AppName[0], "IEXPLORE");
-		lstrcpy(AppName[1], "Mozilla");
-		lstrcpy(AppName[2], "Netscape6");
-		lstrcpy(AppName[3], "NETSCAPE");
-	}else{
-		if(AppCnt > 30) AppCnt = 30;
-		for(i = 0; i < AppCnt; i++){
-			wsprintf(buf, "AppName_%d", i);
-			GetPrivateProfileString("DDE", buf, "", AppName[i], BUFSIZE - 1, app_path);
-		}
-	}
-
 	if(FilterInfo == NULL){
 		ReadFilterFile(CuDir);
 	}
+	Archive_Init();
 	return 0;
 }
 

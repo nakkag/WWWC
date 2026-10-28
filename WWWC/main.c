@@ -5,7 +5,7 @@
 	main.c
 	LinkFiles : wsock32.lib Comctl32.lib Winmm.lib
 
-	Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved.
+	Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.
 		https://www.nakka.com/
 		nakka@nakka.com
 
@@ -1189,6 +1189,14 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			FocusWnd = GetFocus();
 		}
 		break;
+
+	case WM_INITMENUPOPUP:
+		//アイテムのメニューを開く時点の状態に合わせて有効、無効を設定する
+		if(HIWORD(lParam) == FALSE && ((HMENU)wParam == GetSubMenu(GetMenu(hWnd), MENU_HWND_FILE) ||
+			(HMENU)wParam == GetSubMenu(hPOPUP, MENU_POP_ITEM))){
+			SetProtocolItemMenuState(hWnd, (HMENU)wParam, FALSE);
+		}
+		return (DefWindowProc(hWnd, uMsg, wParam, lParam));
 
 	case WM_SETFOCUS:
 		if(WindowFlag == FALSE){
