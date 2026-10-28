@@ -309,7 +309,32 @@ BOOL strlistcmp(char *buf, char *Format, char Sep)
 
 int FileNameCheck(char *buf)
 {
+	static const char *reserved[] = {
+		"CON", "PRN", "AUX", "NUL",
+		"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+		"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
+	};
+	char base[8];
 	char *p;
+	int len, i;
+
+	//空の名前、"." や ".." などの末尾が '.' または ' ' の名前は使用できない
+	len = lstrlen(buf);
+	if(len == 0 || *(buf + len - 1) == '.' || *(buf + len - 1) == ' '){
+		return FALSE;
+	}
+	//デバイス名 (拡張子の有無にかかわらず) は使用できない
+	for(p = buf, i = 0; *p != '\0' && *p != '.' && i < sizeof(base) - 1; p++, i++){
+		base[i] = *p;
+	}
+	base[i] = '\0';
+	if(*p == '\0' || *p == '.'){
+		for(i = 0; i < sizeof(reserved) / sizeof(reserved[0]); i++){
+			if(lstrcmpi(base, reserved[i]) == 0){
+				return FALSE;
+			}
+		}
+	}
 
 	p = buf;
 
@@ -505,11 +530,12 @@ void GetDateTime(char *fDay, char *fTime)
 	char *p;
 
 	//フォーマットが設定されてない場合はシステムのフォーマットを使用する
+	//日付と時刻を連結して BUFSIZE に収まる長さにする
 	p = (*DateFormat == '\0') ? NULL : DateFormat;
-	GetDateFormat(0, 0, NULL, p, fDay, BUFSIZE - 1);
+	GetDateFormat(0, 0, NULL, p, fDay, BUFSIZE / 2 - 1);
 
 	p = (*TimeFormat == '\0') ? NULL : TimeFormat;
-	GetTimeFormat(0, 0, NULL, p, fTime, BUFSIZE - 1);
+	GetTimeFormat(0, 0, NULL, p, fTime, BUFSIZE / 2 - 1);
 }
 
 

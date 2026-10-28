@@ -204,6 +204,30 @@ struct TPITEM *FindMainItem(HWND hWnd, struct TPITEM *SelItemInfo)
 
 /******************************************************************************
 
+	ConfirmExecItem
+
+	プロトコルが登録されていないアイテムを関連付けで開く前に確認する
+
+******************************************************************************/
+
+static BOOL ConfirmExecItem(HWND hWnd, char *URL)
+{
+	char *msg;
+	BOOL ret;
+
+	msg = (char *)GlobalAlloc(GPTR, lstrlen(Q_MSG_EXECITEM) + lstrlen(URL) + 1);
+	if(msg == NULL){
+		return FALSE;
+	}
+	wsprintf(msg, Q_MSG_EXECITEM, URL);
+	ret = (MessageBox(hWnd, msg, Q_TITLE_EXECITEM, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2) == IDYES) ? TRUE : FALSE;
+	GlobalFree(msg);
+	return ret;
+}
+
+
+/******************************************************************************
+
 	Item_Action
 
 	アイテムのプロトコル毎の動作を実行
@@ -226,6 +250,10 @@ static int Item_Action(HWND hWnd, struct TPITEM *tpItemInfo, char *StrAction)
 			p = tpItemInfo->CheckURL;
 		}
 		if(p != NULL && *p != '\0'){
+			//ファイルのパスなども実行されるため確認する
+			if(ConfirmExecItem(hWnd, p) == FALSE){
+				return 0;
+			}
 			ExecItemFile(hWnd, p, "", tpItemInfo, 0);
 			ret = 1;
 		}
@@ -641,7 +669,7 @@ BOOL Item_Select(HWND hWnd, HTREEITEM hItem)
 	tpTreeInfo->ItemListCnt = NewItemCnt;
 	//アイテムリストの確保
 	tpTreeInfo->ItemList = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * NewItemCnt);
-	if(tpItemList == NULL){
+	if(tpTreeInfo->ItemList == NULL){
 		abort();
 	}
 	for(i = 0;i < NewItemCnt;i++){
@@ -1196,7 +1224,8 @@ BOOL Item_Delete(struct TPTREE *tpTreeInfo, struct TPITEM *tpItemInfo)
 
 	//削除するアイテム情報を含まないリストを新規に作成
 	ItemCnt = tpTreeInfo->ItemListCnt;
-	tmpItemInfo = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * (ItemCnt - 1));
+	//削除対象がリストに無い場合もあふれないよう元の数で確保する
+	tmpItemInfo = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * ItemCnt);
 	if(tmpItemInfo == NULL){
 		return FALSE;
 	}
@@ -1215,7 +1244,7 @@ BOOL Item_Delete(struct TPTREE *tpTreeInfo, struct TPITEM *tpItemInfo)
 	GlobalFree(tpTreeInfo->ItemList);
 
 	tpTreeInfo->ItemList = tmpItemInfo;
-	tpTreeInfo->ItemListCnt = ItemCnt - 1;
+	tpTreeInfo->ItemListCnt = j;
 	return TRUE;
 }
 

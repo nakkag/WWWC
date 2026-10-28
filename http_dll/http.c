@@ -51,7 +51,7 @@
 
 #define HTTP_MENU_CNT		6
 
-#define USER_AGENT			L"WWWC/1.13"
+#define USER_AGENT			L"WWWC/1.20"
 
 #define WM_HTTP_DONE		(WM_USER + 1300)		/* スレッドの終了通知 */
 #define WM_HTTP_PROGRESS	(WM_USER + 1301)		/* 受信状況の通知 */
@@ -224,7 +224,6 @@ static BOOL CALLBACK ViewProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 		}else if(tpItemInfo->Param3 == 2){
 			SetCursor(LoadCursor(NULL, IDC_WAIT));
-			DeleteSizeInfo(tpHTTP->buf, tpHTTP->Size);
 
 			filter_title = "";
 			if(tpHTTP->FilterFlag == TRUE){
@@ -1040,8 +1039,6 @@ static int HeaderFunc(HWND hWnd, struct TPITEM *tpItemInfo)
 			CmpMsg |= Head_GetSize(tpItemInfo, SizeCheck, SetDate, &SizeRet);
 		}
 		if(SizeRet == 0){
-			//バイト情報の除去
-			tpHTTP->Size = DeleteSizeInfo(tpHTTP->buf, tpHTTP->Size);
 			//フィルタ処理
 			if(tpHTTP->FilterFlag == TRUE &&
 				FilterCheck(tpItemInfo->CheckURL, tpHTTP->buf + HeaderSize(tpHTTP->buf), tpHTTP->Size) == FALSE){
@@ -1488,7 +1485,7 @@ static BOOL GetServerPort(HWND hWnd, struct TPITEM *tpItemInfo, struct TPHTTP *t
 			return FALSE;
 		}
 		tpHTTP->hPort = GetURL((char *)tpItemInfo->Param2, tpHTTP->hSvName, NULL, 80, tpHTTP->user, tpHTTP->pass);
-		if(tpHTTP->Port == -1){
+		if(tpHTTP->hPort == -1){
 			if(tpItemInfo->Param3 == 1 || tpItemInfo->Param3 == 2){
 				tpItemInfo->user1 = -1;
 				MessageBox(hWnd, STR_ERROR_URL, tpItemInfo->CheckURL, MB_ICONERROR);
@@ -1844,15 +1841,14 @@ static BOOL BuildRequest(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
 {
 	char BaseStr1[BUFSIZE * 2 + 2];
 	char BaseStr2[BUFSIZE * 3];
-	char ProxyAuth[BUFSIZE * 3];
 	char user[BUFSIZE];
 	char pass[BUFSIZE];
+	char epass[PASS_BUFSIZE];
 	char referer[BUFSIZE];
 	char proxy[BUFSIZE * 2];
 	char *sv;
 	WCHAR *s;
 	DWORD dwSize;
-	BOOL Secure;
 	BOOL AuthFlag;
 	int ProxyFlag;
 
@@ -1861,7 +1857,6 @@ static BOOL BuildRequest(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
 	if(tpHTTP->ReqURL == NULL){
 		return FALSE;
 	}
-	Secure = (lstrcmpni((char *)tpItemInfo->Param2, "https://", 8) == 0) ? TRUE : FALSE;
 
 	//プロキシ
 	ProxyFlag = GetOptionInt(tpItemInfo->Option2, OP2_NOPROXY);
@@ -1883,15 +1878,13 @@ static BOOL BuildRequest(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
 	tpHTTP->TimeOutMs = (TimeOut > 0) ? TimeOut * 1000 : 0;
 
 	//プロキシ認証
-	*ProxyAuth = '\0';
+	//ヘッダで送るとプロキシを経由しない接続 (ループバック等) やHTTPSのトンネル内で接続先サーバに
+	//送られるため、WinHTTPの資格情報として設定してプロキシから要求された場合にのみ送る
 	if(tpHTTP->ProxyName != NULL && pUsePass == 1){
-		if(Secure == TRUE){
-			//HTTPSではヘッダが接続先サーバに送られるためプロキシ用の資格情報として設定する
-			tpHTTP->ProxyUser = AllocWideString(pUser);
-			tpHTTP->ProxyPass = AllocWideString(pPass);
-		}else{
-			wsprintf(BaseStr1, "%s:%s", pUser, pPass);
-			eBase(BaseStr1, ProxyAuth);
+		tpHTTP->ProxyUser = AllocWideString(pUser);
+		tpHTTP->ProxyPass = AllocWideString(pPass);
+		if(tpHTTP->ProxyUser == NULL || tpHTTP->ProxyPass == NULL){
+			return FALSE;
 		}
 	}
 	//Referer
@@ -1923,27 +1916,28 @@ static BOOL BuildRequest(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
 		if(GetOptionString(tpItemInfo->Option2, user, OP2_USER) == FALSE){
 			*user = '\0';
 		}
-		if(GetOptionString(tpItemInfo->Option2, BaseStr2, OP2_PASS) == FALSE){
+		if(GetOptionStringEx(tpItemInfo->Option2, epass, PASS_BUFSIZE, OP2_PASS) == FALSE){
 			*pass = '\0';
 		}else{
-			dPass(BaseStr2, pass);
+			DecodePassword(epass, pass, BUFSIZE);
+			SecureZeroMemory(epass, sizeof(epass));
 		}
 		wsprintf(BaseStr1, "%s:%s", user, pass);
 		eBase(BaseStr1, BaseStr2);
 	}
 	SecureZeroMemory(BaseStr1, sizeof(BaseStr1));
 	SecureZeroMemory(pass, sizeof(pass));
-	//認証情報を送る場合はリダイレクト先に送られないよう自動リダイレクトを行わない
-	tpHTTP->NoRedirect = (*BaseStr2 != '\0') ? TRUE : FALSE;
+	//認証情報を使う場合は、リダイレクト先に送られないよう自動リダイレクトを行わない
+	//(プロキシ認証はリダイレクト後の接続に適用されないため、リダイレクトはチェック処理側で行う)
+	tpHTTP->NoRedirect = (*BaseStr2 != '\0' || tpHTTP->ProxyUser != NULL) ? TRUE : FALSE;
 
 	//送信ヘッダのサイズ (固定文字列分は BUFSIZE に含む)
-	dwSize = BUFSIZE + lstrlen(ProxyAuth) + lstrlen(referer) + lstrlen(BaseStr2);
+	dwSize = BUFSIZE + lstrlen(referer) + lstrlen(BaseStr2);
 	if(tpItemInfo->DLLData1 != NULL){
 		dwSize += lstrlen(tpItemInfo->DLLData1);
 	}
 	tpHTTP->SendHeader = (WCHAR *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dwSize * sizeof(WCHAR));
 	if(tpHTTP->SendHeader == NULL){
-		SecureZeroMemory(ProxyAuth, sizeof(ProxyAuth));
 		SecureZeroMemory(BaseStr2, sizeof(BaseStr2));
 		return FALSE;
 	}
@@ -1963,11 +1957,6 @@ static BOOL BuildRequest(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
 	if(tpHTTP->ProxyName != NULL && pNoCache == 1){
 		s = iStrCpyW(s, "\r\nPragma: no-cache\r\nCache-Control: no-cache");
 	}
-	//プロキシ認証
-	if(*ProxyAuth != '\0'){
-		s = iStrCpyW(s, "\r\nProxy-Authorization: Basic ");
-		s = iStrCpyW(s, ProxyAuth);
-	}
 	//Referer
 	if(*referer != '\0'){
 		s = iStrCpyW(s, "\r\nReferer: ");
@@ -1978,7 +1967,6 @@ static BOOL BuildRequest(struct TPITEM *tpItemInfo, struct TPHTTP *tpHTTP)
 		s = iStrCpyW(s, "\r\nAuthorization: Basic ");
 		s = iStrCpyW(s, BaseStr2);
 	}
-	SecureZeroMemory(ProxyAuth, sizeof(ProxyAuth));
 	SecureZeroMemory(BaseStr2, sizeof(BaseStr2));
 	return TRUE;
 }
@@ -2155,8 +2143,8 @@ static BOOL HTTP_Request(struct TPHTTP *tpHTTP)
 		return FALSE;
 	}
 
-	//HTTPSでのプロキシ認証
-	if(Secure == TRUE && tpHTTP->ProxyUser != NULL && tpHTTP->ProxyPass != NULL){
+	//プロキシ認証 (プロキシから要求された場合にWinHTTPが送る)
+	if(tpHTTP->ProxyUser != NULL && tpHTTP->ProxyPass != NULL){
 		WinHttpSetOption(hInternet, WINHTTP_OPTION_PROXY_USERNAME, tpHTTP->ProxyUser, lstrlenW(tpHTTP->ProxyUser));
 		WinHttpSetOption(hInternet, WINHTTP_OPTION_PROXY_PASSWORD, tpHTTP->ProxyPass, lstrlenW(tpHTTP->ProxyPass));
 	}
@@ -2211,7 +2199,8 @@ static BOOL HTTP_Request(struct TPHTTP *tpHTTP)
 		return FALSE;
 	}
 	if(tpHTTP->buf != NULL) GlobalFree((HGLOBAL)tpHTTP->buf);
-	tpHTTP->Size = clen;
+	//受信バイト数 (clen は終端のNULを含む)
+	tpHTTP->Size = clen - 1;
 	tpHTTP->buf = cbuf;
 	bufLen = lstrlen(cbuf);
 	bufCap = clen + 1;

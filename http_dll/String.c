@@ -17,6 +17,7 @@
 
 #define _INC_OLE
 #include <windows.h>
+#include <wincrypt.h>
 #undef  _INC_OLE
 #include <winsock.h>
 #include <commctrl.h>
@@ -29,6 +30,12 @@
 #include "resource.h"
 
 #include "http.h"
+#include "String.h"
+
+#pragma comment(lib, "crypt32.lib")
+
+#define PASS_PREFIX			"dp:"
+#define PASS_ENTROPY		"WWWC password"
 
 /**************************************************************************
 	Define
@@ -52,6 +59,7 @@
 
 //外部参照
 extern int TimeZone;
+extern int PassProtect;
 
 extern char DateFormat[];
 extern char TimeFormat[];
@@ -72,7 +80,28 @@ extern char TimeFormat[];
 
 void BadNameCheck(char *buf, char NewChar)
 {
+	static const char *reserved[] = {
+		"CON", "PRN", "AUX", "NUL",
+		"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+		"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
+	};
+	char base[8];
 	char *p;
+	int i;
+
+	//デバイス名 (拡張子の有無にかかわらず) はファイル名にできないため先頭の文字を変換する
+	for(p = buf, i = 0; *p != '\0' && *p != '.' && i < sizeof(base) - 1; p++, i++){
+		base[i] = *p;
+	}
+	base[i] = '\0';
+	if(*p == '\0' || *p == '.'){
+		for(i = 0; i < sizeof(reserved) / sizeof(reserved[0]); i++){
+			if(lstrcmpi(base, reserved[i]) == 0){
+				*buf = NewChar;
+				break;
+			}
+		}
+	}
 
 	p = buf;
 	while(*p != '\0'){
@@ -91,80 +120,110 @@ void BadNameCheck(char *buf, char NewChar)
 
 /******************************************************************************
 
-	ePass
+	EncodePassword
 
-	文字列を暗号化する
+	パスワードを保存用の文字列に変換する
+	(Windowsのユーザに紐付けて暗号化し "dp:" + 16進表記にする。
+	 無効の場合や失敗した場合は従来の形式)
 
 ******************************************************************************/
 
-void ePass(char *buf, char *ret)
+void EncodePassword(char *pass, char *ret, int size)
 {
-	char *p;
-	char *retp;
+	DATA_BLOB in, out, entropy;
+	char *r;
+	DWORD i;
 
-	for(p = buf, retp = ret; *p != '\0'; p++, retp += 2){
-		wsprintf(retp, "%02x", ((BYTE)*p) ^ 0xFF);
+	*ret = '\0';
+	if(pass == NULL || *pass == '\0' || size <= 0){
+		return;
 	}
-	*retp = '\0';
-
+	if(PassProtect != 0){
+		in.pbData = (BYTE *)pass;
+		in.cbData = lstrlen(pass);
+		entropy.pbData = (BYTE *)PASS_ENTROPY;
+		entropy.cbData = sizeof(PASS_ENTROPY);
+		if(CryptProtectData(&in, L"WWWC", &entropy, NULL, NULL, CRYPTPROTECT_UI_FORBIDDEN, &out) == TRUE){
+			if(lstrlen(PASS_PREFIX) + (int)out.cbData * 2 < size){
+				r = iStrCpy(ret, PASS_PREFIX);
+				for(i = 0; i < out.cbData; i++, r += 2){
+					wsprintf(r, "%02x", out.pbData[i]);
+				}
+				*r = '\0';
+				LocalFree(out.pbData);
+				return;
+			}
+			LocalFree(out.pbData);
+		}
+	}
+	//従来の形式 (ret に収まる長さまで)
+	for(r = ret; *pass != '\0' && r + 2 < ret + size; pass++, r += 2){
+		wsprintf(r, "%02x", ((BYTE)*pass) ^ 0xFF);
+	}
+	*r = '\0';
 }
 
 
 /******************************************************************************
 
-	dPass
+	DecodePassword
 
-	文字列を複合化する
+	保存用の文字列からパスワードを復元する (従来の形式にも対応)
 
 ******************************************************************************/
 
-void dPass(char *buf, char *ret)
+BOOL DecodePassword(char *buf, char *ret, int size)
 {
-	char *p;
+	DATA_BLOB in, out, entropy;
 	char tmp[3];
-	int i;
+	char *p, *r;
+	int len, i;
+	BOOL rc = FALSE;
 
+	*ret = '\0';
+	if(buf == NULL || size <= 0){
+		return FALSE;
+	}
+	if(lstrcmpn(buf, PASS_PREFIX, lstrlen(PASS_PREFIX)) != 0){
+		//従来の形式
+		tmp[2] = '\0';
+		for(p = buf, r = ret; *p != '\0' && *(p + 1) != '\0' && r < ret + size - 1; p += 2, r++){
+			tmp[0] = *p;
+			tmp[1] = *(p + 1);
+			*r = (char)((unsigned char)strtol(tmp, NULL, 16) ^ 0xFF);
+		}
+		*r = '\0';
+		return TRUE;
+	}
+
+	p = buf + lstrlen(PASS_PREFIX);
+	len = lstrlen(p) / 2;
+	if(len <= 0){
+		return FALSE;
+	}
+	in.pbData = (BYTE *)LocalAlloc(LMEM_FIXED, len);
+	if(in.pbData == NULL){
+		return FALSE;
+	}
+	in.cbData = len;
 	tmp[2] = '\0';
-
-	i = 0;
-	for(p = buf; *p != '\0' && *(p + 1) != '\0'; p += 2){
-		*tmp = *p;
-		*(tmp + 1) = *(p + 1);
-		ret[i++] = (unsigned char)strtol(tmp, NULL, 16) ^ 0xFF;
+	for(i = 0; i < len; i++, p += 2){
+		tmp[0] = *p;
+		tmp[1] = *(p + 1);
+		in.pbData[i] = (BYTE)strtol(tmp, NULL, 16);
 	}
-	ret[i] = '\0';
-}
-
-
-/******************************************************************************
-
-	x2d
-
-	16進表記の文字列を数値に変換する
-
-******************************************************************************/
-
-long x2d(const char *str)
-{
-	int num = 0;
-	int m;
-
-	for(; *str != '\0'; str++){
-		if(*str >= '0' && *str <= '9'){
-			m = *str - '0';
-		}else if(*str >= 'A' && *str <= 'F'){
-			m = *str - 'A' + 10;
-		}else if(*str >= 'a' && *str <= 'f'){
-			m = *str - 'a' + 10;
-		}else{
-			break;
-		}
-		num = 16 * num + m;
-		if(num > 32768){
-			break;
-		}
+	entropy.pbData = (BYTE *)PASS_ENTROPY;
+	entropy.cbData = sizeof(PASS_ENTROPY);
+	if(CryptUnprotectData(&in, NULL, &entropy, NULL, NULL, CRYPTPROTECT_UI_FORBIDDEN, &out) == TRUE){
+		len = ((int)out.cbData < size - 1) ? (int)out.cbData : size - 1;
+		CopyMemory(ret, out.pbData, len);
+		*(ret + len) = '\0';
+		SecureZeroMemory(out.pbData, out.cbData);
+		LocalFree(out.pbData);
+		rc = TRUE;
 	}
-	return num;
+	LocalFree(in.pbData);
+	return rc;
 }
 
 
@@ -601,6 +660,20 @@ char *CreateMoveURL(char *FromURL, char *ToURL)
 
 BOOL GetOptionString(char *buf, char *ret, int num)
 {
+	return GetOptionStringEx(buf, ret, BUFSIZE, num);
+}
+
+
+/******************************************************************************
+
+	GetOptionStringEx
+
+	オプションの文字列を取得する (ret のサイズを指定、超える部分は切り捨て)
+
+******************************************************************************/
+
+BOOL GetOptionStringEx(char *buf, char *ret, int size, int num)
+{
 	char *p, *r;
 	int i = 0;
 
@@ -620,7 +693,7 @@ BOOL GetOptionString(char *buf, char *ret, int num)
 			p++;
 			*ret = '\0';
 			r = ret;
-		}else if(r < ret + BUFSIZE - 1){
+		}else if(r < ret + size - 1){
 			*(r++) = *p;
 		}
 	}
@@ -1843,7 +1916,7 @@ int GetKanjiType(unsigned char *str)
         (b2 >= 0x40 && b2 <= 0xfc && b2 != 0x7f)) val |= 2;
     if (b1 == 0x8e && (b2 >= 0xa0 && b2 <= 0xdf)) val |= 4;
     if ((b1 >= 0xa1 && b1 <= 0xfe) &&
-        (b2 >= 0xa1 && b1 <= 0xfe)) val |= 8;
+        (b2 >= 0xa1 && b2 <= 0xfe)) val |= 8;
 
     return val;
 }
@@ -1976,54 +2049,6 @@ char *SrcConv(char *buf, long Size)
 
 /******************************************************************************
 
-	DeleteSizeInfo
-
-	HTTP1.1のサイズ情報を除去
-
-******************************************************************************/
-
-long DeleteSizeInfo(char *buf, long size)
-{
-	char *p, *r;
-	long len, i;
-
-	if(lstrcmpni(buf, "HTTP/1.1", 8) != 0 ||
-		GetHeadContentSize(buf, "Content-Length:") > 0){
-		return size;
-	}
-
-	p = buf + HeaderSize(buf);
-	r = p;
-
-	while(*p != '\0'){
-		for(; *p == '\r' || *p == '\n'; p++);
-		len = x2d(p);
-		if(len == 0) break;
-
-		for(; *p != '\0' && *p != '\r' && *p != '\n'; p++);
-		if(*p == '\0'){
-			break;
-		}
-		if(*p == '\n'){
-			p++;
-		}else{
-			p += 2;
-		}
-
-		for(i = 0; *p != '\0' && i < len; i++, p++, r++){
-			*r = *p;
-		}
-		*r = '\0';
-	}
-	if(r != (buf + HeaderSize(buf))){
-		return (r - buf);
-	}
-	return size;
-}
-
-
-/******************************************************************************
-
 	GetHtml2RtfSize
 
 	HTMLをRTFに変換したときのサイズの取得
@@ -2144,7 +2169,9 @@ int GetHtml2RtfSize(char *buf)
 
 		default:
 			if(IS_LEAD_BYTE(p)){
+				//Html2Rtf と同じく2バイト目も消費する (別の文字として扱うと状態がずれてサイズが不足する)
 				len += 8;
+				p++;
 			}else{
 				if(cfFlag == TRUE){
 					len++;

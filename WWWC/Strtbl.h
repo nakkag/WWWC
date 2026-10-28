@@ -104,6 +104,9 @@
 
 #define EMSG_SAVE_TITLE					"保存エラー"
 #define EMSG_EXEC_TITLE					"実行エラー"
+#define EMSG_EXEC_BATCH					"アイテムの情報にバッチファイルの引数として使用できない文字が含まれているため実行しません。"
+#define Q_MSG_EXECITEM					"このアイテムは関連付けられたアプリケーションで開かれます。開きますか？\n\n%s"
+#define Q_TITLE_EXECITEM				"アイテムの実行"
 
 #define EMSG_DISKFULL					"空きディスク容量が足らないためアイテム情報を保存できません。"
 

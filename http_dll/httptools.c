@@ -997,8 +997,7 @@ static BOOL CALLBACK SetBrowserProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			break;
 
 		case IDOK:
-			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PATH), WM_GETTEXT,
-				SendMessage(GetDlgItem(hDlg, IDC_EDIT_PATH), WM_GETTEXTLENGTH, 0, 0) + 1, (LPARAM)BrowserPath);
+			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PATH), WM_GETTEXT, BUFSIZE - 1, (LPARAM)BrowserPath);
 			WritePrivateProfileString("HTTP", "BrowserPath", BrowserPath, app_path);
 			EndDialog(hDlg, TRUE);
 			break;

@@ -56,6 +56,9 @@ extern int SaveDriveCheck;
 
 static char *AllocItemStr(char *t, char **ret);
 static void SetExecCommandLine(HWND hWnd, char *buf, char *ret, int size, struct TPITEM *tpItemInfo);
+static BOOL IsBatchFile(char *FileName);
+
+static BOOL ExecArgBadChar;				//埋め込んだアイテムの情報にコマンド解釈される文字が含まれる
 
 
 /******************************************************************************
@@ -628,6 +631,9 @@ char *LineSetItemInfo(struct TPITEM *tpItemList, char *t)
 	}
 	*r = '\0';
 	tpItemList->Status = atoi(Tmpbuf);
+	if(tpItemList->Status < 0 || tpItemList->Status >= 10){
+		tpItemList->Status = 0;
+	}
 	if(*t != '\t') return t;
 
 	//CheckDate
@@ -666,6 +672,9 @@ char *LineSetItemInfo(struct TPITEM *tpItemList, char *t)
 	}
 	*r = '\0';
 	tpItemList->CheckSt = atoi(Tmpbuf);
+	if(tpItemList->CheckSt < 0 || tpItemList->CheckSt >= 10){
+		tpItemList->CheckSt = 0;
+	}
 	if(*t != '\t') return t;
 
 	//ErrStatus
@@ -907,7 +916,7 @@ char *SetItemString(struct TPITEM *tpItemInfo, char *p)
 	p = iStrCpyField(p, tpItemInfo->Date);
 	*(p++) = '\t';
 
-	wsprintf(Tmpbuf, "%ld", (tpItemInfo->Status < 10) ? tpItemInfo->Status : 0);
+	wsprintf(Tmpbuf, "%ld", (tpItemInfo->Status >= 0 && tpItemInfo->Status < 10) ? tpItemInfo->Status : 0);
 	p = iStrCpy(p, Tmpbuf);
 	*(p++) = '\t';
 
@@ -932,7 +941,7 @@ char *SetItemString(struct TPITEM *tpItemInfo, char *p)
 	p = iStrCpyField(p, tpItemInfo->Comment);
 	*(p++) = '\t';
 
-	wsprintf(Tmpbuf, "%ld", (tpItemInfo->CheckSt < 10) ? tpItemInfo->CheckSt : 0);
+	wsprintf(Tmpbuf, "%ld", (tpItemInfo->CheckSt >= 0 && tpItemInfo->CheckSt < 10) ? tpItemInfo->CheckSt : 0);
 	p = iStrCpy(p, Tmpbuf);
 	*(p++) = '\t';
 
@@ -1321,6 +1330,12 @@ static void SetExecCommandLine(HWND hWnd, char *buf, char *ret, int size, struct
 					if(*t == '\"'){
 						continue;
 					}
+					if(IS_LEAD_BYTE(t)){
+						*(r++) = *(t++);
+						if(r >= ret + size - 1) break;
+					}else if(*t == '&' || *t == '|' || *t == '^' || *t == '<' || *t == '>' || *t == '\r' || *t == '\n'){
+						ExecArgBadChar = TRUE;
+					}
 					*(r++) = *t;
 				}
 				//直後が引用符の場合は末尾の \ が引用符をエスケープしないよう重ねる
@@ -1355,7 +1370,13 @@ int ExecItemFile(HWND hWnd, char *FileName, char *CommandLine, struct TPITEM *tp
 
 	*buf = '\0';
 	//コマンドラインの作成
+	ExecArgBadChar = FALSE;
 	SetExecCommandLine(hWnd, CommandLine, buf, MAXSIZE, tpItemInfo);
+	//バッチファイルでは引数の文字がコマンドとして解釈されるため、該当する文字を含む場合は実行しない
+	if(ExecArgBadChar == TRUE && IsBatchFile(FileName) == TRUE){
+		MessageBox(hWnd, EMSG_EXEC_BATCH, EMSG_EXEC_TITLE, MB_ICONEXCLAMATION);
+		return -1;
+	}
 
 	ExeFilePath = FileName;
 	CommnadLineString = buf;
@@ -1408,6 +1429,38 @@ int ExecItemFile(HWND hWnd, char *FileName, char *CommandLine, struct TPITEM *tp
 	EnableWindow(hWnd, TRUE);
 	_SetForegroundWindow(hWnd);
 	return 0;
+}
+
+
+/******************************************************************************
+
+	IsBatchFile
+
+	cmd.exe で実行されるファイルかどうかチェックする
+
+******************************************************************************/
+
+static BOOL IsBatchFile(char *FileName)
+{
+	char *p, *ext;
+
+	if(FileName == NULL){
+		return FALSE;
+	}
+	ext = NULL;
+	for(p = FileName; *p != '\0'; p++){
+		if(IS_LEAD_BYTE(p)){
+			p++;
+		}else if(*p == '.'){
+			ext = p;
+		}else if(*p == '\\' || *p == '/'){
+			ext = NULL;
+		}
+	}
+	if(ext == NULL){
+		return FALSE;
+	}
+	return (lstrcmpi(ext, ".bat") == 0 || lstrcmpi(ext, ".cmd") == 0) ? TRUE : FALSE;
 }
 
 

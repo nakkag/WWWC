@@ -138,7 +138,7 @@ void CreateToolAccelerator(void)
 void SetToolMenu(HWND hWnd)
 {
 	HMENU ToolMenu;
-	char buf[BUFSIZE];
+	char buf[BUFSIZE * 2];
 	char *p;
 	int MenuCnt;
 	int i;
@@ -184,7 +184,7 @@ void SetToolMenu(HWND hWnd)
 						ToolList[i].Key == VK_INSERT ||
 						ToolList[i].Key == VK_DELETE ||
 						ToolList[i].Key == VK_NUMLOCK) ext_flag = 1 << 24;
-					GetKeyNameText((scan_code << 16) | ext_flag, p, BUFSIZE - (p - buf) - 1);
+					GetKeyNameText((scan_code << 16) | ext_flag, p, sizeof(buf) - (p - buf) - 1);
 				}
 				AppendMenu(ToolMenu, MF_STRING, ID_WMENU_TOOL_ACTION + i, buf);
 			}
@@ -900,7 +900,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			hMenu = CreatePopupMenu();
 
 			for(i = 0;i < ProtocolCnt;i++){
-				wsprintf(buf, "&%d. %s", i + 1, tpProtocol[i].title);
+				wsprintf(buf, "&%d. %.240s", i + 1, tpProtocol[i].title);
 				AppendMenu(hMenu, MF_STRING, ID_MENU_PUROTOCOL + i, buf);
 			}
 			AppendMenu(hMenu, MF_STRING, ID_MENU_PUROTOCOL + i, TOOL_PROTOCOL_ALL);
@@ -1003,6 +1003,9 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 					SendDlgItemMessage(hDlg, IDC_EDIT_PROTOCOL,
 						WM_SETTEXT, 0, (LPARAM)tpProtocol[i].title);
 					SetFocus(GetDlgItem(hDlg, IDC_EDIT_PROTOCOL));
+					break;
+				}
+				if(lstrlen(buf) + 1 + lstrlen(tpProtocol[i].title) >= BUFSIZE){
 					break;
 				}
 				if(*(buf + lstrlen(buf) - 1) != ','){

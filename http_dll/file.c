@@ -134,6 +134,10 @@ __declspec(dllexport) int CALLBACK FILE_Start(HWND hWnd, struct TPITEM *tpItemIn
 	char fDay[BUFSIZE];
 	char fTime[BUFSIZE];
 
+	if(tpItemInfo->CheckURL == NULL){
+		SendMessage(hWnd, WM_CHECK_RESULT, ST_ERROR, (LPARAM)tpItemInfo);
+		return CHECK_END;
+	}
 	for(FileName = tpItemInfo->CheckURL + lstrlen("file:"); *FileName == '/' && *FileName != '\0'; FileName++);
 
 	if((hFindFile = FindFirstFile(FileName, &FindData)) != INVALID_HANDLE_VALUE){
@@ -208,6 +212,9 @@ __declspec(dllexport) HANDLE CALLBACK FILE_GetItemText(struct TPITEM *tpItemInfo
 	char *buf;
 	char *p;
 
+	if(tpItemInfo->CheckURL == NULL){
+		return NULL;
+	}
 	for(buf = tpItemInfo->CheckURL + lstrlen("file:"); *buf == '/' && *buf != '\0'; buf++);
 
 	if((hMemText = GlobalAlloc(GHND, lstrlen(buf) + 1)) == NULL){
@@ -235,7 +242,14 @@ __declspec(dllexport) BOOL CALLBACK FILE_CreateDropItem(struct TPITEM *tpItemInf
 {
 	char *buf;
 
+	if(tpItemInfo == NULL || tpItemInfo->CheckURL == NULL){
+		return FALSE;
+	}
 	for(buf = tpItemInfo->CheckURL + lstrlen("file:"); *buf == '/' && *buf != '\0'; buf++);
+	//呼び出し側のバッファに収まらないパスは作成しない
+	if(lstrlen(buf) >= BUFSIZE){
+		return FALSE;
+	}
 	lstrcpy(ret, buf);
 	return TRUE;
 }
@@ -259,6 +273,10 @@ __declspec(dllexport) int CALLBACK FILE_ExecItem(HWND hWnd, char *Action, struct
 			for(buf = tpItemInfo->CheckURL + lstrlen("file:"); *buf == '/' && *buf != '\0'; buf++);
 		}
 		if(buf != NULL && *buf != '\0'){
+			//任意のファイルが実行されるため確認してから実行する
+			if(ConfirmOpenURL(hWnd, buf) == FALSE){
+				return -1;
+			}
 			rc = ExecItem(hWnd, buf, NULL);
 		}else{
 			MessageBox(hWnd, STR_ERR_MSG_FILEOPEN, STR_ERR_TITLE_FILEOPEN, MB_ICONEXCLAMATION);

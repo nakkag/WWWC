@@ -767,6 +767,10 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 	char buf[PATH_BUFSIZE];
 	HTREEITEM cItem;
 
+	//バッファに収まらないパスは処理しない
+	if(lstrlen(Path) + 2 >= PATH_BUFSIZE){
+		return;
+	}
 	if(GetPathToFilename(Path, fName) == FALSE){
 		return;
 	}
@@ -816,6 +820,9 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 	do{
 		if(UpdateItemFlag == UF_CANCEL){
 			break;
+		}
+		if(lstrlen(Path) + 1 + lstrlen(FindData.cFileName) >= PATH_BUFSIZE){
+			continue;
 		}
 
 		wsprintf(buf, "%s\\%s", Path, FindData.cFileName);
@@ -1024,8 +1031,8 @@ long DragDrop_NotifyProc(HWND hWnd, WPARAM wParam, LPARAM lParam)
 					DnDItem = TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE));
 				}
 				_SetForegroundWindow(hWnd);
+				//ドロップデータは OLE 側 (ReleaseStgMedium) で解放される
 				DragDrop_GetDropFiles(hWnd, pdtn->hMem, DnDItem);
-				DragFinish(pdtn->hMem);
 				break;
 			}
 		}

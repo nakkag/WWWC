@@ -117,7 +117,7 @@ static int TbSetButton(TBBUTTON *tbtn, char *TBbuf)
 		if(*p == ','){
 			*r = '\0';
 			j = atoi(buf);
-			if(j == -1 || lstrlen(buf) <= 0){
+			if(j < 0 || j >= (int)(sizeof(_tbb) / sizeof(_tbb[0])) || lstrlen(buf) <= 0){
 				//セパレータ
 				(tbtn + i)->iBitmap = 0;
 				(tbtn + i)->idCommand = 0;

@@ -52,7 +52,7 @@ HFONT CreateListFont(char *FontName, int FontSize, int CharSet)
 	lf.lfClipPrecision = CLIP_DEFAULT_PRECIS;
 	lf.lfQuality = DEFAULT_QUALITY;
 	lf.lfPitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
-	lstrcpy(lf.lfFaceName, FontName);
+	lstrcpyn(lf.lfFaceName, FontName, LF_FACESIZE);
 	return CreateFontIndirect((CONST LOGFONT *)&lf);
 }
 /* End of source */

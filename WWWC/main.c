@@ -164,6 +164,7 @@ extern int LvLIconSize;
 extern int LvSIconSize;
 
 extern int CheckMax;
+extern int CheckListMax;
 extern int EndCheckMsg;
 
 extern int AutoCheck;
@@ -190,7 +191,7 @@ static BOOL InitWindow(HWND hWnd, BOOL StartFlag);
 static BOOL EndWindow(HWND hWnd, int Flag, int EndFlag);
 static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 static void DelLastYen(char *p);
-static void GetAppPath(HINSTANCE hinst);
+static BOOL GetAppPath(HINSTANCE hinst);
 static void CommandLineFunc(HWND hWnd, char *StrCmdLine);
 static void StartCommandLine(char *StrCmdLine);
 static BOOL InitApplication(HANDLE hInstance);
@@ -2136,7 +2137,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 	//アイテムリスト数の要求
 	case WM_GETCHECKLISTCNT:
-		return CheckMax;
+		return CheckListMax;
 
 	//アイテムをセットするメッセージ
 	case WM_SETITEMLIST:
@@ -2312,10 +2313,11 @@ static void DelLastYen(char *p)
 
 ******************************************************************************/
 
-static void GetAppPath(HINSTANCE hinst)
+static BOOL GetAppPath(HINSTANCE hinst)
 {
 	char DefItem[BUFSIZE];
 	char gIniFile[BUFSIZE];
+	char *user;
 	char *p, *r;
 	int i;
 
@@ -2331,6 +2333,12 @@ static void GetAppPath(HINSTANCE hinst)
 		p++;
 	}
 	*r = '\0';
+
+	//ファイル名を付加する余裕が無いパスはエラー
+	if(lstrlen(DefDirPath) + 1 + lstrlen(GENERAL_INI) >= BUFSIZE){
+		MessageBox(NULL, EMSG_PATHLENGTH, EMSG_PATHLENGTH_TITLE, MB_ICONERROR);
+		return FALSE;
+	}
 
 	//デフォルトアイテム
 	wsprintf(DefItem, "%s\\DefItem", DefDirPath);
@@ -2356,6 +2364,10 @@ static void GetAppPath(HINSTANCE hinst)
 		//コマンドラインで指定されたディレクトリ
 		lstrcpy(DefDirPath, CmdDirPath);
 	}
+	if(lstrlen(DefDirPath) + 1 + lstrlen("Temp") >= BUFSIZE){
+		MessageBox(NULL, EMSG_PATHLENGTH, EMSG_PATHLENGTH_TITLE, MB_ICONERROR);
+		return FALSE;
+	}
 
 	//一時ディレクトリのパスを取得
 	if(GetTempPath(BUFSIZE - 1, TempDir) == 0){
@@ -2380,14 +2392,20 @@ static void GetAppPath(HINSTANCE hinst)
 	FileNameConv(GeneralUser, '_');
 	FileNameConv(CurrentUser, '_');
 
-	wsprintf(CuDir, "%s\\%s", DefDirPath, (*CmdUser != '\0' || *GeneralUser == '\0') ? CurrentUser : GeneralUser);
+	user = (*CmdUser != '\0' || *GeneralUser == '\0') ? CurrentUser : GeneralUser;
+	if(lstrlen(DefDirPath) + 1 + lstrlen(user) >= BUFSIZE){
+		MessageBox(NULL, EMSG_PATHLENGTH, EMSG_PATHLENGTH_TITLE, MB_ICONERROR);
+		return FALSE;
+	}
+	wsprintf(CuDir, "%s\\%s", DefDirPath, user);
 
 	if(GetDirSerch(CuDir) == FALSE){
 		//ユーザディレクトリの作成
 		CreateDirectory(CuDir, NULL);
-		CopyDirTree(NULL, DefItem, DefDirPath, (*CmdUser != '\0' || *GeneralUser == '\0') ? CurrentUser : GeneralUser, NULL);
+		CopyDirTree(NULL, DefItem, DefDirPath, user, NULL);
 	}
 	SetEnvironmentVariable("USER_DIR", CuDir);
+	return TRUE;
 }
 
 
@@ -2792,7 +2810,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	StartCommandLine(lpCmdLine);
-	GetAppPath(hInstance);
+	if(GetAppPath(hInstance) == FALSE){
+		return 0;
+	}
 
 	// CommonControlの初期化を行う
 	InitCommonControls();

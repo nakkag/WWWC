@@ -69,6 +69,7 @@ extern int UPSnd;
 extern int NoUpMsg;
 extern char WaveFile[];
 extern int CheckMax;
+int CheckListMax;						//確保したチェックアイテムリストの数 (チェック中に設定が変わっても変更しない)
 extern int ReturnIcon;
 
 extern struct TPLVCOLUMN *ColumnInfo;
@@ -110,7 +111,7 @@ static int GetHandleToIndex(HANDLE hHnd)
 {
 	int i;
 
-	for(i = 0;i < CheckMax;i++){
+	for(i = 0;i < CheckListMax;i++){
 		if(*(CheckItemList + i) == NULL){
 			continue;
 		}
@@ -134,7 +135,7 @@ static int GetSocketToIndex(int Soc)
 {
 	int i;
 
-	for(i = 0;i < CheckMax;i++){
+	for(i = 0;i < CheckListMax;i++){
 		if(*(CheckItemList + i) == NULL){
 			continue;
 		}
@@ -161,7 +162,7 @@ static int GetItemInfoToIndex(struct TPITEM *tpItemInfo)
 	if(CheckItemList == NULL){
 		return -1;
 	}
-	for(i = 0;i < CheckMax;i++){
+	for(i = 0;i < CheckListMax;i++){
 		if(*(CheckItemList + i) == NULL){
 			continue;
 		}
@@ -554,7 +555,8 @@ BOOL CheckIniProc(HWND hWnd, HTREEITEM hItem, int CheckFlag, int CheckType)
 			ErrMsg(hWnd, GetLastError(), NULL);
 			return FALSE;
 		}
-		for(i = 0;i < CheckMax;i++){
+		CheckListMax = CheckMax;
+		for(i = 0;i < CheckListMax;i++){
 			*(CheckItemList + i) = NULL;
 		}
 		UPcnt = 0;
@@ -878,12 +880,12 @@ int CheckProc(HWND hWnd)
 		return 0;
 	}
 	//チェックリストの空きを検索
-	for(j = 0;j < CheckMax;j++){
+	for(j = 0;j < CheckListMax;j++){
 		if(*(CheckItemList + j) == NULL){
 			break;
 		}
 	}
-	if(j >= CheckMax){
+	if(j >= CheckListMax){
 		KillTimer(hWnd, TIMER_CHECK);
 		return 0;
 	}
@@ -898,12 +900,12 @@ int CheckProc(HWND hWnd)
 		KillTimer(hWnd, TIMER_CHECK);
 
 		//現在チェック中のアイテムを検索
-		for(j = 0;j < CheckMax;j++){
+		for(j = 0;j < CheckListMax;j++){
 			if(*(CheckItemList + j) != NULL){
 				break;
 			}
 		}
-		if(j < CheckMax){
+		if(j < CheckListMax){
 			return 0;
 		}
 
@@ -998,7 +1000,7 @@ void InitCheckItemList(HWND hWnd, struct TPITEM *tpItemInfo)
 	if(CheckItemList == NULL){
 		return;
 	}
-	for(i = 0; i < CheckMax; i++){
+	for(i = 0; i < CheckListMax; i++){
 		if(*(CheckItemList + i) == NULL){
 			continue;
 		}
@@ -1131,7 +1133,7 @@ void TimeoutItem(HWND hWnd)
 		return;
 	}
 
-	for(i = 0;i < CheckMax;i++){
+	for(i = 0;i < CheckListMax;i++){
 		if(*(CheckItemList + i) == NULL){
 			continue;
 		}

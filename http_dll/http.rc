@@ -344,8 +344,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,1,3,0
- PRODUCTVERSION 1,1,3,0
+ FILEVERSION 1,2,0,0
+ PRODUCTVERSION 1,2,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -361,12 +361,12 @@ BEGIN
         BLOCK "041104b0"
         BEGIN
             VALUE "FileDescription", "WWWC Protocol DLL"
-            VALUE "FileVersion", "1.1.3.0"
+            VALUE "FileVersion", "1.2.0.0"
             VALUE "InternalName", "WWWC"
             VALUE "LegalCopyright", "Copyright (C) 1996-2018 by Ohno Tomoaki. All rights reserved."
             VALUE "OriginalFilename", "wwwc.dll"
             VALUE "ProductName", "WWWC Protocol DLL"
-            VALUE "ProductVersion", "1.1.3.0"
+            VALUE "ProductVersion", "1.2.0.0"
         END
     END
     BLOCK "VarFileInfo"

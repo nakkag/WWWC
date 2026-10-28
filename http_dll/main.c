@@ -59,6 +59,7 @@ char pPass[BUFSIZE];
 char BrowserPath[BUFSIZE];
 int TimeZone;
 int HostNoCache;
+int PassProtect;
 
 char DateFormat[BUFSIZE];
 char TimeFormat[BUFSIZE];
@@ -82,6 +83,7 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 	char *p, *r;
 	char CuDir[BUFSIZE];
 	char buf[BUFSIZE];
+	char pbuf[PASS_BUFSIZE];
 	int i;
 
 	GetModuleFileName(ghinst, CuDir, BUFSIZE - 1);
@@ -95,12 +97,19 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 		p++;
 	}
 	*r = '\0';
-	wsprintf(app_path, "%s\\wwwc.ini", CuDir);
+	if(lstrlen(CuDir) + lstrlen("\\wwwc.ini") >= BUFSIZE){
+		//パスが長すぎる場合は設定ファイルを使用しない
+		*app_path = '\0';
+	}else{
+		wsprintf(app_path, "%s\\wwwc.ini", CuDir);
+	}
 
 	GetPrivateProfileString("FORMAT", "DateFormat", "yyyy/MM/dd", DateFormat, BUFSIZE - 1, app_path);
 	GetPrivateProfileString("FORMAT", "TimeFormat", "HH:mm", TimeFormat, BUFSIZE - 1, app_path);
 	TimeZone = GetPrivateProfileInt("HTTP", "TimeZone", 9, app_path);
 	HostNoCache = GetPrivateProfileInt("HTTP", "HostNoCache", 0, app_path);
+	//パスワードを Windows のユーザに紐付けて暗号化して保存する (0 で従来の形式)
+	PassProtect = GetPrivateProfileInt("HTTP", "PassProtect", 1, app_path);
 
 	WritePrivateProfileString("FORMAT", "DateFormat", DateFormat, app_path);
 	WritePrivateProfileString("FORMAT", "TimeFormat", TimeFormat, app_path);
@@ -108,6 +117,8 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 	WritePrivateProfileString("HTTP", "TimeZone", buf, app_path);
 	wsprintf(buf, "%ld", HostNoCache);
 	WritePrivateProfileString("HTTP", "HostNoCache", buf, app_path);
+	wsprintf(buf, "%ld", PassProtect);
+	WritePrivateProfileString("HTTP", "PassProtect", buf, app_path);
 
 	CheckType = GetPrivateProfileInt("CHECK", "CheckType", 0, app_path);
 	TimeOut = GetPrivateProfileInt("CHECK", "TimeOut", 60, app_path);
@@ -118,8 +129,9 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 	pNoCache = GetPrivateProfileInt("PROXY", "pNoCache", 1, app_path);
 	pUsePass = GetPrivateProfileInt("PROXY", "pUsePass", 0, app_path);
 	GetPrivateProfileString("PROXY", "pUser", "", pUser, BUFSIZE - 1, app_path);
-	GetPrivateProfileString("PROXY", "pPass", "", buf, BUFSIZE - 1, app_path);
-	dPass(buf,pPass);
+	GetPrivateProfileString("PROXY", "pPass", "", pbuf, PASS_BUFSIZE - 1, app_path);
+	DecodePassword(pbuf, pPass, BUFSIZE);
+	SecureZeroMemory(pbuf, sizeof(pbuf));
 
 	GetPrivateProfileString("HTTP", "BrowserPath", "", BrowserPath, BUFSIZE - 1, app_path);
 
@@ -297,13 +309,18 @@ __declspec(dllexport) int CALLBACK GetToolHideOption(char *FuncName)
 
 void ErrMsg(HWND hWnd, int ErrCode, char *Title)
 {
-	char *ErrStr, *p;
+	char *ErrStr = NULL, *p;
+	char buf[BUFSIZE];
 
 	p = (Title == NULL) ? "Error" : Title;
 
 	//エラーコードから文字列を取得
-	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-		NULL, ErrCode, 0, (LPTSTR)&ErrStr, BUFSIZE - 1, NULL);
+	if(FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL, ErrCode, 0, (LPTSTR)&ErrStr, BUFSIZE - 1, NULL) == 0 || ErrStr == NULL){
+		wsprintf(buf, "Error (%d)", ErrCode);
+		MessageBox(hWnd, buf, p, MB_ICONEXCLAMATION);
+		return;
+	}
 
 	//エラーメッセージを表示
 	MessageBox(hWnd, ErrStr, p, MB_ICONEXCLAMATION);

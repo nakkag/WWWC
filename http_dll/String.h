@@ -18,9 +18,8 @@
 **************************************************************************/
 
 void BadNameCheck(char *buf, char NewChar);
-void ePass(char *buf, char *ret);
-void dPass(char *buf, char *ret);
-long x2d(const char *str);
+void EncodePassword(char *pass, char *ret, int size);
+BOOL DecodePassword(char *buf, char *ret, int size);
 UINT str2hash(const TCHAR *str);
 int lstrcmpn(char *buf1, char *buf2, int len);
 int lstrcmpni(char *buf1, char *buf2, int len);
@@ -32,6 +31,7 @@ int GetURL(char *URL, char *server, char *path, int DefPort, char *user, char *p
 BOOL IsWebURL(char *URL);
 char *CreateMoveURL(char *FromURL, char *ToURL);
 BOOL GetOptionString(char *buf, char *ret, int num);
+BOOL GetOptionStringEx(char *buf, char *ret, int size, int num);
 int GetOptionInt(char *buf, int num);
 void DelCrLf(char *buf);
 void DelCtrlChar(char *buf);
@@ -53,7 +53,6 @@ char *EUC_SJIS(char *buf, char *ret);
 int GetKanjiType(unsigned char *str);
 char *ConvStrCode(char *buf, char *ret);
 char *SrcConv(char *buf, long Size);
-long DeleteSizeInfo(char *buf, long size);
 int GetHtml2RtfSize(char *buf);
 void Html2Rtf(char *buf, char *ret);
 

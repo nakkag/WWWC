@@ -334,7 +334,8 @@ BOOL FilterCheck(char *url, char *buf, int Size)
 		}
 	}
 	if(tmp != NULL){
-		lstrcpy(buf, tmp);
+		//変換で長くなった場合も受信バッファに収まる長さまでコピーする
+		lstrcpyn(buf, tmp, lstrlen(buf) + 1);
 		GlobalFree(tmp);
 		return rc;
 	}

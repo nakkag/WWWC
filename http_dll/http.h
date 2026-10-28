@@ -31,6 +31,7 @@
 
 #define BUFSIZE							256
 #define MAXSIZE							32768
+#define PASS_BUFSIZE					1024				/* 暗号化したパスワード文字列の最大 */
 #define RECVSIZE						32768				/* 受信サイズ */
 #define MAX_RECVSIZE					(32 * 1024 * 1024)	/* 最大受信サイズ */
 

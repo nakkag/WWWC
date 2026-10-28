@@ -635,6 +635,63 @@ BOOL Clipboard_SetItemData(HWND hWnd, int mode)
 
 /******************************************************************************
 
+	IsUserDataPath
+
+	ユーザディレクトリ内のパスかどうかチェックする (貼り付けられたデータ内のパス用)
+
+******************************************************************************/
+
+static BOOL IsUserDataPath(char *path)
+{
+	char *p;
+	int len;
+
+	len = lstrlen(CuDir);
+	if(lstrcmpni(path, CuDir, len) != 0 || *(path + len) != '\\'){
+		return FALSE;
+	}
+	//上位のディレクトリを指す要素は許可しない
+	for(p = path + len; *p != '\0'; p++){
+		if(IS_LEAD_BYTE(p)){
+			p++;
+			continue;
+		}
+		if(*p == '/'){
+			return FALSE;
+		}
+		if(*p == '\\' && *(p + 1) == '.' &&
+			(*(p + 2) == '\\' || *(p + 2) == '\0' ||
+			(*(p + 2) == '.' && (*(p + 3) == '\\' || *(p + 3) == '\0')))){
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+
+
+/******************************************************************************
+
+	IsUserItemFile
+
+	ユーザディレクトリ内のアイテムファイルのパスかどうかチェックする
+
+******************************************************************************/
+
+static BOOL IsUserItemFile(char *path)
+{
+	int len, flen;
+
+	if(IsUserDataPath(path) == FALSE){
+		return FALSE;
+	}
+	len = lstrlen(path);
+	flen = lstrlen("\\"DATAFILENAME);
+	return (len > flen && lstrcmpi(path + len - flen, "\\"DATAFILENAME) == 0) ? TRUE : FALSE;
+}
+
+
+/******************************************************************************
+
 	CopyFolder
 
 	フォルダのコピー
@@ -658,7 +715,7 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 	}
 
 	//送り側と受け側のフォルダが同じ
-	if(lstrcmp(Path, FromPath) == 0){
+	if(lstrcmpi(Path, FromPath) == 0){
 		if(mode == FLAG_COPY){
 			wsprintf(Msg, EMSG_FOLDERCOPY_CUR, Name);
 			MessageBox(hWnd, Msg, EMSG_FOLDERCOPY_TITLE, MB_ICONSTOP);
@@ -666,7 +723,7 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 		return FALSE;
 	}
 	//受け側のフォルダは、送り側フォルダのサブフォルダ
-	if(lstrcmpn(Path, FromPath, lstrlen(FromPath)) == 0 &&
+	if(lstrcmpni(Path, FromPath, lstrlen(FromPath)) == 0 &&
 		(Path[lstrlen(FromPath)] == '\\' || Path[lstrlen(FromPath)] == '/')){
 		wsprintf(Msg, EMSG_FOLDERCOPY_SUB, Name);
 		MessageBox(hWnd, Msg, EMSG_FOLDERCOPY_TITLE, MB_ICONSTOP);
@@ -700,7 +757,7 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 
 	}else{
 		//移動先と移動元が同じ場合は処理を行わない
-		if(lstrcmp(FromPath, CopyPath) == 0){
+		if(lstrcmpi(FromPath, CopyPath) == 0){
 			return FALSE;
 		}
 
@@ -906,6 +963,12 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 				r = buf;
 				continue;
 			}
+			//ユーザディレクトリ内のアイテムファイル以外のパスは使用しない
+			if(IsUserItemFile(SourcePath) == FALSE){
+				*SourcePath = '\0';
+				r = buf;
+				continue;
+			}
 
 			if(*buf == FLAG_COPY || DnDFlag & DND_COPY){
 				//*SourcePath = '\0';
@@ -932,6 +995,11 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 				r = buf;
 				continue;
 			}
+			//ユーザディレクトリ内のフォルダ以外のパスは使用しない
+			if(IsUserDataPath(FromPath) == FALSE){
+				r = buf;
+				continue;
+			}
 			if(*t == '\t'){
 				t++;
 			}
@@ -942,6 +1010,11 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 			}
 			*r = '\0';
 			if(*t != '\0'){
+				r = buf;
+				continue;
+			}
+			//フォルダ名として使用できない名前は処理しない
+			if(FileNameCheck(Name) == FALSE){
 				r = buf;
 				continue;
 			}

@@ -287,8 +287,9 @@ void GetINI(void)
 	PartInfo2 = profile_get_int("STATUSBAR", "PartInfo2", 2, app_path);
 	PartInfo3 = profile_get_int("STATUSBAR", "PartInfo3", 3, app_path);
 
-	profile_get_string("TREEVIEW", "RootTitle", "Internet", RootTitle, BUFSIZE - 1, app_path);
-	profile_get_string("TREEVIEW", "RecyclerTitle", "‚²‚Ý” ", RecyclerTitle, BUFSIZE - 1, app_path);
+	//"\\" ‚ð•t‰Á‚µ‚Ä BUFSIZE ‚ÉŽû‚Ü‚é’·‚³
+	profile_get_string("TREEVIEW", "RootTitle", "Internet", RootTitle, BUFSIZE - 3, app_path);
+	profile_get_string("TREEVIEW", "RecyclerTitle", "‚²‚Ý” ", RecyclerTitle, BUFSIZE - 3, app_path);
 	StartExpand = profile_get_int("TREEVIEW", "StartExpand", 0, app_path);
 	StartDirOpen = profile_get_int("TREEVIEW", "StartDirOpen", 0, app_path);
 	profile_get_string("TREEVIEW", "StartDirPath", "", StartDirPath, BUFSIZE - 1, app_path);
