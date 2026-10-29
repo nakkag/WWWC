@@ -433,6 +433,7 @@ static void SetOption(HWND hWnd)
 static void ShowHelp(HWND hWnd)
 {
 	char buf[BUFSIZE], *p, *r;
+	int len;
 
 	GetModuleFileName(g_hinst, buf, BUFSIZE - 1);
 	p = r = buf;
@@ -445,8 +446,16 @@ static void ShowHelp(HWND hWnd)
 		p++;
 	}
 	*r = '\0';
+	len = lstrlen(buf);
+	if(len + 1 + lstrlen(HELPFILE) >= BUFSIZE || len + 1 + lstrlen(HELPFILE_DEF) >= BUFSIZE){
+		return;
+	}
 
-	lstrcat(buf, "\\wwwc.html");
+	//表示している言語のマニュアル (無い場合は日本語のマニュアル)
+	wsprintf(buf + len, "\\%s", HELPFILE);
+	if(GetFileAttributes(buf) == INVALID_FILE_ATTRIBUTES){
+		wsprintf(buf + len, "\\%s", HELPFILE_DEF);
+	}
 	ExecItemFile(hWnd, buf, "", NULL, 0);
 }
 
@@ -2343,13 +2352,31 @@ static BOOL GetAppPath(HINSTANCE hinst)
 	*r = '\0';
 
 	//ファイル名を付加する余裕が無いパスはエラー
-	if(lstrlen(DefDirPath) + 1 + lstrlen(GENERAL_INI) >= BUFSIZE){
+	if(lstrlen(DefDirPath) + 1 + lstrlen(GENERAL_INI) >= BUFSIZE ||
+		lstrlen(DefDirPath) + 1 + lstrlen(APP_INI) >= BUFSIZE){
 		MessageBox(NULL, EMSG_PATHLENGTH, EMSG_PATHLENGTH_TITLE, MB_ICONERROR);
 		return FALSE;
 	}
 
 	//デフォルトアイテム
 	wsprintf(DefItem, "%s\\DefItem", DefDirPath);
+
+	//インストーラでインストールした場合 (wwwc_app.ini の portable=0) はデータを
+	//実行ファイルの場所ではなく %LOCALAPPDATA%\WWWC に保存する
+	wsprintf(gIniFile, "%s\\%s", DefDirPath, APP_INI);
+	profile_initialize(gIniFile, TRUE);
+	i = profile_get_int("GENERAL", "portable", 1, gIniFile);
+	profile_free();
+	if(i == 0){
+		i = GetEnvironmentVariable("LOCALAPPDATA", gIniFile, BUFSIZE);
+		if(i == 0 || i + 1 + lstrlen(APP_DATA_DIR) + 1 + lstrlen(GENERAL_INI) >= BUFSIZE){
+			MessageBox(NULL, EMSG_PATHLENGTH, EMSG_PATHLENGTH_TITLE, MB_ICONERROR);
+			return FALSE;
+		}
+		DelLastYen(gIniFile);
+		wsprintf(DefDirPath, "%s\\%s", gIniFile, APP_DATA_DIR);
+		CreateDirectory(DefDirPath, NULL);
+	}
 
 	//共通の設定を使用する場合のユーザ名の取得
 	wsprintf(gIniFile, "%s\\%s", DefDirPath, GENERAL_INI);
@@ -2810,6 +2837,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		hMutex = NULL;
 	}
 	g_hinst = hInstance;
+	//表示する言語 (設定ファイルで指定されている場合は読み込み時に設定し直す)
+	SetResLanguage(NULL);
 
 	//DLLの検索パスからカレントディレクトリを除外する
 	_SetDllDirectory = GetProcAddress(GetModuleHandle("kernel32.dll"), "SetDllDirectoryA");

@@ -303,7 +303,7 @@ static void FindStart(HWND hDlg)
 		ListView_SetItemState(GetDlgItem(hDlg, WWWC_LIST), 0, LVIS_FOCUSED, LVIS_FOCUSED);
 	}
 
-	wsprintf(buf, "検索 - %d 件", FindItemListCnt);
+	wsprintf(buf, FIND_TITLE, FindItemListCnt);
 	SetWindowText(hDlg, buf);
 }
 
@@ -364,12 +364,12 @@ static void InitializeFindWindow(HWND hDlg)
 
 	//タブの設定
 	tcItem.mask = TCIF_TEXT | TCIF_PARAM;
-	tcItem.pszText = "検索文字列と場所";
+	tcItem.pszText = FIND_TAB_NAME;
 	tcItem.cchTextMax = BUFSIZE - 1;
 	tcItem.lParam = 0;
 	TabCtrl_InsertItem(GetDlgItem(hDlg, IDC_TAB), 0, &tcItem);
 
-	tcItem.pszText = "検索項目";
+	tcItem.pszText = FIND_TAB_ITEM;
 	tcItem.cchTextMax = BUFSIZE - 1;
 	tcItem.lParam = 0;
 	TabCtrl_InsertItem(GetDlgItem(hDlg, IDC_TAB), 1, &tcItem);

@@ -322,14 +322,14 @@ static BOOL CALLBACK OptionItemProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		}
 
 		if(tpItemInfo->Title != NULL && *tpItemInfo->Title != '\0'){
-			tmp = (char *)GlobalAlloc(GPTR, lstrlen(tpItemInfo->Title) + lstrlen("のプロパティ") + 1);
+			tmp = (char *)GlobalAlloc(GPTR, lstrlen(tpItemInfo->Title) + lstrlen(STR_PROPTITLE) + 1);
 			if(tmp != NULL){
-				wsprintf(tmp, "%sのプロパティ", tpItemInfo->Title);
+				wsprintf(tmp, STR_PROPTITLE, tpItemInfo->Title);
 			}
 			SetWindowText(hDlg, tmp);
 			GlobalFree(tmp);
 		}else{
-			SetWindowText(hDlg, "プロパティ");
+			SetWindowText(hDlg, EMSG_PROP_TITLE);
 		}
 
 		//アイコンを設定

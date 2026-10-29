@@ -28,12 +28,20 @@
 
 #define to_lower(c)				((c >= TEXT('A') && c <= TEXT('Z')) ? (c - TEXT('A') + TEXT('a')) : c)
 
+//リソースの文字列のID (resource.h の IDS_*) の範囲
+#define RES_STR_BASE			50000
+#define RES_STR_CNT				1000
+
 /**************************************************************************
 	Global Variables
 **************************************************************************/
 
+extern HINSTANCE g_hinst;
 extern char DateFormat[];
 extern char TimeFormat[];
+
+static LANGID ResLangID;
+static char *ResStrList[RES_STR_CNT];
 
 
 /******************************************************************************
@@ -610,5 +618,114 @@ char *GetIndexToString(struct TPITEM *tpItemInfo, int Index)
 		break;
 	}
 	return ((p != NULL) ? p : "");
+}
+
+
+/******************************************************************************
+
+	SetResLanguage
+
+	リソースの言語を設定 (lang が "ja" と "en" 以外の場合は Windows の UI 言語)
+
+******************************************************************************/
+
+void SetResLanguage(char *lang)
+{
+	LANGID langid;
+	int i;
+
+	if(lang != NULL && lstrcmpni(lang, "ja", 2) == 0){
+		langid = MAKELANGID(LANG_JAPANESE, SUBLANG_DEFAULT);
+	}else if(lang != NULL && lstrcmpni(lang, "en", 2) == 0){
+		langid = MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US);
+	}else if(PRIMARYLANGID(GetUserDefaultUILanguage()) == LANG_JAPANESE){
+		langid = MAKELANGID(LANG_JAPANESE, SUBLANG_DEFAULT);
+	}else{
+		//日本語以外の環境では英語のリソースを使用する
+		langid = MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US);
+	}
+	if(langid == ResLangID){
+		return;
+	}
+	//ダイアログとメニューはスレッドの UI 言語のリソースが使用される
+	SetThreadUILanguage(langid);
+	ResLangID = langid;
+
+	//取得済みの文字列は参照されている可能性があるため解放せずに取得し直す
+	for(i = 0; i < RES_STR_CNT; i++){
+		ResStrList[i] = NULL;
+	}
+}
+
+
+/******************************************************************************
+
+	LoadResString
+
+	設定した言語の文字列リソースを読み込む (戻り値は GlobalFree で解放)
+
+******************************************************************************/
+
+static char *LoadResString(UINT id)
+{
+	HRSRC hRes;
+	HGLOBAL hMem;
+	WCHAR *p, *end;
+	char *ret;
+	int len, size;
+	UINT i;
+
+	//文字列は 16 個ずつのブロックに格納されている
+	hRes = FindResourceEx(g_hinst, RT_STRING, MAKEINTRESOURCE(id / 16 + 1), ResLangID);
+	if(hRes == NULL){
+		hRes = FindResource(g_hinst, MAKEINTRESOURCE(id / 16 + 1), RT_STRING);
+	}
+	if(hRes == NULL || (hMem = LoadResource(g_hinst, hRes)) == NULL ||
+		(p = (WCHAR *)LockResource(hMem)) == NULL){
+		return NULL;
+	}
+	end = p + SizeofResource(g_hinst, hRes) / sizeof(WCHAR);
+
+	//ブロック内は文字数と文字列 (終端なし) の並び
+	for(i = 0; i < id % 16 && p < end; i++){
+		p += *p + 1;
+	}
+	if(p >= end || *p >= end - p){
+		return NULL;
+	}
+	len = *(p++);
+	size = (len > 0) ? WideCharToMultiByte(CP_ACP, 0, p, len, NULL, 0, NULL, NULL) : 0;
+	ret = (char *)GlobalAlloc(GMEM_FIXED, size + 1);
+	if(ret == NULL){
+		return NULL;
+	}
+	if(size > 0){
+		WideCharToMultiByte(CP_ACP, 0, p, len, ret, size, NULL, NULL);
+	}
+	*(ret + size) = '\0';
+	return ret;
+}
+
+
+/******************************************************************************
+
+	GetResStr
+
+	リソースの文字列を取得 (取得した文字列は終了まで保持する)
+
+******************************************************************************/
+
+char *GetResStr(UINT id)
+{
+	if(id < RES_STR_BASE || id >= RES_STR_BASE + RES_STR_CNT){
+		return "";
+	}
+	if(ResStrList[id - RES_STR_BASE] == NULL){
+		ResStrList[id - RES_STR_BASE] = LoadResString(id);
+		if(ResStrList[id - RES_STR_BASE] == NULL){
+			return "";
+		}
+	}
+	return ResStrList[id - RES_STR_BASE];
 }
 /* End of source */

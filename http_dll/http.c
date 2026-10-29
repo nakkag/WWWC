@@ -52,6 +52,12 @@
 
 #define HTTP_MENU_CNT		7
 
+#define VIEW_WND_MAX		100			/* 同時に開けるヘッダー・ソース表示の数 */
+
+//ヘッダー・ソース表示ダイアログの配置 (ダイアログ単位)
+#define VIEW_MARGIN			4			/* ボタンの周りの余白 */
+#define VIEW_MIN_WIDTH		120			/* クライアント領域の最小の幅 */
+#define VIEW_MIN_HEIGHT		60			/* クライアント領域の最小の高さ */
 
 #define WM_HTTP_DONE		(WM_USER + 1300)		/* スレッドの終了通知 */
 #define WM_HTTP_PROGRESS	(WM_USER + 1301)		/* 受信状況の通知 */
@@ -72,7 +78,7 @@ static int srcLen;
 static struct TPHOSTINFO *tpHostInfo;
 static int HostInfoCnt;
 
-HWND hWndList[100];
+HWND hWndList[VIEW_WND_MAX];
 
 static HWND hNotifyWnd;							/* スレッドからの通知を受け取るウィンドウ */
 static CRITICAL_SECTION ListCs;					/* 実行中のリストの排他 */
@@ -110,6 +116,7 @@ extern char TimeFormat[];
 
 //View
 static DWORD CALLBACK EditStreamProc(DWORD dwCookie, LPBYTE pbBuf, LONG cb, LONG *pcb);
+static void SetViewControlPos(HWND hDlg);
 static BOOL CALLBACK ViewProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 //Title
@@ -171,6 +178,36 @@ static DWORD CALLBACK EditStreamProc(DWORD dwCookie, LPBYTE pbBuf, LONG cb, LONG
 
 /******************************************************************************
 
+	SetViewControlPos
+
+	ヘッダー・ソース表示ダイアログのコントロールをクライアント領域に合わせて配置
+
+******************************************************************************/
+
+static void SetViewControlPos(HWND hDlg)
+{
+	RECT ClientRect, CopyRect, OkRect, MarginRect;
+	int x, y;
+
+	GetClientRect(hDlg, &ClientRect);
+	GetWindowRect(GetDlgItem(hDlg, ID_BUTTON_COPY), &CopyRect);
+	GetWindowRect(GetDlgItem(hDlg, IDOK), &OkRect);
+	SetRect(&MarginRect, 0, 0, VIEW_MARGIN, VIEW_MARGIN);
+	MapDialogRect(hDlg, &MarginRect);
+
+	//ボタンを右下に並べて、残りをテキストの表示に使う
+	x = ClientRect.right - MarginRect.right - (OkRect.right - OkRect.left);
+	y = ClientRect.bottom - MarginRect.bottom - (OkRect.bottom - OkRect.top);
+	SetWindowPos(GetDlgItem(hDlg, IDOK), 0, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+	x -= MarginRect.right + (CopyRect.right - CopyRect.left);
+	SetWindowPos(GetDlgItem(hDlg, ID_BUTTON_COPY), 0, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+	SetWindowPos(GetDlgItem(hDlg, IDC_EDIT_VIEW), 0, 0, 0,
+		ClientRect.right, y - MarginRect.bottom, SWP_NOZORDER);
+}
+
+
+/******************************************************************************
+
 	ViewProc
 
 	アイテムのヘッダー・ソース表示ダイアログ
@@ -182,7 +219,7 @@ static BOOL CALLBACK ViewProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 	struct TPITEM *tpItemInfo;
 	struct TPHTTP *tpHTTP;
 	EDITSTREAM eds;
-	RECT DesktopRect, WindowRect;
+	RECT DesktopRect, WindowRect, MinRect;
 	CHARRANGE seltext, settext;
 	HWND fWnd;
 	char *buf = NULL;
@@ -194,12 +231,25 @@ static BOOL CALLBACK ViewProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
+		//開いているウィンドウの一覧に追加 (一覧に空きが無い場合は開かない)
+		for(i = 0; i < VIEW_WND_MAX; i++){
+			if(hWndList[i] == NULL){
+				hWndList[i] = hDlg;
+				break;
+			}
+		}
+		if(i >= VIEW_WND_MAX){
+			DestroyWindow(hDlg);
+			break;
+		}
+
 		CreateWindowEx(WS_EX_CLIENTEDGE, "RICHEDIT",
 			(LPSTR)NULL, WS_TABSTOP | WS_CHILD | WS_VSCROLL | WS_HSCROLL |
 			ES_AUTOHSCROLL | ES_AUTOVSCROLL | ES_MULTILINE | ES_READONLY | ES_SAVESEL |
 			ES_NOHIDESEL | ES_DISABLENOSCROLL,
 			0, 0, 0, 0, hDlg, (HMENU)IDC_EDIT_VIEW, ghinst, NULL);
 		ShowWindow(GetDlgItem(hDlg, IDC_EDIT_VIEW), SW_SHOW);
+		SetViewControlPos(hDlg);
 
 		GetWindowRect(GetDesktopWindow(), (LPRECT)&DesktopRect);
 		GetWindowRect(hDlg, (LPRECT)&WindowRect);
@@ -263,28 +313,25 @@ static BOOL CALLBACK ViewProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			SetWindowText(hDlg, buf);
 			GlobalFree(buf);
 		}
-		for(i = 0; i < 100; i++){
-			if(hWndList[i] == NULL){
-				hWndList[i] = hDlg;
-				break;
-			}
+		break;
+
+	case WM_GETMINMAXINFO:
+		//ボタンが見切れる大きさには縮めない (コントロールの作成前は既定の処理)
+		if(GetDlgItem(hDlg, IDOK) == NULL){
+			return FALSE;
 		}
+		SetRect(&MinRect, 0, 0, VIEW_MIN_WIDTH, VIEW_MIN_HEIGHT);
+		MapDialogRect(hDlg, &MinRect);
+		AdjustWindowRectEx(&MinRect, GetWindowLong(hDlg, GWL_STYLE), FALSE, GetWindowLong(hDlg, GWL_EXSTYLE));
+		((MINMAXINFO *)lParam)->ptMinTrackSize.x = MinRect.right - MinRect.left;
+		((MINMAXINFO *)lParam)->ptMinTrackSize.y = MinRect.bottom - MinRect.top;
 		break;
 
 	case WM_SIZE:
-		GetWindowRect(hDlg, (LPRECT)&WindowRect);
-		SetWindowPos(GetDlgItem(hDlg, IDC_EDIT_VIEW), 0, 0, 0,
-			(WindowRect.right - WindowRect.left) - (GetSystemMetrics(SM_CXFRAME) * 2),
-			(WindowRect.bottom - WindowRect.top) - GetSystemMetrics(SM_CYSIZE) - (GetSystemMetrics(SM_CXFRAME) * 2) - 30,
-			SWP_NOZORDER);
-		SetWindowPos(GetDlgItem(hDlg, IDOK), 0,
-			(WindowRect.right - WindowRect.left) - (GetSystemMetrics(SM_CXFRAME) * 2) - 100,
-			(WindowRect.bottom - WindowRect.top) - GetSystemMetrics(SM_CYSIZE) - (GetSystemMetrics(SM_CXFRAME) * 2) - 25,
-			0, 0, SWP_NOZORDER | SWP_NOSIZE);
-		SetWindowPos(GetDlgItem(hDlg, ID_BUTTON_COPY), 0,
-			(WindowRect.right - WindowRect.left) - (GetSystemMetrics(SM_CXFRAME) * 2) - 200,
-			(WindowRect.bottom - WindowRect.top) - GetSystemMetrics(SM_CYSIZE) - (GetSystemMetrics(SM_CXFRAME) * 2) - 25,
-			0, 0, SWP_NOZORDER | SWP_NOSIZE);
+		if(wParam == SIZE_MINIMIZED || GetDlgItem(hDlg, IDC_EDIT_VIEW) == NULL){
+			break;
+		}
+		SetViewControlPos(hDlg);
 
 		InvalidateRect(GetDlgItem(hDlg, IDOK), NULL, FALSE);
 		UpdateWindow(GetDlgItem(hDlg, IDOK));
@@ -293,14 +340,19 @@ static BOOL CALLBACK ViewProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		break;
 
 	case WM_CLOSE:
-		EndDialog(hDlg, 0);
-		for(i = 0; i < 100; i++){
+		//モードレスのダイアログのため破棄する
+		DestroyWindow(hDlg);
+		break;
+
+	case WM_DESTROY:
+		//開いているウィンドウの一覧から削除
+		for(i = 0; i < VIEW_WND_MAX; i++){
 			if(hWndList[i] == hDlg){
 				hWndList[i] = NULL;
 				break;
 			}
 		}
-		break;
+		return FALSE;
 
 	case WM_COMMAND:
 		switch(LOWORD(wParam))
@@ -376,8 +428,8 @@ static BOOL CALLBACK ViewProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 static char *GetTitle(char *buf)
 {
 #define TITLE_TAG	"title"
-	char *SjisBuf, *ret;
-	int len;
+	char *SjisBuf, *ret, *p;
+	int len, n;
 	BOOL rc;
 
 	//JIS を SJIS に変換
@@ -406,6 +458,15 @@ static char *GetTitle(char *buf)
 	//特殊文字の変換
 	ConvHTMLChar(ret);
 	DelCtrlChar(ret);
+
+	//長いタイトルは最大の長さまでに切り詰める (2バイト文字の途中では切らない)
+	for(p = ret; *p != '\0'; p += n){
+		n = (IS_LEAD_BYTE(p)) ? 2 : 1;
+		if(p - ret + n > TITLE_MAX - 1){
+			*p = '\0';
+			break;
+		}
+	}
 	return ret;
 }
 
@@ -2645,8 +2706,10 @@ __declspec(dllexport) int CALLBACK HTTP_ItemCheckEnd(HWND hWnd, struct TPITEM *t
 			}
 			//ヘッダ、ソース表示
 			vWnd = CreateDialogParam(ghinst, MAKEINTRESOURCE(IDD_DIALOG_VIEW), NULL, ViewProc, (long)tpItemInfo);
-			ShowWindow(vWnd, SW_SHOW);
-			SetFocus(GetDlgItem(vWnd, IDC_EDIT_VIEW));
+			if(vWnd != NULL){
+				ShowWindow(vWnd, SW_SHOW);
+				SetFocus(GetDlgItem(vWnd, IDC_EDIT_VIEW));
+			}
 			break;
 		}
 	}
@@ -3021,7 +3084,7 @@ __declspec(dllexport) int CALLBACK HTTP_EndNotify(void)
 	struct TPHTTP *tpHTTP;
 	int i;
 
-	for(i = 0; i < 100; i++){
+	for(i = 0; i < VIEW_WND_MAX; i++){
 		if(hWndList[i] != NULL){
 			SendMessage(hWndList[i], WM_CLOSE, 0, 0);
 		}

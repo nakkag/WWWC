@@ -1035,9 +1035,1019 @@ BEGIN
     ID_MENUITEM_TBNEW       "新規作成"
 END
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table (StrTbl.h)
+//
+
+STRINGTABLE
+BEGIN
+    IDS_NEWITEMNAME         "新しいアイテム"
+    IDS_FOLDERNAME          "フォルダ"
+    IDS_STR_COPYNAME        "コピー ～ %s"
+    IDS_STR_COPYNAME_CNT    "コピー (%d) ～ %s"
+    IDS_EMSG_PROP_TITLE     "プロパティ"
+    IDS_EMSG_PROP           "設定できるプロパティはありません。"
+    IDS_QMSG_DELETE_TITLE   "削除の確認"
+    IDS_QMSG_DELETE         "選択されている項目を削除してもよろしいですか？"
+    IDS_MENU_STR_NEWITEM    "新規作成(&N)"
+    IDS_ABOUTTITLE          "バージョン情報"
+    IDS_IMSG_DOUBLESTART    "既に起動しています"
+    IDS_QMSG_ALLINITICON_TITLE "アイコンの初期化の確認"
+    IDS_QMSG_ALLINITICON    "すべてのアイコンを初期化してもよろしいですか？"
+    IDS_QMSG_END_TITLE      "終了"
+    IDS_QMSG_END_CHECKCANCEL "チェック中のアイテムが存在しますが、終了してもよろしいですか？"
+    IDS_EMSG_OLEINIT        "OLEの初期化に失敗しました。"
+    IDS_EMSG_WINSOCKINIT    "WinSockの初期化に失敗しました。"
+    IDS_EMSG_ATEXIT         "atexitに失敗しました。"
+    IDS_EMSG_REGWINDOWCLASS "WindowClassの登録に失敗しました。"
+    IDS_EMSG_CREATEWINDOW   "Windowの作成に失敗しました。"
+    IDS_EMSG_CREATECONTROL  "コントロールの作成に失敗しました。"
+    IDS_EMSG_CREATEUPMSG    "更新メッセージの作成に失敗しました。"
+    IDS_LISTCOL_TITLE       "時間"
+    IDS_STRWEEK_SUN         "日"
+    IDS_STRWEEK_MON         "月"
+    IDS_STRWEEK_TUE         "火"
+    IDS_STRWEEK_WED         "水"
+    IDS_STRWEEK_THU         "木"
+    IDS_STRWEEK_FRI         "金"
+    IDS_STRWEEK_SAT         "土"
+    IDS_LISTSTR_MIN         "%d分毎 にチェック"
+    IDS_LISTSTR_NOU         "%d時間毎 にチェック"
+    IDS_LISTSTR_DAY         "%02d時 %02d分 にチェック"
+    IDS_LISTSTR_WEEK        "%s曜日 %02d時 %02d分 にチェック"
+    IDS_LISTSTR_MON         "%d日 %02d時 %02d分 にチェック"
+    IDS_TIMEOPTIONSTR_HOU   "時"
+    IDS_TIMEOPTIONSTR_MIN   "分"
+    IDS_TIMEOPTIONSTR_EVERYHOU "時間毎"
+    IDS_TIMEOPTIONSTR_EVERYMIN "分毎"
+    IDS_TIMEOPTIONERRMSG_TITLE "自動チェック時間"
+    IDS_TIMEOPTIONERRMSG_DAY """日"" が入力されていません。"
+    IDS_TIMEOPTIONERRMSG_HOU """時"" が入力されていません。"
+    IDS_TIMEOPTIONERRMSG_MIN """分"" が入力されていません。"
+    IDS_STR_CHECKSTART      "チェックを開始"
+    IDS_EMSG_FOLDERCOPY_TITLE "フォルダのコピーのエラー"
+    IDS_EMSG_PATHLENGTH     "フォルダのパスが長すぎるため処理できません。"
+    IDS_EMSG_PATHLENGTH_TITLE "フォルダのエラー"
+    IDS_EMSG_FOLDERCOPY_CUR "%s をコピーできません。送り側と受け側のフォルダが同じです。"
+    IDS_EMSG_FOLDERCOPY_SUB "%s をコピーできません。受け側のフォルダは、送り側フォルダのサブフォルダです。"
+    IDS_EMSG_FOLDERCOPY_ERR "フォルダのコピーに失敗しました。"
+    IDS_EMSG_MOVEDIR_TITLE  "フォルダの移動のエラー"
+    IDS_EMSG_ITEMREAD_TITLE "アイテムの読み込み"
+    IDS_EMSG_ITEMREAD       "アイテム情報ファイルが開けませんでした。"
+    IDS_EMSG_SAVE_TITLE     "保存エラー"
+    IDS_EMSG_EXEC_TITLE     "実行エラー"
+    IDS_EMSG_EXEC_BATCH     "アイテムの情報にバッチファイルの引数として使用できない文字が含まれているため実行しません。"
+    IDS_Q_MSG_EXECITEM      "このアイテムは関連付けられたアプリケーションで開かれます。開きますか？\n\n%s"
+    IDS_Q_TITLE_EXECITEM    "アイテムの実行"
+    IDS_EMSG_DISKFULL       "空きディスク容量が足らないためアイテム情報を保存できません。"
+    IDS_FIND_TITLE          "検索 - %d 件"
+    IDS_FIND_TAB_NAME       "検索文字列と場所"
+    IDS_FIND_TAB_ITEM       "検索項目"
+    IDS_STR_UPDATEMSG       "フォルダ '%s' には既に '%s' アイテムが存在します。"
+    IDS_STR_UPDATEINFO      "サイズ: %s\n更新日時: %s"
+    IDS_QMSG_FOLDERDELETE   "フォルダ '%s' とフォルダ内のすべてのアイテムを削除してもよろしいですか？"
+    IDS_QMSG_ITEMDELETE     "'%s' を削除してもよろしいですか？"
+    IDS_QMSG_MANYITEMDELETE "これらの %d 個のアイテムを削除してもよろしいですか？"
+    IDS_QMSG_CLEARRECYCLER_TITLE "ごみ箱を空にする"
+    IDS_QMSG_CLEARRECYCLER  "ごみ箱を空にしてもよろしいですか？"
+    IDS_EMSG_FOLDERDELETE_TITLE "フォルダの削除"
+    IDS_EMSG_FOLDERCHECK    "チェック中のフォルダは削除できません。"
+    IDS_EMSG_FOLDERPROP     "処理中のアイテムが存在するため削除できませんでした。"
+    IDS_EMSG_FOLDERNODELETE "削除できませんでした。"
+    IDS_EMSG_ITEMDELETE_TITLE "アイテムの削除"
+    IDS_EMSG_ITEMCHECK      "チェック中のアイテムは削除できません。"
+    IDS_EMSG_ITEMNODELETE   "削除できませんでした。"
+    IDS_EMSG_CLEARRECYCLER_TITLE "ごみ箱を空にする"
+    IDS_EMSG_CLEARRECYCLER  "チェック中のアイテムが存在するためごみ箱を空にできませんでした。"
+    IDS_EMSG_PROPRECYCLER   "処理中のアイテムが存在するためごみ箱を空にできませんでした。"
+    IDS_EMSG_CHECKUPDATE_TITLE "上書き"
+    IDS_EMSG_CHECKUPDATE    "チェック中のアイテムのため上書きできませんでした。"
+    IDS_EMSG_NOPROPITEM     "アイテムが見つかりませんでした。"
+    IDS_DEF_RECYCLERTITLE   "ごみ箱"
+    IDS_COLUMN_NAME         "名前"
+    IDS_COLUMN_CHECKURL     "チェックするURL"
+    IDS_COLUMN_SIZE         "サイズ"
+    IDS_COLUMN_DATE         "更新日時"
+    IDS_COLUMN_CHECKDATE    "チェック日時"
+    IDS_COLUMN_OLDSIZE      "旧サイズ"
+    IDS_COLUMN_OLDDATE      "旧更新日時"
+    IDS_COLUMN_VIEWURL      "表示するURL"
+    IDS_COLUMN_OPTION1      "オプション1"
+    IDS_COLUMN_OPTION2      "オプション2"
+    IDS_COLUMN_COMMENT      "コメント"
+    IDS_COLUMN_ERROR        "エラー情報"
+    IDS_COLUMN_PATH         "パス"
+    IDS_COLUMN_DLLDATA1     "プロトコル情報1"
+    IDS_COLUMN_DLLDATA2     "プロトコル情報2"
+    IDS_MENU_STR_OPEN       "開く(&O)"
+    IDS_MENU_STR_CLEARRECY  "ごみ箱を空にする(&B)"
+    IDS_MENU_STR_FOLDERTREECHECK "階層チェック(&K)"
+    IDS_MENU_STR_SERACH     "検索(&F)..."
+    IDS_MENU_STR_UNDO_NON   "元に戻す(&U)\tCtrl+Z"
+    IDS_MENU_STR_UNDO_MOVE  "元に戻す - 移動(&U)\tCtrl+Z"
+    IDS_MENU_STR_UNDO_COPY  "元に戻す - コピー(&U)\tCtrl+Z"
+    IDS_MENU_STR_UNDO_DELETE "元に戻す - 削除(&U)\tCtrl+Z"
+    IDS_MENU_STR_UNDO_NAME  "元に戻す - 名前の変更(&U)\tCtrl+Z"
+    IDS_STR_ITEMCNT         "アイテム数: %d、フォルダ数: %d"
+    IDS_STR_NOMAKEDATE      "(不明)"
+    IDS_STR_PROPTITLE       "%sのプロパティ"
+    IDS_STR_OPTIONTITLE     "オプション"
+    IDS_FILEFILTER_WAV      "サウンド (*.wav)|*.wav|すべてのファイル (*.*)|*.*"
+    IDS_PROTOCOL_FILEFILTER "DLL (*.dll)|*.dll|すべてのファイル (*.*)|*.*"
+    IDS_PROTOCOL_LISTCOL_TITLE "タイトル"
+    IDS_PROTOCOL_LISTCOL_FUNCHEAD "ヘッダ"
+    IDS_PROTOCOL_LISTCOL_ICONFILE "アイコンファイル"
+    IDS_PROTOCOL_LISTCOL_ICONINDEX "アイコンインデックス"
+    IDS_PROTOCOL_LISTCOL_UPICONFILE "UPアイコンファイル"
+    IDS_PROTOCOL_LISTCOL_UPICONINDEX "UPアイコンインデックス"
+    IDS_EMSG_SELECT_TITLE_PROTOCOL "プロトコル選択"
+    IDS_EMSG_SELECT_PROTOCOL "追加するプロトコルを選択してください。"
+    IDS_EMSG_DLL            "DLLからプロトコルとツールの情報が見つかりませんでした。"
+    IDS_EMSG_SELECT         "追加するプロトコル及びツールを選択してください。"
+    IDS_EMSG_DLLPATH        "DLLのパスが不正です。"
+    IDS_QMSG_LOADDLL        "次のDLLを読み込みます。\nDLLを読み込むとDLL内のプログラムが実行されます。信頼できるDLLの場合のみ読み込んでください。\n\n%s\n\n読み込みますか？"
+    IDS_FILEFILTER_ICON     "アイコン ファイル|*.ico;*.exe;*.dll;*.icl|プログラム|*.exe|ライブラリ|*.dll;*.icl|アイコン|*.ico|すべてのファイル|*.*"
+    IDS_ITEMMSG             "%d 個のアイテム"
+    IDS_ITEMMSG_UP          "%d 個のアイテム (UPアイテム %d 個)"
+    IDS_ITEMSELECTMSG       "%d 個のアイテムを選択"
+    IDS_NOMENUITEM          "(なし)"
+    IDS_TOOL_FILE_FILTER    "ツール (*.exe;*.dll)|*.exe;*.dll|すべてのファイル (*.*)|*.*"
+    IDS_TOOL_LISTCOL_TITLE  "タイトル"
+    IDS_TOOL_LISTCOL_FILENAME "ファイル名"
+    IDS_TOOL_LISTCOL_EXEOPTION "実行オプション"
+    IDS_TOOL_LISTCOL_EXEPROTOCOL "実行プロトコル"
+    IDS_TOOL_LISTCOL_MENUINDEX "メニュー位置"
+    IDS_TOOL_LISTCOL_SKEY   "ショートカットキー"
+    IDS_TOOL_LISTCOL_CTRL   "キー 1"
+    IDS_TOOL_LISTCOL_KEY    "キー 2"
+    IDS_TOOL_LISTCOL_COMMANDLINE "コマンドライン"
+    IDS_TOOL_LISTCOL_DLLFUNC "関数(DLL)"
+    IDS_EMSG_NOINPUT_TITLE  "ツール設定"
+    IDS_EMSG_NOINPUT        """タイトル"" が入力されていません。"
+    IDS_EMSG_SELECT_TITLE_TOOL "ツール選択"
+    IDS_EMSG_SELECT_TOOL    "追加するツールを選択してください。"
+    IDS_TOOL_TITLE_COMMANDLINE "コマンドライン(&C):"
+    IDS_TOOL_TITLE_DLLFUNC  "実行する関数名:"
+    IDS_TOOL_PROTOCOL_ALL   "&0. すべて (*)"
+    IDS_COMMANDLINE_u       "&1. %u - 表示するURL, 未設定時チェックするURL"
+    IDS_COMMANDLINE_c       "&2. %c - チェックするURL"
+    IDS_COMMANDLINE_v       "&3. %v - 表示するURL"
+    IDS_COMMANDLINE_t       "&4. %t - アイテムの名前"
+    IDS_COMMANDLINE_s       "&5. %s - アイテムのサイズ"
+    IDS_COMMANDLINE_d       "&6. %d - アイテムの更新日時"
+    IDS_COMMANDLINE_k       "&7. %k - アイテムのチェック日時"
+    IDS_COMMANDLINE_m       "&8. %m - アイテムに設定されているコメント"
+    IDS_COMMANDLINE_f       "&9. %f - 開いているフォルダの実パス"
+    IDS_COMMANDLINE_F       "&10. %F - 開いているフォルダの実パス (短い形式)"
+    IDS_COMMANDLINE_p       "&11. %p - ユーザディレクトリのパス"
+    IDS_COMMANDLINE_P       "&12. %P - ユーザディレクトリのパス (短い形式)"
+    IDS_NEWFOLDER           "新しいフォルダ"
+    IDS_EMSG_CHANGEFILENAME_TITLE "名前の変更"
+    IDS_EMSG_CHANGEFILENAME "ファイル名に次の文字は使えません。\n\t\\ / : , ; * ? "" < > |"
+    IDS_EMSG_DIRMOVE_TITLE  "フォルダの移動"
+    IDS_EMSG_DIRMOVE        "アイテム情報ファイルが開けませんでした。"
+    IDS_QMSG_ITEMDELETE_UNDO "削除されるアイテムがありますがよろしいですか？"
+    IDS_STR_UPMSG           "%d 件更新された可能性があるアイテムがあります。\n\n%s %s"
+    IDS_STR_NOTUPMSG        "%d 件更新された可能性があるアイテムがあります。\n※ 最後のチェックでは更新はありませんでした。\n%s %s"
+    IDS_STR_ZEROMSG         "更新されたアイテムはありません。\n\n%s %s"
+    IDS_STR_NOUPMSG         "更新されたアイテムはありません。"
+    IDS_BTN_UPINFO_ON       "詳細(&D) >>"
+    IDS_BTN_UPINFO_OFF      "詳細(&D) <<"
+    IDS_EMSG_MAINSHOW_TITLE "表示"
+    IDS_EMSG_NOMAINITEM     "本体からアイテムが見つかりませんでした。"
+    IDS_HELPFILE            "wwwc.html"
+END
+
 #endif    // 日本語 (日本) resources
 /////////////////////////////////////////////////////////////////////////////
 
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+// 英語 (米国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(65001)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_MAIN MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New",                        ID_MENUITEM_POP_NEWITEM
+        MENUITEM SEPARATOR
+        MENUITEM "&Delete",                     ID_MENUITEM_DELETE
+        MENUITEM "Rena&me",                     ID_MENUITEM_EDITNAME
+        MENUITEM "P&roperties...",              ID_MENUITEM_PROP
+        MENUITEM SEPARATOR
+        MENUITEM "&Close",                      ID_MENUITEM_CLOSE
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_MENUITEM_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_MENUITEM_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_MENUITEM_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_MENUITEM_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "Select &All\tCtrl+A",         ID_MENUITEM_ALLSELECT
+        MENUITEM "&Invert Selection",           ID_MENUITEM_SWITCHSELECT
+        MENUITEM "Select Up&dated Items\tCtrl+B", ID_MENUITEM_UPSELECT
+        MENUITEM SEPARATOR
+        MENUITEM "&Find...\tCtrl+F",            ID_MENUITEM_SERACH
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_MENUITEM_VIEW_TB
+        MENUITEM "Status &Bar",                 ID_MENUITEM_VIEW_SB
+        MENUITEM "&Update Message...\tCtrl+U",  ID_MENUITEM_VIEWUPMSG
+        MENUITEM SEPARATOR
+        MENUITEM "Lar&ge Icons",                ID_MENUITEM_VIEW_ICON
+        MENUITEM "S&mall Icons",                ID_MENUITEM_VIEW_SMALLICON
+        MENUITEM "&List",                       ID_MENUITEM_VIEW_LIST
+        MENUITEM "&Details",                    ID_MENUITEM_VIEW_REPORT
+        MENUITEM "Details with &Full Row Select", ID_MENUITEM_VIEW_REPORT_LINE
+        MENUITEM SEPARATOR
+        POPUP "Arrange &Icons"
+        BEGIN
+            MENUITEM "by &Icon",                    ID_MENUITEM_SORT_ICON
+            MENUITEM "by &Name",                    ID_MENUITEM_SORT_NAME
+            MENUITEM "by Si&ze",                    ID_MENUITEM_SORT_SIZE
+            MENUITEM "by &Date",                    ID_MENUITEM_SORT_DATE
+            MENUITEM "by &URL",                     ID_MENUITEM_SORT_URL
+            MENUITEM SEPARATOR
+            MENUITEM "Auto &Sort",                  ID_MENUITEM_AUTOSORT
+        END
+        MENUITEM SEPARATOR
+        POPUP "Na&vigate"
+        BEGIN
+            MENUITEM "&Back\tAlt+Left",             ID_MENUITEM_PREV_HISTORY
+            MENUITEM "&Forward\tAlt+Right",         ID_MENUITEM_NEXT_HISTORY
+        END
+        MENUITEM "&Refresh",                    ID_MENUITEM_REFRESH
+        MENUITEM SEPARATOR
+        MENUITEM "&Customize Toolbar...",       ID_MENUITEM4_TB_CUSTOM
+        MENUITEM "&Options...",                 ID_MENUITEM_OPTION
+    END
+    POPUP "&Check"
+    BEGIN
+        MENUITEM "&Check\tF5",                  ID_MENUITEM_CHECK
+        MENUITEM "Check &All Items\tCtrl+F5",   ID_MENUITEM_ALLCHECK
+        MENUITEM "Check with Sub&folders",      ID_MENUITEM_FOLDERTREECHECK
+        MENUITEM "Check &Error Items Only",     ID_MENUITEM_ALLERRORCHECK
+        MENUITEM SEPARATOR
+        MENUITEM "&Stop Check\tCtrl+S",         ID_MENUITEM_CHECKEND
+        MENUITEM "Sto&p All Checks\tCtrl+T",    ID_MENUITEM_ALLCHECKEND
+        MENUITEM SEPARATOR
+        MENUITEM "Reset &Icon\tCtrl+I",         ID_MENUITEM_INITICON
+        MENUITEM "Reset All Ic&ons",            ID_MENUITEM_ALLINITICON
+        MENUITEM SEPARATOR
+        POPUP "Change Ico&n"
+        BEGIN
+            MENUITEM "&Updated Icon",               ID_MENUITEM_ICON_UP
+            MENUITEM "&Error Icon",                 ID_MENUITEM_ICON_ERROR
+            MENUITEM "&Timeout Icon",               ID_MENUITEM_ICON_TIMEOUT
+            MENUITEM SEPARATOR
+            MENUITEM "Check / Do &Not Check",       ID_MENUITEM_CHECKSWITCH
+        END
+    END
+    POPUP "&Tools"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Help",                       ID_MENUITEM_HELP
+        MENUITEM SEPARATOR
+        MENUITEM "&About WWWC...",              ID_MENUITEM_ABOUT
+    END
+END
+
+IDR_MENU_POPUP MENU
+BEGIN
+    POPUP "&New"
+    BEGIN
+        MENUITEM "&Folder",                     ID_MENUITEM_NEWFOLDER
+        MENUITEM SEPARATOR
+    END
+    POPUP "Item"
+    BEGIN
+        MENUITEM "Chec&k",                      ID_MENUITEM_CHECK_POP
+        MENUITEM "&Stop Check",                 ID_MENUITEM_CHECKEND_POP
+        MENUITEM SEPARATOR
+        MENUITEM "Reset &Icon",                 ID_MENUITEM_INITICON_POP
+        POPUP "Change Ico&n"
+        BEGIN
+            MENUITEM "&Updated Icon",               ID_MENUITEM_ICON_UP
+            MENUITEM "&Error Icon",                 ID_MENUITEM_ICON_ERROR
+            MENUITEM "&Timeout Icon",               ID_MENUITEM_ICON_TIMEOUT
+            MENUITEM SEPARATOR
+            MENUITEM "Check / Do &Not Check",       ID_MENUITEM_CHECKSWITCH_POP
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t",                        ID_MENUITEM_CUT_POP
+        MENUITEM "&Copy",                       ID_MENUITEM_COPY_POP
+        MENUITEM SEPARATOR
+        MENUITEM "&Delete",                     ID_MENUITEM_DELETE_POP
+        MENUITEM "Rena&me",                     ID_MENUITEM_EDITNAME_POP
+        MENUITEM SEPARATOR
+        MENUITEM "P&roperties...",              ID_MENUITEM_PROP_POP
+    END
+    POPUP "Folder"
+    BEGIN
+        MENUITEM "Check with Sub&folders",      ID_MENUITEM_FOLDERTREECHECK
+        MENUITEM "Chec&k",                      ID_MENUITEM_CHECK
+        MENUITEM "&Stop Check",                 ID_MENUITEM_CHECKEND
+        MENUITEM "Reset &Icon",                 ID_MENUITEM_INITICON
+        MENUITEM SEPARATOR
+        POPUP "&View"
+        BEGIN
+            MENUITEM "Lar&ge Icons",                ID_MENUITEM_VIEW_ICON
+            MENUITEM "S&mall Icons",                ID_MENUITEM_VIEW_SMALLICON
+            MENUITEM "&List",                       ID_MENUITEM_VIEW_LIST
+            MENUITEM "&Details",                    ID_MENUITEM_VIEW_REPORT
+            MENUITEM "Details with &Full Row Select", ID_MENUITEM_VIEW_REPORT_LINE
+        END
+        MENUITEM SEPARATOR
+        POPUP "Arrange Ic&ons"
+        BEGIN
+            MENUITEM "by &Icon",                    ID_MENUITEM_SORT_ICON
+            MENUITEM "by &Name",                    ID_MENUITEM_SORT_NAME
+            MENUITEM "by Si&ze",                    ID_MENUITEM_SORT_SIZE
+            MENUITEM "by &Date",                    ID_MENUITEM_SORT_DATE
+            MENUITEM "by &URL",                     ID_MENUITEM_SORT_URL
+            MENUITEM SEPARATOR
+            MENUITEM "Auto &Sort",                  ID_MENUITEM_AUTOSORT
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Paste",                      ID_MENUITEM_PASTE
+        MENUITEM "&Undo",                       ID_MENUITEM_UNDO
+        MENUITEM "&Find...",                    ID_MENUITEM_SERACH
+        MENUITEM SEPARATOR
+        MENUITEM "&New",                        ID_MENUITEM_POP_NEWITEM
+        MENUITEM SEPARATOR
+        MENUITEM "P&roperties...",              ID_MENUITEM_PROP
+    END
+    POPUP "Drag and Drop"
+    BEGIN
+        MENUITEM "&Copy Here",                  ID_MENU_DGDP_COPY
+        MENUITEM "&Move Here",                  ID_MENU_DGDP_CUT
+        MENUITEM SEPARATOR
+        MENUITEM "Cancel",                      ID_MENU_DGDP_CANCEL
+    END
+    POPUP "Updated Item"
+    BEGIN
+        MENUITEM "Reset &Icon\tCtrl+I",         ID_MENUITEM_INITICON_POP
+        MENUITEM "Reset All Ic&ons",            ID_MENUITEM_ALLINITICON
+        MENUITEM SEPARATOR
+        MENUITEM "&View\tCtrl+E",               ID_MENUITEM_UPVIEW
+        MENUITEM "&Copy\tCtrl+C",               ID_MENUITEM_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "P&roperties...",              ID_MENUITEM_PROP
+    END
+    POPUP "Task Tray"
+    BEGIN
+        MENUITEM "&Check All Items",            ID_MENUITEM_ALLCHECK
+        MENUITEM "Sto&p All Checks",            ID_MENUITEM_ALLCHECKEND
+        MENUITEM "&Auto Check",                 ID_MENUITEM_AUTOCHECK
+        MENUITEM SEPARATOR
+        MENUITEM "&Update Message...",          ID_MENUITEM_VIEWUPMSG
+        MENUITEM "&Options...",                 ID_MENUITEM_OPTION
+        MENUITEM SEPARATOR
+        MENUITEM "&Restore",                    ID_MENUITEM_REWINDOW
+        MENUITEM "E&xit",                       ID_MENUITEM_END
+    END
+    POPUP "Update Message"
+    BEGIN
+        MENUITEM "Select &All\tCtrl+A",         ID_MENUITEM_ALLSELECT
+        MENUITEM "Reset All Ic&ons",            ID_MENUITEM_ALLINITICON
+        MENUITEM SEPARATOR
+        MENUITEM "&Clear",                      ID_MENUITEM_UPITEMCLEAR
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_UP DIALOGEX 0, 0, 276, 180
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "WWWC - [Update Message]"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "&View",IDC_BUTTON_VIEW,220,10,50,15,WS_GROUP
+    PUSHBUTTON      "&Wait",IDC_BUTTON_WAIT,220,30,50,15
+    PUSHBUTTON      "&Details >>",IDC_BUTTON_INFO,220,50,50,15
+    CONTROL         "",WWWC_LIST,"SysListView32",LVS_REPORT | LVS_SHAREIMAGELISTS | WS_BORDER | WS_TABSTOP,0,70,275,110
+    ICON            "",IDC_STATIC_ICON,10,10,20,20
+    LTEXT           "No items have been updated.",IDC_STATIC_MSG,35,10,180,35
+    CONTROL         "",IDC_STATIC_BANNER,"Static",SS_BITMAP | SS_NOTIFY | SS_SUNKEN | NOT WS_VISIBLE,35,45,14,15
+END
+
+IDD_DIALOG_DLLLIST DIALOG 0, 0, 150, 155
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Protocol List"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    CONTROL         "",IDC_STATIC_FILENAME,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,0,0,150,10
+    LISTBOX         IDC_LIST_DLLENTRY,0,10,150,120,LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,40,135,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,95,135,50,14
+END
+
+IDD_DIALOG_PRPTOCOLEDIT DIALOG 0, 0, 204, 159
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Edit Protocol"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "&Title:",IDC_STATIC,10,5,180,10
+    EDITTEXT        IDC_EDIT_TITLE,10,15,180,13,ES_AUTOHSCROLL
+    LTEXT           "&DLL:",IDC_STATIC,10,31,160,10
+    EDITTEXT        IDC_EDIT_DLL,10,41,165,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BUTTON_DLLSELECT,178,41,12,12
+    LTEXT           "&Header:",IDC_STATIC,10,57,180,10
+    EDITTEXT        IDC_EDIT_HEAD,10,67,180,13,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "&Icon file (the DLL is used if not specified):",IDC_STATIC,10,82,190,10
+    EDITTEXT        IDC_EDIT_ICONFILE,10,93,130,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_ICONINDEX,143,93,33,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_ICONINDEX,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,168,95,11,14
+    PUSHBUTTON      "...",IDC_BUTTON_ICONSELECT,178,93,12,12
+    LTEXT           "&Updated icon file (-1 for the default icon):",IDC_STATIC,10,110,190,10
+    EDITTEXT        IDC_EDIT_UPICONFILE,10,120,130,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_UPICONINDEX,143,120,33,13,ES_RIGHT | ES_AUTOHSCROLL
+    CONTROL         "",IDC_SPIN_UPICONINDEX,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,168,120,11,14
+    PUSHBUTTON      "...",IDC_BUTTON_UPICONSELECT,178,120,12,12
+    DEFPUSHBUTTON   "OK",IDOK,85,140,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,140,140,50,14
+END
+
+IDD_DIALOG_SETAUTOTIME DIALOG 0, 0, 242, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Auto Check Time"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    CONTROL         "Disable",IDC_CHECK_NO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,17,150,9
+    CONTROL         "Minutes",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,10,48,44,10
+    CONTROL         "Hours",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,55,48,44,10
+    CONTROL         "Daily",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,100,48,44,10
+    CONTROL         "Weekly",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,145,48,44,10
+    CONTROL         "Monthly",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,190,48,44,10
+    EDITTEXT        IDC_EDIT_DAY,11,81,40,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_DAY,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,90,80,11,14
+    CONTROL         "Sunday",IDC_RADIO6,"Button",BS_AUTORADIOBUTTON | WS_GROUP,10,116,60,10
+    CONTROL         "Monday",IDC_RADIO7,"Button",BS_AUTORADIOBUTTON,10,129,60,10
+    CONTROL         "Tuesday",IDC_RADIO8,"Button",BS_AUTORADIOBUTTON,10,142,60,10
+    CONTROL         "Wednesday",IDC_RADIO9,"Button",BS_AUTORADIOBUTTON,95,116,60,10
+    CONTROL         "Thursday",IDC_RADIO10,"Button",BS_AUTORADIOBUTTON,95,129,60,10
+    CONTROL         "Friday",IDC_RADIO11,"Button",BS_AUTORADIOBUTTON,95,142,60,10
+    CONTROL         "Saturday",IDC_RADIO12,"Button",BS_AUTORADIOBUTTON,175,116,55,10
+    EDITTEXT        IDC_EDIT_HOU,11,170,40,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_HOU,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,80,170,11,14
+    EDITTEXT        IDC_EDIT_MIN,96,170,40,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_MIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,165,170,11,14
+    DEFPUSHBUTTON   "OK",IDOK,125,195,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,180,195,50,14
+    GROUPBOX        "Auto Check",IDC_STATIC,5,5,230,25
+    GROUPBOX        "Interval",IDC_STATIC,5,35,230,30
+    GROUPBOX        "Day",IDC_STATIC,5,70,230,30
+    LTEXT           "day of the month",IDC_STATIC_DAY,56,84,100,10
+    GROUPBOX        "Day of the Week",IDC_STATIC,5,105,230,50
+    GROUPBOX        "Time",IDC_STATIC,5,160,230,30
+    LTEXT           "hour",IDC_STATIC_HOU,56,173,35,10
+    LTEXT           "minute",IDC_STATIC_MIN,141,173,50,10
+END
+
+IDD_DIALOG_OPTION DIALOG 0, 0, 223, 217
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "General"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    CONTROL         "Share the items and settings among all &users",IDC_CHECK_GENERALUSER,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,205,10
+    GROUPBOX        "Check",IDC_STATIC,5,25,215,50
+    ICON            IDI_ICON_CHECK,IDC_STATIC,10,35,18,21
+    LTEXT           "&Number of items checked at a time (1-30):",IDC_STATIC,40,40,175,10
+    EDITTEXT        IDC_EDIT_CHECKITEMCNT,40,50,35,13,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_CHECKMAX,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,75,50,11,15
+    GROUPBOX        "Display",IDC_STATIC,5,80,215,50
+    ICON            "",IDC_STATIC_ICON,10,95,20,20
+    CONTROL         "Show an icon in the &task tray",IDC_CHECK_TRAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,40,95,175,10
+    CONTROL         "Do not show the &window at startup",IDC_CHECK_TRAYWINSHOW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,50,110,165,10
+    GROUPBOX        "When Items Are Updated",IDC_STATIC,5,135,215,75
+    ICON            IDI_ICON_UP,IDC_STATIC,10,150,18,21
+    CONTROL         "Show a &message",IDC_CHECK_UPMSG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,40,150,175,10
+    CONTROL         "Play a &sound",IDC_CHECK_UPSND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,40,164,175,10
+    EDITTEXT        IDC_EDIT_WAVEFILE,50,176,117,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Browse...",IDC_BUTTON_BROWS,170,176,45,13
+    PUSHBUTTON      "&Play",IDC_BUTTON_PLAY,50,192,30,12
+END
+
+IDD_DIALOG_FOLDER DIALOG 0, 0, 223, 209
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "General"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    ICON            "",IDC_STATIC_ICON,5,5,20,20
+    EDITTEXT        IDC_EDIT_TITLE,45,10,170,15,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,30,215,1
+    LTEXT           "Type:",IDC_STATIC,5,38,38,10
+    LTEXT           "Folder",IDC_STATIC_TYPE,45,38,165,10
+    LTEXT           "Location:",IDC_STATIC,5,54,38,10
+    EDITTEXT        IDC_EDIT_LOCATE,45,54,170,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Contents:",IDC_STATIC,5,68,38,10
+    EDITTEXT        IDC_EDIT_INFO,45,68,175,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,85,214,1
+    LTEXT           "Created:",IDC_STATIC,5,94,38,10
+    EDITTEXT        IDC_EDIT_MAKEDAY,45,94,170,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,111,213,1
+    LTEXT           "&Comment:",IDC_STATIC,5,120,38,10
+    EDITTEXT        IDC_EDIT_COMMENT,45,120,170,40,ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+END
+
+IDD_DIALOG_TOOL_EXE DIALOG 0, 0, 297, 239
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tool Settings"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "&Title:",IDC_STATIC,7,8,53,10
+    EDITTEXT        IDC_EDIT_TITLE,61,7,125,13,ES_AUTOHSCROLL
+    LTEXT           "(""-"" for a separator)",IDC_STATIC,191,10,99,10
+    LTEXT           "&File name:",IDC_STATIC,7,25,53,10
+    EDITTEXT        IDC_EDIT_FILENAME,61,23,214,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BUTTON_FILESELECT,279,23,11,12
+    LTEXT           "&Command line:",IDC_STATIC_COMMANDLINE,7,42,53,8
+    EDITTEXT        IDC_EDIT_COMMANDLINE,61,39,214,13,ES_AUTOHSCROLL
+    CONTROL         "",IDC_BUTTON_COMMANDLINE,"Button",BS_OWNERDRAW | WS_TABSTOP,279,39,11,12
+    CONTROL         "Show in the window menu",IDC_CHECK_WINDOWMENU,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,73,135,10
+    LTEXT           "Shortcut key:",IDC_STATIC_HOTKEY,23,87,105,8
+    CONTROL         "HotKey1",IDC_HOTKEY,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,23,97,101,14
+    CONTROL         "Show in the item menu",IDC_CHECK_ITEMMENU,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,116,135,10
+    LTEXT           "Menu position (-1 for the last):",IDC_STATIC_MENUINDEX,23,129,128,10
+    EDITTEXT        IDC_EDIT_MENUINDEX,23,139,32,13,ES_RIGHT | ES_AUTOHSCROLL
+    CONTROL         "",IDC_SPIN_MENUINDEX,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,61,138,11,14
+    CONTROL         "Run when an item is double-clicked",IDC_CHECK_MENUDEFAULT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,23,155,128,10
+    LTEXT           "Protocols to apply to:",IDC_STATIC_PROTOCOL,13,170,125,8
+    EDITTEXT        IDC_EDIT_PROTOCOL,13,180,110,13,ES_AUTOHSCROLL
+    CONTROL         "",IDC_BUTTON_PUROTOCOL,"Button",BS_OWNERDRAW | WS_TABSTOP,127,180,11,12
+    CONTROL         "Reset the icon after running",IDC_CHECK_INITICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,196,138,10
+    CONTROL         "Run at startup",IDC_CHECK_START,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,74,128,10
+    CONTROL         "Run at exit",IDC_CHECK_END,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,88,128,10
+    CONTROL         "Run when a check starts",IDC_CHECK_CHECHSTART,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,102,128,10
+    CONTROL         "Run when a check ends",IDC_CHECK_CHECKEND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,116,128,10
+    CONTROL         "If items are updated",IDC_CHECK_CHECKENDUP,"Button",BS_AUTORADIOBUTTON,167,130,118,10
+    CONTROL         "If no items are updated",IDC_CHECK_CHECKENDNOUP,"Button",BS_AUTORADIOBUTTON,167,142,118,10
+    CONTROL         "Regardless of updates",IDC_CHECK_CHECKENDEXEC,"Button",BS_AUTORADIOBUTTON,167,154,118,10
+    CONTROL         "Do not run while checking",IDC_CHECK_NOTCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,168,128,10
+    CONTROL         "Wait until the tool exits",IDC_CHECK_SYNC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,182,128,10
+    CONTROL         "Reload the folder after running",IDC_CHECK_SAVEFOLDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,196,128,10
+    DEFPUSHBUTTON   "OK",IDOK,180,220,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,235,220,50,14
+    GROUPBOX        "Run Options",IDC_STATIC,5,60,285,155
+END
+
+IDD_DIALOG_COPYMSG DIALOG 0, 0, 311, 149
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Confirm Item Overwrite"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    ICON            IDI_ICON_COPY,IDC_STATIC_ICON,10,10,20,20
+    LTEXT           "",IDC_STATIC_COPYMSG_TITLE,45,5,255,15
+    LTEXT           "URL:",IDC_STATIC,45,22,30,10
+    EDITTEXT        IDC_EDIT_COPYMSG_URL,85,22,215,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Current item:",IDC_STATIC,45,35,100,10
+    ICON            "",IDC_STATIC_COPYMSG_TOICON,56,51,20,20
+    LTEXT           "",IDC_STATIC_COPYMSG_TO,85,55,215,25
+    LTEXT           "Do you want to overwrite it with the following new item?",IDC_STATIC,45,81,255,10
+    ICON            "",IDC_STATIC_COPYMSG_FROMICON,56,97,20,20
+    LTEXT           "",IDC_STATIC_COPYMSG_FROM,85,101,215,25
+    DEFPUSHBUTTON   "&Yes",IDOK,10,128,50,14
+    PUSHBUTTON      "Yes to &All",ID_ALLYES,65,128,60,14
+    PUSHBUTTON      "&No",IDNO,130,128,50,14
+    PUSHBUTTON      "N&o to All",ID_ALLNO,185,128,60,14
+    PUSHBUTTON      "Cancel",IDCANCEL,250,128,50,14
+END
+
+IDD_DIALOG_FIND DIALOGEX 0, 0, 291, 248
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Find"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "F&ind",IDOK,230,20,55,14
+    PUSHBUTTON      "&Close",IDCANCEL,230,38,55,14
+    PUSHBUTTON      "&Save Options",ID_BUTTON_SAVEOPTION,230,57,55,14
+    CONTROL         "",WWWC_LIST,"SysListView32",LVS_REPORT | LVS_SHAREIMAGELISTS | WS_BORDER | WS_TABSTOP,0,125,290,120
+    CONTROL         "Tab1",IDC_TAB,"SysTabControl32",WS_TABSTOP,5,5,220,112
+END
+
+IDD_DIALOG_FINDNAME DIALOGEX 0, 0, 212, 96
+STYLE DS_SETFONT | WS_CHILD
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Search stri&ng:",IDC_STATIC,5,5,125,10
+    COMBOBOX        IDC_COMBO_FINDSTRING,5,15,200,105,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Look in:",IDC_STATIC,5,35,90,10
+    EDITTEXT        IDC_EDIT_FINDLOCATE,5,45,155,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Browse...",IDC_BUTTON_SELECT,163,45,42,13
+    CONTROL         "Include sub&folders",IDC_CHECK_FINDSUBFOLDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,63,200,10
+    CONTROL         "&Exclude folders that are not checked",IDC_CHECK_FINDNOCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,77,200,10
+END
+
+IDD_DIALOG_TOOL_DLLLIST DIALOG 0, 0, 150, 155
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tool List"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    CONTROL         "",IDC_STATIC_FILENAME,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,0,0,150,10
+    LISTBOX         IDC_LIST_DLLENTRY,0,10,150,120,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,40,135,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,95,135,50,14
+END
+
+IDD_DIALOG_ITEM DIALOG 0, 0, 227, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Item"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    ICON            IDI_ICON_NO,IDC_STATIC_ICON,5,4,20,20
+    LTEXT           "&Name:",IDC_STATIC,45,4,100,10
+    EDITTEXT        IDC_EDIT_TITLE,45,14,175,13,ES_AUTOHSCROLL
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,32,214,1
+    LTEXT           "Check &URL:",IDC_STATIC,5,38,150,10
+    EDITTEXT        IDC_EDIT_CHECKURL,5,50,215,13,ES_AUTOHSCROLL
+    LTEXT           "&View URL:",IDC_STATIC,5,67,150,10
+    EDITTEXT        IDC_EDIT_VIEWURL,5,79,215,13,ES_AUTOHSCROLL
+    LTEXT           "&Comment:",IDC_STATIC_URL3,5,95,115,10
+    EDITTEXT        IDC_EDIT_COMMENT,5,105,215,30,ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,140,214,1
+    LTEXT           "Size:",IDC_STATIC,5,150,38,10
+    EDITTEXT        IDC_EDIT_SIZE,45,150,175,10,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Modified:",IDC_STATIC,5,163,38,10
+    EDITTEXT        IDC_EDIT_UPDATE,45,163,175,25,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | ES_WANTRETURN | NOT WS_BORDER | NOT WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,115,195,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,170,195,50,14
+END
+
+IDD_DIALOG_FINDITEM DIALOGEX 0, 0, 212, 96
+STYLE DS_SETFONT | WS_CHILD
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Fields",IDC_STATIC,5,5,95,85
+    CONTROL         "Na&me",IDC_CHECK_NAME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,17,80,10
+    CONTROL         "Check &URL",IDC_CHECK_CHECKURL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,31,80,10
+    CONTROL         "&View URL",IDC_CHECK_OPENURL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,45,80,10
+    CONTROL         "Modified &date",IDC_CHECK_DATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,59,80,10
+    CONTROL         "C&omment",IDC_CHECK_COMMENT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,73,80,10
+    GROUPBOX        "Icons",IDC_STATIC,105,5,100,85
+    CONTROL         "Norm&al icon",IDC_CHECK_ICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,115,17,85,10
+    CONTROL         "U&pdated icon",IDC_CHECK_UPICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,115,31,85,10
+    CONTROL         "E&rror icon",IDC_CHECK_ERRICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,115,45,85,10
+    CONTROL         "&Timeout icon",IDC_CHECK_TIMEICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,115,59,85,10
+    CONTROL         "Not chec&ked icon",IDC_CHECK_NOCHECKICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,115,73,85,10
+END
+
+IDD_DIALOG_SELECTFOLDER DIALOG 0, 0, 209, 189
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Browse for Folder"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Select a folder.",IDC_STATIC,10,5,190,8
+    CONTROL         "Tree1",WWWC_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,9,25,191,130
+    DEFPUSHBUTTON   "OK",IDOK,95,165,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,150,165,50,14
+END
+
+IDD_DIALOG_SELECTDLL DIALOG 0, 0, 211, 225
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "DLL"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Select the protocols and tools to add.",IDC_STATIC,5,5,200,10
+    LTEXT           "&Protocols:",IDC_STATIC,5,21,85,8
+    LISTBOX         IDC_LIST_PROTOCOL,5,31,200,65,LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Select &All",IDC_BUTTON_SELECT_P,150,96,55,12
+    LTEXT           "&Tools:",IDC_STATIC,5,105,85,8
+    LISTBOX         IDC_LIST_TOOL,5,115,200,65,LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Se&lect All",IDC_BUTTON_SELECT_T,150,180,55,12
+    DEFPUSHBUTTON   "OK",IDOK,100,205,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,155,205,50,14
+END
+
+IDD_DIALOG_SELECTICON DIALOG 0, 0, 207, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Icon"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    CONTROL         "List1",IDC_LIST_ICON,"SysListView32",LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_AUTOARRANGE | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,5,25,195,165
+    DEFPUSHBUTTON   "OK",IDOK,95,195,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,150,195,50,14
+    EDITTEXT        IDC_EDIT_FILE,5,5,147,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Browse...",IDC_BUTTON_BROWS,155,5,45,13
+END
+
+IDD_DIALOG_AUTOTIME DIALOG 0, 0, 225, 209
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Auto Check"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    CONTROL         "Check at &startup",IDC_CHECK_STARTCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,205,10
+    CONTROL         "Do &not run any auto checks",IDC_CHECK_NOCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,24,205,10
+    CONTROL         "E&xclude this folder from auto checks",IDC_CHECK_FOLDER_NOCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,205,10
+    CONTROL         "Use the &general auto check settings",IDC_CHECK_FOLDER_DEF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,24,205,10
+    LTEXT           "&Current auto check settings:",IDC_STATIC,10,40,205,10
+    CONTROL         "",IDC_LIST_AUTOTIME,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,5,50,215,110,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "&Add...",IDC_BUTTON_ADD,60,165,50,14
+    PUSHBUTTON      "&Edit...",IDC_BUTTON_EDIT,115,165,50,14
+    PUSHBUTTON      "&Delete",IDC_BUTTON_DELETE,170,165,50,14
+    PUSHBUTTON      "Apply to Subfolde&rs",IDC_BUTTON_TREESET,120,185,100,14
+END
+
+IDD_DIALOG_PROTOCOL DIALOGEX 0, 0, 226, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Protocols"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Registered &protocols:",IDC_STATIC,10,15,190,10
+    CONTROL         "",IDC_LIST_PROTOCOL,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,5,25,195,155,WS_EX_CLIENTEDGE
+    CONTROL         "&Up",IDC_BUTTON_UP,"Button",BS_OWNERDRAW | WS_TABSTOP,205,71,15,15
+    CONTROL         "Do&wn",IDC_BUTTON_DOWN,"Button",BS_OWNERDRAW | WS_TABSTOP,205,120,15,15
+    PUSHBUTTON      "&Add...",IDC_BUTTON_ADD,5,185,50,14
+    PUSHBUTTON      "&Edit...",IDC_BUTTON_PEDIT,60,185,50,14
+    PUSHBUTTON      "&Delete",IDC_BUTTON_DELETE,115,185,50,14
+    PUSHBUTTON      "P&roperties",IDC_BUTTON_EDIT,170,185,50,14
+END
+
+IDD_DIALOG_TOOLLIST DIALOGEX 0, 0, 226, 215
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tools"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Registered &tools:",IDC_STATIC,10,15,190,10
+    CONTROL         "",IDC_LIST_TOOL,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,5,25,195,155,WS_EX_CLIENTEDGE
+    CONTROL         "&Up",IDC_BUTTON_UP,"Button",BS_OWNERDRAW | WS_TABSTOP,205,71,15,15
+    CONTROL         "Do&wn",IDC_BUTTON_DOWN,"Button",BS_OWNERDRAW | WS_TABSTOP,205,120,15,15
+    PUSHBUTTON      "&Add...",IDC_BUTTON_ADD,5,185,50,14
+    PUSHBUTTON      "&Edit...",IDC_BUTTON_PEDIT,60,185,50,14
+    PUSHBUTTON      "&Delete",IDC_BUTTON_DELETE,115,185,50,14
+    PUSHBUTTON      "P&roperties",IDC_BUTTON_EDIT,170,185,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    ID_KEY_UPDIR            "Up One Level"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_ALLCHECK    "Check All Items"
+    ID_MENUITEM_CHECK       "Check"
+    ID_MENUITEM_CHECKEND    "Stop Check"
+    ID_MENUITEM_INITICON    "Reset Icon"
+    ID_MENUITEM_ALLINITICON "Reset All Icons"
+    ID_MENUITEM_DELETE      "Delete"
+    ID_MENUITEM_PROP        "Properties"
+    ID_MENUITEM_VIEW_ICON   "Large Icons"
+    ID_MENUITEM_VIEW_SMALLICON "Small Icons"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_VIEW_LIST   "List"
+    ID_MENUITEM_VIEW_REPORT "Details"
+    ID_MENUITEM_VIEW_REPORT_LINE "Details with Full Row Select"
+    ID_MENUITEM_ALLCHECKEND "Stop All Checks"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_CUT         "Cut"
+    ID_MENUITEM_COPY        "Copy"
+    ID_MENUITEM_ALLERRORCHECK "Check Error Items Only"
+    ID_MENUITEM_PASTE       "Paste"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_OPTION      "Options"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_VIEWUPMSG   "Update Message"
+    ID_MENUITEM_FOLDERTREECHECK "Check with Subfolders"
+    ID_MENUITEM_SERACH      "Find"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MENUITEM_UNDO        "Undo"
+    ID_MENUITEM_PREV_HISTORY "Back"
+    ID_MENUITEM_NEXT_HISTORY "Forward"
+    ID_MENUITEM_TBNEW       "New"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table (StrTbl.h)
+//
+
+STRINGTABLE
+BEGIN
+    IDS_NEWITEMNAME         "New Item"
+    IDS_FOLDERNAME          "Folder"
+    IDS_STR_COPYNAME        "Copy of %s"
+    IDS_STR_COPYNAME_CNT    "Copy (%d) of %s"
+    IDS_EMSG_PROP_TITLE     "Properties"
+    IDS_EMSG_PROP           "There are no properties to set."
+    IDS_QMSG_DELETE_TITLE   "Confirm Delete"
+    IDS_QMSG_DELETE         "Are you sure you want to delete the selected item?"
+    IDS_MENU_STR_NEWITEM    "&New"
+    IDS_ABOUTTITLE          "About WWWC"
+    IDS_IMSG_DOUBLESTART    "WWWC is already running."
+    IDS_QMSG_ALLINITICON_TITLE "Confirm Reset Icons"
+    IDS_QMSG_ALLINITICON    "Are you sure you want to reset all icons?"
+    IDS_QMSG_END_TITLE      "Exit"
+    IDS_QMSG_END_CHECKCANCEL "Some items are being checked. Are you sure you want to exit?"
+    IDS_EMSG_OLEINIT        "Failed to initialize OLE."
+    IDS_EMSG_WINSOCKINIT    "Failed to initialize WinSock."
+    IDS_EMSG_ATEXIT         "Failed to register the exit process (atexit)."
+    IDS_EMSG_REGWINDOWCLASS "Failed to register the window class."
+    IDS_EMSG_CREATEWINDOW   "Failed to create the window."
+    IDS_EMSG_CREATECONTROL  "Failed to create the controls."
+    IDS_EMSG_CREATEUPMSG    "Failed to create the update message window."
+    IDS_LISTCOL_TITLE       "Time"
+    IDS_STRWEEK_SUN         "Sunday"
+    IDS_STRWEEK_MON         "Monday"
+    IDS_STRWEEK_TUE         "Tuesday"
+    IDS_STRWEEK_WED         "Wednesday"
+    IDS_STRWEEK_THU         "Thursday"
+    IDS_STRWEEK_FRI         "Friday"
+    IDS_STRWEEK_SAT         "Saturday"
+    IDS_LISTSTR_MIN         "Check every %d minute(s)"
+    IDS_LISTSTR_NOU         "Check every %d hour(s)"
+    IDS_LISTSTR_DAY         "Check every day at %02d:%02d"
+    IDS_LISTSTR_WEEK        "Check every %s at %02d:%02d"
+    IDS_LISTSTR_MON         "Check on day %d of every month at %02d:%02d"
+    IDS_TIMEOPTIONSTR_HOU   "hour"
+    IDS_TIMEOPTIONSTR_MIN   "minute"
+    IDS_TIMEOPTIONSTR_EVERYHOU "hours"
+    IDS_TIMEOPTIONSTR_EVERYMIN "minutes"
+    IDS_TIMEOPTIONERRMSG_TITLE "Auto Check Time"
+    IDS_TIMEOPTIONERRMSG_DAY "Enter a value for ""Day""."
+    IDS_TIMEOPTIONERRMSG_HOU "Enter a value for ""Hour""."
+    IDS_TIMEOPTIONERRMSG_MIN "Enter a value for ""Minute""."
+    IDS_STR_CHECKSTART      "Starting check"
+    IDS_EMSG_FOLDERCOPY_TITLE "Folder Copy Error"
+    IDS_EMSG_PATHLENGTH     "The folder path is too long to process."
+    IDS_EMSG_PATHLENGTH_TITLE "Folder Error"
+    IDS_EMSG_FOLDERCOPY_CUR "Cannot copy %s. The destination folder is the same as the source folder."
+    IDS_EMSG_FOLDERCOPY_SUB "Cannot copy %s. The destination folder is a subfolder of the source folder."
+    IDS_EMSG_FOLDERCOPY_ERR "Failed to copy the folder."
+    IDS_EMSG_MOVEDIR_TITLE  "Folder Move Error"
+    IDS_EMSG_ITEMREAD_TITLE "Read Items"
+    IDS_EMSG_ITEMREAD       "Could not open the item information file."
+    IDS_EMSG_SAVE_TITLE     "Save Error"
+    IDS_EMSG_EXEC_TITLE     "Execution Error"
+    IDS_EMSG_EXEC_BATCH     "The tool was not run because the item information contains characters that cannot be used as arguments of a batch file."
+    IDS_Q_MSG_EXECITEM      "This item will be opened with the associated application. Do you want to open it?\n\n%s"
+    IDS_Q_TITLE_EXECITEM    "Open Item"
+    IDS_EMSG_DISKFULL       "The item information cannot be saved because there is not enough free disk space."
+    IDS_FIND_TITLE          "Find - Found: %d"
+    IDS_FIND_TAB_NAME       "Name and Location"
+    IDS_FIND_TAB_ITEM       "Fields"
+    IDS_STR_UPDATEMSG       "The folder '%s' already contains the item '%s'."
+    IDS_STR_UPDATEINFO      "Size: %s\nModified: %s"
+    IDS_QMSG_FOLDERDELETE   "Are you sure you want to delete the folder '%s' and all items in it?"
+    IDS_QMSG_ITEMDELETE     "Are you sure you want to delete '%s'?"
+    IDS_QMSG_MANYITEMDELETE "Are you sure you want to delete these %d items?"
+    IDS_QMSG_CLEARRECYCLER_TITLE "Empty Recycle Bin"
+    IDS_QMSG_CLEARRECYCLER  "Are you sure you want to empty the Recycle Bin?"
+    IDS_EMSG_FOLDERDELETE_TITLE "Delete Folder"
+    IDS_EMSG_FOLDERCHECK    "A folder that is being checked cannot be deleted."
+    IDS_EMSG_FOLDERPROP     "Could not delete because some items are being processed."
+    IDS_EMSG_FOLDERNODELETE "Could not delete."
+    IDS_EMSG_ITEMDELETE_TITLE "Delete Item"
+    IDS_EMSG_ITEMCHECK      "An item that is being checked cannot be deleted."
+    IDS_EMSG_ITEMNODELETE   "Could not delete."
+    IDS_EMSG_CLEARRECYCLER_TITLE "Empty Recycle Bin"
+    IDS_EMSG_CLEARRECYCLER  "Could not empty the Recycle Bin because some items are being checked."
+    IDS_EMSG_PROPRECYCLER   "Could not empty the Recycle Bin because some items are being processed."
+    IDS_EMSG_CHECKUPDATE_TITLE "Overwrite"
+    IDS_EMSG_CHECKUPDATE    "Could not overwrite because the item is being checked."
+    IDS_EMSG_NOPROPITEM     "The item was not found."
+    IDS_DEF_RECYCLERTITLE   "Recycle Bin"
+    IDS_COLUMN_NAME         "Name"
+    IDS_COLUMN_CHECKURL     "Check URL"
+    IDS_COLUMN_SIZE         "Size"
+    IDS_COLUMN_DATE         "Modified"
+    IDS_COLUMN_CHECKDATE    "Checked"
+    IDS_COLUMN_OLDSIZE      "Previous Size"
+    IDS_COLUMN_OLDDATE      "Previous Modified"
+    IDS_COLUMN_VIEWURL      "View URL"
+    IDS_COLUMN_OPTION1      "Option 1"
+    IDS_COLUMN_OPTION2      "Option 2"
+    IDS_COLUMN_COMMENT      "Comment"
+    IDS_COLUMN_ERROR        "Error"
+    IDS_COLUMN_PATH         "Path"
+    IDS_COLUMN_DLLDATA1     "Protocol Data 1"
+    IDS_COLUMN_DLLDATA2     "Protocol Data 2"
+    IDS_MENU_STR_OPEN       "&Open"
+    IDS_MENU_STR_CLEARRECY  "Empty Recycle &Bin"
+    IDS_MENU_STR_FOLDERTREECHECK "Check with Sub&folders"
+    IDS_MENU_STR_SERACH     "&Find..."
+    IDS_MENU_STR_UNDO_NON   "&Undo\tCtrl+Z"
+    IDS_MENU_STR_UNDO_MOVE  "&Undo Move\tCtrl+Z"
+    IDS_MENU_STR_UNDO_COPY  "&Undo Copy\tCtrl+Z"
+    IDS_MENU_STR_UNDO_DELETE "&Undo Delete\tCtrl+Z"
+    IDS_MENU_STR_UNDO_NAME  "&Undo Rename\tCtrl+Z"
+    IDS_STR_ITEMCNT         "Items: %d, Folders: %d"
+    IDS_STR_NOMAKEDATE      "(Unknown)"
+    IDS_STR_PROPTITLE       "%s Properties"
+    IDS_STR_OPTIONTITLE     "Options"
+    IDS_FILEFILTER_WAV      "Sound Files (*.wav)|*.wav|All Files (*.*)|*.*"
+    IDS_PROTOCOL_FILEFILTER "DLL Files (*.dll)|*.dll|All Files (*.*)|*.*"
+    IDS_PROTOCOL_LISTCOL_TITLE "Title"
+    IDS_PROTOCOL_LISTCOL_FUNCHEAD "Header"
+    IDS_PROTOCOL_LISTCOL_ICONFILE "Icon File"
+    IDS_PROTOCOL_LISTCOL_ICONINDEX "Icon Index"
+    IDS_PROTOCOL_LISTCOL_UPICONFILE "Updated Icon File"
+    IDS_PROTOCOL_LISTCOL_UPICONINDEX "Updated Icon Index"
+    IDS_EMSG_SELECT_TITLE_PROTOCOL "Select Protocol"
+    IDS_EMSG_SELECT_PROTOCOL "Select the protocol to add."
+    IDS_EMSG_DLL            "No protocol or tool information was found in the DLL."
+    IDS_EMSG_SELECT         "Select the protocols and tools to add."
+    IDS_EMSG_DLLPATH        "The path of the DLL is invalid."
+    IDS_QMSG_LOADDLL        "The following DLL will be loaded.\nLoading a DLL runs the program in it. Load only DLLs that you trust.\n\n%s\n\nDo you want to load it?"
+    IDS_FILEFILTER_ICON     "Icon Files|*.ico;*.exe;*.dll;*.icl|Programs|*.exe|Libraries|*.dll;*.icl|Icons|*.ico|All Files|*.*"
+    IDS_ITEMMSG             "Items: %d"
+    IDS_ITEMMSG_UP          "Items: %d (Updated: %d)"
+    IDS_ITEMSELECTMSG       "Selected items: %d"
+    IDS_NOMENUITEM          "(None)"
+    IDS_TOOL_FILE_FILTER    "Tools (*.exe;*.dll)|*.exe;*.dll|All Files (*.*)|*.*"
+    IDS_TOOL_LISTCOL_TITLE  "Title"
+    IDS_TOOL_LISTCOL_FILENAME "File Name"
+    IDS_TOOL_LISTCOL_EXEOPTION "Run Options"
+    IDS_TOOL_LISTCOL_EXEPROTOCOL "Protocols"
+    IDS_TOOL_LISTCOL_MENUINDEX "Menu Position"
+    IDS_TOOL_LISTCOL_SKEY   "Shortcut Key"
+    IDS_TOOL_LISTCOL_CTRL   "Key 1"
+    IDS_TOOL_LISTCOL_KEY    "Key 2"
+    IDS_TOOL_LISTCOL_COMMANDLINE "Command Line"
+    IDS_TOOL_LISTCOL_DLLFUNC "Function (DLL)"
+    IDS_EMSG_NOINPUT_TITLE  "Tool Settings"
+    IDS_EMSG_NOINPUT        "Enter a value for ""Title""."
+    IDS_EMSG_SELECT_TITLE_TOOL "Select Tool"
+    IDS_EMSG_SELECT_TOOL    "Select the tool to add."
+    IDS_TOOL_TITLE_COMMANDLINE "&Command line:"
+    IDS_TOOL_TITLE_DLLFUNC  "Function name:"
+    IDS_TOOL_PROTOCOL_ALL   "&0. All (*)"
+    IDS_COMMANDLINE_u       "&1. %u - View URL (Check URL if not set)"
+    IDS_COMMANDLINE_c       "&2. %c - Check URL"
+    IDS_COMMANDLINE_v       "&3. %v - View URL"
+    IDS_COMMANDLINE_t       "&4. %t - Item name"
+    IDS_COMMANDLINE_s       "&5. %s - Item size"
+    IDS_COMMANDLINE_d       "&6. %d - Item modified date"
+    IDS_COMMANDLINE_k       "&7. %k - Item checked date"
+    IDS_COMMANDLINE_m       "&8. %m - Item comment"
+    IDS_COMMANDLINE_f       "&9. %f - Real path of the current folder"
+    IDS_COMMANDLINE_F       "&10. %F - Real path of the current folder (short name)"
+    IDS_COMMANDLINE_p       "&11. %p - Path of the user folder"
+    IDS_COMMANDLINE_P       "&12. %P - Path of the user folder (short name)"
+    IDS_NEWFOLDER           "New Folder"
+    IDS_EMSG_CHANGEFILENAME_TITLE "Rename"
+    IDS_EMSG_CHANGEFILENAME "A file name cannot contain any of the following characters:\n\t\\ / : , ; * ? "" < > |"
+    IDS_EMSG_DIRMOVE_TITLE  "Move Folder"
+    IDS_EMSG_DIRMOVE        "Could not open the item information file."
+    IDS_QMSG_ITEMDELETE_UNDO "Some items will be deleted. Do you want to continue?"
+    IDS_STR_UPMSG           "%d item(s) may have been updated.\n\n%s %s"
+    IDS_STR_NOTUPMSG        "%d item(s) may have been updated.\n* No updates were found in the last check.\n%s %s"
+    IDS_STR_ZEROMSG         "No items have been updated.\n\n%s %s"
+    IDS_STR_NOUPMSG         "No items have been updated."
+    IDS_BTN_UPINFO_ON       "&Details >>"
+    IDS_BTN_UPINFO_OFF      "&Details <<"
+    IDS_EMSG_MAINSHOW_TITLE "Show"
+    IDS_EMSG_NOMAINITEM     "The item was not found in the main window."
+    IDS_HELPFILE            "wwwc_en.html"
+END
+
+#endif    // 英語 (米国) resources
+/////////////////////////////////////////////////////////////////////////////
 
 
 #ifndef APSTUDIO_INVOKED

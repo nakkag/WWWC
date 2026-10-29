@@ -828,7 +828,7 @@ static BOOL CopyItemInfo(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo,
 		}
 		//アイテムの名前を変更する
 		TmpTitle = (char *)GlobalAlloc(GPTR, lstrlen(NewItemInfo->Title) + lstrlen(STR_COPYNAME) + 1);
-		wsprintf(TmpTitle, STR_COPYNAME"%s", NewItemInfo->Title);
+		wsprintf(TmpTitle, STR_COPYNAME, NewItemInfo->Title);
 		cnt = 1;
 		while(1){
 			for(i = 0;i < tpTreeInfo->ItemListCnt;i++){
@@ -845,9 +845,9 @@ static BOOL CopyItemInfo(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo,
 					return FALSE;
 				}
 				//同じアイテムが存在する場合は番号を付けて行く
-				wsprintf(TmpBuf, STR_COPYNAME_CNT, cnt);
-				TmpTitle = (char *)GlobalAlloc(GPTR, lstrlen(NewItemInfo->Title) + lstrlen(TmpBuf) + 1);
-				wsprintf(TmpTitle, "%s%s", TmpBuf, NewItemInfo->Title);
+				//番号の桁数の分を加えて確保
+				TmpTitle = (char *)GlobalAlloc(GPTR, lstrlen(NewItemInfo->Title) + lstrlen(STR_COPYNAME_CNT) + 10 + 1);
+				wsprintf(TmpTitle, STR_COPYNAME_CNT, cnt, NewItemInfo->Title);
 				break;
 			}
 			if(i >= tpTreeInfo->ItemListCnt){

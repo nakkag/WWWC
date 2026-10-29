@@ -29,6 +29,7 @@
 #include "global.h"
 #include "md5.h"
 #include "archive.h"
+#include "resource.h"
 
 
 /**************************************************************************

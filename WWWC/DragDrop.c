@@ -35,11 +35,6 @@
 #define FMT_TEXT				2
 #define FMT_HDROP				3
 
-#define NEWITEMNAME				"新しいアイテム"
-
-#define EMSG_ITEMREAD_TITLE		"アイテムの読み込み"
-#define EMSG_ITEMREAD			"アイテム情報ファイルが開けませんでした。"
-
 
 /**************************************************************************
 	Global Variables

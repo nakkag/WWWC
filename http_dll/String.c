@@ -51,12 +51,20 @@
 
 #define to_lower(c)		((c >= TEXT('A') && c <= TEXT('Z')) ? (c - TEXT('A') + TEXT('a')) : c)
 
+//リソースの文字列のID (resource.h の IDS_*) の範囲
+#define RES_STR_BASE	50000
+#define RES_STR_CNT		1000
+
 
 /**************************************************************************
 	Global Variables
 **************************************************************************/
 
+static LANGID ResLangID;
+static char *ResStrList[RES_STR_CNT];
+
 //外部参照
+extern HINSTANCE ghinst;
 extern int TimeZone;
 extern int PassProtect;
 
@@ -2442,5 +2450,120 @@ void Html2Rtf(char *buf, char *ret)
 	}
 	*(r++) = '}';
 	*r = '\0';
+}
+
+
+/******************************************************************************
+
+	SetResLanguage
+
+	リソースの言語を設定
+	(本体が設定したスレッドの UI 言語に合わせる、日本語以外は英語)
+
+******************************************************************************/
+
+void SetResLanguage(void)
+{
+	ResLangID = (PRIMARYLANGID(GetThreadUILanguage()) == LANG_JAPANESE) ?
+		MAKELANGID(LANG_JAPANESE, SUBLANG_DEFAULT) : MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US);
+}
+
+
+/******************************************************************************
+
+	LoadResString
+
+	設定した言語の文字列リソースを読み込む (戻り値は GlobalFree で解放)
+
+******************************************************************************/
+
+static char *LoadResString(UINT id)
+{
+	HRSRC hRes;
+	HGLOBAL hMem;
+	WCHAR *p, *end;
+	char *ret;
+	int len, size;
+	UINT i;
+
+	//文字列は 16 個ずつのブロックに格納されている
+	hRes = FindResourceEx(ghinst, RT_STRING, MAKEINTRESOURCE(id / 16 + 1), ResLangID);
+	if(hRes == NULL){
+		hRes = FindResource(ghinst, MAKEINTRESOURCE(id / 16 + 1), RT_STRING);
+	}
+	if(hRes == NULL || (hMem = LoadResource(ghinst, hRes)) == NULL ||
+		(p = (WCHAR *)LockResource(hMem)) == NULL){
+		return NULL;
+	}
+	end = p + SizeofResource(ghinst, hRes) / sizeof(WCHAR);
+
+	//ブロック内は文字数と文字列 (終端なし) の並び
+	for(i = 0; i < id % 16 && p < end; i++){
+		p += *p + 1;
+	}
+	if(p >= end || *p >= end - p){
+		return NULL;
+	}
+	len = *(p++);
+	size = (len > 0) ? WideCharToMultiByte(CP_ACP, 0, p, len, NULL, 0, NULL, NULL) : 0;
+	ret = (char *)GlobalAlloc(GMEM_FIXED, size + 1);
+	if(ret == NULL){
+		return NULL;
+	}
+	if(size > 0){
+		WideCharToMultiByte(CP_ACP, 0, p, len, ret, size, NULL, NULL);
+	}
+	*(ret + size) = '\0';
+	return ret;
+}
+
+
+/******************************************************************************
+
+	GetResStr
+
+	リソースの文字列を取得 (取得した文字列は DLL の解放まで保持する)
+	チェックのスレッドからも呼ばれる
+
+******************************************************************************/
+
+char *GetResStr(UINT id)
+{
+	char *p;
+
+	if(id < RES_STR_BASE || id >= RES_STR_BASE + RES_STR_CNT){
+		return "";
+	}
+	if(ResStrList[id - RES_STR_BASE] == NULL){
+		if((p = LoadResString(id)) == NULL){
+			return "";
+		}
+		//他のスレッドが先に設定した場合はそちらを使用する
+		if(InterlockedCompareExchangePointer((PVOID *)&ResStrList[id - RES_STR_BASE], p, NULL) != NULL){
+			GlobalFree(p);
+		}
+	}
+	return ResStrList[id - RES_STR_BASE];
+}
+
+
+/******************************************************************************
+
+	FreeResStr
+
+	取得したリソースの文字列を解放
+
+******************************************************************************/
+
+void FreeResStr(void)
+{
+	int i;
+
+	for(i = 0; i < RES_STR_CNT; i++){
+		if(ResStrList[i] != NULL){
+			GlobalFree(ResStrList[i]);
+			ResStrList[i] = NULL;
+		}
+	}
 }
 /* End of source */

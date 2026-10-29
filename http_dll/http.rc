@@ -367,9 +367,350 @@ BEGIN
     END
 END
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table (StrTbl.h)
+//
+
+STRINGTABLE
+BEGIN
+    IDS_STR_NEWITEMNAME     "新しいアイテム"
+    IDS_STR_TITLE_FILESELECT "ファイルの選択"
+    IDS_STR_ERROR_MEMORY    "メモリの確保に失敗しました。"
+    IDS_STR_TOOL_TITLE_BROWSINFO "ブラウザ情報取得(&B)"
+    IDS_STR_TOOL_TITLE_BROWSINFOLIST "すべてのブラウザ情報から選択(&A)..."
+    IDS_STR_TOOL_TITLE_OPENURL "既存のブラウザに開く(&D)"
+    IDS_STR_TOOL_TITLE_FILTERRELOAD "フィルタ再読み込み(&F)"
+    IDS_STR_ERR_TITLE_OPEN  "開く"
+    IDS_STR_FILTER_EXESELECT "実行ファイル (*.exe)|*.exe"
+    IDS_STR_TITLE_HEADVIEW  "ヘッダー表示 - [%s]"
+    IDS_STR_TITLE_SOURCEVIEW "ソース表示%s - [%s]"
+    IDS_STR_TITLE_FILTER    " (フィルタ)"
+    IDS_STR_TITLE_FILTERERR " (フィルタ エラー)"
+    IDS_STR_ERR_TITLE_URLOPEN "URLを開く"
+    IDS_STR_ERR_MSG_URLOPEN "URLが設定されていません。"
+    IDS_STR_ERR_MSG_URLQUOTE "URLに引用符 ("") が含まれているため開けません。"
+    IDS_STR_Q_MSG_OPENURL   "http または https 以外のURLです。開いてもよろしいですか？\n\n%s"
+    IDS_STR_ERROR_URL       "URLを展開できませんでした。"
+    IDS_STR_ERROR_CONNECT   "接続に失敗しました。"
+    IDS_STR_ERROR_SEND      "送信に失敗しました。"
+    IDS_STR_ERROR_RECV      "受信に失敗しました。"
+    IDS_STR_ERROR_HEADER    "ヘッダを解析できませんでした。"
+    IDS_STR_ERROR_MOVE      "転送エラー"
+    IDS_STR_ERROR_TIMEOUT   "タイムアウトしました。"
+    IDS_STR_STATUS_CONNECT  "接続中..."
+    IDS_STR_STATUS_RECV     "%ld バイト受信"
+    IDS_STR_STATUS_CHECKEND "チェック終了"
+    IDS_STR_GETINFO_HTTP_NEWMENU "HTTPアイテムの追加(&H)..."
+    IDS_STR_GETINFO_HTTP_OPEN "開く(&O)"
+    IDS_STR_GETINFO_HTTP_CHECKOPEN "チェックするURLで開く(&U)"
+    IDS_STR_GETINFO_HTTP_OPENARCHIVE "アーカイブを開く(&A)"
+    IDS_STR_ERR_MSG_ARCHIVE_NONE "このアイテムのアーカイブはありません。"
+    IDS_STR_ERR_TITLE_ARCHIVE "アーカイブ"
+    IDS_STR_MSG_ARCHIVE_NOFOLDER "アーカイブはまだ作成されていません。"
+    IDS_STR_Q_MSG_ARCHIVE_DELETE "このアイテムのアーカイブ (保存したすべての世代) を削除しますか？"
+    IDS_STR_MSG_ARCHIVE_DELETED "アーカイブを削除しました。"
+    IDS_STR_ERR_MSG_ARCHIVE_BUSY "アーカイブを取得中のため削除できません。しばらくしてから再度実行してください。"
+    IDS_STR_ERR_MSG_ARCHIVE_DELETE "アーカイブの一部を削除できませんでした。"
+    IDS_STR_Q_MSG_ARCHIVE_CHANGED "アーカイブするデータの設定を変更しました。\n既存のアーカイブは変更前の設定で保存されています。\n\nアーカイブを削除しますか？\n(削除すると次のチェックで新しい設定のアーカイブを作成します)"
+    IDS_STR_ARCHIVE_INDEX_TITLE "アーカイブ - "
+    IDS_STR_ARCHIVE_INDEX_LATEST " (最新)"
+    IDS_STR_GETINFO_HTTP_HEADER "ヘッダー表示(&H)"
+    IDS_STR_GETINFO_HTTP_SOURCE "ソース表示(&S)"
+    IDS_STR_GETINFO_HTTP_GETTITLE "タイトル取得(&L)"
+    IDS_STR_REQTYPE_AUTO_GET "自動(&A) (現在 GET)"
+    IDS_STR_BYTE            " バイト"
+    IDS_STR_TITLE_PROP      "%sのプロパティ"
+    IDS_STR_TITLE_ADDITEM   "HTTPアイテムの追加"
+    IDS_STR_TITLE_SETHTTP   "HTTPプロトコルの設定"
+    IDS_STR_ERR_TITLE_BROWSER "ブラウザ情報の取得"
+    IDS_STR_ERR_MSG_BROWSER "ブラウザで表示しているページが見つかりませんでした。\n\nMicrosoft Edge、Google Chrome などの Chromium 系のブラウザと Firefox に対応しています。"
+    IDS_STR_MSG_BROWSER_INFO "ブラウザのウィンドウで表示しているページのURLとタイトルを取得します。設定する項目はありません。\n\nMicrosoft Edge、Google Chrome などの Chromium 系のブラウザと Firefox に対応しています。タブが複数ある場合は、表示しているタブのページを取得します。"
+    IDS_ST_LV_COL_TITLE     "タイトル"
+    IDS_ST_LV_COL_BROWSER   "ブラウザ"
+    IDS_STR_ERR_TITLE_FILEOPEN "ファイルを開く"
+    IDS_STR_ERR_MSG_FILEOPEN "ファイルが設定されていません。"
+    IDS_STR_FILTER_FILESELECT "すべてのファイル (*.*)|*.*"
+    IDS_STR_GETINFO_FILE_NEWMENU "ファイルの追加(&I)..."
+    IDS_STR_GETINFO_FILE_OPEN "開く(&O)"
+END
+
 #endif    // 日本語 (日本) resources
 /////////////////////////////////////////////////////////////////////////////
 
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+// 英語 (米国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(65001)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_FILEPROP DIALOG 0, 0, 229, 169
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "File Properties"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "&Name:",IDC_STATIC,5,5,80,10
+    EDITTEXT        IDC_EDIT_TITLE,5,15,215,12,ES_AUTOHSCROLL
+    LTEXT           "&Path:",IDC_STATIC_URL,5,32,80,10
+    EDITTEXT        IDC_EDIT_URL,5,42,166,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Browse...",IDC_BUTTON_BROWS,174,42,46,12
+    LTEXT           "&Comment:",IDC_STATIC_URL3,5,60,115,10
+    EDITTEXT        IDC_EDIT_COMMENT,5,70,215,30,ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+    CONTROL         "Check by modified &date",IDC_CHECK_DATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,110,150,10
+    CONTROL         "Check by &size",IDC_CHECK_SIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,126,150,10
+    DEFPUSHBUTTON   "OK",IDOK,115,150,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,171,150,50,14
+END
+
+IDD_DIALOG_VIEW DIALOG 0, 0, 274, 205
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+FONT 8, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "&Copy",ID_BUTTON_COPY,165,185,50,14
+    PUSHBUTTON      "Clo&se",IDOK,220,185,50,14
+END
+
+IDD_DIALOG_HTTPPROP DIALOG 0, 0, 227, 229
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "General"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    ICON            IDI_ICON_HTTP,IDC_STATIC,5,4,20,20
+    LTEXT           "&Name:",IDC_STATIC,45,4,100,10
+    EDITTEXT        IDC_EDIT_TITLE,45,14,175,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Get from &Browser...",IDC_BUTTON_GETURL,125,29,95,13
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,44,214,1
+    LTEXT           "Check &URL:",IDC_STATIC_URL,5,49,115,10
+    EDITTEXT        IDC_EDIT_URL,5,59,215,12,ES_AUTOHSCROLL
+    CONTROL         "Copy &Down",IDC_BUTTON_CHANGE,"Button",BS_OWNERDRAW | WS_TABSTOP,200,74,20,13
+    LTEXT           "&View URL (the Check URL is used if empty):",IDC_STATIC,5,80,192,10
+    EDITTEXT        IDC_EDIT_VIEWURL,5,90,215,12,ES_AUTOHSCROLL
+    LTEXT           "&Comment:",IDC_STATIC_URL3,5,105,115,10
+    EDITTEXT        IDC_EDIT_COMMENT,5,115,215,30,ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,150,211,1
+    LTEXT           "Size:",IDC_STATIC,5,155,40,10
+    EDITTEXT        IDC_EDIT_SIZE,50,155,170,10,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Modified:",IDC_STATIC,5,168,40,10
+    EDITTEXT        IDC_EDIT_UPDATE,50,168,170,25,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | ES_WANTRETURN | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Error:",IDC_STATIC,5,196,40,10
+    EDITTEXT        IDC_EDIT_ERRORINFO,50,196,170,10,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,207,210,1
+    LTEXT           "Checked:",IDC_STATIC,5,213,40,10
+    EDITTEXT        IDC_EDIT_CHECKDATE,50,213,170,10,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+END
+
+IDD_DIALOG_HTTPPROP_OPTION DIALOG 0, 0, 227, 225
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Options"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    GROUPBOX        "Proxy",IDC_STATIC,5,5,215,70
+    CONTROL         "&Do not use a proxy",IDC_CHECK_NOPROXY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,15,190,10
+    CONTROL         "Us&e a proxy other than the protocol settings",IDC_CHECK_SETPROXY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,31,190,10
+    LTEXT           "Proxy &server:",IDC_STATIC,20,45,140,10
+    LTEXT           "Por&t:",IDC_STATIC,165,45,45,8
+    EDITTEXT        IDC_EDIT_PROXY,20,55,140,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PROXY_PORT,165,55,40,12,ES_AUTOHSCROLL
+    GROUPBOX        "Authentication",IDC_STATIC,5,81,215,95
+    CONTROL         "This URL requires user &authentication",IDC_CHECK_USEPASS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,95,190,10
+    LTEXT           "&User:",IDC_STATIC,20,111,80,8
+    EDITTEXT        IDC_EDIT_USER,20,121,185,12,ES_AUTOHSCROLL
+    LTEXT           "&Password:",IDC_STATIC,20,141,80,8
+    EDITTEXT        IDC_EDIT_PASS,20,151,185,12,ES_PASSWORD | ES_AUTOHSCROLL
+    GROUPBOX        "Request Headers",IDC_STATIC,5,180,215,42
+    LTEXT           "&Referer:",IDC_STATIC,12,194,55,8
+    EDITTEXT        IDC_EDIT_REFERER,70,192,140,12,ES_AUTOHSCROLL
+    LTEXT           "User-A&gent:",IDC_STATIC,12,208,55,8
+    EDITTEXT        IDC_EDIT_USERAGENT,70,206,140,12,ES_AUTOHSCROLL
+END
+
+IDD_DIALOG_HTTPPROP_CHECK DIALOG 0, 0, 223, 225
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Check"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    GROUPBOX        "Request Method",IDC_STATIC,5,5,215,40
+    CONTROL         "&Automatic (currently HEAD)",IDC_RADIO_REQTYPE_AUTO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,20,17,190,10
+    CONTROL         "Always check with a &GET request",IDC_RADIO_REQTYPE_GET,"Button",BS_AUTORADIOBUTTON,20,29,190,10
+    GROUPBOX        "Check Method",IDC_STATIC,5,51,215,67
+    CONTROL         "Check by modified &date",IDC_CHECK_DATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,63,190,10
+    CONTROL         "Check by &size",IDC_CHECK_SIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,76,190,10
+    CONTROL         "Check by the size without &HTML tags",IDC_CHECK_NOTAGSIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,30,88,180,10
+    CONTROL         "Check by changes in the &full content (MD5)",IDC_CHECK_MD5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,101,190,10
+    GROUPBOX        "META Tag Check",IDC_STATIC,5,123,215,99
+    CONTROL         "Check with a &META tag",IDC_CHECK_META,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,135,190,10
+    LTEXT           "<META type=""type name"" content=""data"">",IDC_STATIC,65,149,150,10
+    LTEXT           "&Type:",IDC_STATIC,20,165,43,10
+    EDITTEXT        IDC_EDIT_META_TYPE,65,161,145,12,ES_AUTOHSCROLL
+    LTEXT           "Type &name:",IDC_STATIC,20,181,43,10
+    EDITTEXT        IDC_EDIT_META_TYPENAME,65,177,145,12,ES_AUTOHSCROLL
+    LTEXT           "&Content:",IDC_STATIC,20,197,43,10
+    EDITTEXT        IDC_EDIT_META_CONTENT,65,193,145,12,ES_AUTOHSCROLL
+    LTEXT           "Default:",IDC_STATIC,20,211,43,10
+    LTEXT           "<META NAME=""WWWC"" CONTENT=""data"">",IDC_STATIC,65,211,150,10
+END
+
+IDD_DIALOG_PROTOCOLPROP_CHECK DIALOG 0, 0, 234, 225
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Check"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    GROUPBOX        "Check",IDC_STATIC,5,5,223,60
+    LTEXT           "Time&out:",IDC_STATIC,20,20,130,10
+    EDITTEXT        IDC_EDIT_TIMEOUIT,20,30,40,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "seconds",IDC_STATIC,65,34,60,10
+    CONTROL         "Check all items with &GET requests",IDC_CHECK_REQGET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,49,200,10
+    GROUPBOX        "Proxy",IDC_STATIC,5,70,223,145
+    CONTROL         "Us&e a proxy",IDC_CHECK_PROXY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,80,200,10
+    LTEXT           "&Server:",IDC_STATIC,20,95,140,8
+    LTEXT           "Por&t:",IDC_STATIC,170,95,45,8
+    EDITTEXT        IDC_EDIT_PSERVER,20,105,145,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PPORT,170,105,40,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Do not use the proxy &cache",IDC_CHECK_NOCACHE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,125,200,10
+    CONTROL         "This proxy requires user &authentication",IDC_CHECK_USEPASS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,140,200,10
+    LTEXT           "&User:",IDC_STATIC,20,155,80,8
+    EDITTEXT        IDC_EDIT_USER,20,165,190,12,ES_AUTOHSCROLL
+    LTEXT           "&Password:",IDC_STATIC,20,185,80,8
+    EDITTEXT        IDC_EDIT_PASS,20,195,190,12,ES_PASSWORD | ES_AUTOHSCROLL
+END
+
+IDD_DIALOG_HTTPPROP_ARCHIVE DIALOG 0, 0, 227, 225
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Archive"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    GROUPBOX        "Archive",IDC_STATIC,5,5,215,135
+    CONTROL         "Archive the &checked page",IDC_CHECK_ARCHIVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,18,195,10
+    CONTROL         "Archive &images",IDC_CHECK_ARCHIVE_IMAGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,25,34,185,10
+    CONTROL         "Archive &style sheets (CSS)",IDC_CHECK_ARCHIVE_CSS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,25,48,185,10
+    CONTROL         "Archive &JavaScript",IDC_CHECK_ARCHIVE_JS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,25,62,185,10
+    LTEXT           "&Generations to keep:",IDC_STATIC,25,80,83,8
+    EDITTEXT        IDC_EDIT_ARCHIVE_GEN,110,78,30,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "(1-99)",IDC_STATIC,145,80,40,8
+    LTEXT           "The page is archived when a check succeeds and the page has been updated. If JavaScript is archived, the scripts of the page run when you open the archive.",IDC_STATIC,15,96,195,40
+    PUSHBUTTON      "&Delete Archive",IDC_BUTTON_ARCHIVE_DELETE,10,148,100,14
+    LTEXT           "Archiving is disabled in the protocol settings.",IDC_STATIC_ARCHIVE_GLOBAL,10,170,205,10
+    LTEXT           "Items with authentication are not archived.",IDC_STATIC_ARCHIVE_AUTH,10,184,205,10
+END
+
+IDD_DIALOG_PROTOCOLPROP_ARCHIVE DIALOG 0, 0, 234, 225
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Archive"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    GROUPBOX        "Archive",IDC_STATIC,5,5,223,95
+    CONTROL         "Use ar&chives",IDC_CHECK_ARCHIVE_GLOBAL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,18,200,10
+    LTEXT           "If this is off, no items are archived. What to archive is set on the ""Archive"" page of the item properties.",IDC_STATIC,15,34,205,32
+    PUSHBUTTON      "Open the Archive &Folder",IDC_BUTTON_ARCHIVE_FOLDER,15,72,120,14
+END
+
+IDD_DIALOG_URLLIST DIALOGEX 0, 0, 335, 229
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Browser Pages"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "&Pages currently open in browsers:",IDC_STATIC,5,5,225,10
+    CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,0,15,335,170,WS_EX_CLIENTEDGE
+    CONTROL         "Set as the item &name",IDC_CHECK_TITLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,190,150,10
+    CONTROL         "Set as the Check &URL",IDC_CHECK_CHECKURL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,203,150,10
+    CONTROL         "Set as the &View URL",IDC_CHECK_VIEWURL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,216,150,10
+    DEFPUSHBUTTON   "OK",IDOK,220,210,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,276,210,50,14
+END
+
+IDD_DIALOG_SETBROWSER DIALOG 0, 0, 214, 99
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Browser Settings"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Set the browser used by ""Open in Existing Browser"".\nIf it is not set, the default browser is used.",IDC_STATIC,10,10,195,30
+    LTEXT           "Browser &path:",IDC_STATIC_URL,10,45,80,10
+    EDITTEXT        IDC_EDIT_PATH,10,55,148,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Browse...",IDC_BUTTON_BROWS,160,55,45,12
+    DEFPUSHBUTTON   "OK",IDOK,45,75,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,100,75,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table (StrTbl.h)
+//
+
+STRINGTABLE
+BEGIN
+    IDS_STR_NEWITEMNAME     "New Item"
+    IDS_STR_TITLE_FILESELECT "Select File"
+    IDS_STR_ERROR_MEMORY    "Failed to allocate memory."
+    IDS_STR_TOOL_TITLE_BROWSINFO "Get &Browser Info"
+    IDS_STR_TOOL_TITLE_BROWSINFOLIST "Select from &All Browser Pages..."
+    IDS_STR_TOOL_TITLE_OPENURL "Open in &Existing Browser"
+    IDS_STR_TOOL_TITLE_FILTERRELOAD "Reload &Filters"
+    IDS_STR_ERR_TITLE_OPEN  "Open"
+    IDS_STR_FILTER_EXESELECT "Programs (*.exe)|*.exe"
+    IDS_STR_TITLE_HEADVIEW  "Header - [%s]"
+    IDS_STR_TITLE_SOURCEVIEW "Source%s - [%s]"
+    IDS_STR_TITLE_FILTER    " (Filtered)"
+    IDS_STR_TITLE_FILTERERR " (Filter Error)"
+    IDS_STR_ERR_TITLE_URLOPEN "Open URL"
+    IDS_STR_ERR_MSG_URLOPEN "No URL is set."
+    IDS_STR_ERR_MSG_URLQUOTE "The URL cannot be opened because it contains a quotation mark ("")."
+    IDS_STR_Q_MSG_OPENURL   "This URL is not an http or https URL. Are you sure you want to open it?\n\n%s"
+    IDS_STR_ERROR_URL       "Could not parse the URL."
+    IDS_STR_ERROR_CONNECT   "Failed to connect."
+    IDS_STR_ERROR_SEND      "Failed to send."
+    IDS_STR_ERROR_RECV      "Failed to receive."
+    IDS_STR_ERROR_HEADER    "Could not parse the header."
+    IDS_STR_ERROR_MOVE      "Redirect error"
+    IDS_STR_ERROR_TIMEOUT   "Timed out."
+    IDS_STR_STATUS_CONNECT  "Connecting..."
+    IDS_STR_STATUS_RECV     "%ld bytes received"
+    IDS_STR_STATUS_CHECKEND "Check completed"
+    IDS_STR_GETINFO_HTTP_NEWMENU "Add &HTTP Item..."
+    IDS_STR_GETINFO_HTTP_OPEN "&Open"
+    IDS_STR_GETINFO_HTTP_CHECKOPEN "Open Check &URL"
+    IDS_STR_GETINFO_HTTP_OPENARCHIVE "Open &Archive"
+    IDS_STR_ERR_MSG_ARCHIVE_NONE "There is no archive for this item."
+    IDS_STR_ERR_TITLE_ARCHIVE "Archive"
+    IDS_STR_MSG_ARCHIVE_NOFOLDER "No archive has been created yet."
+    IDS_STR_Q_MSG_ARCHIVE_DELETE "Do you want to delete the archive of this item (all saved generations)?"
+    IDS_STR_MSG_ARCHIVE_DELETED "The archive has been deleted."
+    IDS_STR_ERR_MSG_ARCHIVE_BUSY "The archive cannot be deleted because it is being saved. Try again later."
+    IDS_STR_ERR_MSG_ARCHIVE_DELETE "Some files of the archive could not be deleted."
+    IDS_STR_Q_MSG_ARCHIVE_CHANGED "The settings of the data to archive have been changed.\nThe existing archive was saved with the previous settings.\n\nDo you want to delete the archive?\n(If you delete it, an archive with the new settings will be created at the next check.)"
+    IDS_STR_ARCHIVE_INDEX_TITLE "Archive - "
+    IDS_STR_ARCHIVE_INDEX_LATEST " (Latest)"
+    IDS_STR_GETINFO_HTTP_HEADER "View &Header"
+    IDS_STR_GETINFO_HTTP_SOURCE "View &Source"
+    IDS_STR_GETINFO_HTTP_GETTITLE "Get Tit&le"
+    IDS_STR_REQTYPE_AUTO_GET "&Automatic (currently GET)"
+    IDS_STR_BYTE            " bytes"
+    IDS_STR_TITLE_PROP      "%s Properties"
+    IDS_STR_TITLE_ADDITEM   "Add HTTP Item"
+    IDS_STR_TITLE_SETHTTP   "HTTP Protocol Settings"
+    IDS_STR_ERR_TITLE_BROWSER "Get Browser Info"
+    IDS_STR_ERR_MSG_BROWSER "No page displayed in a browser was found.\n\nChromium-based browsers such as Microsoft Edge and Google Chrome, and Firefox are supported."
+    IDS_STR_MSG_BROWSER_INFO "Gets the URL and title of the page displayed in a browser window. There are no settings.\n\nChromium-based browsers such as Microsoft Edge and Google Chrome, and Firefox are supported. If a window has multiple tabs, the page of the selected tab is used."
+    IDS_ST_LV_COL_TITLE     "Title"
+    IDS_ST_LV_COL_BROWSER   "Browser"
+    IDS_STR_ERR_TITLE_FILEOPEN "Open File"
+    IDS_STR_ERR_MSG_FILEOPEN "No file is set."
+    IDS_STR_FILTER_FILESELECT "All Files (*.*)|*.*"
+    IDS_STR_GETINFO_FILE_NEWMENU "Add F&ile Item..."
+    IDS_STR_GETINFO_FILE_OPEN "&Open"
+END
+
+#endif    // 英語 (米国) resources
+/////////////////////////////////////////////////////////////////////////////
 
 
 #ifndef APSTUDIO_INVOKED

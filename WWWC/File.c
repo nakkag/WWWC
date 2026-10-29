@@ -245,7 +245,7 @@ int CopyDirTree(HWND hWnd, char *Path, char *NewPath, char *name, char *ret)
 	//コピー先の名前の設定
 	wsprintf(nPath, "%s\\%s", NewPath, name);
 	if(lstrcmpi(nPath, Path) == 0){
-		wsprintf(buf, STR_COPYNAME"%s", name);
+		wsprintf(buf, STR_COPYNAME, name);
 		while(GetDirSerch(nPath) == TRUE){
 			wsprintf(nPath, "%s\\%s", NewPath, buf);
 			if(ret != NULL){
@@ -256,7 +256,7 @@ int CopyDirTree(HWND hWnd, char *Path, char *NewPath, char *name, char *ret)
 			if(cnt > COPYMAX){
 				return -1;
 			}
-			wsprintf(buf, STR_COPYNAME_CNT"%s", cnt, name);
+			wsprintf(buf, STR_COPYNAME_CNT, cnt, name);
 		}
 		CreateDirectory(nPath, NULL);
 
@@ -1158,13 +1158,26 @@ int FileSelect(HWND hDlg, char *oFile, char *oFilter, char *oTitle, char *ret, c
 {
 	OPENFILENAME of;
 	char tmp[MAX_PATH];
+	char filter[BUFSIZE];
+	char *p;
 
 	lstrcpy(tmp, oFile);
+
+	//フィルタの区切りの '|' を '\0' に置き換える (終端は '\0' を2つ)
+	lstrcpyn(filter, oFilter, BUFSIZE - 1);
+	for(p = filter; *p != '\0'; p++){
+		if(IS_LEAD_BYTE(p)){
+			p++;
+		}else if(*p == '|'){
+			*p = '\0';
+		}
+	}
+	*(p + 1) = '\0';
 
 	of.lStructSize = sizeof(of);
 	of.hInstance = NULL;
 	of.hwndOwner = hDlg;
-	of.lpstrFilter = oFilter;
+	of.lpstrFilter = filter;
 	of.lpstrTitle = oTitle;
 	of.lpstrCustomFilter = NULL;
 	of.nMaxCustFilter = 40;

@@ -288,7 +288,7 @@ static BOOL CALLBACK PropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 		/* サイズ */
 		if(tpItemInfo->Size != NULL){
 			lstrcpyn(tmp, tpItemInfo->Size, BUFSIZE - 16);
-			lstrcat(tmp, " バイト");
+			lstrcat(tmp, STR_BYTE);
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_SIZE), WM_SETTEXT, 0, (LPARAM)tmp);
 		}
 

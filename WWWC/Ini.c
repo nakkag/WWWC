@@ -37,6 +37,7 @@
 **************************************************************************/
 
 //ini
+char Language[BUFSIZE];
 char DateFormat[BUFSIZE];
 char TimeFormat[BUFSIZE];
 
@@ -239,10 +240,17 @@ void GetINI(void)
 	char tmp[BUFSIZE];
 	char *p, *r;
 	int i;
+	static BOOL LangFlag = FALSE;
 
 	wsprintf(app_path, "%s\\%s", CuDir, USER_INI);
 	profile_initialize(app_path, TRUE);
 
+	//表示する言語 (ja / en、未設定の場合は Windows の UI 言語) は起動時のみ設定する
+	profile_get_string("GENERAL", "Language", "", Language, BUFSIZE - 1, app_path);
+	if(LangFlag == FALSE){
+		SetResLanguage(Language);
+		LangFlag = TRUE;
+	}
 	profile_get_string("GENERAL", "DateFormat", "yyyy/MM/dd", DateFormat, BUFSIZE - 1, app_path);
 	profile_get_string("GENERAL", "TimeFormat", "HH:mm", TimeFormat, BUFSIZE - 1, app_path);
 
@@ -289,7 +297,7 @@ void GetINI(void)
 
 	//"\\" を付加して BUFSIZE に収まる長さ
 	profile_get_string("TREEVIEW", "RootTitle", "Internet", RootTitle, BUFSIZE - 3, app_path);
-	profile_get_string("TREEVIEW", "RecyclerTitle", "ごみ箱", RecyclerTitle, BUFSIZE - 3, app_path);
+	profile_get_string("TREEVIEW", "RecyclerTitle", DEF_RECYCLERTITLE, RecyclerTitle, BUFSIZE - 3, app_path);
 	StartExpand = profile_get_int("TREEVIEW", "StartExpand", 0, app_path);
 	StartDirOpen = profile_get_int("TREEVIEW", "StartDirOpen", 0, app_path);
 	profile_get_string("TREEVIEW", "StartDirPath", "", StartDirPath, BUFSIZE - 1, app_path);
@@ -508,6 +516,7 @@ void PutINI(void)
 	wsprintf(app_path, "%s\\%s", CuDir, USER_INI);
 	profile_initialize(app_path, TRUE);
 
+	profile_write_string("GENERAL", "Language", Language, app_path);
 	profile_write_string("GENERAL", "DateFormat", DateFormat, app_path);
 	profile_write_string("GENERAL", "TimeFormat", TimeFormat, app_path);
 

@@ -36,6 +36,9 @@
 	Define
 **************************************************************************/
 
+#define APP_INI					"wwwc_app.ini"		//portable=0 の場合はデータを %LOCALAPPDATA%\WWWC に保存
+#define APP_DATA_DIR			"WWWC"
+
 
 /**************************************************************************
 	Global Variables
@@ -84,6 +87,7 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 	char CuDir[BUFSIZE];
 	char buf[BUFSIZE];
 	char pbuf[PASS_BUFSIZE];
+	DWORD i;
 
 	GetModuleFileName(ghinst, CuDir, BUFSIZE - 1);
 	p = r = CuDir;
@@ -96,6 +100,21 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 		p++;
 	}
 	*r = '\0';
+
+	//インストーラでインストールした場合 (wwwc_app.ini の portable=0) は設定とフィルタを
+	//本体と同じ %LOCALAPPDATA%\WWWC に保存する
+	if(lstrlen(CuDir) + lstrlen("\\" APP_INI) < BUFSIZE){
+		wsprintf(buf, "%s\\%s", CuDir, APP_INI);
+		if(GetPrivateProfileInt("GENERAL", "portable", 1, buf) == 0){
+			i = GetEnvironmentVariable("LOCALAPPDATA", buf, BUFSIZE);
+			if(i > 0 && i + lstrlen("\\" APP_DATA_DIR) < BUFSIZE){
+				for(p = buf + lstrlen(buf); p > buf && *(p - 1) == '\\'; p--);
+				*p = '\0';
+				wsprintf(CuDir, "%s\\%s", buf, APP_DATA_DIR);
+				CreateDirectory(CuDir, NULL);
+			}
+		}
+	}
 	if(lstrlen(CuDir) + lstrlen("\\wwwc.ini") >= BUFSIZE){
 		//パスが長すぎる場合は設定ファイルを使用しない
 		*app_path = '\0';
@@ -160,6 +179,7 @@ int WINAPI DllMain(HINSTANCE hInst, DWORD fdwReason, PVOID pvReserved)
     {
     case DLL_PROCESS_ATTACH:
 		ghinst = hInst;
+		SetResLanguage();
 
 		InitCommonControls();
 		DllInitialize();
@@ -175,6 +195,7 @@ int WINAPI DllMain(HINSTANCE hInst, DWORD fdwReason, PVOID pvReserved)
 			hRTFLibdll = NULL;
 		}
 		FreeFilter();
+		FreeResStr();
         break;
 
     case DLL_THREAD_ATTACH:
@@ -389,13 +410,26 @@ int FileSelect(HWND hDlg,char *oFile,char *oFilter,char *oTitle,char *ret,char *
 {
 	OPENFILENAME of;
 	char tmp[BUFSIZE];
+	char filter[BUFSIZE];
+	char *p;
 
 	lstrcpy(tmp, oFile);
+
+	//フィルタの区切りの '|' を '\0' に置き換える (終端は '\0' を2つ)
+	lstrcpyn(filter, oFilter, BUFSIZE - 1);
+	for(p = filter; *p != '\0'; p++){
+		if(IS_LEAD_BYTE(p)){
+			p++;
+		}else if(*p == '|'){
+			*p = '\0';
+		}
+	}
+	*(p + 1) = '\0';
 
 	of.lStructSize = sizeof(of);
 	of.hInstance = NULL;
 	of.hwndOwner = hDlg;
-	of.lpstrFilter = oFilter;
+	of.lpstrFilter = filter;
 	of.lpstrTitle = oTitle;
 	of.lpstrCustomFilter = NULL;
 	of.nMaxCustFilter = 40;

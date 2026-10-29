@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WWWC Manual</title>
+<style>
+:root {
+	--bg: #f4f6fa;
+	--surface: #ffffff;
+	--text: #1d2433;
+	--muted: #5d6677;
+	--line: #dfe4ec;
+	--accent: #1f4fcf;
+	--accent-soft: #e7edfc;
+	--accent-text: #173ea6;
+	--archive: #0e8a6b;
+	--archive-soft: #e2f5ee;
+	--archive-text: #0a6b53;
+	--warn: #b5471c;
+	--warn-soft: #fdeee5;
+	--code-bg: #eef1f6;
+	--hero-a: #0f2a6b;
+	--hero-b: #1f4fcf;
+	--radius: 12px;
+	--shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 4px 16px rgba(16, 24, 40, .05);
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #11151d;
+		--surface: #1a2030;
+		--text: #e5e9f2;
+		--muted: #9aa5ba;
+		--line: #2a3346;
+		--accent: #7ea0ff;
+		--accent-soft: #1f2b4b;
+		--accent-text: #a9c0ff;
+		--archive: #45cfa6;
+		--archive-soft: #143a30;
+		--archive-text: #7fe3c6;
+		--warn: #ffb48e;
+		--warn-soft: #3a2419;
+		--code-bg: #222a3c;
+		--hero-a: #0b1d4d;
+		--hero-b: #1a3fa8;
+		--shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 4px 16px rgba(0, 0, 0, .3);
+	}
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+	font-size: 15px;
+	line-height: 1.7;
+	-webkit-text-size-adjust: 100%;
+}
+a { color: var(--accent-text); text-decoration: none; }
+a:hover { text-decoration: underline; }
+p { margin: 0 0 .9em; }
+ul, ol { margin: 0 0 .9em; padding-left: 1.5em; }
+li { margin: .25em 0; }
+kbd {
+	font-family: inherit;
+	font-size: .9em;
+	padding: 0 .4em;
+	border: 1px solid var(--line);
+	border-bottom-width: 2px;
+	border-radius: 5px;
+	background: var(--surface);
+}
+code, pre {
+	font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+	font-size: .92em;
+}
+code { background: var(--code-bg); padding: .1em .4em; border-radius: 5px; }
+pre {
+	background: var(--code-bg);
+	padding: 12px 16px;
+	border-radius: 8px;
+	overflow-x: auto;
+	margin: 0 0 1em;
+}
+pre code { background: none; padding: 0; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+/* Header */
+.hero {
+	background: linear-gradient(135deg, var(--hero-a), var(--hero-b));
+	color: #fff;
+	padding: 48px 0 40px;
+}
+.brand {
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 52px;
+	line-height: 1;
+	letter-spacing: .02em;
+	margin: 0;
+}
+.brand span { color: #9fc0ff; }
+.tagline { font-size: 20px; font-weight: 600; margin: 10px 0 6px; }
+.lead { max-width: 640px; opacity: .92; margin-bottom: 26px; }
+.features {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 16px;
+}
+.feature {
+	display: block;
+	background: var(--surface);
+	color: var(--text);
+	border-radius: var(--radius);
+	padding: 20px 22px;
+	box-shadow: var(--shadow);
+	border-top: 4px solid var(--accent);
+}
+.feature.archive { border-top-color: var(--archive); }
+.feature:hover { text-decoration: none; transform: translateY(-2px); transition: transform .15s; }
+.feature .icon {
+	width: 36px; height: 36px;
+	border-radius: 9px;
+	display: flex; align-items: center; justify-content: center;
+	background: var(--accent-soft);
+	color: var(--accent-text);
+	margin-bottom: 10px;
+}
+.feature.archive .icon { background: var(--archive-soft); color: var(--archive-text); }
+.feature .icon svg { width: 20px; height: 20px; }
+.feature h3 { margin: 0 0 6px; font-size: 17px; }
+.feature p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.feature .more { display: inline-block; margin-top: 10px; font-size: 14px; font-weight: 600; color: var(--accent-text); }
+.feature.archive .more { color: var(--archive-text); }
+
+/* Getting started */
+.steps {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 14px;
+	margin: 0 0 8px;
+	padding: 0;
+	list-style: none;
+	counter-reset: step;
+}
+.steps li {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 18px 18px 16px;
+	margin: 0;
+	position: relative;
+}
+.steps li::before {
+	counter-increment: step;
+	content: counter(step);
+	display: inline-flex; align-items: center; justify-content: center;
+	width: 28px; height: 28px;
+	border-radius: 50%;
+	background: var(--accent);
+	color: #fff;
+	font-weight: 700;
+	font-size: 14px;
+	margin-bottom: 8px;
+}
+.steps li.archive::before { background: var(--archive); }
+.steps h3 { margin: 0 0 4px; font-size: 15px; }
+.steps p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+/* Contents */
+.toc {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 20px 24px 8px;
+	margin: 28px 0;
+}
+.toc h2 { margin: 0 0 10px; font-size: 16px; }
+.toc-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 0 20px;
+}
+.toc h4 { margin: 8px 0 2px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.toc ul { list-style: none; padding: 0; margin: 0 0 10px; }
+.toc li { margin: 0; font-size: 14px; }
+.toc .key::after {
+	content: "Key";
+	font-size: 10px;
+	margin-left: 6px;
+	padding: 0 5px;
+	border-radius: 4px;
+	background: var(--accent-soft);
+	color: var(--accent-text);
+	vertical-align: 1px;
+}
+.toc .key.archive::after { background: var(--archive-soft); color: var(--archive-text); }
+
+/* Body */
+main { padding: 8px 0 40px; }
+.chapter { margin: 36px 0 0; }
+.chapter > h2 {
+	font-size: 22px;
+	margin: 0 0 14px;
+	padding-left: 12px;
+	border-left: 5px solid var(--accent);
+	line-height: 1.3;
+}
+article {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 20px 24px 10px;
+	margin: 0 0 14px;
+	scroll-margin-top: 16px;
+}
+article > h3 { margin: 0 0 12px; font-size: 17px; }
+article.key { border-color: var(--accent); box-shadow: var(--shadow); }
+article.key.archive { border-color: var(--archive); }
+.badge {
+	display: inline-block;
+	font-size: 11px;
+	font-weight: 700;
+	padding: 1px 8px;
+	border-radius: 999px;
+	background: var(--accent-soft);
+	color: var(--accent-text);
+	vertical-align: 3px;
+	margin-left: 8px;
+}
+.badge.archive { background: var(--archive-soft); color: var(--archive-text); }
+.callout {
+	border-left: 4px solid var(--warn);
+	background: var(--warn-soft);
+	padding: 10px 14px;
+	border-radius: 0 8px 8px 0;
+	margin: 0 0 1em;
+}
+.callout p { margin: 0; }
+figure {
+	margin: 4px 0 18px;
+	text-align: center;
+}
+figure img {
+	max-width: 100%;
+	height: auto;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	box-shadow: var(--shadow);
+}
+figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.options { margin: 0 0 1em; padding: 0; list-style: none; }
+.options li {
+	display: grid;
+	grid-template-columns: 5em 1fr;
+	gap: 8px;
+	padding: 3px 0;
+	border-bottom: 1px dashed var(--line);
+}
+.options li:last-child { border-bottom: 0; }
+.options code { background: none; padding: 0; font-weight: 600; }
+dl { margin: 0 0 1em; }
+dt { font-weight: 700; margin-top: .6em; }
+dd { margin: 0 0 .3em 1.2em; }
+
+footer {
+	border-top: 1px solid var(--line);
+	color: var(--muted);
+	font-size: 13px;
+	padding: 24px 0 36px;
+	text-align: center;
+}
+footer p { margin: 0 0 4px; }
+@media (max-width: 600px) {
+	.brand { font-size: 42px; }
+	article { padding: 16px 16px 8px; }
+	.toc { padding: 16px 16px 4px; }
+	.options li { grid-template-columns: 1fr; gap: 0; }
+}
+@media print {
+	body { background: #fff; }
+	.hero { background: none; color: #000; padding: 20px 0; }
+	.feature, article, .toc, .steps li, figure img { box-shadow: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+	<div class="wrap">
+		<h1 class="brand">WWW<span>C</span></h1>
+		<p class="tagline">Web page update checker</p>
+		<p class="lead">Register the URLs of the web pages you visit often, and WWWC notifies you when they are updated. Checked pages are saved as archives, so you can see the previous content even after a page is gone.</p>
+		<div class="features">
+			<a class="feature" href="#check_item">
+				<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/><path d="m8.5 11 2 2 3.5-4"/></svg></div>
+				<h3>Check web pages for updates</h3>
+				<p>Checks all the registered URLs at once and shows the updated pages with an icon and the update message. Pages can also be checked automatically at specified times or intervals.</p>
+				<span class="more">How to check &rarr;</span>
+			</a>
+			<a class="feature archive" href="#http_archive">
+				<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9"/><path d="M10 13h4"/></svg></div>
+				<h3>Archive web pages</h3>
+				<p>Saves the pages that are checked successfully, and opens them at any time with "Open Archive". Images and style sheets can be saved too, and multiple generations can be kept.</p>
+				<span class="more">How to archive &rarr;</span>
+			</a>
+		</div>
+	</div>
+</header>
+
+<main class="wrap">
+
+	<section class="chapter" id="start">
+		<h2>Getting Started</h2>
+		<ol class="steps">
+			<li>
+				<h3>Register items</h3>
+				<p>Select "File" - "New" - "Add HTTP Item..." and enter the URL of the page to check. You can also get the page shown in a browser, or add items by drag and drop.</p>
+			</li>
+			<li>
+				<h3>Check for updates</h3>
+				<p>Select "Check" - "Check All Items" (<kbd>Ctrl</kbd>+<kbd>F5</kbd>). Updated items are shown with the "UP" icon and listed in the update message. Set the auto check to check periodically.</p>
+			</li>
+			<li class="archive">
+				<h3>Open pages and archives</h3>
+				<p>Double-click an item to open the page in the browser. The pages saved at check time can be opened at any time with "Open Archive" in the right-click menu.</p>
+			</li>
+		</ol>
+	</section>
+
+	<nav class="toc">
+		<h2>Contents</h2>
+		<div class="toc-grid">
+			<div>
+				<h4>Introduction</h4>
+				<ul>
+					<li><a href="#how">What is WWWC?</a></li>
+					<li><a href="#use">Uses</a></li>
+					<li><a href="#func">Features</a></li>
+					<li><a href="#install">Installation</a></li>
+				</ul>
+			</div>
+			<div>
+				<h4>Creating Items</h4>
+				<ul>
+					<li><a href="#new_menu">Creating from the Menu</a></li>
+					<li><a href="#new_dnd">Adding by Drag and Drop</a></li>
+				</ul>
+				<h4>Checking</h4>
+				<ul>
+					<li><a href="#check_item" class="key">Checking Items</a></li>
+					<li><a href="#check_all">Checking All Items</a></li>
+					<li><a href="#up_msg">Update Message</a></li>
+				</ul>
+			</div>
+			<div>
+				<h4>Settings</h4>
+				<ul>
+					<li><a href="#op_gene">General</a></li>
+					<li><a href="#op_auto">Auto Check</a></li>
+					<li><a href="#op_protocol">Protocols</a></li>
+					<li><a href="#op_tool">Tools</a></li>
+				</ul>
+			</div>
+			<div>
+				<h4>HTTP</h4>
+				<ul>
+					<li><a href="#http_check">Check Method</a></li>
+					<li><a href="#http_proxy">Proxy Settings</a></li>
+					<li><a href="#http_menu">Menu</a></li>
+					<li><a href="#http_archive" class="key archive">Archive</a></li>
+					<li><a href="#http_brows">Opening in a Browser</a></li>
+				</ul>
+				<h4>Others</h4>
+				<ul>
+					<li><a href="#cmdline">Command Line</a></li>
+					<li><a href="#info">Support</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<section class="chapter">
+		<h2>Introduction</h2>
+
+		<article id="how">
+			<h3>What is WWWC?</h3>
+			<p>WWWC is a web page update checker for Windows.</p>
+			<p>Register the URLs of the web pages you visit often, and WWWC notifies you when the pages are updated.</p>
+			<p>WWWC checks all the registered URLs while keeping up to 30 checks running at the same time. This is much faster than visiting each page with a browser to see whether it has been updated.</p>
+			<p>WWWC is used in the same way as Explorer, the file manager that comes with Windows.</p>
+			<p>WWWC is free software. You may distribute it freely without permission.</p>
+			<figure><img src="manual/main_en.png" alt="The main window of WWWC" width="640"><figcaption>The main window: folders on the left, items on the right. Updated items have the "UP" icon.</figcaption></figure>
+		</article>
+
+		<article id="use">
+			<h3>Uses</h3>
+			<ul>
+				<li>Register web pages that publish information and check them for updates.</li>
+				<li>Register the web pages of the software you use and check whether new versions have been released.</li>
+			</ul>
+		</article>
+
+		<article id="func">
+			<h3>Features</h3>
+			<ul>
+				<li>Checks automatically at specified times or at specified intervals.</li>
+				<li>Archives the checked pages so that you can see the previous content later.</li>
+				<li>Supports pages that require authentication.</li>
+				<li>Can check through a proxy, including proxy authentication.</li>
+				<li>Can use HTML META tags to handle update information other than the modified date and the size.</li>
+				<li>Exchanges URLs with Explorer and browsers by drag and drop.</li>
+				<li>Supports various protocols by adding protocol DLLs.</li>
+				<li>Can be extended by adding plug-in DLLs and tools.</li>
+			</ul>
+		</article>
+
+		<article id="install">
+			<h3>Installation</h3>
+			<p>WWWC runs on Windows 7, 8, 8.1, 10 and 11.</p>
+			<p>Run the installer (wwwc<strong>version</strong>.exe), choose the destination folder and where to create shortcuts, and install.
+			The installer runs as administrator. The default destination is the "WWWC" folder under "Program Files".</p>
+			<p>The settings and the items are saved in "%LOCALAPPDATA%\WWWC" (usually C:\Users\<i>user name</i>\AppData\Local\WWWC).
+			When WWWC starts for the first time, a folder with your user name is created in this folder, and the settings of each user are saved there.</p>
+			<p>To uninstall WWWC, use "Programs and Features" in the Control Panel ("Apps" in Settings). The uninstaller asks whether to delete the settings and the items.</p>
+			<p>WWWC is displayed in English if the display language of Windows is not Japanese.</p>
+			<p>WWWC requires an Internet connection.</p>
+		</article>
+	</section>
+
+	<section class="chapter">
+		<h2>Creating Items</h2>
+
+		<article id="new_menu">
+			<h3>Creating from the Menu</h3>
+			<p>Select "File" - "New" in the WWWC menu to create a new folder or a new item of each protocol.</p>
+			<p>Press <kbd>Ctrl</kbd>+<kbd>N</kbd> to show the "New" menu.</p>
+			<figure><img src="manual/additem_en.png" alt="The Add HTTP Item dialog" width="363"><figcaption>"Add HTTP Item": enter the name and the Check URL. "Get from Browser..." gets the page shown in a browser.</figcaption></figure>
+		</article>
+
+		<article id="new_dnd">
+			<h3>Adding by Drag and Drop</h3>
+			<p>Drag and drop a file onto the WWWC window to create an item from the file.</p>
+			<p>For example, if you drag and drop a file with the .URL extension onto WWWC, an HTTP item is created.</p>
+			<p>If you drag and drop a folder, the items are added together with the folder structure.</p>
+			<p>You can also create items by copying files or URLs to the clipboard and selecting "Paste" in WWWC.</p>
+		</article>
+	</section>
+
+	<section class="chapter">
+		<h2>Checking</h2>
+
+		<article id="check_item" class="key">
+			<h3>Checking Items<span class="badge">Key feature</span></h3>
+			<p>Select items and choose "Check" from the right-click menu to check the selected items for updates.
+			You can also check from the toolbar or from the "Check" menu of the window.</p>
+			<p>If no items are selected, all the items in the current folder are checked.</p>
+			<p>If a folder is selected, the items in the folder are checked.
+			However, the folders below it are not checked. To check them as well, select "Check with Subfolders".</p>
+			<p>When you check with "Check", the items and folders set to "Do Not Check" are also checked.</p>
+		</article>
+
+		<article id="check_all">
+			<h3>Checking All Items</h3>
+			<p>Select "Check All Items" in the "Check" menu of the window to check all the items registered in WWWC.</p>
+			<p>Select "Check Error Items Only" to find the items with errors or timeouts among all the registered items and check them again.</p>
+			<p>When you check with "Check All Items", "Check with Subfolders" or "Check Error Items Only", the items and folders set to "Do Not Check" are not checked.</p>
+		</article>
+
+		<article id="up_msg">
+			<h3>Update Message</h3>
+			<p>When a check finishes, the update message is displayed.</p>
+			<p>The update message lists the items whose icons have changed to the updated icon ("UP") in this check.</p>
+			<p>Double-click an item in the update message or in the main window to open the item. For example, the URL of an HTTP item is opened in the browser.</p>
+			<p>When you open an item, its icon is reset automatically.
+			To reset the icons without opening the items, select the items and choose "Reset Icon".</p>
+		</article>
+	</section>
+
+	<section class="chapter">
+		<h2>Settings</h2>
+
+		<article id="op_gene">
+			<h3>General</h3>
+			<p>Select "Options..." in the "View" menu of the window to open the options.</p>
+			<p>The "General" tab contains the general settings of WWWC.</p>
+			<p>If you turn on "Share the items and settings among all users", you can use WWWC with the same settings even if you sign in to Windows with a different user name.
+			WWWC manages the items and the settings by the user name you use to sign in to Windows, so a different user name means different settings.
+			Turn on this setting to use the same settings with different user names.</p>
+			<p>"Number of items checked at a time" is the number of items checked at the same time.
+			When the check of an item finishes, the check of the next item starts, so the number of running checks is always kept at this number.</p>
+			<p>If you turn on "Show an icon in the task tray", an icon is shown in the task tray (notification area), and the window disappears from the taskbar when it is minimized.
+			If you turn on "Do not show the window at startup", the window is not shown at startup and only the icon in the task tray is shown.</p>
+			<p>In "When Items Are Updated", if you turn on "Show a message", the update message is displayed when a check finishes and there are updated items.
+			If you turn on "Play a sound", a sound is played when a check finishes and there are updated items. You can also choose the sound to play.</p>
+			<p>For more detailed display and behavior settings, edit "user.ini" in the user folder (the folder with the name of the user signed in to Windows) in the folder where the settings are saved (%LOCALAPPDATA%\WWWC).
+			See "<a href="ini_sample.txt">ini_sample.txt</a>" (Japanese) for the settings. Exit WWWC before you edit the file.</p>
+		</article>
+
+		<article id="op_auto">
+			<h3>Auto Check</h3>
+			<p>On the "Auto Check" tab, you set the times when checks are run automatically.</p>
+			<p>Click "Add..." to add a new setting. You can register multiple settings.</p>
+			<p>At a registered time, WWWC runs "Check All Items".
+			If you turn on "Check at startup", WWWC checks all the items when it starts.</p>
+			<figure><img src="manual/autocheck_en.png" alt="The Auto Check tab of the options" width="361"><figcaption>"Auto Check": register the times or intervals at which all items are checked.</figcaption></figure>
+			<p>The folder properties also have the same "Auto Check" settings.
+			If you set the auto check of a folder, the auto check settings of the options do not apply to the folder, and the folder is checked automatically on its own.</p>
+			<p>The auto check settings of the options cannot use intervals in minutes. To check every few minutes, for example to check mail, use the auto check settings of a folder, which can use intervals in minutes.</p>
+			<div class="callout"><p>Short auto check intervals put load on the servers. Use long intervals and do not check more often than necessary.</p></div>
+		</article>
+
+		<article id="op_protocol">
+			<h3>Protocols</h3>
+			<p>On the "Protocols" tab, you set the protocols that WWWC checks.</p>
+			<p>Click "Add..." and select a DLL to add a protocol.</p>
+			<p>Click "Edit..." to edit the protocol information, such as the icons of each protocol.</p>
+			<p>Click "Properties" to set the settings of each protocol. For example, select the HTTP protocol and click "Properties" to set the proxy.</p>
+		</article>
+
+		<article id="op_tool">
+			<h3>Tools</h3>
+			<p>On the "Tools" tab, you can register programs and plug-ins that extend WWWC.</p>
+			<p>Click "Add..." to open the tool settings.
+			If you select a DLL as the file name in the tool settings, it is registered as a plug-in.
+			If you select an EXE file or a file with another extension, the file is run according to the run options.</p>
+			<p>The command line in the tool settings can contain two kinds of information: information of each item (1 to 8) and information of the whole of WWWC (9 to 12).
+			The information of each item is available only when "Show in the item menu" is turned on and the tool is run from the item menu.
+			To run a tool for each item from somewhere other than the item menu, create a plug-in.</p>
+			<p>Click "Properties" to set the settings of each plug-in. Tools that are not plug-ins have no properties.</p>
+			<p>If you drag and drop a DLL onto WWWC, you can register the protocols and tools in the DLL at once.</p>
+		</article>
+	</section>
+
+	<section class="chapter">
+		<h2>HTTP</h2>
+
+		<article id="http_check">
+			<h3>Check Method</h3>
+			<p>HTTP (URLs that start with "http://" or "https://") can be checked by default.</p>
+			<p>To check an HTTP item, WWWC usually sends a "HEAD" request, which gets only the header, and gets the update information from the header returned by the server.</p>
+			<p>However, some web pages are created dynamically by CGI, SSI and so on, and the update information cannot be obtained.
+			In this case, WWWC sends a "GET" request, which gets the whole page, and checks for updates by the size of the page.</p>
+			<div class="callout"><p>Checking pages that are created dynamically by CGI, SSI and so on puts load on the servers. If you do not need to check them, set them to "Do Not Check".</p></div>
+			<p>If you need to check such a page but the size changes every time, create "filter.txt" in the folder where the settings are saved (%LOCALAPPDATA%\WWWC) with reference to "<a href="filter_sample.txt">filter_sample.txt</a>" (Japanese).
+			You can remove the parts of the page that change every time, or extract the part with new information, to check the page reliably.</p>
+			<dl>
+				<dt>"Check by modified date"</dt>
+				<dd>Effective when the modified date can be obtained. If it cannot be obtained, this setting is ignored automatically.</dd>
+				<dt>"Check by size"</dt>
+				<dd>If the size can be obtained from the header, the item is checked by that size.
+				If it cannot be obtained from the header, if "Check by the size without HTML tags" is turned on, or if a filter is applied, the item is checked by the size of the page.</dd>
+				<dt>"Check by changes in the full content (MD5)"</dt>
+				<dd>The item is checked by the MD5 digest of the received HTML. This is not done if the modified date is obtained and the page has not been updated.
+				You can check specific parts of a page by combining this with filters.</dd>
+				<dt>"Check with a META tag"</dt>
+				<dd>If a WWWC META tag is embedded in a web page and this setting is turned on,
+				the item is checked by the content written in the META tag, and the content is displayed as the modified date.
+				You can customize the setting to check the update information of META tags other than the WWWC one.</dd>
+			</dl>
+			<p>If the page to check requires user authentication, open the "Options" tab of the item properties, turn on "This URL requires user authentication", and set the user and the password.
+			The supported authentication method is BASIC authentication (BASE64).</p>
+			<p>With "User-Agent" on the "Options" tab of the item properties, you can set the User-Agent sent when the item is checked and archived. If it is empty, the User-Agent of WWWC is sent. Characters other than single-byte letters, digits and symbols are removed.</p>
+		</article>
+
+		<article id="http_proxy">
+			<h3>Proxy Settings</h3>
+			<p>To open the HTTP settings, select "HTTP" in the protocol list on the "Protocols" tab of the options and click "Properties".</p>
+			<p>In the HTTP settings, you can set the proxy used for HTTP.</p>
+			<p>Automatic proxy configuration (such as "http://hoge/hoge.pac") is not supported.
+			Specify the name of the proxy server directly.</p>
+			<p>Web servers in your LAN may need to be checked without a proxy.
+			In this case, open the "Options" tab of the item properties and turn on "Do not use a proxy".
+			You can also set an item to use a proxy other than the protocol settings in the item properties.</p>
+		</article>
+
+		<article id="http_menu">
+			<h3>Menu</h3>
+			<p>Right-click an HTTP item to show the menu specific to HTTP items.</p>
+			<dl>
+				<dt>"Open Archive"</dt>
+				<dd>Opens the page saved when it was checked (archive) in the browser.
+				You can see the previous content, for example, when the page has been removed. This cannot be selected if there is no archive.</dd>
+				<dt>"View Header"</dt>
+				<dd>Shows the response header of the URL registered in the item.
+				The item is checked by the "Last-Modified:" field shown here.
+				If "Last-Modified:" is not included, the item is checked by the size of the HTML.</dd>
+				<dt>"View Source"</dt>
+				<dd>Receives the HTML from the URL registered in the item and shows it. The character encoding is converted automatically.
+				If you select "View Source" while holding down the Shift key, the source with the filters applied is shown, and "(Filtered)" is shown in the title bar.</dd>
+				<dt>"Get Title"</dt>
+				<dd>Receives the HTML from the URL registered in the item and sets the text enclosed in &lt;TITLE&gt; and &lt;/TITLE&gt; as the name of the item.</dd>
+			</dl>
+			<p>You can add tools and plug-ins to the item menu by registering them on the "Tools" tab of the options.</p>
+		</article>
+
+		<article id="http_archive" class="key archive">
+			<h3>Archive<span class="badge archive">Key feature</span></h3>
+			<p>When a page is checked successfully and has been updated (or has no archive yet), WWWC saves the page in the "<i>user name</i>.archive" folder in the same location as the user folder.
+			Select "Open Archive" in the item menu to open the saved page.</p>
+			<p>On the "Archive" tab of the item properties, you can set whether to archive the page, whether to save images, style sheets (CSS) and JavaScript, and the number of generations to keep.
+			By default, the page is archived, images and CSS are saved, JavaScript is not saved, and one generation (the latest only) is kept.
+			Click "Delete Archive" on the same tab to delete the archive of the item.</p>
+			<figure><img src="manual/archive_en.png" alt="The Archive tab of the item properties" width="363"><figcaption>"Archive" tab of the item properties: choose what to save and how many generations to keep.</figcaption></figure>
+			<p>Pages that require authentication are not archived. If authentication (a user name and a password) is set for an item, or if the URL contains a user name, the item is not archived.</p>
+			<p>If you change the settings for images, style sheets or JavaScript, WWWC asks whether to delete the existing archive. If you delete it, an archive with the new settings is created at the next check.</p>
+			<p>If JavaScript is not saved, the scripts and event attributes in the page are removed when the page is saved, so that no scripts run when you open the archive. Scripts do not run in embedded pages (iframes) either.</p>
+			<p>Images are downloaded again only if they have changed since the last time. If you keep two or more generations, a list of the saved dates and times is shown when you open the archive.</p>
+			<p>To stop archiving for all items, select "View" - "Options..." - "Protocols", open the HTTP settings, and turn off "Use archives" on the "Archive" tab.</p>
+		</article>
+
+		<article id="http_brows">
+			<h3>Opening in a Browser</h3>
+			<p>Double-click an item to open the URL set in the item in the browser.
+			If a browser is already running, the URL is opened in that browser.</p>
+			<p>If you drag and drop an item onto a browser, the URL of the item is passed to that browser.</p>
+			<p>If the View URL is set, the page is opened with that URL. If the View URL is not set, the page is opened with the Check URL.</p>
+			<p>To open URLs in a new browser window, register a tool in the options.</p>
+			<ol>
+				<li>Click "Add..." on the "Tools" tab of the options and specify the location of Chrome, Firefox and so on</li>
+				<li>Set the title to something like "Open in New Browser"</li>
+				<li>Enter %u in the command line (for Chrome, enter "--new-window %u"; for Firefox, enter "-new-window %u")</li>
+				<li>In the run options, turn on "Show in the item menu" and enter http in "Protocols to apply to"</li>
+				<li>To reset the icon when the tool is run, turn on "Reset the icon after running" in the run options</li>
+				<li>Click [OK] to finish</li>
+			</ol>
+			<p>With these settings, <b>[Open in New Browser]</b> is added to the menu.</p>
+			<p>To make this action the action when an item is double-clicked, turn on "Run when an item is double-clicked" in the tool settings.</p>
+		</article>
+	</section>
+
+	<section class="chapter">
+		<h2>Others</h2>
+
+		<article id="cmdline">
+			<h3>Command Line</h3>
+			<p>You can specify what WWWC does after it starts with the command line.</p>
+			<pre><code>WWWC.exe [/cisena] [/d:path] [/u:user name] [file...]</code></pre>
+			<ul class="options">
+				<li><code>/c</code><span>Check all items</span></li>
+				<li><code>/i</code><span>Reset the icons of all items</span></li>
+				<li><code>/s</code><span>Stop all checks</span></li>
+				<li><code>/e</code><span>Exit after the first check</span></li>
+				<li><code>/n</code><span>Do not exit after the first check if there are updates</span></li>
+				<li><code>/a</code><span>Do not activate WWWC that is already running</span></li>
+				<li><code>/d:</code><span>Specify the working folder</span></li>
+				<li><code>/u:</code><span>Specify the user name</span></li>
+			</ul>
+			<ul>
+				<li>If starting two instances is prevented without a message, /c /i /s /e /n and the files are passed to WWWC that is already running.</li>
+				<li>You can pass Item.dat, URLs, files of each protocol (for example, Internet shortcuts) and folders that contain them as the files. WWWC detects the kind of each file automatically and creates items.</li>
+				<li>If files are specified, a window to select the folder to add the items to is shown after WWWC starts.</li>
+				<li>If a plug-in DLL is specified as a file, a window to select the plug-ins to add is shown.</li>
+				<li>/n is effective only when /e is specified.</li>
+			</ul>
+		</article>
+
+		<article id="info">
+			<h3>Support</h3>
+			<p>The latest information, support information and tools are available on the <strong><a href="https://nakka.com/wwwc/">WWWC website</a></strong>.</p>
+			<p>The author takes no responsibility for any damage caused by this program. It is strongly recommended to back up important files.</p>
+		</article>
+	</section>
+
+</main>
+
+<footer>
+	<div class="wrap">
+		<p>Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.</p>
+		<p><a href="https://nakka.com/">nakka.com</a> &nbsp;|&nbsp; <a href="mailto:nakka@nakka.com">nakka@nakka.com</a></p>
+	</div>
+</footer>
+
+</body>
+</html>

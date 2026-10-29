@@ -41,10 +41,12 @@
 #define APP_NAME					"WWWC"
 #define APP_VERSION					"1.2.0"
 #define APP_COPYRIGHT				"Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved."
-#define APP_URL						"https://www.nakka.com/"
+#define APP_URL						"https://nakka.com/"
 #define APP_MAIL					"nakka@nakka.com"
 #define BANNER_URL					""
 
+#define APP_INI						"wwwc_app.ini"		//portable=0 の場合はデータを %LOCALAPPDATA%\WWWC に保存
+#define APP_DATA_DIR				"WWWC"
 #define GENERAL_INI					"general.ini"
 #define USER_INI					"user.ini"
 
@@ -516,6 +518,8 @@ char *CodeToEsc(char *buf);
 void GetNumString(char *buf, char *ret);
 void GetDateTime(char *fDay, char *fTime);
 char *GetIndexToString(struct TPITEM *tpItemInfo, int Index);
+void SetResLanguage(char *lang);
+char *GetResStr(UINT id);
 
 //--------------------------
 //	File

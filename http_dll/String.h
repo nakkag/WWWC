@@ -57,6 +57,9 @@ char *ConvStrCode(char *buf, char *ret);
 char *SrcConv(char *buf, long Size);
 int GetHtml2RtfSize(char *buf);
 void Html2Rtf(char *buf, char *ret);
+void SetResLanguage(void);
+char *GetResStr(UINT id);
+void FreeResStr(void);
 
 #endif
 /* End of source */

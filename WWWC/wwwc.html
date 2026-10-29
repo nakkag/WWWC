@@ -1,454 +1,677 @@
-<HTML>
-<HEAD>
-	<TITLE>WWWC</TITLE>
-</HEAD>
-<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#800000">
-<BR><CENTER>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WWWC マニュアル</title>
+<style>
+:root {
+	--bg: #f4f6fa;
+	--surface: #ffffff;
+	--text: #1d2433;
+	--muted: #5d6677;
+	--line: #dfe4ec;
+	--accent: #1f4fcf;
+	--accent-soft: #e7edfc;
+	--accent-text: #173ea6;
+	--archive: #0e8a6b;
+	--archive-soft: #e2f5ee;
+	--archive-text: #0a6b53;
+	--warn: #b5471c;
+	--warn-soft: #fdeee5;
+	--code-bg: #eef1f6;
+	--hero-a: #0f2a6b;
+	--hero-b: #1f4fcf;
+	--radius: 12px;
+	--shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 4px 16px rgba(16, 24, 40, .05);
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #11151d;
+		--surface: #1a2030;
+		--text: #e5e9f2;
+		--muted: #9aa5ba;
+		--line: #2a3346;
+		--accent: #7ea0ff;
+		--accent-soft: #1f2b4b;
+		--accent-text: #a9c0ff;
+		--archive: #45cfa6;
+		--archive-soft: #143a30;
+		--archive-text: #7fe3c6;
+		--warn: #ffb48e;
+		--warn-soft: #3a2419;
+		--code-bg: #222a3c;
+		--hero-a: #0b1d4d;
+		--hero-b: #1a3fa8;
+		--shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 4px 16px rgba(0, 0, 0, .3);
+	}
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: "Segoe UI", "Yu Gothic UI", "Meiryo UI", Meiryo, system-ui, sans-serif;
+	font-size: 15px;
+	line-height: 1.85;
+	-webkit-text-size-adjust: 100%;
+}
+a { color: var(--accent-text); text-decoration: none; }
+a:hover { text-decoration: underline; }
+p { margin: 0 0 .9em; }
+ul, ol { margin: 0 0 .9em; padding-left: 1.5em; }
+li { margin: .25em 0; }
+kbd {
+	font-family: inherit;
+	font-size: .9em;
+	padding: 0 .4em;
+	border: 1px solid var(--line);
+	border-bottom-width: 2px;
+	border-radius: 5px;
+	background: var(--surface);
+}
+code, pre {
+	font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+	font-size: .92em;
+}
+code { background: var(--code-bg); padding: .1em .4em; border-radius: 5px; }
+pre {
+	background: var(--code-bg);
+	padding: 12px 16px;
+	border-radius: 8px;
+	overflow-x: auto;
+	margin: 0 0 1em;
+}
+pre code { background: none; padding: 0; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
 
-<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
-<TR><TD>
-	<!-- Title -->
-	<H1>
-	<HR ALIGN="LEFT" SIZE="1" COLOR="#000080" NOSHADE>
-	<FONT SIZE="7" COLOR="#000000" FACE="Times">WWW</FONT><FONT SIZE="7" COLOR="#0000A0" FACE="Times">C</FONT>
-	<HR ALIGN="LEFT" SIZE="1" COLOR="#000080" NOSHADE>
-	</H1>
-</TD></TR>
-</TABLE>
+/* ヘッダ */
+.hero {
+	background: linear-gradient(135deg, var(--hero-a), var(--hero-b));
+	color: #fff;
+	padding: 48px 0 40px;
+}
+.brand {
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 52px;
+	line-height: 1;
+	letter-spacing: .02em;
+	margin: 0;
+}
+.brand span { color: #9fc0ff; }
+.tagline { font-size: 20px; font-weight: 600; margin: 10px 0 6px; }
+.lead { max-width: 640px; opacity: .92; margin-bottom: 26px; }
+.features {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 16px;
+}
+.feature {
+	display: block;
+	background: var(--surface);
+	color: var(--text);
+	border-radius: var(--radius);
+	padding: 20px 22px;
+	box-shadow: var(--shadow);
+	border-top: 4px solid var(--accent);
+}
+.feature.archive { border-top-color: var(--archive); }
+.feature:hover { text-decoration: none; transform: translateY(-2px); transition: transform .15s; }
+.feature .icon {
+	width: 36px; height: 36px;
+	border-radius: 9px;
+	display: flex; align-items: center; justify-content: center;
+	background: var(--accent-soft);
+	color: var(--accent-text);
+	margin-bottom: 10px;
+}
+.feature.archive .icon { background: var(--archive-soft); color: var(--archive-text); }
+.feature .icon svg { width: 20px; height: 20px; }
+.feature h3 { margin: 0 0 6px; font-size: 17px; }
+.feature p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+.feature .more { display: inline-block; margin-top: 10px; font-size: 14px; font-weight: 600; color: var(--accent-text); }
+.feature.archive .more { color: var(--archive-text); }
 
-<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
-	<!-- �ڎ� -->
-	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-		<H2><FONT COLOR="#FFFFFF">�ڎ�</FONT></H2>
-	</TD></TR>
+/* はじめかた */
+.steps {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 14px;
+	margin: 0 0 8px;
+	padding: 0;
+	list-style: none;
+	counter-reset: step;
+}
+.steps li {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 18px 18px 16px;
+	margin: 0;
+	position: relative;
+}
+.steps li::before {
+	counter-increment: step;
+	content: counter(step);
+	display: inline-flex; align-items: center; justify-content: center;
+	width: 28px; height: 28px;
+	border-radius: 50%;
+	background: var(--accent);
+	color: #fff;
+	font-weight: 700;
+	font-size: 14px;
+	margin-bottom: 8px;
+}
+.steps li.archive::before { background: var(--archive); }
+.steps h3 { margin: 0 0 4px; font-size: 15px; }
+.steps p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.7; }
 
-	<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-		<TABLE BORDER="0" WIDTH="100%" CELLPADDING="2" CELLSPACING="2" BORDERCOLOR="#FFFFFF">
-		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-			<FONT COLOR="#FFFFFF">�͂��߂�</FONT>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#how">WWWC �Ƃ́H</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#use">�p�r</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#func">�@�\</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#install">�C���X�g�[��</A>
-		</TD></TR>
+/* 目次 */
+.toc {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 20px 24px 8px;
+	margin: 28px 0;
+}
+.toc h2 { margin: 0 0 10px; font-size: 16px; }
+.toc-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 0 20px;
+}
+.toc h4 { margin: 8px 0 2px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.toc ul { list-style: none; padding: 0; margin: 0 0 10px; }
+.toc li { margin: 0; font-size: 14px; }
+.toc .key::after {
+	content: "主要";
+	font-size: 10px;
+	margin-left: 6px;
+	padding: 0 5px;
+	border-radius: 4px;
+	background: var(--accent-soft);
+	color: var(--accent-text);
+	vertical-align: 1px;
+}
+.toc .key.archive::after { background: var(--archive-soft); color: var(--archive-text); }
 
-		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-			<FONT COLOR="#FFFFFF">�A�C�e���̍쐬</FONT>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#new_menu">���j���[����V�K�쐬</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#new_dnd">�h���b�O���h���b�v�Œǉ�</A>
-		</TD></TR>
+/* 本文 */
+main { padding: 8px 0 40px; }
+.chapter { margin: 36px 0 0; }
+.chapter > h2 {
+	font-size: 22px;
+	margin: 0 0 14px;
+	padding-left: 12px;
+	border-left: 5px solid var(--accent);
+	line-height: 1.3;
+}
+.chapter.archive > h2 { border-left-color: var(--archive); }
+article {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 20px 24px 10px;
+	margin: 0 0 14px;
+	scroll-margin-top: 16px;
+}
+article > h3 { margin: 0 0 12px; font-size: 17px; }
+article.key { border-color: var(--accent); box-shadow: var(--shadow); }
+article.key.archive { border-color: var(--archive); }
+.badge {
+	display: inline-block;
+	font-size: 11px;
+	font-weight: 700;
+	padding: 1px 8px;
+	border-radius: 999px;
+	background: var(--accent-soft);
+	color: var(--accent-text);
+	vertical-align: 3px;
+	margin-left: 8px;
+}
+.badge.archive { background: var(--archive-soft); color: var(--archive-text); }
+.callout {
+	border-left: 4px solid var(--warn);
+	background: var(--warn-soft);
+	padding: 10px 14px;
+	border-radius: 0 8px 8px 0;
+	margin: 0 0 1em;
+}
+.callout p { margin: 0; }
+figure {
+	margin: 4px 0 18px;
+	text-align: center;
+}
+figure img {
+	max-width: 100%;
+	height: auto;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	box-shadow: var(--shadow);
+}
+figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.options { margin: 0 0 1em; padding: 0; list-style: none; }
+.options li {
+	display: grid;
+	grid-template-columns: 5em 1fr;
+	gap: 8px;
+	padding: 3px 0;
+	border-bottom: 1px dashed var(--line);
+}
+.options li:last-child { border-bottom: 0; }
+.options code { background: none; padding: 0; font-weight: 600; }
+dl { margin: 0 0 1em; }
+dt { font-weight: 700; margin-top: .6em; }
+dd { margin: 0 0 .3em 1.2em; }
 
-		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-			<FONT COLOR="#FFFFFF">�`�F�b�N</FONT>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#check_item">�A�C�e�����`�F�b�N</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#check_all">���ׂẴA�C�e�����`�F�b�N</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#up_msg">�X�V���b�Z�[�W</A>
-		</TD></TR>
+footer {
+	border-top: 1px solid var(--line);
+	color: var(--muted);
+	font-size: 13px;
+	padding: 24px 0 36px;
+	text-align: center;
+}
+footer p { margin: 0 0 4px; }
+@media (max-width: 600px) {
+	.brand { font-size: 42px; }
+	article { padding: 16px 16px 8px; }
+	.toc { padding: 16px 16px 4px; }
+	.options li { grid-template-columns: 1fr; gap: 0; }
+}
+@media print {
+	body { background: #fff; }
+	.hero { background: none; color: #000; padding: 20px 0; }
+	.feature, article, .toc, .steps li, figure img { box-shadow: none; }
+}
+</style>
+</head>
+<body>
 
-		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-			<FONT COLOR="#FFFFFF">�ݒ�</FONT>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#op_gene">�S��</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#op_auto">�����`�F�b�N</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#op_protocol">�v���g�R��</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#op_tool">�c�[��</A>
-		</TD></TR>
+<header class="hero">
+	<div class="wrap">
+		<h1 class="brand">WWW<span>C</span></h1>
+		<p class="tagline">Webページの更新チェッカ</p>
+		<p class="lead">よく見るWebページのURLを登録しておくと、更新があったときに通知します。チェックしたページはアーカイブとして保存され、ページが無くなった後でも以前の内容を見ることができます。</p>
+		<div class="features">
+			<a class="feature" href="#check_item">
+				<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/><path d="m8.5 11 2 2 3.5-4"/></svg></div>
+				<h3>Webページの更新チェック</h3>
+				<p>登録したURLをまとめてチェックし、更新されたページをアイコンと更新メッセージで知らせます。指定した時刻や間隔での自動チェックもできます。</p>
+				<span class="more">チェックの使い方 →</span>
+			</a>
+			<a class="feature archive" href="#http_archive">
+				<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9"/><path d="M10 13h4"/></svg></div>
+				<h3>Webページのアーカイブ</h3>
+				<p>チェックに成功したページを保存し、「アーカイブを開く」でいつでも見られます。画像やスタイルシートも保存でき、複数の世代を残すこともできます。</p>
+				<span class="more">アーカイブの使い方 →</span>
+			</a>
+		</div>
+	</div>
+</header>
 
-		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-			<FONT COLOR="#FFFFFF">HTTP</FONT>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#http_check">�`�F�b�N���@</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#http_proxy">Proxy�ݒ�</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#http_menu">���j���[</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#http_archive">�A�[�J�C�u</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#http_brows">�u���E�U�ɕ\��</A>
-		</TD></TR>
+<main class="wrap">
 
-		<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-			<FONT COLOR="#FFFFFF">���̑�</FONT>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#cmdline">�R�}���h���C��</A>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<A HREF="#info">�T�|�[�g</A>
-		</TD></TR>
-		</TABLE>
-	</TD></TR>
-</TABLE>
+	<section class="chapter" id="start">
+		<h2>はじめかた</h2>
+		<ol class="steps">
+			<li>
+				<h3>アイテムを登録する</h3>
+				<p>「ファイル」→「新規作成」→「HTTPアイテムの追加」でチェックしたいページのURLを登録します。ブラウザで表示中のページの情報を取得したり、ドラッグ＆ドロップで追加することもできます。</p>
+			</li>
+			<li>
+				<h3>更新をチェックする</h3>
+				<p>「チェック」→「すべてのアイテムをチェック」(<kbd>Ctrl</kbd>+<kbd>F5</kbd>) でチェックします。更新されたアイテムは「UP」アイコンになり、更新メッセージに一覧表示されます。自動チェックを設定すると定期的にチェックします。</p>
+			</li>
+			<li class="archive">
+				<h3>ページを開く・アーカイブを見る</h3>
+				<p>アイテムをダブルクリックするとブラウザでページを開きます。チェック時に保存したページは、右クリックの「アーカイブを開く」でいつでも見られます。</p>
+			</li>
+		</ol>
+	</section>
 
-<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
-	<!-- �͂��߂� -->
-	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-		<H2><FONT COLOR="#FFFFFF">�͂��߂�</FONT></H2>
-	</TD></TR>
+	<nav class="toc">
+		<h2>目次</h2>
+		<div class="toc-grid">
+			<div>
+				<h4>はじめに</h4>
+				<ul>
+					<li><a href="#how">WWWC とは？</a></li>
+					<li><a href="#use">用途</a></li>
+					<li><a href="#func">機能</a></li>
+					<li><a href="#install">インストール</a></li>
+				</ul>
+			</div>
+			<div>
+				<h4>アイテムの作成</h4>
+				<ul>
+					<li><a href="#new_menu">メニューから新規作成</a></li>
+					<li><a href="#new_dnd">ドラッグ＆ドロップで追加</a></li>
+				</ul>
+				<h4>チェック</h4>
+				<ul>
+					<li><a href="#check_item" class="key">アイテムをチェック</a></li>
+					<li><a href="#check_all">すべてのアイテムをチェック</a></li>
+					<li><a href="#up_msg">更新メッセージ</a></li>
+				</ul>
+			</div>
+			<div>
+				<h4>設定</h4>
+				<ul>
+					<li><a href="#op_gene">全般</a></li>
+					<li><a href="#op_auto">自動チェック</a></li>
+					<li><a href="#op_protocol">プロトコル</a></li>
+					<li><a href="#op_tool">ツール</a></li>
+				</ul>
+			</div>
+			<div>
+				<h4>HTTP</h4>
+				<ul>
+					<li><a href="#http_check">チェック方法</a></li>
+					<li><a href="#http_proxy">Proxyの設定</a></li>
+					<li><a href="#http_menu">メニュー</a></li>
+					<li><a href="#http_archive" class="key archive">アーカイブ</a></li>
+					<li><a href="#http_brows">ブラウザに表示</a></li>
+				</ul>
+				<h4>その他</h4>
+				<ul>
+					<li><a href="#cmdline">コマンドライン</a></li>
+					<li><a href="#info">サポート</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 
-		<!-- WWWC �Ƃ́H -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="how">WWWC �Ƃ́H</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>WWWC��Windows�œ��삷��Web�y�[�W�̍X�V�`�F�b�J�ł��B</P>
-			<P>�悭����Web�y�[�W��URL��WWWC�ɓo�^���Ă����ƁAWeb�y�[�W�ɍX�V���������Ƃ��ɒʒm����܂��B</P>
-			<P>WWWC�ɓo�^���Ă���URL�͍ő�30������ۂ��Ȃ���`�F�b�N�Ώۂ̑SURL�̍X�V�`�F�b�N���s���܂��B�����Ńu���E�U���g�p���čX�V����ĂȂ������ɍs�����y���ɍ����ɍX�V�̃`�F�b�N���s�����Ƃ��ł��܂��B</P>
-			<P>��{�I�Ȏg������Windows�ɕt�����Ă���G�N�X�v���[���i�t�@�C���𑀍삷��\�t�g�j�Ɠ����g�����ł��B</P>
-			<P>WWWC�̓t���[�\�t�g�E�F�A�ł��B�z�z�A�]�ڂ͎��R�ł��A���ɋ������K�v�͂���܂���B</P>
-		</TD></TR>
+	<section class="chapter">
+		<h2>はじめに</h2>
 
-		<!-- �p�r -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="use">�p�r</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<UL>
-				<LI>���𔭐M���Ă���Web�y�[�W��WWWC�ɓo�^���āA����Web�y�[�W�̍X�V���`�F�b�N���邱�Ƃ��ł��܂��B</LI>
-				<LI>�g�p���Ă���I�����C���\�t�g��Web�y�[�W��WWWC�ɓo�^���Ă����āA���̃I�����C���\�t�g���o�[�W�����A�b�v���Ă��Ȃ������ׂ邱�Ƃ��ł��܂��B</LI>
-			</UL>
-		</TD></TR>
+		<article id="how">
+			<h3>WWWC とは？</h3>
+			<p>WWWCはWindowsで動作するWebページの更新チェッカです。</p>
+			<p>よく見るWebページのURLをWWWCに登録しておくと、Webページに更新があったときに通知されます。</p>
+			<p>WWWCに登録してあるURLは最大30個同時を保ちながらチェック対象の全URLの更新チェックを行います。自分でブラウザを使用して更新されてないか見に行くより遥かに高速に更新のチェックを行うことができます。</p>
+			<p>基本的な使い方はWindowsに付属しているエクスプローラ（ファイルを操作するソフト）と同じ使い方です。</p>
+			<p>WWWCはフリーソフトウェアです。配布、転載は自由です、特に許可を取る必要はありません。</p>
+			<figure><img src="manual/main.png" alt="WWWCのメインウィンドウ" width="640"><figcaption>メインウィンドウ: 左がフォルダ、右がアイテムの一覧です。更新されたアイテムは「UP」のアイコンになります。</figcaption></figure>
+		</article>
 
-		<!-- �@�\ -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="func">�@�\</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<UL>
-				<LI>�w��̎�����w��̊Ԋu�Ŏ����I�ɍX�V�`�F�b�N���邱�Ƃ��ł��܂��B</LI>
-				<LI>�F�ؕt���̃y�[�W�ɑΉ����Ă��܂��B</LI>
-				<LI>Proxy���g�p�����X�V�`�F�b�N���ł��AProxy�̔F�؂ɂ��Ή����Ă��܂��B</LI>
-				<LI>HTML��META�^�O���g�p���āA�X�V������T�C�Y�ȊO�̍X�V�����������Ƃ��ł��܂��B</LI>
-				<LI>�h���b�O���h���b�v�ŃG�N�X�v���[����u���E�U��URL�������ł��܂��B</LI>
-				<LI>�v���g�R����DLL��ǉ����邱�Ƃɂ���ĐF�X�ȃv���g�R�����T�|�[�g���邱�Ƃ��ł��܂��B</LI>
-				<LI>�v���O�C����DLL��c�[����ǉ����邱�Ƃɂ���ċ@�\���g�����邱�Ƃ��ł��܂��B</LI>
-			</UL>
-		</TD></TR>
+		<article id="use">
+			<h3>用途</h3>
+			<ul>
+				<li>情報を発信しているWebページをWWWCに登録して、そのWebページの更新をチェックすることができます。</li>
+				<li>使用しているオンラインソフトのWebページをWWWCに登録しておいて、そのオンラインソフトがバージョンアップしていないか調べることができます。</li>
+			</ul>
+		</article>
 
-		<!-- �C���X�g�[�� -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="install">�C���X�g�[��</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>Windows 7, 8, 8.1, 10, 11�œ��삵�܂��B</P>
-			<P>�_�E�����[�h�����t�@�C����K���ȃt�H���_�ɓW�J���āA���̒��� <STRONG>WWWC.exe</STRONG> �����s���邾���ł��B</P>
-			<P>���߂ċN�������WWWC�̃t�H���_���Ƀ��[�U���̃t�H���_���쐬����A���[�U���̐ݒ���e���ۑ�����܂��B</P>
-			<P>���W�X�g���͎g�p���Ȃ����߃A���C���X�g�[�����s���Ƃ��� WWWC�̃t�H���_���폜���邾���ł����ł��B</P>
-			<P>WWWC�́A�C���^�[�l�b�g�ɐڑ��ł�����Ƃ����̂��O��ł��B </P>
-		</TD></TR>
-</TABLE>
+		<article id="func">
+			<h3>機能</h3>
+			<ul>
+				<li>指定の時刻や指定の間隔で自動的に更新チェックすることができます。</li>
+				<li>チェックしたページをアーカイブして、後から以前の内容を見ることができます。</li>
+				<li>認証付きのページに対応しています。</li>
+				<li>Proxyを使用した更新チェックができ、Proxyの認証にも対応しています。</li>
+				<li>HTMLのMETAタグを使用して、更新日時やサイズ以外の更新情報を扱うことができます。</li>
+				<li>ドラッグ＆ドロップでエクスプローラやブラウザとURLを交換できます。</li>
+				<li>プロトコルのDLLを追加することによって色々なプロトコルをサポートすることができます。</li>
+				<li>プラグインのDLLやツールを追加することによって機能を拡張することができます。</li>
+			</ul>
+		</article>
 
-<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
-	<!-- �A�C�e���̍쐬 -->
-	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-		<H2><FONT COLOR="#FFFFFF">�A�C�e���̍쐬</FONT></H2>
-	</TD></TR>
+		<article id="install">
+			<h3>インストール</h3>
+			<p>Windows 7, 8, 8.1, 10, 11で動作します。</p>
+			<p>インストーラ (wwwc<strong>バージョン</strong>.exe) を実行して、インストール先のフォルダとショートカットを作成する場所を指定してインストールします。
+			インストーラは管理者権限で実行します。既定のインストール先は「Program Files」の中の「WWWC」フォルダです。</p>
+			<p>設定とアイテムの情報は「%LOCALAPPDATA%\WWWC」(通常は C:\Users\ユーザ名\AppData\Local\WWWC) に保存します。
+			初めて起動するとこのフォルダ内にユーザ名のフォルダが作成され、ユーザ毎の設定内容が保存されます。</p>
+			<p>アンインストールはコントロールパネルの「プログラムと機能」(設定の「アプリ」) から行います。設定とアイテムの情報を削除するかどうかはアンインストール時に確認します。</p>
+			<p>Windowsの表示言語が日本語以外の場合は英語で表示します。</p>
+			<p>WWWCは、インターネットに接続できる環境というのが前提です。</p>
+		</article>
+	</section>
 
-		<!-- ���j���[����V�K�쐬 -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="new_menu">���j���[����V�K�쐬</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>WWWC�̃��j���[�́u�t�@�C���v���u�V�K�쐬�v��I������ƃt�H���_�ƃv���g�R�����̃A�C�e����V�K�ɍ쐬���邱�Ƃ��ł��܂��B</P>
-			<P>Ctrl+N �ŐV�K�쐬�̃��j���[��\�����܂��B</P>
-		</TD></TR>
+	<section class="chapter">
+		<h2>アイテムの作成</h2>
 
-		<!-- �h���b�O���h���b�v�Œǉ� -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="new_dnd">�h���b�O���h���b�v�Œǉ�</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>�t�@�C����WWWC�̃E�B���h�E�Ƀh���b�O���h���b�v����ƁA���̃t�@�C������A�C�e�����쐬���܂��B</P>
-			<P>�Ⴆ�Ίg���q�� �`.URL �̃t�@�C����WWWC�Ƀh���b�O���h���b�v�����HTTP�̃A�C�e�����쐬���܂��B</P>
-			<P>�t�H���_���ƃh���b�O���h���b�v����ƊK�w���܂߂ăA�C�e����ǉ����܂��B</P>
-			<P>�t�@�C����URL���N���b�v�{�[�h�ɃR�s�[���āAWWWC�Łu�\��t���v���s���Ă��A�C�e�����쐬���邱�Ƃ��ł��܂��B</P>
-		</TD></TR>
-</TABLE>
+		<article id="new_menu">
+			<h3>メニューから新規作成</h3>
+			<p>WWWCのメニューの「ファイル」→「新規作成」を選択するとフォルダとプロトコル毎のアイテムを新規に作成することができます。</p>
+			<p><kbd>Ctrl</kbd>+<kbd>N</kbd> で新規作成のメニューを表示します。</p>
+			<figure><img src="manual/additem.png" alt="HTTPアイテムの追加画面" width="421"><figcaption>「HTTPアイテムの追加」: 名前とチェックするURLを入力します。「ブラウザから情報を取得」でブラウザに表示中のページを取得できます。</figcaption></figure>
+		</article>
 
-<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
-	<!-- �`�F�b�N -->
-	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-		<H2><FONT COLOR="#FFFFFF">�`�F�b�N</FONT></H2>
-	</TD></TR>
+		<article id="new_dnd">
+			<h3>ドラッグ＆ドロップで追加</h3>
+			<p>ファイルをWWWCのウィンドウにドラッグ＆ドロップすると、そのファイルからアイテムを作成します。</p>
+			<p>例えば拡張子が ～.URL のファイルをWWWCにドラッグ＆ドロップするとHTTPのアイテムを作成します。</p>
+			<p>フォルダごとドラッグ＆ドロップすると階層を含めてアイテムを追加します。</p>
+			<p>ファイルやURLをクリップボードにコピーして、WWWCで「貼り付け」を行ってもアイテムを作成することができます。</p>
+		</article>
+	</section>
 
-		<!-- �A�C�e�����`�F�b�N -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="check_item">�A�C�e�����`�F�b�N</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>�A�C�e����I�����ĉE�N���b�N�̃��j���[����u�`�F�b�N�v��I������ƑI������Ă���A�C�e���̍X�V���`�F�b�N���܂��B
-			�`�F�b�N�̓c�[���o�[��E�B���h�E���j���[�́u�`�F�b�N�v������ł��܂��B</P>
-			<P>�A�C�e�����I������Ă��Ȃ��ꍇ�͌��݊J���Ă���t�H���_���̑S�A�C�e�����X�V�`�F�b�N���܂��B</P>
-			<P>�t�H���_���I������Ă���ꍇ�͂��̃t�H���_�̒��̃A�C�e�����X�V�`�F�b�N���܂��B
-			�������X�ɉ��̊K�w�܂ł͍X�V�`�F�b�N���܂���B�X�ɉ��̊K�w���X�V�`�F�b�N����ꍇ�́u�K�w�`�F�b�N�v��I�����Ă��������B</P>
-			<P>�u�`�F�b�N�v�ōX�V�`�F�b�N���s���ꍇ�́u�`�F�b�N���Ȃ��v�ɐݒ肵�Ă���A�C�e����t�H���_���X�V�`�F�b�N���s���܂��B</P>
-		</TD></TR>
+	<section class="chapter">
+		<h2>チェック</h2>
 
-		<!-- ���ׂẴA�C�e�����`�F�b�N -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="check_all">���ׂẴA�C�e�����`�F�b�N</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>�E�B���h�E���j���[�̃`�F�b�N�ɂ���u���ׂẴA�C�e�����`�F�b�N�v��I�������WWWC�ɓo�^����Ă��邷�ׂẴA�C�e�����X�V�`�F�b�N���܂��B</P>
-			<P>�u�G���[�̃A�C�e���݂̂��`�F�b�N�v��I�������WWWC�ɓo�^����Ă��邷�ׂẴA�C�e������G���[���^�C���A�E�g�ɂȂ��Ă���A�C�e���T���čă`�F�b�N���s���܂��B</P>
-			<P>�u���ׂẴA�C�e�����`�F�b�N�v�u�K�w�`�F�b�N�v�u�G���[�̃A�C�e���݂̂��`�F�b�N�v�ōX�V�`�F�b�N���s���ꍇ�́u�`�F�b�N���Ȃ��v�ɐݒ肵�Ă���A�C�e����t�H���_�͍X�V�`�F�b�N���s���܂���B</P>
-		</TD></TR>
+		<article id="check_item" class="key">
+			<h3>アイテムをチェック<span class="badge">主要機能</span></h3>
+			<p>アイテムを選択して右クリックのメニューから「チェック」を選択すると選択されているアイテムの更新をチェックします。
+			チェックはツールバーやウィンドウメニューの「チェック」からもできます。</p>
+			<p>アイテムが選択されていない場合は現在開いているフォルダ内の全アイテムを更新チェックします。</p>
+			<p>フォルダが選択されている場合はそのフォルダの中のアイテムを更新チェックします。
+			しかし更に下の階層までは更新チェックしません。更に下の階層を更新チェックする場合は「階層チェック」を選択してください。</p>
+			<p>「チェック」で更新チェックを行う場合は「チェックしない」に設定しているアイテムやフォルダも更新チェックを行います。</p>
+		</article>
 
-		<!-- �X�V���b�Z�[�W -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="up_msg">�X�V���b�Z�[�W</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>�X�V�`�F�b�N���I������ƍX�V���b�Z�[�W���\������܂��B</P>
-			<P>�X�V���b�Z�[�W�ɂ͍���̍X�V�`�F�b�N�ŃA�C�R�����uUP�v�ɂȂ����A�C�e�����ꗗ�\������܂��B</P>
-			<P>�X�V���b�Z�[�W��WWWC�{�̂̃E�B���h�E�ŃA�C�e�����_�u���N���b�N����ƁA���̃A�C�e�����J���܂��B�Ⴆ��HTTP�̃A�C�e���̏ꍇ�̓A�C�e����URL���u���E�U�ɕ\�������܂��B</P>
-			<P>�A�C�e�����J���ƃA�C�e���̃A�C�R���͎����I�ɏ���������܂��B
-			�A�C�e�����J�����ɃA�C�R�����������������ꍇ�́A�������������A�C�e����I�����āu�A�C�R�����������v��I�����邱�ƂŃA�C�e���̃A�C�R��������������܂��B</P>
-		</TD></TR>
-</TABLE>
+		<article id="check_all">
+			<h3>すべてのアイテムをチェック</h3>
+			<p>ウィンドウメニューのチェックにある「すべてのアイテムをチェック」を選択するとWWWCに登録されているすべてのアイテムを更新チェックします。</p>
+			<p>「エラーのアイテムのみをチェック」を選択するとWWWCに登録されているすべてのアイテムからエラーかタイムアウトになっているアイテム探して再チェックを行います。</p>
+			<p>「すべてのアイテムをチェック」「階層チェック」「エラーのアイテムのみをチェック」で更新チェックを行う場合は「チェックしない」に設定しているアイテムやフォルダは更新チェックを行いません。</p>
+		</article>
 
-<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
-	<!-- �ݒ� -->
-	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-		<H2><FONT COLOR="#FFFFFF">�ݒ�</FONT></H2>
-	</TD></TR>
+		<article id="up_msg">
+			<h3>更新メッセージ</h3>
+			<p>更新チェックが終了すると更新メッセージが表示されます。</p>
+			<p>更新メッセージには今回の更新チェックでアイコンが「UP」になったアイテムが一覧表示されます。</p>
+			<p>更新メッセージかWWWC本体のウィンドウでアイテムをダブルクリックすると、そのアイテムを開きます。例えばHTTPのアイテムの場合はアイテムのURLをブラウザに表示させます。</p>
+			<p>アイテムを開くとアイテムのアイコンは自動的に初期化されます。
+			アイテムを開かずにアイコンを初期化したい場合は、初期化したいアイテムを選択して「アイコンを初期化」を選択することでアイテムのアイコンが初期化されます。</p>
+		</article>
+	</section>
 
-		<!-- �S�� -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="op_gene">�S��</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>�E�B���h�E���j���[�̕\���ɂ���u�I�v�V�����v��I������ƃI�v�V������ʂ��\������܂��B</P>
-			<P>�u�S�ʁv�̃^�u�ł�WWWC�S�ʂ̐ݒ���s���܂��B</P>
-			<P>�u���ׂẴ��[�U�ŋ��ʂ̃A�C�e�����Ɛݒ���g�p����v��ݒ肷��ƕʂ̃��[�U����Windows�Ƀ��O�C�����Ă������ݒ��WWWC���g����悤�ɂȂ�܂��B
-			WWWC��Windows�Ƀ��O�C���������[�U���ŃA�C�e�����Ɛݒ���Ǘ����Ă��邽�߁A�ʂ̃��[�U����Windows�Ƀ��O�C������ƕʂ̐ݒ��WWWC�ɂȂ�܂��B
-			�ʂ̃��O�C�����ł������ݒ���g���ꍇ�ɂ��̐ݒ��L���ɂ��Ă��������B</P>
-			<P>�u��x�Ƀ`�F�b�N����A�C�e���̐��v�͓����`�F�b�N���̐��ŁA�����Őݒ肵�������������ɍX�V�`�F�b�N���s���܂��B
-			��̃A�C�e���̃`�F�b�N���I���Ǝ��̃A�C�e���̃`�F�b�N���J�n���āA��ɂ����Őݒ肵�����̃`�F�b�N����ۂ��܂��B
-			�u�N�����ɂ��ׂẴA�C�e�����`�F�b�N�v��ݒ肷���WWWC�N�����ɂ��ׂẴA�C�e���̃`�F�b�N���J�n���܂��B</P>
-			<P>�u�^�X�N�g���C�ɃA�C�R����\������v��ݒ肷��ƃ^�X�N�g���C�ɃA�C�R����\������悤�ɂȂ�܂��B�E�B���h�E���ŏ�������ƃ^�X�N�o�[���������悤�ɂȂ�܂��B
-			�u�N�����ɃE�B���h�E��\�����Ȃ��v��ݒ肷��ƋN�����ɃE�B���h�E��\�����Ȃ��Ń^�X�N�g���C�̃A�C�R�����\������邾���ɂȂ�܂��B</P>
-			<P>�X�V���̓���Łu���b�Z�[�W���o���v��ݒ肷��ƍX�V�`�F�b�N���I������Ƃ��ɍX�V�A�C�e�������݂���ƍX�V���b�Z�[�W��\�����܂��B
-			�u����炷�v��ݒ肷��ƍX�V�`�F�b�N���I����čX�V�A�C�e�������݂���Ɖ���炷�悤�ɂ��܂��B�炷����ݒ肷�邱�Ƃ��ł��܂��B</P>
-			<P>�X�ɍׂ����\���⓮��̐ݒ���s�������ꍇ�́AWWWC.exe �����݂���t�H���_���ɂ��郆�[�U�f�B���N�g���iWindows�Ƀ��O�C���������[�U���j�̒��ɂ���uuser.ini�v��ҏW���邱�Ƃŉ\�ł��B
-			�ݒ���@�́u<A HREF="ini_sample.txt">ini_sample.txt</A>�v���Q�l�ɂ��Ă��������B�ݒ���s���Ƃ��� WWWC ���I�����Ă����Ă��������B</P>
-		</TD></TR>
+	<section class="chapter">
+		<h2>設定</h2>
 
-		<!-- �����`�F�b�N -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="op_auto">�����`�F�b�N</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>�u�����`�F�b�N�v�̃^�u�ł͎����ōX�V�`�F�b�N���s�����Ԑݒ���s���܂��B</P>
-			<P>�u�ǉ��v�{�^���ŐV�����ݒ��ǉ����邱�Ƃ��ł��܂��B�����̐ݒ��o�^�\�ł��B</P>
-			<P>�����`�F�b�N�œo�^���ꂽ����������Ɓu���ׂẴA�C�e�����`�F�b�N�v�̓�����s���܂��B</P>
-			<P>�t�H���_�̃v���p�e�B�ɂ�����Ɠ��l�́u�����`�F�b�N�v�̐ݒ肪����܂��B
-			�t�H���_�̎����`�F�b�N�ݒ���s���ƁA���̃t�H���_�̓I�v�V�����̎����`�F�b�N�ݒ肪�����ɂȂ�A�t�H���_�œƗ����Ď����`�F�b�N���s���܂��B</P>
-			<P>���P�ʂ̎����`�F�b�N�ݒ�͍s���܂���B���[���̃`�F�b�N�Ȃǂŕ��P�ʂōs�������ꍇ�́A�t�H���_���̎����`�F�b�N�ݒ���s���Ă��������B�t�H���_���̎����`�F�b�N�ł͕��P�ʂ̐ݒ肪�s���܂��B</P>
-			<P><FONT COLOR="#800000">�����`�F�b�N�̊Ԋu���Z���Ƃ��ꂾ���T�[�o�̕��ׂɂȂ�܂��B�X�V�`�F�b�N�̊Ԋu�͒��߂ɂ��ĕK�v�ȏ�ɍX�V�`�F�b�N���s��Ȃ��悤�ɂ��Ă��������B</FONT></P>
-		</TD></TR>
+		<article id="op_gene">
+			<h3>全般</h3>
+			<p>ウィンドウメニューの表示にある「オプション」を選択するとオプション画面が表示されます。</p>
+			<p>「全般」のタブではWWWC全般の設定を行います。</p>
+			<p>「すべてのユーザで共通のアイテム情報と設定を使用する」を設定すると別のユーザ名でWindowsにログインしても同じ設定のWWWCが使えるようになります。
+			WWWCはWindowsにログインしたユーザ名でアイテム情報と設定を管理しているため、別のユーザ名でWindowsにログインすると別の設定のWWWCになります。
+			別のログイン名でも同じ設定を使う場合にこの設定を有効にしてください。</p>
+			<p>「一度にチェックするアイテムの数」は同時チェック数の数で、ここで設定した数だけ同時に更新チェックを行います。
+			一つのアイテムのチェックが終わると次のアイテムのチェックを開始して、常にここで設定した数のチェック数を保ちます。</p>
+			<p>「タスクトレイにアイコンを表示する」を設定するとタスクトレイにアイコンを表示するようになります。ウィンドウを最小化するとタスクバーから消えるようになります。
+			「起動時にウィンドウを表示しない」を設定すると起動時にウィンドウを表示しないでタスクトレイのアイコンが表示されるだけになります。</p>
+			<p>更新時の動作で「メッセージを出す」を設定すると更新チェックが終わったときに更新アイテムが存在すると更新メッセージを表示します。
+			「音を鳴らす」を設定すると更新チェックが終わって更新アイテムが存在すると音を鳴らすようにします。鳴らす音を設定することもできます。</p>
+			<p>更に細かい表示や動作の設定を行いたい場合は、設定を保存するフォルダ (%LOCALAPPDATA%\WWWC) 内にあるユーザディレクトリ（Windowsにログインしたユーザ名）の中にある「user.ini」を編集することで可能です。
+			設定方法は「<a href="ini_sample.txt">ini_sample.txt</a>」を参考にしてください。設定を行うときは WWWC を終了しておいてください。</p>
+		</article>
 
-		<!-- �v���g�R�� -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="op_protocol">�v���g�R��</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>�u�v���g�R���v�̃^�u�ł�WWWC�ōX�V�`�F�b�N���s���v���g�R����ݒ肵�܂��B</P>
-			<P>�u�ǉ��v�{�^����DLL��I�����ăv���g�R����ǉ����܂��B</P>
-			<P>�u�ҏW�v�{�^���Ńv���g�R�����̐ݒ���s���܂��B�v���g�R�����̃A�C�R���̕ύX�Ȃǂ��s���܂��B</P>
-			<P>�u�v���p�e�B�v�{�^���Ńv���g�R�����̐ݒ���s���܂��B�Ⴆ��HTTP�̃v���g�R����I�����āu�v���p�e�B�v�{�^����������Proxy�̐ݒ�Ȃǂ��s���܂��B</P>
-		</TD></TR>
+		<article id="op_auto">
+			<h3>自動チェック</h3>
+			<p>「自動チェック」のタブでは自動で更新チェックを行う時間設定を行います。</p>
+			<p>「追加」ボタンで新しい設定を追加することができます。複数の設定を登録可能です。</p>
+			<p>自動チェックで登録された時刻が来ると「すべてのアイテムをチェック」の動作を行います。
+			「起動時にチェックする」を設定するとWWWC起動時にすべてのアイテムのチェックを開始します。</p>
+			<figure><img src="manual/autocheck.png" alt="オプションの自動チェックのタブ" width="420"><figcaption>「自動チェック」: すべてのアイテムをチェックする時刻や間隔を登録します。</figcaption></figure>
+			<p>フォルダのプロパティにもこれと同様の「自動チェック」の設定があります。
+			フォルダの自動チェック設定を行うと、そのフォルダはオプションの自動チェック設定が無効になり、フォルダで独立して自動チェックを行います。</p>
+			<p>分単位の自動チェック設定は行えません。メールのチェックなどで分単位で行いたい場合は、フォルダ毎の自動チェック設定を行ってください。フォルダ毎の自動チェックでは分単位の設定が行えます。</p>
+			<div class="callout"><p>自動チェックの間隔が短いとそれだけサーバの負荷になります。更新チェックの間隔は長めにして必要以上に更新チェックを行わないようにしてください。</p></div>
+		</article>
 
-		<!-- �c�[�� -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="op_tool">�c�[��</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>�u�c�[���v�̃^�u�ł�WWWC���g������\�t�g��v���O�C����o�^�ł��܂��B</P>
-			<P>�u�ǉ��v�{�^���Ńc�[���ݒ��ʂ��\������܂��B
-			�c�[���ݒ��ʂ̃t�@�C������ DLL ��I������Ǝ����I�Ƀv���O�C���Ƃ��ēo�^���܂��B
-			EXE �t�@�C���₻�̑��̊g���q�̃t�@�C����I������Ǝ��s�I�v�V�����ɂ��������ăt�@�C�������s����悤�ɂȂ�܂��B</P>
-			<P>�c�[���ݒ�Ŏw��ł���R�}���h���C���́A�A�C�e�����̏��(1�`8)��WWWC�S�̂̏��(9�`12)��2��ނ���܂��B
-			�A�C�e�����̏��́u�A�C�e���̃��j���[�ɕ\���v�Ƀ`�F�b�N������A�A�C�e���̃��j���[����Ă΂ꂽ�ꍇ�ɂ̂ݗL���ł��B
-			�A�C�e�����j���[�ȊO����A�C�e�����Ƀc�[�������s�������ꍇ�̓v���O�C�����쐬���邱�Ƃŉ\�ł��B</P>
-			<P>�u�v���p�e�B�v�{�^���Ńv���O�C�����̐ݒ���s���܂��B�v���O�C���ł͂Ȃ��c�[���ł̓v���p�e�B�̐ݒ�͍s���܂���B</P>
-			<P>DLL ��WWWC�Ƀh���b�O���h���b�v����ƁA����DLL�ɓo�^����Ă���v���g�R���ƃc�[������x�ɓo�^���邱�Ƃ��ł��܂��B</P>
-		</TD></TR>
-</TABLE>
+		<article id="op_protocol">
+			<h3>プロトコル</h3>
+			<p>「プロトコル」のタブではWWWCで更新チェックを行うプロトコルを設定します。</p>
+			<p>「追加」ボタンでDLLを選択してプロトコルを追加します。</p>
+			<p>「編集」ボタンでプロトコル情報の設定を行います。プロトコル毎のアイコンの変更などが行えます。</p>
+			<p>「プロパティ」ボタンでプロトコル毎の設定を行います。例えばHTTPのプロトコルを選択して「プロパティ」ボタンを押すとProxyの設定などが行えます。</p>
+		</article>
 
-<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
-	<!-- HTTP -->
-	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-		<H2><FONT COLOR="#FFFFFF">HTTP</FONT></H2>
-	</TD></TR>
+		<article id="op_tool">
+			<h3>ツール</h3>
+			<p>「ツール」のタブではWWWCを拡張するソフトやプラグインを登録できます。</p>
+			<p>「追加」ボタンでツール設定画面が表示されます。
+			ツール設定画面のファイル名で DLL を選択すると自動的にプラグインとして登録します。
+			EXE ファイルやその他の拡張子のファイルを選択すると実行オプションにしたがってファイルを実行するようになります。</p>
+			<p>ツール設定で指定できるコマンドラインは、アイテム毎の情報(1～8)とWWWC全体の情報(9～12)の2種類あります。
+			アイテム毎の情報は「アイテムのメニューに表示」にチェックがあり、アイテムのメニューから呼ばれた場合にのみ有効です。
+			アイテムメニュー以外からアイテム毎にツールを実行したい場合はプラグインを作成することで可能です。</p>
+			<p>「プロパティ」ボタンでプラグイン毎の設定を行います。プラグインではないツールではプロパティの設定は行えません。</p>
+			<p>DLL をWWWCにドラッグ＆ドロップすると、そのDLLに登録されているプロトコルとツールを一度に登録することができます。</p>
+		</article>
+	</section>
 
-		<!-- �`�F�b�N���@ -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="http_check">�`�F�b�N���@</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>HTTP�i�ghttp://�h��ghttps://�h �Ŏn�܂�URL�j�͕W���ōX�V�̃`�F�b�N���ł���悤�ɂȂ��Ă��܂��B</P>
-			<P>HTTP�A�C�e���̃`�F�b�N�ł͒ʏ�uHEAD�v�Ƃ����w�b�_���擾���郊�N�G�X�g�𑗂��āA�T�[�o���Ԃ��Ă����w�b�_����X�V�����擾���Ă��܂��B</P>
-			<P>������Web�y�[�W�ɂ���ẮACGI��SSI�Ȃǂ��g���ē��I�Ƀy�[�W���쐬���Ă��čX�V�����擾�ł��Ȃ��ꍇ������܂��B
-			���̏ꍇ�́uGET�v�Ƃ����y�[�W�S�̂��擾���郊�N�G�X�g�𑗂��āA�擾�����y�[�W�̃T�C�Y�ōX�V�̗L�����`�F�b�N���܂��B</P>
-			<P><FONT COLOR="#800000">CGI��SSI�Ȃǂ��g���ē��I�Ƀy�[�W���쐬���Ă���y�[�W���`�F�b�N����̂̓T�[�o�̕��ׂɂȂ�܂��̂ŁA�K�v�Ȃ���΁u�`�F�b�N���Ȃ��v�A�C�e���Ƃ��Ă��������B</FONT></P>
-			<P>�ǂ����Ă�CGI��SSI�Ȃǂ��g���ē��I�Ƀy�[�W���쐬���Ă���y�[�W���X�V�`�F�b�N����K�v������A
-			����T�C�Y���ς���ă`�F�b�N���s���Ȃ��ꍇ�́u<A HREF="filter_sample.txt">filter_sample.txt</A>�v���Q�l�ɂ��āufilter.txt�v��WWWC.DLL�Ɠ����t�H���_�ɍ쐬���邱�ƂŁA
-			�`�F�b�N����y�[�W�̖���ς�镔��������������A�V����񕔕��𒊏o���Ċm���Ƀ`�F�b�N���s�����Ƃ��ł��܂��B</P>
-			<UL>
-				<LI><STRONG>�u�X�V���Ń`�F�b�N�v</STRONG><BR>
-				�X�V�����擾�ł����ꍇ�ɗL���ł��B�X�V�����擾�ł��Ȃ��ꍇ�͎����I�ɖ����ɂȂ�܂��B</LI>
+	<section class="chapter">
+		<h2>HTTP</h2>
 
-				<LI><STRONG>�u�T�C�Y�Ń`�F�b�N�v</STRONG><BR>
-				�w�b�_����T�C�Y���擾�ł����ꍇ�́A���̃T�C�Y�Ń`�F�b�N���s���܂��B
-				�w�b�_����擾�ł��Ȃ��ꍇ��A�uHTML�^�O���������T�C�Y�Ń`�F�b�N�v���L���ȏꍇ��A�t�B���^���K�p���ꂽ�ꍇ�ɂ̓y�[�W�̃T�C�Y�Ń`�F�b�N���s���܂��B</LI>
+		<article id="http_check">
+			<h3>チェック方法</h3>
+			<p>HTTP（“http://”や“https://” で始まるURL）は標準で更新のチェックができるようになっています。</p>
+			<p>HTTPアイテムのチェックでは通常「HEAD」というヘッダを取得するリクエストを送って、サーバが返してきたヘッダから更新情報を取得しています。</p>
+			<p>しかしWebページによっては、CGIやSSIなどを使って動的にページを作成していて更新情報を取得できない場合があります。
+			その場合は「GET」というページ全体を取得するリクエストを送って、取得したページのサイズで更新の有無をチェックします。</p>
+			<div class="callout"><p>CGIやSSIなどを使って動的にページを作成しているページをチェックするのはサーバの負荷になりますので、必要なければ「チェックしない」アイテムとしてください。</p></div>
+			<p>どうしてもCGIやSSIなどを使って動的にページを作成しているページを更新チェックする必要があり、
+			毎回サイズが変わってチェックが行えない場合は「<a href="filter_sample.txt">filter_sample.txt</a>」を参考にして「filter.txt」を設定を保存するフォルダ (%LOCALAPPDATA%\WWWC) に作成することで、
+			チェックするページの毎回変わる部分を除去したり、新着情報部分を抽出して確実にチェックを行うこともできます。</p>
+			<dl>
+				<dt>「更新日でチェック」</dt>
+				<dd>更新日を取得できた場合に有効です。更新日が取得できない場合は自動的に無効になります。</dd>
+				<dt>「サイズでチェック」</dt>
+				<dd>ヘッダからサイズを取得できた場合は、そのサイズでチェックを行います。
+				ヘッダから取得できない場合や、「HTMLタグを除いたサイズでチェック」が有効な場合や、フィルタが適用された場合にはページのサイズでチェックを行います。</dd>
+				<dt>「内容の変化でチェック(MD5)」</dt>
+				<dd>取得したHTMLをMD5で要約した値にしてチェックを行います。更新日が取得できて更新が無い場合は処理されません。
+				フィルタを組み合わせて特定部分の更新チェックを行うことが可能です。</dd>
+				<dt>「METAタグを使ったチェック」</dt>
+				<dd>WebページにWWWCのMETAタグが埋め込まれている場合にこの設定を行うと、
+				METAタグに記述された内容でチェックを行い、更新日にMETAタグに記述された内容が表示されます。
+				WWWC以外のMETAタグの更新情報をチェックできるようにカスタマイズすることが可能です。</dd>
+			</dl>
+			<p>更新チェックを行うページがユーザ認証を必要とするページの場合は、アイテムのプロパティで「オプション」のタブを開き、「このURLはユーザ認証が必要」を設定してユーザとパスワードを設定してください。
+			対応している認証方式はBASIC認証(BASE64)です。</p>
+			<p>アイテムのプロパティの「オプション」のタブの「User-Agent」で、そのアイテムのチェックとアーカイブで送信する User-Agent を設定できます。空欄の場合は WWWC の User-Agent を送信します。半角の英数字と記号以外の文字は除かれます。</p>
+		</article>
 
-				<LI><STRONG>�u���e�̕ω��Ń`�F�b�N(MD5)�v</STRONG><BR>
-				�擾����HTML��MD5�ŗv�񂵂��l�ɂ��ă`�F�b�N���s���܂��B�X�V�����擾�ł��čX�V�������ꍇ�͏�������܂���B
-				�t�B���^��g�ݍ��킹�ē��蕔���̍X�V�`�F�b�N���s�����Ƃ��\�ł��B</LI>
+		<article id="http_proxy">
+			<h3>Proxyの設定</h3>
+			<p>HTTPの設定はオプション画面のプロトコルのタブでプロトコル一覧から「HTTP」を選択して「プロパティ」ボタンを押して設定できます。</p>
+			<p>HTTPの設定画面からHTTPで使用するProxyの設定が行えます。</p>
+			<p>Proxyの設定は自動設定（“http://hoge/hoge.pac” のような感じ）には対応していません。
+			Proxyのサーバ名を直接指定してください。</p>
+			<p>LAN内にあるWebサーバなどはProxyを通さずに更新チェックを行う必要があります。
+			その場合は、アイテムのプロパティで「オプション」のタブを開いて、「プロキシを使用しない」を設定してください。
+			他にアイテムのプロパティで設定と違うProxyを使用するように設定することもできます。</p>
+		</article>
 
-				<LI><STRONG>�uMETA�^�O���g�����`�F�b�N�v</STRONG><BR>
-				Web�y�[�W��WWWC��META�^�O�����ߍ��܂�Ă���ꍇ�ɂ��̐ݒ���s���ƁA
-				META�^�O�ɋL�q���ꂽ���e�Ń`�F�b�N���s���A�X�V����META�^�O�ɋL�q���ꂽ���e���\������܂��B
-				WWWC�ȊO��META�^�O�̍X�V�����`�F�b�N�ł���悤�ɃJ�X�^�}�C�Y���邱�Ƃ��\�ł��B</LI>
-			</UL>
-			<P>�X�V�`�F�b�N���s���y�[�W�����[�U�F�؂�K�v�Ƃ���y�[�W�̏ꍇ�́A�A�C�e���̃v���p�e�B�Łu�I�v�V�����v�̃^�u���J���A�u����URL�̓��[�U�F�؂��K�v�v��ݒ肵�ă��[�U�ƃp�X���[�h��ݒ肵�Ă��������B
-			�Ή����Ă���F�ؕ�����BASIC�F��(BASE64)�ł��B</P>
-			<P>�A�C�e���̃v���p�e�B�́u�I�v�V�����v�̃^�u�́uUser-Agent�v�ŁA���̃A�C�e���̃`�F�b�N�ƃA�[�J�C�u�ő��M���� User-Agent ��ݒ�ł��܂��B�󗓂̏ꍇ�� WWWC �� User-Agent �𑗐M���܂��B���p�̉p�����ƋL���ȊO�̕����͏�����܂��B</P>
-		</TD></TR>
+		<article id="http_menu">
+			<h3>メニュー</h3>
+			<p>HTTPのアイテムを右クリックするとHTTPアイテム固有のメニューが表示されます。</p>
+			<dl>
+				<dt>「アーカイブを開く」</dt>
+				<dd>チェックした時に保存したページ (アーカイブ) をブラウザで開きます。
+				ページが無くなった場合などに以前の内容を見ることができます。アーカイブが無い場合は選択できません。</dd>
+				<dt>「ヘッダー表示」</dt>
+				<dd>アイテムに登録されたURLのレスポンスヘッダを表示します。
+				これで表示される「Last-Modified:」の項目で更新チェックを行います。
+				この「Last-Modified:」が付加されていない場合はHTMLのサイズで更新チェックを行います。</dd>
+				<dt>「ソース表示」</dt>
+				<dd>アイテムに登録されたURLからHTMLを受信して表示します。文字コードは自動的に変換されます。
+				「shift」キーを押しながら「ソース表示」を選択するとフィルタを適用したソースが表示され、タイトルバーに(フィルタ)の文字が表示されます。</dd>
+				<dt>「タイトル取得」</dt>
+				<dd>アイテムに登録されたURLからHTMLを受信して &lt;TITLE&gt; ～ &lt;/TITLE&gt; で囲まれた文字列をアイテムのタイトルに設定します。</dd>
+			</dl>
+			<p>オプションのツールで、ツールやプラグインを登録してアイテムのメニューに追加することができます。</p>
+		</article>
 
-		<!-- Proxy�̐ݒ� -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="http_proxy">Proxy�̐ݒ�</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>HTTP�̐ݒ�̓I�v�V������ʂ̃v���g�R���̃^�u�Ńv���g�R���ꗗ����uHTTP�v��I�����āu�v���p�e�B�v�{�^���������Đݒ�ł��܂��B</P>
-			<P>HTTP�̐ݒ��ʂ���HTTP�Ŏg�p����Proxy�̐ݒ肪�s���܂��B</P>
-			<P>Proxy�̐ݒ�͎����ݒ�i�ghttp://hoge/hoge.pac�h �̂悤�Ȋ����j�ɂ͑Ή����Ă��܂���B
-			Proxy�̃T�[�o���𒼐ڎw�肵�Ă��������B</P>
-			<P>LAN���ɂ���Web�T�[�o�Ȃǂ�Proxy��ʂ����ɍX�V�`�F�b�N���s���K�v������܂��B
-			���̏ꍇ�́A�A�C�e���̃v���p�e�B�Łu�I�v�V�����v�̃^�u���J���āA�u�v���L�V���g�p���Ȃ��v��ݒ肵�Ă��������B
-			���ɃA�C�e���̃v���p�e�B�Őݒ�ƈႤProxy���g�p����悤�ɐݒ肷�邱�Ƃ��ł��܂��B</P>
-		</TD></TR>
+		<article id="http_archive" class="key archive">
+			<h3>アーカイブ<span class="badge archive">主要機能</span></h3>
+			<p>チェックに成功したページを、更新があった時 (またはまだアーカイブが無い時) にユーザディレクトリと同じ場所にある「ユーザ名.archive」フォルダに保存します。
+			アイテムのメニューの「アーカイブを開く」で保存したページを開けます。</p>
+			<p>アイテムのプロパティの「アーカイブ」のタブで、アーカイブするかどうか、画像、スタイルシート(CSS)、JavaScript を保存するかどうかと、保存する世代数を設定できます。
+			初期設定はアーカイブする、画像とCSSは保存する、JavaScript は保存しない、世代数は 1 (最新のみ) です。
+			同じタブの「アーカイブを削除」でそのアイテムのアーカイブを削除できます。</p>
+			<figure><img src="manual/archive.png" alt="アイテムのプロパティのアーカイブのタブ" width="421"><figcaption>アイテムのプロパティの「アーカイブ」: 保存する内容と世代数を設定します。</figcaption></figure>
+			<p>認証が必要なページはアーカイブしません。アイテムに認証 (ユーザ名とパスワード) を設定した場合や、URL にユーザ名を含む場合はアーカイブを行いません。</p>
+			<p>画像、スタイルシート、JavaScript の設定を変更した場合は、既存のアーカイブを削除するか確認します。削除すると次のチェックで新しい設定のアーカイブを作成します。</p>
+			<p>JavaScript を保存しない場合は、ページ内のスクリプトやイベント属性を削除して保存し、アーカイブを開いたときにスクリプトが実行されないようにします。埋め込まれた他のページ (iframe) でもスクリプトは実行されません。</p>
+			<p>画像は前回から変更があった場合のみ取得し直します。世代数を 2 以上にした場合は、アーカイブを開くと保存した日時の一覧が表示されます。</p>
+			<p>「表示」→「オプション」→「プロトコル」で HTTP の設定を開き、「アーカイブ」のタブの「アーカイブを使用する」をオフにすると、すべてのアイテムでアーカイブを行いません。</p>
+		</article>
 
-		<!-- ���j���[ -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="http_menu">���j���[</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>HTTP�̃A�C�e�����E�N���b�N�����HTTP�A�C�e���ŗL�̃��j���[���\������܂��B</P>
-			<UL>
-				<LI><STRONG>�u�A�[�J�C�u���J���v</STRONG><BR>
-				�`�F�b�N�������ɕۑ������y�[�W (�A�[�J�C�u) ���u���E�U�ŊJ���܂��B
-				�y�[�W�������Ȃ����ꍇ�ȂǂɈȑO�̓��e�����邱�Ƃ��ł��܂��B�A�[�J�C�u�������ꍇ�͑I���ł��܂���B</LI>
+		<article id="http_brows">
+			<h3>ブラウザに表示</h3>
+			<p>アイテムに設定されているURLをブラウザに表示するには、アイテムをダブルクリックすることでブラウザに表示することができます。
+			既にブラウザが起動している場合はそのブラウザに表示します。</p>
+			<p>アイテムをドラッグ＆ドロップで表示したいブラウザに渡すと、そのブラウザにアイテムのURLを渡します。</p>
+			<p>ブラウザで開くURL が設定されていれば、そのURLでブラウザに表示します。 ブラウザで開くURL が設定されていない場合はチェックするURLでブラウザに表示します。</p>
+			<p>新しいブラウザでURLを開きたい場合は、オプションのツールを登録する必要があります。</p>
+			<ol>
+				<li>オプションのツールで追加ボタンを押して Chrome、IE、Firefoxの場所を指定</li>
+				<li>タイトルを「新しいブラウザで開く」という感じにする</li>
+				<li>コマンドラインに %u といれる (Chromeの場合は「--new-window %u」といれる、Firefoxの場合は「-new-window %u」といれる)</li>
+				<li>実行オプションで「アイテムのメニューに表示」にチェックを入れて、適用するプロトコルで、http を入力</li>
+				<li>ツールを実行したときにアイコンを初期化したいときは実行オプションの「実行後にアイコンを初期化する」にチェックを入れる</li>
+				<li>[OK]ボタンを押して完了</li>
+			</ol>
+			<p>以上の設定にて <b>[新しいブラウザで開く]</b> をメニューに追加することができます。</p>
+			<p>上記の新しいブラウザで開く動作をアイテムをダブルクリックしたときの動作にしたい場合はツール設定で「アイテムをダブルクリックで実行する」にチェックを入れてください。</p>
+		</article>
+	</section>
 
-				<LI><STRONG>�u�w�b�_�[�\���v</STRONG><BR>
-				�A�C�e���ɓo�^���ꂽURL�̃��X�|���X�w�b�_��\�����܂��B
-				����ŕ\�������uLast-Modified:�v�̍��ڂōX�V�`�F�b�N���s���܂��B
-				���́uLast-Modified:�v���t������Ă��Ȃ��ꍇ��HTML�̃T�C�Y�ōX�V�`�F�b�N���s���܂��B</LI>
+	<section class="chapter">
+		<h2>その他</h2>
 
-				<LI><STRONG>�u�\�[�X�\���v</STRONG><BR>
-				�A�C�e���ɓo�^���ꂽURL����HTML����M���ĕ\�����܂��B�����R�[�h�͎����I�ɕϊ�����܂��B
-				�ushift�v�L�[�������Ȃ���u�\�[�X�\���v��I������ƃt�B���^��K�p�����\�[�X���\������A�^�C�g���o�[��(�t�B���^)�̕������\������܂��B</LI>
+		<article id="cmdline">
+			<h3>コマンドライン</h3>
+			<p>WWWC起動時にコマンドラインを指定して起動後の動作を指定することができます。</p>
+			<pre><code>WWWC.exe [/cisena] [/d:パス] [/u:ユーザ名] [ファイル...]</code></pre>
+			<ul class="options">
+				<li><code>/c</code><span>全てのアイテムをチェック</span></li>
+				<li><code>/i</code><span>全てのアイテムを初期化</span></li>
+				<li><code>/s</code><span>全てのチェックを中止</span></li>
+				<li><code>/e</code><span>初回チェック後終了</span></li>
+				<li><code>/n</code><span>更新があるときは初回チェック終了を無効</span></li>
+				<li><code>/a</code><span>既に起動しているWWWCをアクティブにしない</span></li>
+				<li><code>/d:</code><span>作業ディレクトリの指定</span></li>
+				<li><code>/u:</code><span>ユーザ名の指定</span></li>
+			</ul>
+			<ul>
+				<li>/c /i /s /e /n と「ファイル」は２重起動防止していてメッセージを出さない設定の場合は、既に起動しているWWWCに渡されます。</li>
+				<li>ファイルはItem.datやURLやプロトコル毎のファイル(例えばインターネットショートカットなど)やそれらを含むフォルダが渡せます。渡したファイルの種類を自動判別してアイテムを作成します。</li>
+				<li>ファイルが指定されている場合は起動後にアイテムを追加するパスを選択する画面が出ます。</li>
+				<li>ファイルにプラグインDLLが指定されていると追加するプラグインを選択する画面が出ます。</li>
+				<li>/n は /e が指定されている場合のみ有効です。</li>
+			</ul>
+		</article>
 
-				<LI><STRONG>�u�^�C�g���擾�v</STRONG><BR>
-				�A�C�e���ɓo�^���ꂽURL����HTML����M���� &lt;TITLE&gt; �` &lt;/TITLE&gt; �ň͂܂ꂽ��������A�C�e���̃^�C�g���ɐݒ肵�܂��B</LI>
-			</UL>
-			<P>�I�v�V�����̃c�[���ŁA�c�[����v���O�C����o�^���ăA�C�e���̃��j���[�ɒǉ����邱�Ƃ��ł��܂��B</P>
-		</TD></TR>
+		<article id="info">
+			<h3>サポート</h3>
+			<p>最新情報、サポート情報、各種ツールなどは<strong><a href="https://nakka.com/wwwc/">WWWCのサイト</a></strong>から入手することができます。</p>
+			<p>このプログラムによって起きたいかなる障害も作者は責任を持ちません。大切なファイルはバックアップをとっておくことを強く薦めます。</p>
+		</article>
+	</section>
 
-		<!-- �A�[�J�C�u -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="http_archive">�A�[�J�C�u</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>�`�F�b�N�ɐ��������y�[�W���A�X�V���������� (�܂��͂܂��A�[�J�C�u��������) �Ƀ��[�U�f�B���N�g���Ɠ����ꏊ�ɂ���u���[�U��.archive�v�t�H���_�ɕۑ����܂��B
-			�A�C�e���̃��j���[�́u�A�[�J�C�u���J���v�ŕۑ������y�[�W���J���܂��B</P>
-			<P>�A�C�e���̃v���p�e�B�́u�A�[�J�C�u�v�̃^�u�ŁA�A�[�J�C�u���邩�ǂ����A�摜�A�X�^�C���V�[�g(CSS)�AJavaScript ��ۑ����邩�ǂ����ƁA�ۑ����鐢�㐔��ݒ�ł��܂��B
-			�����ݒ�̓A�[�J�C�u����A�摜��CSS�͕ۑ�����AJavaScript �͕ۑ����Ȃ��A���㐔�� 1 (�ŐV�̂�) �ł��B
-			�����^�u�́u�A�[�J�C�u���폜�v�ł��̃A�C�e���̃A�[�J�C�u���폜�ł��܂��B
-			�F�؂��K�v�ȃy�[�W�̓A�[�J�C�u���܂���B�A�C�e���ɔF�� (���[�U���ƃp�X���[�h) ��ݒ肵���ꍇ��AURL �Ƀ��[�U�����܂ޏꍇ�̓A�[�J�C�u���s���܂���B
-			�摜�A�X�^�C���V�[�g�AJavaScript �̐ݒ��ύX�����ꍇ�́A�����̃A�[�J�C�u���폜���邩�m�F���܂��B�폜����Ǝ��̃`�F�b�N�ŐV�����ݒ�̃A�[�J�C�u���쐬���܂��B
-			JavaScript ��ۑ����Ȃ��ꍇ�́A�y�[�W���̃X�N���v�g��C�x���g�������폜���ĕۑ����A�A�[�J�C�u���J�����Ƃ��ɃX�N���v�g�����s����Ȃ��悤�ɂ��܂��B���ߍ��܂ꂽ���̃y�[�W (iframe) �ł��X�N���v�g�͎��s����܂���B
-			�摜�͑O�񂩂�ύX���������ꍇ�̂ݎ擾�������܂��B���㐔�� 2 �ȏ�ɂ����ꍇ�́A�A�[�J�C�u���J���ƕۑ����������̈ꗗ���\������܂��B</P>
-			<P>�u�c�[���v���u�I�v�V�����v���u�v���g�R���v�� HTTP �̐ݒ���J���A�u�A�[�J�C�u�v�̃^�u�́u�A�[�J�C�u���g�p����v���I�t�ɂ���ƁA���ׂẴA�C�e���ŃA�[�J�C�u���s���܂���B</P>
-		</TD></TR>
+</main>
 
-		<!-- �u���E�U�ɕ\�� -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="http_brows">�u���E�U�ɕ\��</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>�A�C�e���ɐݒ肳��Ă���URL���u���E�U�ɕ\������ɂ́A�A�C�e�����_�u���N���b�N���邱�ƂŃu���E�U�ɕ\�����邱�Ƃ��ł��܂��B
-			���Ƀu���E�U���N�����Ă���ꍇ�͂��̃u���E�U�ɕ\�����܂��B</P>
-			<P>�A�C�e�����h���b�O���h���b�v�ŕ\���������u���E�U�ɓn���ƁA���̃u���E�U�ɃA�C�e����URL��n���܂��B</P>
-			<P>�u���E�U�ŊJ��URL ���ݒ肳��Ă���΁A����URL�Ńu���E�U�ɕ\�����܂��B �u���E�U�ŊJ��URL ���ݒ肳��Ă��Ȃ��ꍇ�̓`�F�b�N����URL�Ńu���E�U�ɕ\�����܂��B</P>
-			<P>�V�����u���E�U��URL���J�������ꍇ�́A�I�v�V�����̃c�[����o�^����K�v������܂��B
-			<OL>
-				<LI>�I�v�V�����̃c�[���Œǉ��{�^���������� Chrome�AIE�AFirefox�̏ꏊ���w��</LI>
-				<LI>�^�C�g�����u�V�����u���E�U�ŊJ���v�Ƃ��������ɂ���</LI>
-				<LI>�R�}���h���C���� %u �Ƃ���� (Chrome�̏ꍇ�́u--new-window %u�v�Ƃ����AFirefox�̏ꍇ�́u-new-window %u�v�Ƃ����)</LI>
-				<LI>���s�I�v�V�����Łu�A�C�e���̃��j���[�ɕ\���v�Ƀ`�F�b�N�����āA�K�p����v���g�R���ŁAhttp �����</LI>
-				<LI>�c�[�������s�����Ƃ��ɃA�C�R�����������������Ƃ��͎��s�I�v�V�����́u���s��ɃA�C�R��������������v�Ƀ`�F�b�N������</LI>
-				<LI>[OK]�{�^���������Ċ���</LI>
-			</OL>
-			�ȏ�̐ݒ�ɂ� <B>[�V�����u���E�U�ŊJ��]</B> �����j���[�ɒǉ����邱�Ƃ��ł��܂��B</P>
-			<P>��L�̐V�����u���E�U�ŊJ��������A�C�e�����_�u���N���b�N�����Ƃ��̓���ɂ������ꍇ�̓c�[���ݒ�Łu�A�C�e�����_�u���N���b�N�Ŏ��s����v�Ƀ`�F�b�N�����Ă��������B</P>
-		</TD></TR>
+<footer>
+	<div class="wrap">
+		<p>Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.</p>
+		<p><a href="https://nakka.com/">nakka.com</a> &nbsp;|&nbsp; <a href="mailto:nakka@nakka.com">nakka@nakka.com</a></p>
+	</div>
+</footer>
 
-</TABLE>
-
-<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
-	<!-- ���̑� -->
-	<TR><TD ALIGN="LEFT" BGCOLOR="#000080" COLSPAN="2">
-		<H2><FONT COLOR="#FFFFFF">���̑�</FONT></H2>
-	</TD></TR>
-
-		<!-- �R�}���h���C�� -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="cmdline">�R�}���h���C��</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>WWWC�N�����ɃR�}���h���C�����w�肵�ċN����̓�����w�肷�邱�Ƃ��ł��܂��B
-			<P>[�`��]<BR>
-			<STRONG>WWWC.exe [/cisena] [/d:�p�X] [/u:���[�U��] [�t�@�C��...]</STRONG></P>
-			<UL>
-				/c	�S�ẴA�C�e�����`�F�b�N<BR>
-				/i	�S�ẴA�C�e����������<BR>
-				/s	�S�Ẵ`�F�b�N�𒆎~<BR>
-				/e	����`�F�b�N��I��<BR>
-				/n	�X�V������Ƃ��͏���`�F�b�N�I���𖳌�<BR>
-				/a	���ɋN�����Ă���WWWC���A�N�e�B�u�ɂ��Ȃ�<BR>
-			</UL>
-			<UL>
-				/d:	��ƃf�B���N�g���̎w��<BR>
-				/u:	���[�U���̎w��<BR>
-			</UL>
-			<UL>
-				<LI>/c /i /s /e /n �Ɓu�t�@�C���v�͂Q�d�N���h�~���Ă��ă��b�Z�[�W���o���Ȃ��ݒ�̏ꍇ�́A���ɋN�����Ă���WWWC�ɓn����܂��B</LI>
-				<LI>�t�@�C����Item.dat��URL��v���g�R�����̃t�@�C��(�Ⴆ�΃C���^�[�l�b�g�V���[�g�J�b�g�Ȃ�)�₻�����܂ރt�H���_���n���܂��B�n�����t�@�C���̎�ނ��������ʂ��ăA�C�e�����쐬���܂��B</LI>
-				<LI>�t�@�C�����w�肳��Ă���ꍇ�͋N����ɃA�C�e����ǉ�����p�X��I�������ʂ��o�܂��B</LI>
-				<LI>�t�@�C���Ƀv���O�C��DLL���w�肳��Ă���ƒǉ�����v���O�C����I�������ʂ��o�܂��B</LI>
-				<LI>/n �� /e ���w�肳��Ă���ꍇ�̂ݗL���ł��B</LI>
-			</UL>
-		</TD></TR>
-
-		<!-- �T�|�[�g -->
-		<TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT" BGCOLOR="#A6CAF0">
-			<H3><A NAME="info">�T�|�[�g</A></H3>
-		</TD></TR><TR><TD WIDTH="30"><FONT COLOR="#FFFFFF">&nbsp;</FONT></TD><TD ALIGN="LEFT">
-			<P>�ŐV���A�T�|�[�g���A�e��c�[���Ȃǂ�<STRONG><A HREF="https://www.nakka.com/wwwc/">WWWC�̃T�C�g</A></STRONG>������肷�邱�Ƃ��ł��܂��B</P>
-			<P>���̃v���O�����ɂ���ċN���������Ȃ��Q����҂͐ӔC�������܂���B��؂ȃt�@�C���̓o�b�N�A�b�v���Ƃ��Ă������Ƃ������E�߂܂��B</P>
-		</TD></TR>
-
-</TABLE>
-
-<TABLE BORDER="0" WIDTH="90%" CELLPADDING="2" CELLSPACING="10">
-<TR><TD>
-	<!-- Info -->
-	<HR ALIGN="LEFT" SIZE="1" COLOR="#000080" NOSHADE>
-	<CENTER>
-		<FONT FACE="Arial">
-		<P>Copyright (C) 1996-2026 by Ohno Tomoaki. All rights reserved.</P>
-		- <STRONG><A HREF="https://www.nakka.com/">www.nakka.com</A></STRONG> -<BR>
-		<P>mailto:<STRONG><A HREF="mailto:nakka@nakka.com">&lt;nakka@nakka.com&gt;</A></STRONG></P>
-		</FONT>
-	</CENTER>
-</TD></TR>
-</TABLE>
-
-</CENTER>
-</BODY>
-</HTML>
+</body>
+</html>

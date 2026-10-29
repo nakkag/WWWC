@@ -288,7 +288,7 @@ void CALLBACK CopyAutoTime(HWND hWnd, HTREEITEM hItem, long Param)
 
 static int GetAutoCheckString(struct TPCHECKTIME *tpTimeInfo, char *ret)
 {
-	char strWeek[][STRWEEK_STRLEN] = {
+	char *strWeek[] = {
 		STRWEEK_SUN,
 		STRWEEK_MON,
 		STRWEEK_TUE,

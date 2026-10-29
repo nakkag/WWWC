@@ -620,7 +620,7 @@ BOOL CheckIniProc(HWND hWnd, HTREEITEM hItem, int CheckFlag, int CheckType)
 	SetEnableToolItemMenu(GetSubMenu(hPOPUP, MENU_POP_ITEM));
 
 	//ステータスバーの設定
-	SendDlgItemMessage(hWnd, WWWC_SB, SB_SETTEXT, (WPARAM)0 | 0, (LPARAM)"チェックを開始");
+	SendDlgItemMessage(hWnd, WWWC_SB, SB_SETTEXT, (WPARAM)0 | 0, (LPARAM)STR_CHECKSTART);
 	//ステータスバーにアイコンを設定
 	SendDlgItemMessage(hWnd, WWWC_SB, WM_USER + 15, (WPARAM)0 | 0, (LPARAM)StCheckIcon);
 

@@ -323,7 +323,7 @@ BOOL TreeView_NewFolderItem(HWND hWnd)
 	int i;
 
 	//新しいフォルダの名前を作成して実際にフォルダを作成する
-	lstrcpy(name, NEWFOLDER" (99999)");
+	wsprintf(name, "%s (99999)", NEWFOLDER);
 	if(TreeView_CheckPathLength(GetDlgItem(hWnd, WWWC_TREE),
 		TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), name) == FALSE){
 		MessageBox(hWnd, EMSG_PATHLENGTH, EMSG_PATHLENGTH_TITLE, MB_ICONSTOP);
@@ -1420,7 +1420,9 @@ void CALLBACK TreeView_NoFileDelete(HWND hWnd, HTREEITEM hItem, long Param)
 	char path[BUFSIZE];
 
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, path, CuDir);
-	if(GetDirSerch(path) == FALSE && FindCheckItem(hWnd, hItem) == 0 && FindPropItem(hWnd, hItem) == 0){
+	//ルートとごみ箱は削除しない (ごみ箱のフォルダは空のときは存在しない)
+	if(hItem != RootItem && hItem != RecyclerItem &&
+		GetDirSerch(path) == FALSE && FindCheckItem(hWnd, hItem) == 0 && FindPropItem(hWnd, hItem) == 0){
 		CallTreeItem(hWnd, hItem, (FARPROC)TreeView_FreeTreeItem, 1);
 		TreeView_DeleteItem(GetDlgItem(hWnd, WWWC_TREE), hItem);
 		return;

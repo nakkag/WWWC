@@ -17,100 +17,94 @@
 	Define
 **************************************************************************/
 
+//文字列は言語ごとのリソース (STRINGTABLE の IDS_*) から GetResStr で取得する
+
 //general
-#define STR_NEWITEMNAME					"新しいアイテム"
+#define STR_NEWITEMNAME					GetResStr(IDS_STR_NEWITEMNAME)
 
-#define STR_Q_TITLE_DEL					"削除"
-#define STR_Q_MSG_DEL					"削除してもよろしいですか？"
+#define STR_TITLE_FILESELECT			GetResStr(IDS_STR_TITLE_FILESELECT)
 
-#define STR_TITLE_FILESELECT			"ファイルの選択"
-
-#define STR_ERROR_MEMORY				"メモリの確保に失敗しました。"
+#define STR_ERROR_MEMORY				GetResStr(IDS_STR_ERROR_MEMORY)
 
 //main.c
-#define STR_TOOL_TITLE_BROWSINFO		"ブラウザ情報取得(&B)"
-#define STR_TOOL_TITLE_BROWSINFOLIST	"すべてのブラウザ情報から選択(&A)..."
-#define STR_TOOL_TITLE_OPENURL			"既存のブラウザに開く(&D)"
-#define STR_TOOL_TITLE_FILTERRELOAD		"フィルタ再読み込み(&F)"
+#define STR_TOOL_TITLE_BROWSINFO		GetResStr(IDS_STR_TOOL_TITLE_BROWSINFO)
+#define STR_TOOL_TITLE_BROWSINFOLIST	GetResStr(IDS_STR_TOOL_TITLE_BROWSINFOLIST)
+#define STR_TOOL_TITLE_OPENURL			GetResStr(IDS_STR_TOOL_TITLE_OPENURL)
+#define STR_TOOL_TITLE_FILTERRELOAD		GetResStr(IDS_STR_TOOL_TITLE_FILTERRELOAD)
 
-#define STR_ERR_TITLE_OPEN				"開く"
+#define STR_ERR_TITLE_OPEN				GetResStr(IDS_STR_ERR_TITLE_OPEN)
 
-#define STR_FILTER_EXESELECT			"実行ファイル (*.exe)\0*.exe\0\0"
+#define STR_FILTER_EXESELECT			GetResStr(IDS_STR_FILTER_EXESELECT)
 
 //http.c
-#define STR_TITLE_HEADVIEW				"ヘッダー表示 - [%s]"
+#define STR_TITLE_HEADVIEW				GetResStr(IDS_STR_TITLE_HEADVIEW)
 
-#define STR_TITLE_SOURCEVIEW			"ソース表示%s - [%s]"
-#define STR_TITLE_FILTER				" (フィルタ)"
-#define STR_TITLE_FILTERERR				" (フィルタ エラー)"
+#define STR_TITLE_SOURCEVIEW			GetResStr(IDS_STR_TITLE_SOURCEVIEW)
+#define STR_TITLE_FILTER				GetResStr(IDS_STR_TITLE_FILTER)
+#define STR_TITLE_FILTERERR				GetResStr(IDS_STR_TITLE_FILTERERR)
 
-#define STR_ERR_TITLE_URLOPEN			"URLを開く"
-#define STR_ERR_MSG_URLOPEN				"URLが設定されていません。"
-#define STR_ERR_MSG_URLQUOTE			"URLに引用符 (\") が含まれているため開けません。"
-#define STR_Q_MSG_OPENURL				"http または https 以外のURLです。開いてもよろしいですか？\n\n%s"
+#define STR_ERR_TITLE_URLOPEN			GetResStr(IDS_STR_ERR_TITLE_URLOPEN)
+#define STR_ERR_MSG_URLOPEN				GetResStr(IDS_STR_ERR_MSG_URLOPEN)
+#define STR_ERR_MSG_URLQUOTE			GetResStr(IDS_STR_ERR_MSG_URLQUOTE)
+#define STR_Q_MSG_OPENURL				GetResStr(IDS_STR_Q_MSG_OPENURL)
 
-#define STR_ERROR_URL					"URLを展開できませんでした。"
-#define STR_ERROR_GETHOST_TH			"gethostbyname用スレッドの作成に失敗しました。"
-#define STR_ERROR_GETHOST				"IPアドレスの取得に失敗しました。"
-#define STR_ERROR_SOCKET				"soketの作成に失敗しました。"
-#define STR_ERROR_SELECT				"WSAAsyncSelectに失敗しました。"
-#define STR_ERROR_CONNECT				"接続に失敗しました。"
-#define STR_ERROR_SEND					"送信に失敗しました。"
-#define STR_ERROR_RECV					"受信に失敗しました。"
-#define STR_ERROR_HEADER				"ヘッダを解析できませんでした。"
-#define STR_ERROR_MOVE					"転送エラー"
-#define STR_ERROR_TIMEOUT				"タイムアウトしました。"
+#define STR_ERROR_URL					GetResStr(IDS_STR_ERROR_URL)
+#define STR_ERROR_CONNECT				GetResStr(IDS_STR_ERROR_CONNECT)
+#define STR_ERROR_SEND					GetResStr(IDS_STR_ERROR_SEND)
+#define STR_ERROR_RECV					GetResStr(IDS_STR_ERROR_RECV)
+#define STR_ERROR_HEADER				GetResStr(IDS_STR_ERROR_HEADER)
+#define STR_ERROR_MOVE					GetResStr(IDS_STR_ERROR_MOVE)
+#define STR_ERROR_TIMEOUT				GetResStr(IDS_STR_ERROR_TIMEOUT)
 
-#define STR_STATUS_GETHOST				"ホスト情報を取得しています..."
-#define STR_STATUS_CONNECT				"接続中..."
-#define STR_STATUS_RESPONSE				"サーバからの応答を待っています..."
-#define STR_STATUS_RECV					"%ld バイト受信"
-#define STR_STATUS_CHECKEND				"チェック終了"
+#define STR_STATUS_CONNECT				GetResStr(IDS_STR_STATUS_CONNECT)
+#define STR_STATUS_RECV					GetResStr(IDS_STR_STATUS_RECV)
+#define STR_STATUS_CHECKEND				GetResStr(IDS_STR_STATUS_CHECKEND)
 
-#define STR_GETINFO_HTTP_NEWMENU		"HTTPアイテムの追加(&H)..."
-#define STR_GETINFO_HTTP_OPEN			"開く(&O)"
-#define STR_GETINFO_HTTP_CHECKOPEN		"チェックするURLで開く(&U)"
-#define STR_GETINFO_HTTP_OPENARCHIVE		"アーカイブを開く(&A)"
-#define STR_ERR_MSG_ARCHIVE_NONE			"このアイテムのアーカイブはありません。"
-#define STR_ERR_TITLE_ARCHIVE				"アーカイブ"
-#define STR_MSG_ARCHIVE_NOFOLDER			"アーカイブはまだ作成されていません。"
-#define STR_Q_MSG_ARCHIVE_DELETE			"このアイテムのアーカイブ (保存したすべての世代) を削除しますか？"
-#define STR_MSG_ARCHIVE_DELETED			"アーカイブを削除しました。"
-#define STR_ERR_MSG_ARCHIVE_BUSY			"アーカイブを取得中のため削除できません。しばらくしてから再度実行してください。"
-#define STR_ERR_MSG_ARCHIVE_DELETE		"アーカイブの一部を削除できませんでした。"
-#define STR_Q_MSG_ARCHIVE_CHANGED		"アーカイブするデータの設定を変更しました。\n既存のアーカイブは変更前の設定で保存されています。\n\nアーカイブを削除しますか？\n(削除すると次のチェックで新しい設定のアーカイブを作成します)"
-#define STR_ARCHIVE_INDEX_TITLE			"アーカイブ - "
-#define STR_ARCHIVE_INDEX_LATEST			" (最新)"
-#define STR_GETINFO_HTTP_HEADER			"ヘッダー表示(&H)"
-#define STR_GETINFO_HTTP_SOURCE			"ソース表示(&S)"
-#define STR_GETINFO_HTTP_GETTITLE		"タイトル取得(&L)"
+#define STR_GETINFO_HTTP_NEWMENU		GetResStr(IDS_STR_GETINFO_HTTP_NEWMENU)
+#define STR_GETINFO_HTTP_OPEN			GetResStr(IDS_STR_GETINFO_HTTP_OPEN)
+#define STR_GETINFO_HTTP_CHECKOPEN		GetResStr(IDS_STR_GETINFO_HTTP_CHECKOPEN)
+#define STR_GETINFO_HTTP_OPENARCHIVE	GetResStr(IDS_STR_GETINFO_HTTP_OPENARCHIVE)
+#define STR_ERR_MSG_ARCHIVE_NONE		GetResStr(IDS_STR_ERR_MSG_ARCHIVE_NONE)
+#define STR_ERR_TITLE_ARCHIVE			GetResStr(IDS_STR_ERR_TITLE_ARCHIVE)
+#define STR_MSG_ARCHIVE_NOFOLDER		GetResStr(IDS_STR_MSG_ARCHIVE_NOFOLDER)
+#define STR_Q_MSG_ARCHIVE_DELETE		GetResStr(IDS_STR_Q_MSG_ARCHIVE_DELETE)
+#define STR_MSG_ARCHIVE_DELETED			GetResStr(IDS_STR_MSG_ARCHIVE_DELETED)
+#define STR_ERR_MSG_ARCHIVE_BUSY		GetResStr(IDS_STR_ERR_MSG_ARCHIVE_BUSY)
+#define STR_ERR_MSG_ARCHIVE_DELETE		GetResStr(IDS_STR_ERR_MSG_ARCHIVE_DELETE)
+#define STR_Q_MSG_ARCHIVE_CHANGED		GetResStr(IDS_STR_Q_MSG_ARCHIVE_CHANGED)
+#define STR_ARCHIVE_INDEX_TITLE			GetResStr(IDS_STR_ARCHIVE_INDEX_TITLE)
+#define STR_ARCHIVE_INDEX_LATEST		GetResStr(IDS_STR_ARCHIVE_INDEX_LATEST)
+#define STR_GETINFO_HTTP_HEADER			GetResStr(IDS_STR_GETINFO_HTTP_HEADER)
+#define STR_GETINFO_HTTP_SOURCE			GetResStr(IDS_STR_GETINFO_HTTP_SOURCE)
+#define STR_GETINFO_HTTP_GETTITLE		GetResStr(IDS_STR_GETINFO_HTTP_GETTITLE)
 
 //httpprop.c
-#define STR_REQTYPE_AUTO_GET			"自動(&A) (現在 GET)"
+#define STR_REQTYPE_AUTO_GET			GetResStr(IDS_STR_REQTYPE_AUTO_GET)
+#define STR_BYTE						GetResStr(IDS_STR_BYTE)
 
-#define STR_TITLE_PROP					"%sのプロパティ"
-#define STR_TITLE_ADDITEM				"HTTPアイテムの追加"
+#define STR_TITLE_PROP					GetResStr(IDS_STR_TITLE_PROP)
+#define STR_TITLE_ADDITEM				GetResStr(IDS_STR_TITLE_ADDITEM)
 
-#define STR_TITLE_SETHTTP				"HTTPプロトコルの設定"
+#define STR_TITLE_SETHTTP				GetResStr(IDS_STR_TITLE_SETHTTP)
 
 //httptools.c
 
-#define STR_ERR_TITLE_BROWSER			"ブラウザ情報の取得"
-#define STR_ERR_MSG_BROWSER				"ブラウザで表示しているページが見つかりませんでした。\n\nMicrosoft Edge、Google Chrome などの Chromium 系のブラウザと Firefox に対応しています。"
-#define STR_MSG_BROWSER_INFO			"ブラウザのウィンドウで表示しているページのURLとタイトルを取得します。設定する項目はありません。\n\nMicrosoft Edge、Google Chrome などの Chromium 系のブラウザと Firefox に対応しています。タブが複数ある場合は、表示しているタブのページを取得します。"
+#define STR_ERR_TITLE_BROWSER			GetResStr(IDS_STR_ERR_TITLE_BROWSER)
+#define STR_ERR_MSG_BROWSER				GetResStr(IDS_STR_ERR_MSG_BROWSER)
+#define STR_MSG_BROWSER_INFO			GetResStr(IDS_STR_MSG_BROWSER_INFO)
 
-#define ST_LV_COL_TITLE					"タイトル"
-#define ST_LV_COL_BROWSER				"ブラウザ"
+#define ST_LV_COL_TITLE					GetResStr(IDS_ST_LV_COL_TITLE)
+#define ST_LV_COL_BROWSER				GetResStr(IDS_ST_LV_COL_BROWSER)
 #define ST_LV_COL_URL					"URL"
 
 //file.c
-#define STR_ERR_TITLE_FILEOPEN			"ファイルを開く"
-#define STR_ERR_MSG_FILEOPEN			"ファイルが設定されていません。"
+#define STR_ERR_TITLE_FILEOPEN			GetResStr(IDS_STR_ERR_TITLE_FILEOPEN)
+#define STR_ERR_MSG_FILEOPEN			GetResStr(IDS_STR_ERR_MSG_FILEOPEN)
 
-#define STR_FILTER_FILESELECT			"すべてのファイル (*.*)\0*.*\0\0"
+#define STR_FILTER_FILESELECT			GetResStr(IDS_STR_FILTER_FILESELECT)
 
-#define STR_GETINFO_FILE_NEWMENU		"ファイルの追加(&I)..."
-#define STR_GETINFO_FILE_OPEN			"開く(&O)"
+#define STR_GETINFO_FILE_NEWMENU		GetResStr(IDS_STR_GETINFO_FILE_NEWMENU)
+#define STR_GETINFO_FILE_OPEN			GetResStr(IDS_STR_GETINFO_FILE_OPEN)
 
 #endif
 /* End of source */
