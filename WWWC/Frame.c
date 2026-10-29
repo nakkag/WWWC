@@ -33,7 +33,9 @@
 	Global Variables
 **************************************************************************/
 
-static RECT *FrmRect;			//フレームの位置情報
+static RECT *FrmRect;			//フレームの位置情報 (ウィンドウ座標)
+static int FrmPos;				//境界の位置 (クライアント座標)
+static int DragOffset;			//境界の左端からドラッグを開始した位置までの距離
 
 
 /******************************************************************************
@@ -46,6 +48,9 @@ static RECT *FrmRect;			//フレームの位置情報
 
 BOOL FrameInitialize(HWND hWnd)
 {
+	RECT TreeViewRect;
+	POINT apos;
+
 	if(FrmRect == NULL){
 		FrmRect = (RECT *)GlobalAlloc(GPTR, sizeof(RECT) * FRAME_CNT);
 		if(FrmRect == NULL){
@@ -53,6 +58,12 @@ BOOL FrameInitialize(HWND hWnd)
 		}
 	}
 	ZeroMemory(FrmRect, sizeof(RECT) * FRAME_CNT);
+	FrmPos = -1;
+
+	//境界 (ツリービューの右端) のどこをつかんだかを記憶して、押しただけでは境界が動かないようにする
+	GetCursorPos(&apos);
+	GetWindowRect(GetDlgItem(hWnd, WWWC_TREE), &TreeViewRect);
+	DragOffset = apos.x - TreeViewRect.right;
 
 	SetCapture(hWnd);
 	return TRUE;
@@ -87,27 +98,38 @@ void FrameFree(void)
 
 int FrameDraw(HWND hWnd)
 {
-	RECT WindowRect, TreeViewRect;
-	POINT apos;
+	RECT WindowRect, ClientRect, TreeViewRect;
+	POINT apos, ClientPos;
 	HDC hdc;
 	int drawCnt;
+	int x;
 
 	GetCursorPos((LPPOINT)&apos);
+	ScreenToClient(hWnd, &apos);
+	GetClientRect(hWnd, (LPRECT)&ClientRect);
 	GetWindowRect(hWnd, (LPRECT)&WindowRect);
 	GetWindowRect(GetDlgItem(hWnd, WWWC_TREE), (LPRECT)&TreeViewRect);
 
-	//フレームの移動制限
-	if(apos.x <= (WindowRect.left + NOMOVESIZE + GetSystemMetrics(SM_CXFRAME))){
-		apos.x = WindowRect.left + NOMOVESIZE + GetSystemMetrics(SM_CXFRAME);
+	//つかんだ位置からの移動量で境界の位置を求める
+	x = apos.x - DragOffset;
 
-	}else if(apos.x >= (WindowRect.right - (NOMOVESIZE + (FRAME_CNT * 2)) - GetSystemMetrics(SM_CXFRAME))){
-		apos.x = WindowRect.right - (NOMOVESIZE + (FRAME_CNT * 2)) - GetSystemMetrics(SM_CXFRAME);
+	//フレームの移動制限
+	if(x <= NOMOVESIZE){
+		x = NOMOVESIZE;
+
+	}else if(x >= ClientRect.right - (NOMOVESIZE + (FRAME_CNT * 2))){
+		x = ClientRect.right - (NOMOVESIZE + (FRAME_CNT * 2));
 	}
 
 	//前回の位置と比較
-	if(apos.x == FrmRect[0].left){
+	if(x == FrmPos){
 		return 1;
 	}
+	FrmPos = x;
+
+	//ウィンドウ座標に変換するためのクライアント領域の左上の位置
+	ClientPos.x = ClientPos.y = 0;
+	ClientToScreen(hWnd, &ClientPos);
 
 	hdc = GetWindowDC(hWnd);
 
@@ -118,7 +140,7 @@ int FrameDraw(HWND hWnd)
 
 	//フレームの描画
 	for(drawCnt = 0;drawCnt < FRAME_CNT;drawCnt++){
-		(FrmRect + drawCnt)->left = apos.x + drawCnt - WindowRect.left;
+		(FrmRect + drawCnt)->left = ClientPos.x - WindowRect.left + x + drawCnt;
 		(FrmRect + drawCnt)->right = (FrmRect + drawCnt)->left + FRAME_CNT + 1;
 		(FrmRect + drawCnt)->top = TreeViewRect.top - WindowRect.top;
 		(FrmRect + drawCnt)->bottom = TreeViewRect.bottom - WindowRect.top;
@@ -144,11 +166,7 @@ int FrameDrawEnd(HWND hWnd)
 	int drawCnt;
 	int ret;
 
-	if(FrmRect[0].left == 0 &&
-		FrmRect[0].right == 0 &&
-		FrmRect[0].top == 0 &&
-		FrmRect[0].bottom == 0){
-
+	if(FrmPos == -1){
 		FrameFree();
 		return -1;
 	}
@@ -161,7 +179,7 @@ int FrameDrawEnd(HWND hWnd)
 	ReleaseDC(hWnd, hdc);
 
 	//境界位置の取得
-	ret = FrmRect[0].left - GetSystemMetrics(SM_CXFRAME);
+	ret = FrmPos;
 
 	FrameFree();
 	return ret;
