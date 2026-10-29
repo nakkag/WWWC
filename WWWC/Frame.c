@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
 
 	WWWC
 
@@ -26,21 +26,21 @@
 	Define
 **************************************************************************/
 
-#define NOMOVESIZE		6		//�t���[���̈ړ������l
+#define NOMOVESIZE		6		//フレームの移動制限値
 
 
 /**************************************************************************
 	Global Variables
 **************************************************************************/
 
-static RECT *FrmRect;			//�t���[���̈ʒu���
+static RECT *FrmRect;			//フレームの位置情報
 
 
 /******************************************************************************
 
 	FrameInitialize
 
-	�t���[���`��p�\���̂̏�����
+	フレーム描画用構造体の初期化
 
 ******************************************************************************/
 
@@ -63,7 +63,7 @@ BOOL FrameInitialize(HWND hWnd)
 
 	FrameFree
 
-	�t���[���`��p�\���̂̉��
+	フレーム描画用構造体の解放
 
 ******************************************************************************/
 
@@ -81,7 +81,7 @@ void FrameFree(void)
 
 	FrameDraw
 
-	�t���[���̕`��
+	フレームの描画
 
 ******************************************************************************/
 
@@ -96,7 +96,7 @@ int FrameDraw(HWND hWnd)
 	GetWindowRect(hWnd, (LPRECT)&WindowRect);
 	GetWindowRect(GetDlgItem(hWnd, WWWC_TREE), (LPRECT)&TreeViewRect);
 
-	//�t���[���̈ړ�����
+	//フレームの移動制限
 	if(apos.x <= (WindowRect.left + NOMOVESIZE + GetSystemMetrics(SM_CXFRAME))){
 		apos.x = WindowRect.left + NOMOVESIZE + GetSystemMetrics(SM_CXFRAME);
 
@@ -104,19 +104,19 @@ int FrameDraw(HWND hWnd)
 		apos.x = WindowRect.right - (NOMOVESIZE + (FRAME_CNT * 2)) - GetSystemMetrics(SM_CXFRAME);
 	}
 
-	//�O��̈ʒu�Ɣ�r
+	//前回の位置と比較
 	if(apos.x == FrmRect[0].left){
 		return 1;
 	}
 
 	hdc = GetWindowDC(hWnd);
 
-	//�O��`�敪������
+	//前回描画分を消去
 	for(drawCnt = 0;drawCnt < FRAME_CNT;drawCnt++){
 		DrawFocusRect(hdc, (LPRECT)&FrmRect[drawCnt]);
 	}
 
-	//�t���[���̕`��
+	//フレームの描画
 	for(drawCnt = 0;drawCnt < FRAME_CNT;drawCnt++){
 		(FrmRect + drawCnt)->left = apos.x + drawCnt - WindowRect.left;
 		(FrmRect + drawCnt)->right = (FrmRect + drawCnt)->left + FRAME_CNT + 1;
@@ -134,7 +134,7 @@ int FrameDraw(HWND hWnd)
 
 	FrameDrawEnd
 
-	�t���[���̕`��I���A�t���[���̍ŏI�ʒu��Ԃ�
+	フレームの描画終了、フレームの最終位置を返す
 
 ******************************************************************************/
 
@@ -153,14 +153,14 @@ int FrameDrawEnd(HWND hWnd)
 		return -1;
 	}
 
-	//�O��`�敪������
+	//前回描画分を消去
 	hdc = GetWindowDC(hWnd);
 	for(drawCnt = 0;drawCnt < FRAME_CNT;drawCnt++){
 		DrawFocusRect(hdc, (LPRECT)&FrmRect[drawCnt]);
 	}
 	ReleaseDC(hWnd, hdc);
 
-	//���E�ʒu�̎擾
+	//境界位置の取得
 	ret = FrmRect[0].left - GetSystemMetrics(SM_CXFRAME);
 
 	FrameFree();

@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -29,7 +29,7 @@
 
 #define DAMMYSORT				500
 
-#define DEFAULT_COLSIZE			100					//ƒfƒtƒHƒ‹ƒg‚ÌƒJƒ‰ƒ€ƒTƒCƒY
+#define DEFAULT_COLSIZE			100					//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚«ãƒ©ãƒ ã‚µã‚¤ã‚º
 
 #ifndef LVS_EX_INFOTIP
 #define LVS_EX_INFOTIP			0x400
@@ -52,17 +52,17 @@
 	Global Variables
 **************************************************************************/
 
-struct TPLVCOLUMN *SortColInfo;	//ƒ\[ƒgî•ñ
+struct TPLVCOLUMN *SortColInfo;	//ã‚½ãƒ¼ãƒˆæƒ…å ±
 struct TPLVCOLUMN *ColumnInfo = NULL;
 
 int DragItemIndex = -1;
 
-//ŠO•”QÆ
-extern HINSTANCE g_hinst;				//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
+//å¤–éƒ¨å‚ç…§
+extern HINSTANCE g_hinst;				//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
 extern char CuDir[];
-extern HWND WWWCWnd;					//–{‘Ì
-extern HWND TbWnd;						//ƒc[ƒ‹ƒo[
-extern HMENU hPOPUP;					//ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[
+extern HWND WWWCWnd;					//æœ¬ä½“
+extern HWND TbWnd;						//ãƒ„ãƒ¼ãƒ«ãƒãƒ¼
+extern HMENU hPOPUP;					//ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 extern HTREEITEM RootItem;
 extern HTREEITEM RecyclerItem;
 extern HTREEITEM DgdpItem;
@@ -123,7 +123,7 @@ static void SetListMenuUnCheck(HWND hWnd, int id, int st);
 
 	CreateListView
 
-	ƒŠƒXƒgƒrƒ…[‚Ìì¬
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 
 ******************************************************************************/
 
@@ -140,7 +140,7 @@ HWND CreateListView(HWND hWnd)
 
 	ListView_SetItemImage
 
-	ƒŠƒXƒgƒrƒ…[‚ÌƒCƒ[ƒWƒŠƒXƒg‚Ìİ’è
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®è¨­å®š
 
 ******************************************************************************/
 
@@ -150,7 +150,7 @@ void ListView_SetItemImage(HWND hListView, int IconSize, int LVFLag)
 	HIMAGELIST TmpIconList;
 	HICON TmpIcon;
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚Ìì¬
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®ä½œæˆ
 	IconList = ListView_GetImageList(hListView, LVFLag);
 	if(IconList == NULL){
 		IconList = ImageList_Create(IconSize, IconSize, ILC_COLOR16 | ILC_MASK, 0, 0);
@@ -164,7 +164,7 @@ void ListView_SetItemImage(HWND hListView, int IconSize, int LVFLag)
 		ImageList_SetBkColor(IconList, GetSysColor(COLOR_WINDOW));
 	}
 
-	//‹¤’Ê‚ÌƒAƒCƒRƒ“
+	//å…±é€šã®ã‚¢ã‚¤ã‚³ãƒ³
 	ImageListIconAdd(IconList, IDI_ICON_CHECK, IconSize, Check, CheckIndex);
 	ImageListIconAdd(IconList, IDI_ICON_NOCHECK, IconSize, NoCheck, NoCheckIndex);
 	ImageList_SetOverlayImage(IconList, ICON_NOCHECK, 1);
@@ -200,14 +200,14 @@ void ListView_SetItemImage(HWND hListView, int IconSize, int LVFLag)
 	ImageListIconAdd(IconList, IDI_ICON_RECYCLER, IconSize, Recycler, RecyclerIndex);
 	ImageListIconAdd(IconList, IDI_ICON_RECYCLER_USE, IconSize, RecyclerFull, RecyclerFullIndex);
 
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒRƒ“
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ã‚³ãƒ³
 	ImageListIconAdd(IconList, IDI_ICON_UP, IconSize, Up, UpIndex);
 	ImageListIconAdd(IconList, IDI_ICON_ERROR, IconSize, Error, ErrorIndex);
 	ImageListIconAdd(IconList, IDI_ICON_TIMEOUT, IconSize, TimeOut, TimeOutIndex);
 	ImageListIconAdd(IconList, IDI_ICON_NO, IconSize, NoProtocol, NoProtocolIndex);
 	ImageListIconAdd(IconList, IDI_ICON_WAIT, IconSize, Wait, WaitIndex);
 
-	//ƒŠƒXƒgƒrƒ…[‚ÉƒCƒ[ƒWƒŠƒXƒg‚ğİ’è
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã‚’è¨­å®š
 	ListView_SetImageList(hListView, IconList, LVFLag);
 }
 
@@ -216,7 +216,7 @@ void ListView_SetItemImage(HWND hListView, int IconSize, int LVFLag)
 
 	SetColmunInfo
 
-	ƒJƒ‰ƒ€î•ñ‚Ìİ’è
+	ã‚«ãƒ©ãƒ æƒ…å ±ã®è¨­å®š
 
 ******************************************************************************/
 
@@ -358,7 +358,7 @@ static int SetColmunInfo(char *Colbuf, struct TPLVCOLUMN *ColInfo)
 
 	ListView_AddColumn
 
-	ƒJƒ‰ƒ€‚Ì’Ç‰Á
+	ã‚«ãƒ©ãƒ ã®è¿½åŠ 
 
 ******************************************************************************/
 
@@ -401,7 +401,7 @@ int ListView_AddColumn(HWND hListView, char *chLvColumn, int *lColSize, struct T
 
 	CompareFunc
 
-	ƒ\[ƒgƒtƒ‰ƒO‚É]‚Á‚Ä•¶š—ñ‚Ì”äŠr‚ğs‚¤
+	ã‚½ãƒ¼ãƒˆãƒ•ãƒ©ã‚°ã«å¾“ã£ã¦æ–‡å­—åˆ—ã®æ¯”è¼ƒã‚’è¡Œã†
 
 ******************************************************************************/
 
@@ -415,8 +415,8 @@ int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 		return 0;
 	}
 
-	sfg = (lParamSort < 0) ? 1 : 0;	//¸‡^~‡
-	ghed = ABS(lParamSort) - 1;		//ƒ\[ƒg‚ğs‚¤ƒwƒbƒ_
+	sfg = (lParamSort < 0) ? 1 : 0;	//æ˜‡é †ï¼é™é †
+	ghed = ABS(lParamSort) - 1;		//ã‚½ãƒ¼ãƒˆã‚’è¡Œã†ãƒ˜ãƒƒãƒ€
 
 	*buf1 = '\0';
 	*buf2 = '\0';
@@ -426,7 +426,7 @@ int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 	}
 
 	if(ghed == 100){
-		//ƒAƒCƒRƒ“‡‚Éƒ\[ƒg
+		//ã‚¢ã‚¤ã‚³ãƒ³é †ã«ã‚½ãƒ¼ãƒˆ
 		if(((struct TPITEM *)lParam1)->Status == ST_DEFAULT){
 			lstrcpy(buf1, "9");
 		}else{
@@ -440,7 +440,7 @@ int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 		}
 
 	}else if((SortColInfo + ghed)->p == 0){
-		//ƒAƒCƒeƒ€‚ªŠi”[‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚ÌƒpƒX
+		//ã‚¢ã‚¤ãƒ†ãƒ ãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹
 		if(IsTreeItem(WWWCWnd, ((struct TPITEM *)lParam1)->hItem) == FALSE){
 			*buf1 = '\0';
 		}else{
@@ -459,7 +459,7 @@ int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 		}
 
 	}else{
-		//”äŠr‚ğs‚¤•¶š—ñ
+		//æ¯”è¼ƒã‚’è¡Œã†æ–‡å­—åˆ—
 		if((char *)*((long *)((long)((struct TPITEM *)lParam1) + (SortColInfo + ghed)->p)) != NULL){
 			lstrcpyn(buf1,
 				(char *)*((long *)((long)((struct TPITEM *)lParam1) + (SortColInfo + ghed)->p)),
@@ -471,7 +471,7 @@ int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 				BUFSIZE - 1);
 		}
 
-		//”’l‚Ìê‡
+		//æ•°å€¤ã®å ´åˆ
 		if((SortColInfo + ghed)->fmt == LVCFMT_RIGHT){
 			GetNumString(buf1, tmp1);
 			GetNumString(buf2, tmp2);
@@ -481,7 +481,7 @@ int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 		}
 	}
 
-	//¬•¶š‚É•ÏŠ·‚µ‚Ä”äŠr‚ğs‚¤
+	//å°æ–‡å­—ã«å¤‰æ›ã—ã¦æ¯”è¼ƒã‚’è¡Œã†
 	CharLower(buf1);
 	CharLower(buf2);
 	ret = lstrcmp(buf1, buf2);
@@ -501,7 +501,7 @@ int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 
 	ListView_SetRedraw
 
-	ƒŠƒXƒgƒrƒ…[‚Ì•`‰æØ‚è‘Ö‚¦
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®æç”»åˆ‡ã‚Šæ›¿ãˆ
 
 ******************************************************************************/
 
@@ -525,7 +525,7 @@ void ListView_SetRedraw(HWND hListView, int DrawFlag)
 
 	ListView_InsertItemEx
 
-	w’èˆÊ’u‚ÉƒAƒCƒeƒ€‚ğ‘}“ü
+	æŒ‡å®šä½ç½®ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’æŒ¿å…¥
 
 ******************************************************************************/
 
@@ -545,7 +545,7 @@ int ListView_InsertItemEx(HWND hListView, char *buf, int Img, long lp, int iItem
 	lvi.iImage = Img;
 	lvi.lParam = lp;
 
-	// ƒŠƒXƒgƒrƒ…[‚ÉƒAƒCƒeƒ€‚ğ’Ç‰Á‚·‚é
+	// ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ ã™ã‚‹
 	return ListView_InsertItem(hListView, &lvi);
 }
 
@@ -554,7 +554,7 @@ int ListView_InsertItemEx(HWND hListView, char *buf, int Img, long lp, int iItem
 
 	ListView_SetItemTitle
 
-	ƒAƒCƒeƒ€‚Ìƒ^ƒCƒgƒ‹‚ğİ’è‚·‚é
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -570,9 +570,9 @@ void ListView_SetItemTitle(HWND hWnd, LV_DISPINFO *plv)
 
 	tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), plv->item.iItem);
 	if(tpItemInfo != NULL){
-		//Undoƒoƒbƒtƒ@‚ÉƒZƒbƒg
+		//Undoãƒãƒƒãƒ•ã‚¡ã«ã‚»ãƒƒãƒˆ
 		SetLVTitleToUndo(TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), tpItemInfo->Title, plv->item.pszText, tpItemInfo->CheckURL);
-		//ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒeƒ€‚Ìƒ^ƒCƒgƒ‹‚ğİ’è‚·‚é
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®šã™ã‚‹
 		GlobalFree(tpItemInfo->Title);
 		tpItemInfo->Title = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(plv->item.pszText) + 1);
 		if(tpItemInfo->Title == NULL){
@@ -580,21 +580,21 @@ void ListView_SetItemTitle(HWND hWnd, LV_DISPINFO *plv)
 			return;
 		}
 		lstrcpy(tpItemInfo->Title, plv->item.pszText);
-		//ƒAƒCƒeƒ€‚ÌÄİ’è
+		//ã‚¢ã‚¤ãƒ†ãƒ ã®å†è¨­å®š
 		ListView_SetItemText(GetDlgItem(hWnd, WWWC_LIST), plv->item.iItem, 0, LPSTR_TEXTCALLBACK);
 	}else{
-		//‘Î‰‚·‚éƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚Ìƒnƒ“ƒhƒ‹‚Ìæ“¾
+		//å¯¾å¿œã™ã‚‹ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒãƒ³ãƒ‰ãƒ«ã®å–å¾—
 		hItem = TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE),
 			TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), plv->item.iItem);
 		if(hItem == NULL){
 			return;
 		}
-		//ƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚Ìƒ^ƒCƒgƒ‹‚ğ•ÏX‚·‚é
+		//ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’å¤‰æ›´ã™ã‚‹
 		TreeView_SetName(hWnd, hItem, plv->item.pszText);
 
 		ListView_RefreshFolder(hWnd);
 
-		//–¼‘O‚Ì•ÏX‚³‚ê‚½ƒAƒCƒeƒ€‚ğ‘I‘ğ‚·‚é
+		//åå‰ã®å¤‰æ›´ã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠã™ã‚‹
 		if((i = TreeView_GetListIndex(GetDlgItem(hWnd, WWWC_TREE), hItem)) != -1){
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST),
 				i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
@@ -608,7 +608,7 @@ void ListView_SetItemTitle(HWND hWnd, LV_DISPINFO *plv)
 
 	ListView_SetItemIcon
 
-	ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒRƒ“‚ğİ’è
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¨­å®š
 
 ******************************************************************************/
 
@@ -629,7 +629,7 @@ void ListView_SetItemIcon(HWND hListView, int i, int Icon)
 
 	ListView_MoveItem
 
-	ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒeƒ€‚ğˆÚ“®
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç§»å‹•
 
 ******************************************************************************/
 
@@ -672,7 +672,7 @@ void ListView_MoveItem(HWND hListView, int SelectItem, int Move, int ColSize)
 
 	ListView_GetFolderCount
 
-	ƒŠƒXƒgƒrƒ…[‚É•\¦‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ì”‚ğæ“¾
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®æ•°ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -682,7 +682,7 @@ int ListView_GetFolderCount(HWND hListView)
 	int cnt;
 	int ret = 0;
 
-	//ƒŠƒXƒgƒrƒ…[‚É•\¦‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ì”
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®æ•°
 	cnt = ListView_GetItemCount(hListView);
 	for(; ret < cnt; ret++){
 		tpItemInfo = (struct TPITEM *)ListView_GetlParam(hListView, ret);
@@ -698,7 +698,7 @@ int ListView_GetFolderCount(HWND hListView)
 
 	ListView_GetMemToIndex
 
-	ƒAƒCƒeƒ€î•ñ‚©‚çƒAƒCƒeƒ€‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
+	ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -721,7 +721,7 @@ int ListView_GetMemToIndex(HWND hListView, struct TPITEM *tpItemInfo)
 
 	ListView_GetlParam
 
-	ƒAƒCƒeƒ€‚ÌLPARAM‚ğæ“¾
+	ã‚¢ã‚¤ãƒ†ãƒ ã®LPARAMã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -743,7 +743,7 @@ long ListView_GetlParam(HWND hListView, int i)
 
 	ListView_SetlParam
 
-	ƒAƒCƒeƒ€‚ÌLPARAM‚ğİ’è
+	ã‚¢ã‚¤ãƒ†ãƒ ã®LPARAMã‚’è¨­å®š
 
 ******************************************************************************/
 
@@ -763,7 +763,7 @@ void ListView_SetlParam(HWND hListView, int i, long lParam)
 
 	ListView_SetListToMem
 
-	ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒeƒ€‚©‚çƒAƒCƒeƒ€î•ñ‚ğì¬
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’ä½œæˆ
 
 ******************************************************************************/
 
@@ -803,7 +803,7 @@ struct TPITEM **ListView_SetListToMem(HWND hWnd, int *RetItemCnt)
 
 	ListView_SelectItemToMem
 
-	ƒŠƒXƒgƒrƒ…[‚Ì‘I‘ğƒAƒCƒeƒ€‚©‚çƒAƒCƒeƒ€î•ñ‚ğì¬
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®é¸æŠã‚¢ã‚¤ãƒ†ãƒ ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’ä½œæˆ
 
 ******************************************************************************/
 
@@ -813,7 +813,7 @@ struct TPITEM **ListView_SelectItemToMem(HWND hListView, int *cnt)
 	struct TPITEM *tpItemInfo;
 	int i;
 
-	//‘I‘ğƒAƒCƒeƒ€”‚Ìæ“¾
+	//é¸æŠã‚¢ã‚¤ãƒ†ãƒ æ•°ã®å–å¾—
 	i = -1;
 	*cnt = 0;
 	while((i = ListView_GetNextItem(hListView, i, LVNI_SELECTED)) != -1){
@@ -823,12 +823,12 @@ struct TPITEM **ListView_SelectItemToMem(HWND hListView, int *cnt)
 		}
 		(*cnt)++;
 	}
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚ÌŠm•Û
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®ç¢ºä¿
 	RetItemList = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * *cnt);
 	if(RetItemList == NULL){
 		return NULL;
 	}
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚É‘I‘ğƒAƒCƒeƒ€‚ğİ’è
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã«é¸æŠã‚¢ã‚¤ãƒ†ãƒ ã‚’è¨­å®š
 	i = -1;
 	*cnt = 0;
 	while((i = ListView_GetNextItem(hListView, i, LVNI_SELECTED)) != -1){
@@ -847,7 +847,7 @@ struct TPITEM **ListView_SelectItemToMem(HWND hListView, int *cnt)
 
 	ListView_GetHiTestItem
 
-	ƒ}ƒEƒX‚Ì‰º‚ÌƒAƒCƒeƒ€‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
+	ãƒã‚¦ã‚¹ã®ä¸‹ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -874,7 +874,7 @@ int ListView_GetHiTestItem(HWND hListView)
 
 	ListView_SwitchSelectItem
 
-	ƒAƒCƒeƒ€‚Ì‘I‘ğ‚ÌØ‚è‘Ö‚¦
+	ã‚¢ã‚¤ãƒ†ãƒ ã®é¸æŠã®åˆ‡ã‚Šæ›¿ãˆ
 
 ******************************************************************************/
 
@@ -898,7 +898,7 @@ void ListView_SwitchSelectItem(HWND hListView)
 
 	ListView_UpSelectItem
 
-	UPƒAƒCƒRƒ“‚Ì‘I‘ğ
+	UPã‚¢ã‚¤ã‚³ãƒ³ã®é¸æŠ
 
 ******************************************************************************/
 
@@ -927,7 +927,7 @@ void ListView_UpSelectItem(HWND hListView)
 
 	ListView_IsRecyclerItem
 
-	‚²‚İ” ‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢‚©ƒ`ƒFƒbƒN‚·‚é
+	ã”ã¿ç®±ãŒé¸æŠã•ã‚Œã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 
 ******************************************************************************/
 
@@ -950,7 +950,7 @@ BOOL ListView_IsRecyclerItem(HWND hWnd)
 
 	SetListMenuUnCheck
 
-	ƒŠƒXƒgƒrƒ…[ƒXƒ^ƒCƒ‹ƒƒjƒ…[‚Ìƒ`ƒFƒbƒN‚ğ‰ğœ‚·‚é
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‚¹ã‚¿ã‚¤ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒã‚§ãƒƒã‚¯ã‚’è§£é™¤ã™ã‚‹
 
 ******************************************************************************/
 
@@ -972,7 +972,7 @@ static void SetListMenuUnCheck(HWND hWnd, int id, int st)
 
 	ListView_StyleChange
 
-	ƒŠƒXƒgƒrƒ…[‚ÌƒXƒ^ƒCƒ‹‚É‚µ‚½‚ª‚Á‚ÄƒEƒBƒ“ƒhƒE‚Ìƒƒjƒ…[€–Ú‚ğ•ÏX‚·‚é
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¹ã‚¿ã‚¤ãƒ«ã«ã—ãŸãŒã£ã¦ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã‚’å¤‰æ›´ã™ã‚‹
 
 ******************************************************************************/
 
@@ -994,26 +994,26 @@ void ListView_StyleChange(HWND hWnd, int NewStyle)
 
 	switch(NewStyle)
 	{
-	case LVS_ICON:				//ƒAƒCƒRƒ“
+	case LVS_ICON:				//ã‚¢ã‚¤ã‚³ãƒ³
 		SetListMenuUnCheck(hWnd, ID_MENUITEM_VIEW_ICON, 1);
 		break;
 
-	case LVS_SMALLICON:			//¬‚³‚¢ƒAƒCƒRƒ“
+	case LVS_SMALLICON:			//å°ã•ã„ã‚¢ã‚¤ã‚³ãƒ³
 		SetListMenuUnCheck(hWnd, ID_MENUITEM_VIEW_SMALLICON, 1);
 		break;
 
-	case LVS_LIST:				//ƒŠƒXƒg
+	case LVS_LIST:				//ãƒªã‚¹ãƒˆ
 		SetListMenuUnCheck(hWnd, ID_MENUITEM_VIEW_LIST, 1);
 		break;
 
-	case LVS_REPORT:			//Ú×
+	case LVS_REPORT:			//è©³ç´°
 		SetListMenuUnCheck(hWnd, ID_MENUITEM_VIEW_REPORT, 1);
 
 		InvalidateRect(GetDlgItem(hWnd, WWWC_LIST), NULL, TRUE);
 		UpdateWindow(GetDlgItem(hWnd, WWWC_LIST));
 		break;
 
-	default:					//Ú×‚Å‚Ps‘I‘ğ
+	default:					//è©³ç´°ã§ï¼‘è¡Œé¸æŠ
 		SetListMenuUnCheck(hWnd, ID_MENUITEM_VIEW_REPORT_LINE, 1);
 		SendDlgItemMessage(hWnd, WWWC_LIST, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, LVS_EX_FULLROWSELECT |
 			SendDlgItemMessage(hWnd, WWWC_LIST, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0));
@@ -1029,7 +1029,7 @@ void ListView_StyleChange(HWND hWnd, int NewStyle)
 
 	ListView_SetStyle
 
-	ƒŠƒXƒgƒrƒ…[‚ÌƒXƒ^ƒCƒ‹‚ğ•ÏX‚·‚é
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¹ã‚¿ã‚¤ãƒ«ã‚’å¤‰æ›´ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1051,7 +1051,7 @@ void ListView_SetStyle(HWND hWnd, int NewStyle)
 
 	ListView_GetDispItem
 
-	ƒŠƒXƒgƒrƒ…[‚É•\¦‚·‚éƒAƒCƒeƒ€î•ñ‚Ìİ’è
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®è¨­å®š
 
 ******************************************************************************/
 
@@ -1064,7 +1064,7 @@ BOOL ListView_GetDispItem(HWND hWnd, LV_ITEM *hLVItem)
 	int i;
 
 	tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), hLVItem->iItem);
-	//ƒtƒHƒ‹ƒ_
+	//ãƒ•ã‚©ãƒ«ãƒ€
 	if(tpItemInfo == NULL){
 		if((hItem = TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE),
 			TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), hLVItem->iItem)) == NULL){
@@ -1072,7 +1072,7 @@ BOOL ListView_GetDispItem(HWND hWnd, LV_ITEM *hLVItem)
 		}
 
 		i = TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, buf);
-		//ƒeƒLƒXƒg
+		//ãƒ†ã‚­ã‚¹ãƒˆ
 		if(hLVItem->mask & LVIF_TEXT){
 			*(hLVItem->pszText) = '\0';
 			if(lstrcmp((ColumnInfo + hLVItem->iSubItem)->Title, COLUMN_NAME) == 0){
@@ -1086,15 +1086,15 @@ BOOL ListView_GetDispItem(HWND hWnd, LV_ITEM *hLVItem)
 				}
 			}
 		}
-		//ƒAƒCƒRƒ“
+		//ã‚¢ã‚¤ã‚³ãƒ³
 		if(hLVItem->mask & LVIF_IMAGE){
 			hLVItem->iImage = i;
 		}
 		return FALSE;
 	}
 
-	//ƒAƒCƒeƒ€
-	//ƒeƒLƒXƒg
+	//ã‚¢ã‚¤ãƒ†ãƒ 
+	//ãƒ†ã‚­ã‚¹ãƒˆ
 	if(hLVItem->mask & LVIF_TEXT){
 		if((char *)*((long *)((long)tpItemInfo + (ColumnInfo + hLVItem->iSubItem)->p)) != NULL){
 			lstrcpyn(hLVItem->pszText,
@@ -1108,7 +1108,7 @@ BOOL ListView_GetDispItem(HWND hWnd, LV_ITEM *hLVItem)
 		return FALSE;
 	}
 
-	//ƒAƒCƒRƒ“
+	//ã‚¢ã‚¤ã‚³ãƒ³
 	i = GetProtocolIndex(tpItemInfo->CheckURL);
 	if(tpItemInfo->IconStatus == ST_DEFAULT || i == -1){
 		if(tpItemInfo->Status & ST_ERROR){
@@ -1143,7 +1143,7 @@ BOOL ListView_GetDispItem(HWND hWnd, LV_ITEM *hLVItem)
 
 	ListView_FolderRedraw
 
-	ƒŠƒXƒgƒrƒ…[‚É•\¦‚µ‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚ÌÄ•\¦‚ğs‚¤
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã—ã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®å†è¡¨ç¤ºã‚’è¡Œã†
 
 ******************************************************************************/
 
@@ -1152,12 +1152,12 @@ void ListView_FolderRedraw(HWND hWnd, BOOL SelFlag)
 	HTREEITEM cItem;
 	int i;
 
-	//ƒAƒCƒeƒ€‚Ì•\¦ó‘Ô‚ğİ’è
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’è¨­å®š
 	cItem = TreeView_GetChild(GetDlgItem(hWnd, WWWC_TREE), TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)));
 	i = 0;
 	while(cItem != NULL){
 		ListView_SetItemText(GetDlgItem(hWnd, WWWC_LIST), i, 0, LPSTR_TEXTCALLBACK);
-		//ƒ`ƒFƒbƒN‚·‚é^‚µ‚È‚¢ƒAƒCƒRƒ“‚Ì•t‰Á
+		//ãƒã‚§ãƒƒã‚¯ã™ã‚‹ï¼ã—ãªã„ã‚¢ã‚¤ã‚³ãƒ³ã®ä»˜åŠ 
 		if(TreeView_GetState(GetDlgItem(hWnd, WWWC_TREE), cItem, TVIS_OVERLAYMASK) & INDEXTOOVERLAYMASK(ICON_ST_NOCHECK)){
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), i, INDEXTOOVERLAYMASK(ICON_ST_NOCHECK), LVIS_OVERLAYMASK);
 		}else{
@@ -1170,7 +1170,7 @@ void ListView_FolderRedraw(HWND hWnd, BOOL SelFlag)
 		cItem = TreeView_GetNextSibling(GetDlgItem(hWnd, WWWC_TREE), cItem);
 	}
 
-	//ƒtƒHƒ‹ƒ_‚ªƒAƒCƒeƒ€‚Ì‘O‚É—ˆ‚é‚æ‚¤‚É‚·‚é
+	//ãƒ•ã‚©ãƒ«ãƒ€ãŒã‚¢ã‚¤ãƒ†ãƒ ã®å‰ã«æ¥ã‚‹ã‚ˆã†ã«ã™ã‚‹
 	ListView_SortItems(GetDlgItem(hWnd, WWWC_LIST), CompareFunc, DAMMYSORT);
 	ListView_RedrawItems(GetDlgItem(hWnd, WWWC_LIST), 0, i);
 }
@@ -1180,7 +1180,7 @@ void ListView_FolderRedraw(HWND hWnd, BOOL SelFlag)
 
 	ListView_RefreshFolder
 
-	ƒŠƒXƒgƒrƒ…[‚É•\¦‚µ‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚ÌÄİ’è‚ğs‚¤
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã—ã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®å†è¨­å®šã‚’è¡Œã†
 
 ******************************************************************************/
 
@@ -1191,19 +1191,19 @@ void ListView_RefreshFolder(HWND hWnd)
 	int i;
 	BOOL SelFlag = TRUE;
 
-	//ƒŠƒXƒgƒrƒ…[‚É•\¦‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ì”
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®æ•°
 	ListFolderCnt = ListView_GetFolderCount(GetDlgItem(hWnd, WWWC_LIST));
-	//ƒcƒŠ[ƒrƒ…[‚É•\¦‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ì”
+	//ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®æ•°
 	TreeFolderCnt = TreeView_GetChildCount(GetDlgItem(hWnd, WWWC_TREE), TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)));
 
 	if(ListFolderCnt > TreeFolderCnt){
-		//ƒŠƒXƒgƒrƒ…[‚É•\¦‚³‚ê‚Ä‚¢‚é”‚ª‘½‚¢ê‡‚Ííœ
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹æ•°ãŒå¤šã„å ´åˆã¯å‰Šé™¤
 		for(i = TreeFolderCnt;i < ListFolderCnt;i++){
 			ListView_DeleteItem(GetDlgItem(hWnd, WWWC_LIST), TreeFolderCnt);
 		}
 	}
 	if(ListFolderCnt < TreeFolderCnt){
-		//ƒcƒŠ[ƒrƒ…[‚É•\¦‚³‚ê‚Ä‚¢‚é”‚ª‘½‚¢ê‡‚Í’Ç‰Á
+		//ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹æ•°ãŒå¤šã„å ´åˆã¯è¿½åŠ 
 		for(i = ListFolderCnt;i < TreeFolderCnt;i++){
 			ListView_InsertItemEx(GetDlgItem(hWnd, WWWC_LIST), (char*)LPSTR_TEXTCALLBACK, I_IMAGECALLBACK,
 				(long)NULL, ListFolderCnt);
@@ -1218,7 +1218,7 @@ void ListView_RefreshFolder(HWND hWnd)
 
 	ListView_RefreshItem
 
-	ƒŠƒXƒgƒrƒ…[‚É•\¦‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚ÌÄİ’è‚ğs‚¤
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®å†è¨­å®šã‚’è¡Œã†
 
 ******************************************************************************/
 
@@ -1236,7 +1236,7 @@ void ListView_RefreshItem(HWND hListView)
 		}
 		if(tpItemInfo->RefreshFlag == TRUE){
 			tpItemInfo->RefreshFlag = FALSE;
-			//•\¦XV
+			//è¡¨ç¤ºæ›´æ–°
 			ListView_SetItemText(hListView, i, 0, LPSTR_TEXTCALLBACK);
 			ListView_SetItemState(hListView, i,
 				((tpItemInfo->CheckSt == 1) ? INDEXTOOVERLAYMASK(ICON_ST_NOCHECK) : 0), LVIS_OVERLAYMASK);
@@ -1252,7 +1252,7 @@ void ListView_RefreshItem(HWND hListView)
 
 	ListView_ShowItem
 
-	ListView‚ÉƒAƒCƒeƒ€‚ğ•\¦‚·‚é
+	ListViewã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¡¨ç¤ºã™ã‚‹
 
 ******************************************************************************/
 
@@ -1277,7 +1277,7 @@ void ListView_ShowItem(HWND hWnd, HTREEITEM hItem)
 	ListView_SetRedraw(hListView, LDF_NODRAW);
 	ListView_DeleteAllItems(hListView);
 
-	//ListView‚Éƒƒ‚ƒŠ‚ğŠm•Û‚³‚¹‚é
+	//ListViewã«ãƒ¡ãƒ¢ãƒªã‚’ç¢ºä¿ã•ã›ã‚‹
 	cItem = TreeView_GetChild(hTreeView, hItem);
 	j = 0;
 	while(cItem != NULL){
@@ -1286,11 +1286,11 @@ void ListView_ShowItem(HWND hWnd, HTREEITEM hItem)
 	}
 	ListView_SetItemCount(hListView, j + tpTreeInfo->ItemListCnt);
 
-	//ƒtƒHƒ‹ƒ_‚Ì•\¦
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®è¡¨ç¤º
 	cItem = TreeView_GetChild(hTreeView, hItem);
 	j = 0;
 
-	//’Ç‰ÁƒAƒCƒeƒ€‚Ì‰Šú‰»
+	//è¿½åŠ ã‚¢ã‚¤ãƒ†ãƒ ã®åˆæœŸåŒ–
 	lvi.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM | LVIF_STATE;
 	lvi.iSubItem = 0;
 	lvi.stateMask = LVIS_OVERLAYMASK;
@@ -1300,7 +1300,7 @@ void ListView_ShowItem(HWND hWnd, HTREEITEM hItem)
 	lvi.lParam = 0;
 
 	while(cItem != NULL){
-		// ƒŠƒXƒgƒrƒ…[‚ÉƒAƒCƒeƒ€‚ğ’Ç‰Á‚·‚é
+		// ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ ã™ã‚‹
 		lvi.iItem = j + 1;
 		lvi.state = ((TreeView_GetState(hTreeView, cItem, TVIS_OVERLAYMASK) & INDEXTOOVERLAYMASK(ICON_ST_NOCHECK)) != 0)
 			? INDEXTOOVERLAYMASK(ICON_ST_NOCHECK) : 0;
@@ -1311,7 +1311,7 @@ void ListView_ShowItem(HWND hWnd, HTREEITEM hItem)
 		cItem = TreeView_GetNextSibling(hTreeView, cItem);
 	}
 
-	//ƒAƒCƒeƒ€‚Ì•\¦
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®è¡¨ç¤º
 	if(tpTreeInfo->ItemList == NULL){
 		ListView_SetRedraw(hListView, LDF_REDRAW);
 		return;
@@ -1323,7 +1323,7 @@ void ListView_ShowItem(HWND hWnd, HTREEITEM hItem)
 			continue;
 		}
 		(*(tpTreeInfo->ItemList + i))->RefreshFlag = FALSE;
-		// ƒŠƒXƒgƒrƒ…[‚ÉƒAƒCƒeƒ€‚ğ’Ç‰Á‚·‚é
+		// ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ ã™ã‚‹
 		lvi.iItem = j + 1;
 		lvi.state = ((*(tpTreeInfo->ItemList + i))->CheckSt == 1)
 			? INDEXTOOVERLAYMASK(ICON_ST_NOCHECK) : 0;
@@ -1335,13 +1335,13 @@ void ListView_ShowItem(HWND hWnd, HTREEITEM hItem)
 	}
 
 	if(ABS(LvStyle) == LVS_LIST){
-		//List•\¦ƒAƒCƒeƒ€‚ÌŠÔŠu‚ª‚¤‚Ü‚­s‚©‚È‚¢‚Ì‚Åˆê“I‚É‘¼‚ÌƒXƒ^ƒCƒ‹‚É•ÏX
+		//Listè¡¨ç¤ºæ™‚ã‚¢ã‚¤ãƒ†ãƒ ã®é–“éš”ãŒã†ã¾ãè¡Œã‹ãªã„ã®ã§ä¸€æ™‚çš„ã«ä»–ã®ã‚¹ã‚¿ã‚¤ãƒ«ã«å¤‰æ›´
 		ListView_SetStyle(hWnd, LVS_SMALLICON);
 		ListView_SetStyle(hWnd, LVS_LIST);
 	}
 
 	if(LvAutoSort == 1){
-		//ƒAƒCƒeƒ€‚ğƒ\[ƒg
+		//ã‚¢ã‚¤ãƒ†ãƒ ã‚’ã‚½ãƒ¼ãƒˆ
 		ListView_SetRedraw(hListView, LDF_NODRAW);
 		SortColInfo = ColumnInfo;
 		ListView_SortItems(hListView, CompareFunc, LvSortFlag);
@@ -1361,7 +1361,7 @@ void ListView_ShowItem(HWND hWnd, HTREEITEM hItem)
 
 	ListView_StartDragItem
 
-	‘I‘ğƒAƒCƒeƒ€‚Ìƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚ğŠJn‚·‚é
+	é¸æŠã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã‚’é–‹å§‹ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1379,20 +1379,20 @@ void ListView_StartDragItem(HWND hWnd)
 	DgdpItem = NULL;
 	WWWCDropFlag = FALSE;
 
-	//AltƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éê‡‚Íƒtƒ@ƒCƒ‹‚ğˆµ‚í‚È‚¢
+	//Altã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ‰±ã‚ãªã„
 	NoFileFlag = (GetAsyncKeyState(VK_MENU) < 0) ? TRUE : FALSE;
 
-	//ƒtƒHƒ‹ƒ_î•ñ‚Ì•Û‘¶
+	//ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±ã®ä¿å­˜
 	SaveTreeMem(hWnd, GetDlgItem(hWnd, WWWC_TREE), TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)));
 
 	if(NoFileFlag == FALSE){
-		//ListView‚Ì‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚©‚çƒhƒƒbƒvƒtƒ@ƒCƒ‹‚ğì¬
+		//ListViewã®é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‹ã‚‰ãƒ‰ãƒ­ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆ
 		if(DragDrop_CreateDropFiles(hWnd, DnD_DirName) == FALSE){
 			return;
 		}
 	}
 
-	//Œø‰Ê‚ğİ’è
+	//åŠ¹æœã‚’è¨­å®š
 	Effect = DROPEFFECT_COPY | DROPEFFECT_MOVE | DROPEFFECT_LINK;
 
 	SelectItem = -1;
@@ -1401,18 +1401,18 @@ void ListView_StartDragItem(HWND hWnd)
 		if(tpItemInfo == NULL){
 			hItem = TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE),
 				TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), SelectItem);
-			//ƒ`ƒFƒbƒN’†‚Ìê‡‚ÍˆÚ“®‚ÌŒø‰Ê‚ğŠO‚µ‚Äƒ‹[ƒv‚ğ”²‚¯‚é
+			//ãƒã‚§ãƒƒã‚¯ä¸­ã®å ´åˆã¯ç§»å‹•ã®åŠ¹æœã‚’å¤–ã—ã¦ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 			if(FindCheckItem(hWnd, hItem) == 1){
 				Effect ^= DROPEFFECT_MOVE;
 				break;
 			}
-			//ƒvƒƒpƒeƒB•\¦’†‚Ìê‡‚ÍˆÚ“®‚ÌŒø‰Ê‚ğŠO‚µ‚Äƒ‹[ƒv‚ğ”²‚¯‚é
+			//ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£è¡¨ç¤ºä¸­ã®å ´åˆã¯ç§»å‹•ã®åŠ¹æœã‚’å¤–ã—ã¦ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 			if(FindPropItem(hWnd, hItem) == 1){
 				Effect ^= DROPEFFECT_MOVE;
 				break;
 			}
 		}else{
-			//ƒ`ƒFƒbƒN’†‚Ìê‡‚ÍˆÚ“®‚ÌŒø‰Ê‚ğŠO‚µ‚Äƒ‹[ƒv‚ğ”²‚¯‚é
+			//ãƒã‚§ãƒƒã‚¯ä¸­ã®å ´åˆã¯ç§»å‹•ã®åŠ¹æœã‚’å¤–ã—ã¦ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 			if(tpItemInfo->IconStatus == ST_CHECK){
 				Effect ^= DROPEFFECT_MOVE;
 				break;
@@ -1420,45 +1420,45 @@ void ListView_StartDragItem(HWND hWnd)
 		}
 	}
 
-	//ƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚·‚éƒtƒHƒ‹ƒ_‚Ìæ“ª‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
-	//‚±‚ê‚Íƒtƒ‰ƒO“I‚È‚à‚Ì‚Å“¯ˆêƒtƒHƒ‹ƒ_‚Ìƒ`ƒFƒbƒN‚É—˜—p‚·‚é
+	//ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®å…ˆé ­ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
+	//ã“ã‚Œã¯ãƒ•ãƒ©ã‚°çš„ãªã‚‚ã®ã§åŒä¸€ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒã‚§ãƒƒã‚¯ã«åˆ©ç”¨ã™ã‚‹
 	DragItemIndex = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED);
 	tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), DragItemIndex);
 	if(tpItemInfo != NULL){
 		DragItemIndex = -1;
 	}
 
-	//ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚ğİ’è
+	//ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’è¨­å®š
 	cf[0] = WWWC_ClipFormat;
 	cf[1] = CF_TEXT;
 	cf[2] = CF_HDROP;
 	cfcnt = (NoFileFlag == FALSE) ? CLIPFORMAT_CNT : CLIPFORMAT_CNT - 1;
 
-	//ƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚ğŠJn
+	//ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã‚’é–‹å§‹
 	ret = OLE_IDropSource_Start(hWnd, WM_DATAOBJECT_GETDATA, cf, cfcnt, Effect);
 	DragItemIndex = -1;
 
 	WaitCursor(TRUE);
-	//ƒhƒƒbƒvƒtƒ@ƒCƒ‹î•ñ‚ğ‰ğ•ú
+	//ãƒ‰ãƒ­ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã‚’è§£æ”¾
 	if(NoFileFlag == FALSE){
 		FreeDropFiles();
 	}
 
 	if(ret == DROPEFFECT_MOVE && WWWCDropFlag == TRUE){
-		//íœ‚³‚ê‚½ƒtƒHƒ‹ƒ_AƒAƒCƒeƒ€‚ğƒŠƒXƒgƒrƒ…[‚©‚çíœ‚·‚é
+		//å‰Šé™¤ã•ã‚ŒãŸãƒ•ã‚©ãƒ«ãƒ€ã€ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‹ã‚‰å‰Šé™¤ã™ã‚‹
 		TreeView_NoFileDelete(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), 0);
 		ListView_RefreshFolder(hWnd);
 		Item_Select(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)));
 	}
 
-	//WWWCˆÈŠO‚ÌƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚Éƒhƒƒbƒv‚µ‚½ê‡‚ÍƒAƒCƒRƒ“‚ğ‰Šú‰»
+	//WWWCä»¥å¤–ã®ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã«ãƒ‰ãƒ­ãƒƒãƒ—ã—ãŸå ´åˆã¯ã‚¢ã‚¤ã‚³ãƒ³ã‚’åˆæœŸåŒ–
 	if(ret != -1 && ret != DROPEFFECT_NONE && WWWCDropFlag == FALSE){
 		switch(DnDReturnIcon)
 		{
-		case 0:		//ƒAƒCƒRƒ“‚ğ‰Šú‰»‚µ‚È‚¢
+		case 0:		//ã‚¢ã‚¤ã‚³ãƒ³ã‚’åˆæœŸåŒ–ã—ãªã„
 			break;
 
-		case 1:		//ƒhƒƒbƒv‚µ‚½ƒAƒCƒeƒ€‚ª1Œ‚Ìê‡
+		case 1:		//ãƒ‰ãƒ­ãƒƒãƒ—ã—ãŸã‚¢ã‚¤ãƒ†ãƒ ãŒ1ä»¶ã®å ´åˆ
 			if(ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST)) != 1){
 				break;
 			}
@@ -1469,7 +1469,7 @@ void ListView_StartDragItem(HWND hWnd)
 			ListView_RedrawItems(GetDlgItem(hWnd, WWWC_LIST), SelectItem, SelectItem);
 			break;
 
-		case 2:		//ƒAƒCƒRƒ“‚ğ‰Šú‰»‚·‚é
+		case 2:		//ã‚¢ã‚¤ã‚³ãƒ³ã‚’åˆæœŸåŒ–ã™ã‚‹
 			SelectItem = -1;
 			while((SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), SelectItem, LVNI_SELECTED)) != -1){
 				Item_Initialize(hWnd, (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), SelectItem), FALSE);
@@ -1489,7 +1489,7 @@ void ListView_StartDragItem(HWND hWnd)
 
 	ListView_MouseSelectItem
 
-	ƒ}ƒEƒX‚Ì‰º‚ÉƒAƒCƒeƒ€‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN‚·‚é
+	ãƒã‚¦ã‚¹ã®ä¸‹ã«ã‚¢ã‚¤ãƒ†ãƒ ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1528,7 +1528,7 @@ BOOL ListView_MouseSelectItem(HWND hListView)
 
 	ListView_ItemClick
 
-	ƒAƒCƒeƒ€‚ğŠJ‚­ˆ—‚ğs‚¤
+	ã‚¢ã‚¤ãƒ†ãƒ ã‚’é–‹ãå‡¦ç†ã‚’è¡Œã†
 
 ******************************************************************************/
 
@@ -1536,40 +1536,40 @@ void ListView_ItemClick(HWND hWnd, NMHDR *CForm)
 {
 	int i;
 
-	//ƒvƒƒgƒRƒ‹–ˆ‚Ìƒƒjƒ…[‚ğİ’è
+	//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¨­å®š
 	SetProtocolMenu(hWnd);
 
-	//ƒAƒCƒeƒ€‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íˆê‚Âã‚ÌŠK‘w‚ÖˆÚ“®
+	//ã‚¢ã‚¤ãƒ†ãƒ ãŒé¸æŠã•ã‚Œã¦ã„ãªã„å ´åˆã¯ä¸€ã¤ä¸Šã®éšå±¤ã¸ç§»å‹•
 	if(LvDblclkUpDir == 1 && CForm->code == NM_DBLCLK &&
 		(ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST)) == 0)){
 		SendMessage(hWnd, WM_COMMAND, ID_KEY_UPDIR, 0);
 		return;
 	}
 
-	//ƒ}ƒEƒX‚ğƒAƒCƒRƒ“‚Ìã‚É‚Á‚Ä‚¢‚­‚Æ‘I‘ğó‘Ô‚É‚È‚éƒXƒ^ƒCƒ‹‚Ìê‡‚ÍAƒNƒŠƒbƒN‚ÅÀs
+	//ãƒã‚¦ã‚¹ã‚’ã‚¢ã‚¤ã‚³ãƒ³ã®ä¸Šã«æŒã£ã¦ã„ãã¨é¸æŠçŠ¶æ…‹ã«ãªã‚‹ã‚¹ã‚¿ã‚¤ãƒ«ã®å ´åˆã¯ã€ã‚¯ãƒªãƒƒã‚¯ã§å®Ÿè¡Œ
 	if(CForm->code == NM_CLICK &&
 		((SendDlgItemMessage(hWnd, WWWC_LIST, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0) & LVS_EX_TRACKSELECT) == 0 ||
 		ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST)) != 1 ||
 		ListView_MouseSelectItem(GetDlgItem(hWnd, WWWC_LIST)) == FALSE)){
 		return;
 	}
-	//•W€‚ÌƒXƒ^ƒCƒ‹‚Ìê‡‚Íƒ_ƒuƒ‹ƒNƒŠƒbƒN‚ÅÀs
+	//æ¨™æº–ã®ã‚¹ã‚¿ã‚¤ãƒ«ã®å ´åˆã¯ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã§å®Ÿè¡Œ
 	if(CForm->code == NM_DBLCLK &&
 		(SendDlgItemMessage(hWnd, WWWC_LIST, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0) & LVS_EX_TRACKSELECT) != 0){
 		return;
 	}
 
-	// [Alt]ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éê‡‚ÍAƒvƒƒpƒeƒB‚ğ•\¦
+	// [Alt]ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¡¨ç¤º
 	if(GetAsyncKeyState(VK_MENU) < 0){
 		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_PROP, 0);
 		return;
 	}
 
-	//ƒfƒtƒHƒ‹ƒg‚Ì€–Ú‚ğæ“¾
+	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®é …ç›®ã‚’å–å¾—
 	if((i = GetMenuDefaultItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), 0, 0)) == -1){
 		return;
 	}
-	//ƒEƒBƒ“ƒhƒE‚ÉÀs‚·‚é‚½‚ß‚ÌƒƒbƒZ[ƒW‚ğ‘—M
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«å®Ÿè¡Œã™ã‚‹ãŸã‚ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡
 	SendMessage(hWnd, WM_COMMAND, i, 0);
 }
 
@@ -1578,7 +1578,7 @@ void ListView_ItemClick(HWND hWnd, NMHDR *CForm)
 
 	ListView_MenuSort
 
-	ƒƒjƒ…[‚©‚ç‚ÌƒAƒCƒeƒ€‚Ìƒ\[ƒg
+	ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‹ã‚‰ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚½ãƒ¼ãƒˆ
 
 ******************************************************************************/
 
@@ -1610,7 +1610,7 @@ int ListView_MenuSort(HWND hWnd, int i)
 
 	ListView_SortClear
 
-	ƒ\[ƒg—p‘I‘ğ‚Ì‰ğœ
+	ã‚½ãƒ¼ãƒˆç”¨é¸æŠã®è§£é™¤
 
 ******************************************************************************/
 
@@ -1619,8 +1619,8 @@ void ListView_SortClear(const HWND hListView, const int sort_flag)
 	HDITEM hdi = { 0 };
 	int order, colum;
 
-	order = (sort_flag < 0) ? 1 : 0;	//¸‡^~‡
-	colum = ABS(sort_flag) - 1;		//ƒ\[ƒg‚ğs‚¤ƒwƒbƒ_
+	order = (sort_flag < 0) ? 1 : 0;	//æ˜‡é †ï¼é™é †
+	colum = ABS(sort_flag) - 1;		//ã‚½ãƒ¼ãƒˆã‚’è¡Œã†ãƒ˜ãƒƒãƒ€
 
 	ListView_SetSelectedColumn(hListView, -1);
 
@@ -1634,7 +1634,7 @@ void ListView_SortClear(const HWND hListView, const int sort_flag)
 
 	ListView_SortSelect
 
-	ƒ\[ƒg—p‘I‘ğ
+	ã‚½ãƒ¼ãƒˆç”¨é¸æŠ
 
 ******************************************************************************/
 
@@ -1647,8 +1647,8 @@ void ListView_SortSelect(const HWND hListView, const int sort_flag)
 		ListView_SortClear(hListView, sort_flag);
 		return;
 	}
-	order = (sort_flag < 0) ? 1 : 0;	//¸‡^~‡
-	colum = ABS(sort_flag) - 1;		//ƒ\[ƒg‚ğs‚¤ƒwƒbƒ_
+	order = (sort_flag < 0) ? 1 : 0;	//æ˜‡é †ï¼é™é †
+	colum = ABS(sort_flag) - 1;		//ã‚½ãƒ¼ãƒˆã‚’è¡Œã†ãƒ˜ãƒƒãƒ€
 
 	ListView_SetSelectedColumn(hListView, colum);
 
@@ -1664,7 +1664,7 @@ void ListView_SortSelect(const HWND hListView, const int sort_flag)
 
 	ListView_NotifyProc
 
-	ƒŠƒXƒgƒrƒ…[ƒCƒxƒ“ƒg
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆ
 
 ******************************************************************************/
 
@@ -1677,32 +1677,32 @@ LRESULT ListView_NotifyProc(HWND hWnd, LPARAM lParam)
 
 	switch(plv->hdr.code)
 	{
-	case LVN_ITEMCHANGED:		//ƒAƒCƒeƒ€‚Ì‘I‘ğó‘Ô‚Ì•ÏX
-	case LVN_BEGINLABELEDIT:	//ƒ^ƒCƒgƒ‹•ÒWŠJn
-	case LVN_ENDLABELEDIT:		//ƒ^ƒCƒgƒ‹•ÒWI—¹
-	case LVN_GETDISPINFO:		//•\¦ƒAƒCƒeƒ€‚Ì—v‹
+	case LVN_ITEMCHANGED:		//ã‚¢ã‚¤ãƒ†ãƒ ã®é¸æŠçŠ¶æ…‹ã®å¤‰æ›´
+	case LVN_BEGINLABELEDIT:	//ã‚¿ã‚¤ãƒˆãƒ«ç·¨é›†é–‹å§‹
+	case LVN_ENDLABELEDIT:		//ã‚¿ã‚¤ãƒˆãƒ«ç·¨é›†çµ‚äº†
+	case LVN_GETDISPINFO:		//è¡¨ç¤ºã‚¢ã‚¤ãƒ†ãƒ ã®è¦æ±‚
 		return SendMessage(hWnd, WM_LV_EVENT, plv->hdr.code, lParam);
 	}
 
 	switch(lv->hdr.code)
 	{
-	case LVN_BEGINDRAG:			//ƒhƒ‰ƒbƒO‚ÌŠJn (ƒ}ƒEƒX‚Ì¶ƒ{ƒ^ƒ“)
-	case LVN_BEGINRDRAG:		//ƒhƒ‰ƒbƒO‚ÌŠJn (ƒ}ƒEƒX‚Ì‰Eƒ{ƒ^ƒ“)
+	case LVN_BEGINDRAG:			//ãƒ‰ãƒ©ãƒƒã‚°ã®é–‹å§‹ (ãƒã‚¦ã‚¹ã®å·¦ãƒœã‚¿ãƒ³)
+	case LVN_BEGINRDRAG:		//ãƒ‰ãƒ©ãƒƒã‚°ã®é–‹å§‹ (ãƒã‚¦ã‚¹ã®å³ãƒœã‚¿ãƒ³)
 		return SendMessage(hWnd, WM_LV_EVENT, lv->hdr.code, lParam);
 	}
 
 	switch(LKey->hdr.code)
 	{
-	case LVN_KEYDOWN:			//ƒL[ƒ_ƒEƒ“
+	case LVN_KEYDOWN:			//ã‚­ãƒ¼ãƒ€ã‚¦ãƒ³
 		return SendMessage(hWnd, WM_LV_EVENT, LKey->hdr.code, lParam);
 	}
 
 	switch(CForm->code)
 	{
-	case NM_SETFOCUS:			//ƒtƒH[ƒJƒX‚Ì•ÏX
-	case NM_CLICK:				//ƒNƒŠƒbƒN
-	case NM_DBLCLK:				//ƒ_ƒuƒ‹ƒNƒŠƒbƒN
-	case NM_RCLICK:				//‰EƒNƒŠƒbƒN
+	case NM_SETFOCUS:			//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã®å¤‰æ›´
+	case NM_CLICK:				//ã‚¯ãƒªãƒƒã‚¯
+	case NM_DBLCLK:				//ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯
+	case NM_RCLICK:				//å³ã‚¯ãƒªãƒƒã‚¯
 		return SendMessage(hWnd, WM_LV_EVENT, CForm->code, lParam);
 	}
 	return FALSE;

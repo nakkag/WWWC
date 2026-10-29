@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -41,10 +41,10 @@ struct TPUNDO {
 	char *UndoURL;
 };
 
-struct TPUNDO CurUndo;		//Undoƒoƒbƒtƒ@
-struct TPUNDO OldUndo;		//‘Ò”ğ—p
+struct TPUNDO CurUndo;		//Undoãƒãƒƒãƒ•ã‚¡
+struct TPUNDO OldUndo;		//å¾…é¿ç”¨
 
-//ŠO•”QÆ
+//å¤–éƒ¨å‚ç…§
 extern char CuDir[];
 extern HTREEITEM RootItem;
 extern HTREEITEM RecyclerItem;
@@ -60,13 +60,13 @@ extern int UpdateItemFlag;
 
 	FreeUndoinfo
 
-	Undoî•ñ‚Ì‰ğ•ú
+	Undoæƒ…å ±ã®è§£æ”¾
 
 ******************************************************************************/
 
 static void FreeUndoinfo(struct TPUNDO *undoinfo)
 {
-	//UNDO—pƒoƒbƒtƒ@‚Ì‰ğ•ú
+	//UNDOç”¨ãƒãƒƒãƒ•ã‚¡ã®è§£æ”¾
 	if(undoinfo->UndoBuf != NULL){
 		GlobalFree(undoinfo->UndoBuf);
 	}
@@ -87,7 +87,7 @@ static void FreeUndoinfo(struct TPUNDO *undoinfo)
 
 	FreeUndo
 
-	Undoƒoƒbƒtƒ@‚Ì‰ğ•ú
+	Undoãƒãƒƒãƒ•ã‚¡ã®è§£æ”¾
 
 ******************************************************************************/
 
@@ -102,7 +102,7 @@ void FreeUndo(void)
 
 	CheckUndo
 
-	Undo‚ª‰Â”\‚©ƒ`ƒFƒbƒN
+	UndoãŒå¯èƒ½ã‹ãƒã‚§ãƒƒã‚¯
 
 ******************************************************************************/
 
@@ -132,7 +132,7 @@ int CheckUndo(void)
 
 	InitUndo
 
-	Undo‚Ì‰Šú‰»
+	Undoã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -145,7 +145,7 @@ void InitUndo(HWND hWnd, char *path, HTREEITEM hItem, int mode)
 
 	if(CurUndo.UndoType != 0 && !(CurUndo.UndoType == UNDO_ITEM && CurUndo.UndoCnt == 0)){
 		FreeUndoinfo(&OldUndo);
-		//UNDOî•ñ‚ÌƒRƒs[
+		//UNDOæƒ…å ±ã®ã‚³ãƒ”ãƒ¼
 		CopyMemory(&OldUndo, &CurUndo, sizeof(struct TPUNDO));
 		ZeroMemory(&CurUndo, sizeof(struct TPUNDO));
 	}else{
@@ -153,11 +153,11 @@ void InitUndo(HWND hWnd, char *path, HTREEITEM hItem, int mode)
 	}
 
 	if(mode == FLAG_COPY){
-		//ƒRƒs[‚Ìê‡‚ÍƒSƒ~” ‚ÉˆÚ“®
+		//ã‚³ãƒ”ãƒ¼ã®å ´åˆã¯ã‚´ãƒŸç®±ã«ç§»å‹•
 		mode = FLAG_CUT;
 		CurUndo.FromItem = RecyclerItem;
 	}else{
-		//ˆÚ“®Œ³‚ÌƒpƒX‚©‚çTreeView‚ÌƒAƒCƒeƒ€‚ğŒŸõ
+		//ç§»å‹•å…ƒã®ãƒ‘ã‚¹ã‹ã‚‰TreeViewã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¤œç´¢
 		if(lstrcmpni(path, CuDir, lstrlen(CuDir)) != 0){
 			return;
 		}
@@ -177,7 +177,7 @@ void InitUndo(HWND hWnd, char *path, HTREEITEM hItem, int mode)
 	}
 	CurUndo.ToItem = hItem;
 
-	//UNDO—pƒoƒbƒtƒ@‚Ìì¬
+	//UNDOç”¨ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, buf, CuDir);
 	wsprintf(tmp, "%s\\"DATAFILENAME, buf);
 	len = lstrlen(tmp) + 3;			//mode + Path + '\r' + '\n'
@@ -195,7 +195,7 @@ void InitUndo(HWND hWnd, char *path, HTREEITEM hItem, int mode)
 
 	SetFolderToUndo
 
-	Undoƒoƒbƒtƒ@‚ÉƒtƒHƒ‹ƒ_î•ñ‚ğ’Ç‰Á
+	Undoãƒãƒƒãƒ•ã‚¡ã«ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±ã‚’è¿½åŠ 
 
 ******************************************************************************/
 
@@ -224,9 +224,9 @@ BOOL SetFolderToUndo(char *path, char *name)
 		p = iStrCpy(p, CurUndo.UndoBuf);
 	}
 
-	//ƒtƒHƒ‹ƒ_ƒtƒ‰ƒO
+	//ãƒ•ã‚©ãƒ«ãƒ€ãƒ•ãƒ©ã‚°
 	*(p++) = FLAG_FOLDER;
-	//ƒpƒX
+	//ãƒ‘ã‚¹
 	p = iStrCpy(p, path);
 	*(p++) = '\t';
 	p = iStrCpy(p, name);
@@ -246,7 +246,7 @@ BOOL SetFolderToUndo(char *path, char *name)
 
 	SetItemToUndo
 
-	Undoƒoƒbƒtƒ@‚ÉƒAƒCƒeƒ€î•ñ‚ğ’Ç‰Á
+	Undoãƒãƒƒãƒ•ã‚¡ã«ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’è¿½åŠ 
 
 ******************************************************************************/
 
@@ -289,7 +289,7 @@ BOOL SetItemToUndo(struct TPITEM *tpItemInfo)
 
 	SetLVTitleToUndo
 
-	Undoƒoƒbƒtƒ@‚ÉListView‚Ìƒ^ƒCƒgƒ‹•ÏX‚ğƒZƒbƒg
+	Undoãƒãƒƒãƒ•ã‚¡ã«ListViewã®ã‚¿ã‚¤ãƒˆãƒ«å¤‰æ›´ã‚’ã‚»ãƒƒãƒˆ
 
 ******************************************************************************/
 
@@ -314,7 +314,7 @@ BOOL SetLVTitleToUndo(HTREEITEM hItem, char *Old, char *New, char *URL)
 
 	SetTVTitleToUndo
 
-	Undoƒoƒbƒtƒ@‚ÉTreeView‚Ìƒ^ƒCƒgƒ‹•ÏX‚ğƒZƒbƒg
+	Undoãƒãƒƒãƒ•ã‚¡ã«TreeViewã®ã‚¿ã‚¤ãƒˆãƒ«å¤‰æ›´ã‚’ã‚»ãƒƒãƒˆ
 
 ******************************************************************************/
 
@@ -336,7 +336,7 @@ BOOL SetTVTitleToUndo(HTREEITEM hItem, char *Old)
 
 	ExecUndo
 
-	Undo‚ğÀs
+	Undoã‚’å®Ÿè¡Œ
 
 ******************************************************************************/
 
@@ -360,7 +360,7 @@ BOOL ExecUndo(HWND hWnd)
 				return FALSE;
 			}
 			FreeUndoinfo(&CurUndo);
-			//UNDOî•ñ‚ÌƒRƒs[
+			//UNDOæƒ…å ±ã®ã‚³ãƒ”ãƒ¼
 			CopyMemory(&CurUndo, &OldUndo, sizeof(struct TPUNDO));
 			ZeroMemory(&OldUndo, sizeof(struct TPUNDO));
 			return ExecUndo(hWnd);
@@ -370,7 +370,7 @@ BOOL ExecUndo(HWND hWnd)
 		}
 
 		if(CurUndo.FromItem == RecyclerItem){
-			//íœŠm”F
+			//å‰Šé™¤ç¢ºèª
 			if(MessageBox(hWnd, QMSG_ITEMDELETE_UNDO, QMSG_DELETE_TITLE, MB_ICONEXCLAMATION | MB_YESNO) == IDNO){
 				return FALSE;
 			}

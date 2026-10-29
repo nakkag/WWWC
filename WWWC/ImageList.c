@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
 
 	WWWC
 
@@ -26,16 +26,16 @@
 	Global Variables
 **************************************************************************/
 
-//�O���Q��
-extern HINSTANCE g_hinst;			//�A�v���P�[�V�����̃C���X�^���X�n���h��
+//外部参照
+extern HINSTANCE g_hinst;			//アプリケーションのインスタンスハンドル
 
 
 /******************************************************************************
 
 	ImageListIconAdd
 
-	�C���[�W���X�g�ɃA�C�R����ǉ�
-	�t�@�C�����w�肳��Ă��Ȃ��ꍇ�̓��\�[�X����擾
+	イメージリストにアイコンを追加
+	ファイルが指定されていない場合はリソースから取得
 
 ******************************************************************************/
 
@@ -46,7 +46,7 @@ int ImageListIconAdd(HIMAGELIST IconList, int Index, int IconSize, char *buf, in
 	int ret;
 
 	if(*buf != '\0'){
-		//�A�C�R���t�@�C�����w�肳��Ă���ꍇ�̓t�@�C������A�C�R�����擾
+		//アイコンファイルが指定されている場合はファイルからアイコンを取得
 		ExtractIconEx(buf, iIndex, &hIcon, &hsIcon, 1);
 		if(IconSize >= LICONSIZE){
 			DestroyIcon(hsIcon);
@@ -56,12 +56,12 @@ int ImageListIconAdd(HIMAGELIST IconList, int Index, int IconSize, char *buf, in
 		}
 	}
 	if(hIcon == NULL){
-		//�A�C�R�����擾����Ă��Ȃ��ꍇ�̓��\�[�X����ǂݍ���
+		//アイコンが取得されていない場合はリソースから読み込む
 		hIcon = (HICON)LoadImage(g_hinst, MAKEINTRESOURCE(Index), IMAGE_ICON,
 			IconSize, IconSize, 0);
 	}
 
-	//�C���[�W���X�g�ɃA�C�R����ǉ�
+	//イメージリストにアイコンを追加
 	ret = ImageList_AddIcon(IconList, hIcon);
 
 	DestroyIcon(hIcon);
@@ -73,8 +73,8 @@ int ImageListIconAdd(HIMAGELIST IconList, int Index, int IconSize, char *buf, in
 
 	ImageListFileIconAdd
 
-	�C���[�W���X�g�ɃA�C�R����ǉ�
-	�t�@�C�����w�肳��Ă��Ȃ��ꍇ�͊֘A�t�����ꂽ�A�C�R�����擾
+	イメージリストにアイコンを追加
+	ファイルが指定されていない場合は関連付けされたアイコンを取得
 
 ******************************************************************************/
 
@@ -86,7 +86,7 @@ int ImageListFileIconAdd(HIMAGELIST IconList, char *FileName, UINT uFlags, int I
 	int ret, IconFlag;
 
 	if(*buf != '\0'){
-		//�A�C�R���t�@�C�����w�肳��Ă���ꍇ�̓t�@�C������A�C�R�����擾
+		//アイコンファイルが指定されている場合はファイルからアイコンを取得
 		ExtractIconEx(buf, iIndex, &hIcon, &hsIcon, 1);
 		if(IconSize >= LICONSIZE){
 			DestroyIcon(hsIcon);
@@ -97,7 +97,7 @@ int ImageListFileIconAdd(HIMAGELIST IconList, char *FileName, UINT uFlags, int I
 	}
 	if(hIcon == NULL){
 		IconFlag = SHGFI_ICON | ((IconSize == SICONSIZE) ? SHGFI_SMALLICON : SHGFI_LARGEICON) | uFlags;
-		//�A�C�R�����擾����Ă��Ȃ��ꍇ�̓��\�[�X����ǂݍ���
+		//アイコンが取得されていない場合はリソースから読み込む
 		SHGetFileInfo(FileName, SHGFI_USEFILEATTRIBUTES, &shfi, sizeof(SHFILEINFO), IconFlag);
 		hIcon = shfi.hIcon;
 	}
@@ -105,7 +105,7 @@ int ImageListFileIconAdd(HIMAGELIST IconList, char *FileName, UINT uFlags, int I
 		hIcon = (HICON)LoadImage(g_hinst, MAKEINTRESOURCE(IDI_ICON_NON), IMAGE_ICON, IconSize, IconSize, 0);
 	}
 
-	//�C���[�W���X�g�ɃA�C�R����ǉ�
+	//イメージリストにアイコンを追加
 	ret = ImageList_AddIcon(IconList, hIcon);
 
 	DestroyIcon(hIcon);

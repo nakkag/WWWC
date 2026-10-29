@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -32,8 +32,8 @@
 
 int UpdateItemFlag;
 
-//ŠO•”QÆ
-extern HINSTANCE g_hinst;				//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
+//å¤–éƒ¨å‚ç…§
+extern HINSTANCE g_hinst;				//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
 extern HWND WWWCWnd;
 extern char CuDir[];
 extern struct TP_PROTOCOL *tpProtocol;
@@ -64,7 +64,7 @@ static BOOL FolderDelete(HWND hWnd);
 
 	FreeItemInfo
 
-	ƒAƒCƒeƒ€î•ñ‚Ì‰ğ•ú
+	ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®è§£æ”¾
 
 ******************************************************************************/
 
@@ -110,7 +110,7 @@ void FreeItemInfo(struct TPITEM *TmpItemInfo, BOOL ProtocolFreeFlag)
 
 	FreeItemList
 
-	ƒAƒCƒeƒ€ƒŠƒXƒg‚Ì‰ğ•ú
+	ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®è§£æ”¾
 
 ******************************************************************************/
 
@@ -118,7 +118,7 @@ void FreeItemList(struct TPITEM **tpItemInfo, int ItemCnt, BOOL ProtocolFreeFlag
 {
 	int i;
 
-	//ƒAƒCƒeƒ€î•ñ‚Ì‰ğ•ú
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®è§£æ”¾
 	for(i = 0;i < ItemCnt;i++){
 		if((*tpItemInfo) == NULL){
 			tpItemInfo++;
@@ -138,7 +138,7 @@ void FreeItemList(struct TPITEM **tpItemInfo, int ItemCnt, BOOL ProtocolFreeFlag
 
 	GetMainItem
 
-	–{‘Ì‚ÌƒAƒCƒeƒ€‚ğæ“¾
+	æœ¬ä½“ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -160,7 +160,7 @@ struct TPITEM *GetMainItem(HWND hWnd, struct TPTREE *tpTreeInfo, struct TPITEM *
 		return NULL;
 	}
 
-	//ƒ^ƒCƒgƒ‹‚ÆURL‚ªˆê’v‚·‚éƒAƒCƒeƒ€‚ğŒŸõ‚É‚·‚é
+	//ã‚¿ã‚¤ãƒˆãƒ«ã¨URLãŒä¸€è‡´ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¤œç´¢ã«ã™ã‚‹
 	for(i = 0; i < tpTreeInfo->ItemListCnt; i++){
 		tpItemInfo = *(tpTreeInfo->ItemList + i);
 		if(tpItemInfo == NULL){
@@ -179,7 +179,7 @@ struct TPITEM *GetMainItem(HWND hWnd, struct TPTREE *tpTreeInfo, struct TPITEM *
 
 	FindMainItem
 
-	–{‘Ì‚ÌƒAƒCƒeƒ€‚ğŒŸõ
+	æœ¬ä½“ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¤œç´¢
 
 ******************************************************************************/
 
@@ -193,7 +193,7 @@ struct TPITEM *FindMainItem(HWND hWnd, struct TPITEM *SelItemInfo)
 	if(IsTreeItem(hWnd, SelItemInfo->hItem) == FALSE){
 		return NULL;
 	}
-	//ƒAƒCƒeƒ€î•ñ‚ğæ“¾
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’å–å¾—
 	tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), SelItemInfo->hItem);
 	if(tpTreeInfo == NULL){
 		return NULL;
@@ -206,7 +206,7 @@ struct TPITEM *FindMainItem(HWND hWnd, struct TPITEM *SelItemInfo)
 
 	ConfirmExecItem
 
-	ƒvƒƒgƒRƒ‹‚ª“o˜^‚³‚ê‚Ä‚¢‚È‚¢ƒAƒCƒeƒ€‚ğŠÖ˜A•t‚¯‚ÅŠJ‚­‘O‚ÉŠm”F‚·‚é
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«ãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã‚¢ã‚¤ãƒ†ãƒ ã‚’é–¢é€£ä»˜ã‘ã§é–‹ãå‰ã«ç¢ºèªã™ã‚‹
 
 ******************************************************************************/
 
@@ -230,7 +230,7 @@ static BOOL ConfirmExecItem(HWND hWnd, char *URL)
 
 	Item_Action
 
-	ƒAƒCƒeƒ€‚ÌƒvƒƒgƒRƒ‹–ˆ‚Ì“®ì‚ğÀs
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯ã®å‹•ä½œã‚’å®Ÿè¡Œ
 
 ******************************************************************************/
 
@@ -244,13 +244,13 @@ static int Item_Action(HWND hWnd, struct TPITEM *tpItemInfo, char *StrAction)
 
 	ProtocolIndex = GetProtocolIndex(tpItemInfo->CheckURL);
 	if(StrAction == NULL || (ProtocolIndex == -1 && lstrcmpi(StrAction, "open") == 0)){
-		//ŠÖ˜A•t‚¯‚ÅÀs
+		//é–¢é€£ä»˜ã‘ã§å®Ÿè¡Œ
 		p = tpItemInfo->ViewURL;
 		if(p == NULL || *p == '\0'){
 			p = tpItemInfo->CheckURL;
 		}
 		if(p != NULL && *p != '\0'){
-			//ƒtƒ@ƒCƒ‹‚ÌƒpƒX‚È‚Ç‚àÀs‚³‚ê‚é‚½‚ßŠm”F‚·‚é
+			//ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ãªã©ã‚‚å®Ÿè¡Œã•ã‚Œã‚‹ãŸã‚ç¢ºèªã™ã‚‹
 			if(ConfirmExecItem(hWnd, p) == FALSE){
 				return 0;
 			}
@@ -258,11 +258,11 @@ static int Item_Action(HWND hWnd, struct TPITEM *tpItemInfo, char *StrAction)
 			ret = 1;
 		}
 	}else{
-		//ƒvƒƒgƒRƒ‹‚ğ¯•Ê‚Å‚«‚È‚¢ê‡
+		//ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã‚’è­˜åˆ¥ã§ããªã„å ´åˆ
 		if(ProtocolIndex == -1 || tpProtocol[ProtocolIndex].lib == NULL){
 			return 0;
 		}
-		//Action‚ÌŒŸõ
+		//Actionã®æ¤œç´¢
 		for(i = 0; i < tpProtocol[ProtocolIndex].tpMenuCnt; i++){
 			if(lstrcmpi(tpProtocol[ProtocolIndex].tpMenu[i].Action, StrAction) == 0){
 				break;
@@ -272,7 +272,7 @@ static int Item_Action(HWND hWnd, struct TPITEM *tpItemInfo, char *StrAction)
 			return 0;
 		}
 
-		//Às
+		//å®Ÿè¡Œ
 		if(tpProtocol[ProtocolIndex].Func_ExecItem == NULL){
 			wsprintf(buf, "%sExecItem", tpProtocol[ProtocolIndex].FuncHeader);
 			tpProtocol[ProtocolIndex].Func_ExecItem = GetProcAddress((HMODULE)tpProtocol[ProtocolIndex].lib, buf);
@@ -282,7 +282,7 @@ static int Item_Action(HWND hWnd, struct TPITEM *tpItemInfo, char *StrAction)
 		}
 	}
 	if(WWWCWnd == NULL || IsWindow(WWWCWnd) == 0){
-		//ƒvƒƒZƒX‚Ì‹­§I—¹
+		//ãƒ—ãƒ­ã‚»ã‚¹ã®å¼·åˆ¶çµ‚äº†
 		exit(0);
 	}
 	return ret;
@@ -293,7 +293,7 @@ static int Item_Action(HWND hWnd, struct TPITEM *tpItemInfo, char *StrAction)
 
 	Item_Open
 
-	ƒAƒCƒeƒ€‚ğŠJ‚­
+	ã‚¢ã‚¤ãƒ†ãƒ ã‚’é–‹ã
 
 ******************************************************************************/
 
@@ -306,7 +306,7 @@ int Item_Open(HWND hWnd, int ID)
 	int ProtocolIndex;
 	int ret;
 
-	//ƒtƒH[ƒJƒX‚ğ‚ÂƒAƒCƒeƒ€‚ÌƒvƒƒgƒRƒ‹‚ğæ“¾
+	//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æŒã¤ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã‚’å–å¾—
 	SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_FOCUSED);
 	if(ListView_GetItemState(GetDlgItem(hWnd, WWWC_LIST), SelectItem, LVIS_SELECTED) != LVIS_SELECTED){
 		SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED);
@@ -314,7 +314,7 @@ int Item_Open(HWND hWnd, int ID)
 
 	tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), SelectItem);
 	if(tpItemInfo == NULL){
-		//ƒtƒHƒ‹ƒ_‚ğŠJ‚­
+		//ãƒ•ã‚©ãƒ«ãƒ€ã‚’é–‹ã
 		hItem = TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE),
 			TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), SelectItem);
 		if(hItem != NULL){
@@ -323,7 +323,7 @@ int Item_Open(HWND hWnd, int ID)
 		return 1;
 	}
 
-	//Action‚Ìæ“¾
+	//Actionã®å–å¾—
 	ProtocolIndex = GetProtocolIndex(tpItemInfo->CheckURL);
 	if(ProtocolIndex != -1 && ID != -1){
 		StrAction = tpProtocol[ProtocolIndex].tpMenu[ID].Action;
@@ -338,7 +338,7 @@ int Item_Open(HWND hWnd, int ID)
 		}
 		ret = Item_Action(hWnd, tpItemInfo, StrAction);
 		if(ret == 1 && OpenReturnIcon == 1){
-			//ƒAƒCƒRƒ“‚Ì‰Šú‰»
+			//ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 			SendMessage(hWnd, WM_ITEMINIT, 0, (LPARAM)tpItemInfo);
 		}
 	}
@@ -351,7 +351,7 @@ int Item_Open(HWND hWnd, int ID)
 
 	Item_DefaultAction
 
-	ƒAƒCƒeƒ€‚ÌƒfƒtƒHƒ‹ƒg‚Ì“®ì‚ğÀs
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å‹•ä½œã‚’å®Ÿè¡Œ
 
 ******************************************************************************/
 
@@ -362,18 +362,18 @@ BOOL Item_DefaultOpen(HWND hWnd, struct TPITEM *tpItemInfo)
 	int i, j;
 	int ret;
 
-	//ƒvƒƒgƒRƒ‹‚È‚µ
+	//ãƒ—ãƒ­ãƒˆã‚³ãƒ«ãªã—
 	ProtocolIndex = GetProtocolIndex(tpItemInfo->CheckURL);
 	if(ProtocolIndex == -1 || tpProtocol[ProtocolIndex].tpMenu == NULL){
 		ret = Item_Action(hWnd, tpItemInfo, NULL);
 		if(ret == 1 && OpenReturnIcon == 1){
-			//ƒAƒCƒRƒ“‚Ì‰Šú‰»
+			//ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 			SendMessage(hWnd, WM_ITEMINIT, 0, (LPARAM)tpItemInfo);
 		}
 		return TRUE;
 	}
 
-	//ƒc[ƒ‹
+	//ãƒ„ãƒ¼ãƒ«
 	for(j = 0; j < ToolListCnt; j++){
 		if((ToolList[j].Action & TOOL_EXEC_ITEMMENU) == 0 ||
 			strlistcmp(tpProtocol[ProtocolIndex].title, ToolList[j].Protocol, ',') == FALSE ||
@@ -382,22 +382,22 @@ BOOL Item_DefaultOpen(HWND hWnd, struct TPITEM *tpItemInfo)
 		}
 		if((ToolList[j].Action & TOOL_EXEC_MENUDEFAULT) != 0){
 			if(str_match("*.dll", ToolList[j].FileName) == TRUE){
-				//DLL‚ÌÀs
+				//DLLã®å®Ÿè¡Œ
 				DllToolExec(hWnd, j, &tpItemInfo, 1, TOOL_EXEC_ITEMMENU, 0);
 			}else{
-				//ƒc[ƒ‹‚Éİ’è‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ğÀs
+				//ãƒ„ãƒ¼ãƒ«ã«è¨­å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’å®Ÿè¡Œ
 				ExecItemFile(hWnd, ToolList[j].FileName, ToolList[j].CommandLine, tpItemInfo,
 					ToolList[j].Action & TOOL_EXEC_SYNC);
 			}
 			if(ToolList[j].Action & TOOL_EXEC_INITITEM){
-				//ƒAƒCƒRƒ“‚Ì‰Šú‰»
+				//ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 				SendMessage(hWnd, WM_ITEMINIT, 0, (LPARAM)tpItemInfo);
 			}
 			return TRUE;
 		}
 	}
 
-	//ƒvƒƒgƒRƒ‹
+	//ãƒ—ãƒ­ãƒˆã‚³ãƒ«
 	pMenuCnt = tpProtocol[ProtocolIndex].tpMenuCnt;
 	if(pMenuCnt == 0){
 		return FALSE;
@@ -409,7 +409,7 @@ BOOL Item_DefaultOpen(HWND hWnd, struct TPITEM *tpItemInfo)
 		if(tpProtocol[ProtocolIndex].tpMenu[i].Default == TRUE){
 			ret = Item_Action(hWnd, tpItemInfo, tpProtocol[ProtocolIndex].tpMenu[i].Action);
 			if(ret == 1 && OpenReturnIcon == 1){
-				//ƒAƒCƒRƒ“‚Ì‰Šú‰»
+				//ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 				SendMessage(hWnd, WM_ITEMINIT, 0, (LPARAM)tpItemInfo);
 			}
 			return TRUE;
@@ -423,16 +423,16 @@ BOOL Item_DefaultOpen(HWND hWnd, struct TPITEM *tpItemInfo)
 
 	Item_ContentCopy
 
-	ƒAƒCƒeƒ€î•ñ‚ğƒRƒs[‚·‚é
+	ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
 
 ******************************************************************************/
 
 void Item_ContentCopy(struct TPITEM *NewItemInfo, struct TPITEM *TmpItemInfo)
 {
-	//\‘¢‘Ì‚ÌƒRƒs[
+	//æ§‹é€ ä½“ã®ã‚³ãƒ”ãƒ¼
 	CopyMemory(NewItemInfo, TmpItemInfo, sizeof(struct TPITEM));
 
-	//DLL‚ªŠÇ—‚·‚éî•ñ‚ÍƒRƒs[‚µ‚È‚¢ (ƒRƒs[Œ³‚Æ“¯‚¶ƒ|ƒCƒ“ƒ^‚ğ“ñd‚É‰ğ•ú‚µ‚È‚¢‚½‚ß)
+	//DLLãŒç®¡ç†ã™ã‚‹æƒ…å ±ã¯ã‚³ãƒ”ãƒ¼ã—ãªã„ (ã‚³ãƒ”ãƒ¼å…ƒã¨åŒã˜ãƒã‚¤ãƒ³ã‚¿ã‚’äºŒé‡ã«è§£æ”¾ã—ãªã„ãŸã‚)
 	NewItemInfo->Soc1 = 0;
 	NewItemInfo->Soc2 = 0;
 	NewItemInfo->hGetHost1 = NULL;
@@ -444,7 +444,7 @@ void Item_ContentCopy(struct TPITEM *NewItemInfo, struct TPITEM *TmpItemInfo)
 	NewItemInfo->user1 = 0;
 	NewItemInfo->user2 = 0;
 
-	//ƒAƒCƒeƒ€î•ñ‚ÌƒRƒs[
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®ã‚³ãƒ”ãƒ¼
 	NewItemInfo->Title = AllocCopy(TmpItemInfo->Title);
 	NewItemInfo->CheckURL = AllocCopy(TmpItemInfo->CheckURL);
 	NewItemInfo->Size = AllocCopy(TmpItemInfo->Size);
@@ -466,7 +466,7 @@ void Item_ContentCopy(struct TPITEM *NewItemInfo, struct TPITEM *TmpItemInfo)
 
 	Item_Copy
 
-	ƒAƒCƒeƒ€î•ñ‚ÌƒRƒs[‚ğì¬‚·‚é
+	ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®ã‚³ãƒ”ãƒ¼ã‚’ä½œæˆã™ã‚‹
 
 ******************************************************************************/
 
@@ -474,7 +474,7 @@ struct TPITEM *Item_Copy(struct TPITEM *TmpItemInfo)
 {
 	struct TPITEM *NewItemInfo;
 
-	//V‚µ‚¢ƒAƒCƒeƒ€î•ñ‚ÌŠm•Û
+	//æ–°ã—ã„ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®ç¢ºä¿
 	NewItemInfo = GlobalAlloc(GPTR, sizeof(struct TPITEM));
 	if(NewItemInfo == NULL){
 		return NULL;
@@ -489,7 +489,7 @@ struct TPITEM *Item_Copy(struct TPITEM *TmpItemInfo)
 
 	Item_CopyMainContent
 
-	ƒAƒCƒeƒ€ƒŠƒXƒg‚Æ–{‘Ì‚ÌƒAƒCƒeƒ€‚Ì“à—e‚Ì“¯Šú
+	ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã¨æœ¬ä½“ã®ã‚¢ã‚¤ãƒ†ãƒ ã®å†…å®¹ã®åŒæœŸ
 
 ******************************************************************************/
 
@@ -522,7 +522,7 @@ void Item_CopyMainContent(HWND hWnd, struct TPITEM **tpItemList, int cnt)
 
 	Item_CopyMainContent
 
-	ƒAƒCƒeƒ€ƒŠƒXƒg‚ÌÄ•`‰æƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é‚à‚Ì‚ğ–{‘Ì‚ÉƒRƒs[‚·‚é
+	ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®å†æç”»ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚‹ã‚‚ã®ã‚’æœ¬ä½“ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹
 
 ******************************************************************************/
 
@@ -555,7 +555,7 @@ void Item_CopyMainRefreshContent(HWND hWnd, struct TPITEM **tpItemList, int cnt)
 
 	Item_Select
 
-	ƒAƒCƒeƒ€î•ñ‚©‚çƒtƒ@ƒCƒ‹‚É‘¶İ‚µ‚È‚¢ƒAƒCƒeƒ€‚ğíœ‚·‚é
+	ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«ã«å­˜åœ¨ã—ãªã„ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã™ã‚‹
 
 ******************************************************************************/
 
@@ -573,18 +573,18 @@ BOOL Item_Select(HWND hWnd, HTREEITEM hItem)
 	int i, j, n;
 	int ListItemCnt;
 
-	//ƒcƒŠ[ƒrƒ…[‚©‚çƒAƒCƒeƒ€ƒŠƒXƒgæ“¾
+	//ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆå–å¾—
 	tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	if(tpTreeInfo == NULL){
 		return FALSE;
 	}
-	//ƒAƒCƒeƒ€î•ñ‚ğ“Ç‚İ‚Ş
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’èª­ã¿è¾¼ã‚€
 	if(tpTreeInfo->ItemList == NULL){
 		return FALSE;
 	}
 	ItemCnt = tpTreeInfo->ItemListCnt;
 
-	//ƒtƒ@ƒCƒ‹‚æ‚èƒAƒCƒeƒ€ƒŠƒXƒg‚ğ“Ç‚İ‚Ş
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚ˆã‚Šã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã‚’èª­ã¿è¾¼ã‚€
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, TmpBuf, CuDir);
 	wsprintf(SourcePath, "%s\\"DATAFILENAME, TmpBuf);
 	tpFileItemList = ReadItemList(SourcePath, &FileItemCnt, NULL);
@@ -592,13 +592,13 @@ BOOL Item_Select(HWND hWnd, HTREEITEM hItem)
 		return FALSE;
 	}
 
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚ÌŠm•Û
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®ç¢ºä¿
 	tpItemList = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * ItemCnt);
 	if(tpItemList == NULL){
 		return FALSE;
 	}
 
-	//ì‹Æ—pƒAƒCƒeƒ€ƒŠƒXƒg
+	//ä½œæ¥­ç”¨ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆ
 	tpTmpItemList = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * FileItemCnt);
 	if(tpTmpItemList == NULL){
 		GlobalFree(tpItemList);
@@ -609,7 +609,7 @@ BOOL Item_Select(HWND hWnd, HTREEITEM hItem)
 	ListView_SetRedraw(GetDlgItem(hWnd, WWWC_LIST), LDF_NODRAW);
 
 	NewItemCnt = 0;
-	//ƒtƒ@ƒCƒ‹‚É‘¶İ‚·‚éƒAƒCƒeƒ€ˆÈŠO‚Ííœ‚ğs‚¤
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã«å­˜åœ¨ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ä»¥å¤–ã¯å‰Šé™¤ã‚’è¡Œã†
 	for(i = 0;i < ItemCnt;i++){
 		if(*(tpTreeInfo->ItemList + i) == NULL){
 			continue;
@@ -618,34 +618,34 @@ BOOL Item_Select(HWND hWnd, HTREEITEM hItem)
 			if(*(tpTmpItemList + j) == NULL){
 				continue;
 			}
-			//ƒ^ƒCƒgƒ‹‚Ì”äŠr
+			//ã‚¿ã‚¤ãƒˆãƒ«ã®æ¯”è¼ƒ
 			p = ((*(tpTreeInfo->ItemList + i))->Title == NULL) ? "" : (*(tpTreeInfo->ItemList + i))->Title;
 			r = ((*(tpTmpItemList + j))->Title == NULL) ? "" : (*(tpTmpItemList + j))->Title;
 			if(lstrcmp(p, r) != 0){
 				continue;
 			}
-			//URL‚Ì”äŠr
+			//URLã®æ¯”è¼ƒ
 			p = ((*(tpTreeInfo->ItemList + i))->CheckURL == NULL) ? "" : (*(tpTreeInfo->ItemList + i))->CheckURL;
 			r = ((*(tpTmpItemList + j))->CheckURL == NULL) ? "" : (*(tpTmpItemList + j))->CheckURL;
 			if(lstrcmp(p, r) != 0){
 				continue;
 			}
 
-			//‘Ò”ğ
+			//å¾…é¿
 			*(tpItemList + NewItemCnt) = *(tpTreeInfo->ItemList + i);
 			NewItemCnt++;
 			*(tpTreeInfo->ItemList + i) = NULL;
 
-			//ì‹Æ—pƒAƒCƒeƒ€ƒŠƒXƒg‚ÌƒAƒCƒeƒ€‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğƒNƒŠƒA
-			//iŸ‰ñ”äŠr‚µ‚È‚¢‚æ‚¤‚É‚·‚é‚½‚ßj
+			//ä½œæ¥­ç”¨ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®ã‚¢ã‚¤ãƒ†ãƒ ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ã‚¯ãƒªã‚¢
+			//ï¼ˆæ¬¡å›æ¯”è¼ƒã—ãªã„ã‚ˆã†ã«ã™ã‚‹ãŸã‚ï¼‰
 			*(tpTmpItemList + j) = NULL;
 			break;
 		}
 
-		//ƒAƒCƒeƒ€‚Ì‰ğ•ú
+		//ã‚¢ã‚¤ãƒ†ãƒ ã®è§£æ”¾
 		if(*(tpTreeInfo->ItemList + i) != NULL){
 			if(hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
-				//Œ»İ•\¦‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ìê‡ƒAƒCƒeƒ€‚ğíœ‚·‚é
+				//ç¾åœ¨è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®å ´åˆã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã™ã‚‹
 				ListItemCnt = ListView_GetItemCount(GetDlgItem(hWnd, WWWC_LIST));
 				for(n = 0;n < ListItemCnt;n++){
 					tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), n);
@@ -663,11 +663,11 @@ BOOL Item_Select(HWND hWnd, HTREEITEM hItem)
 
 	ListView_SetRedraw(GetDlgItem(hWnd, WWWC_LIST), LDF_REDRAW);
 
-	//‹ŒƒAƒCƒeƒ€ƒŠƒXƒg‚Ì‰ğ•ú
+	//æ—§ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®è§£æ”¾
 	GlobalFree(tpTreeInfo->ItemList);
 
 	tpTreeInfo->ItemListCnt = NewItemCnt;
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚ÌŠm•Û
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®ç¢ºä¿
 	tpTreeInfo->ItemList = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * NewItemCnt);
 	if(tpTreeInfo->ItemList == NULL){
 		abort();
@@ -679,7 +679,7 @@ BOOL Item_Select(HWND hWnd, HTREEITEM hItem)
 	GlobalFree(tpItemList);
 	GlobalFree(tpTmpItemList);
 
-	//ƒtƒ@ƒCƒ‹‚ÌƒAƒCƒeƒ€ƒŠƒXƒg‚ğ‰ğ•ú‚·‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã‚’è§£æ”¾ã™ã‚‹
 	FreeItemList(tpFileItemList, FileItemCnt, FALSE);
 	GlobalFree(tpFileItemList);
 
@@ -692,7 +692,7 @@ BOOL Item_Select(HWND hWnd, HTREEITEM hItem)
 
 	Item_ProtocolSelect
 
-	ƒvƒƒgƒRƒ‹‚Éƒ}ƒbƒ`‚·‚éƒAƒCƒeƒ€‚Ì’Šo
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã«ãƒãƒƒãƒã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®æŠ½å‡º
 
 ******************************************************************************/
 
@@ -716,12 +716,12 @@ struct TPITEM **Item_ProtocolSelect(struct TPITEM **tpItemList, int *cnt, char *
 		}
 		(*cnt)++;
 	}
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚ÌŠm•Û
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®ç¢ºä¿
 	RetItemList = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * *cnt);
 	if(RetItemList == NULL){
 		return NULL;
 	}
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚É‘I‘ğƒAƒCƒeƒ€‚ğİ’è
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã«é¸æŠã‚¢ã‚¤ãƒ†ãƒ ã‚’è¨­å®š
 	*cnt = 0;
 	for(i = 0; i < sCnt; i++){
 		tpItemInfo = *(tpItemList + i);
@@ -743,7 +743,7 @@ struct TPITEM **Item_ProtocolSelect(struct TPITEM **tpItemList, int *cnt, char *
 
 	SetCopyItemInfo
 
-	ƒRƒs[ƒAƒCƒeƒ€‚Ìî•ñ‚ğ•\¦
+	ã‚³ãƒ”ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®æƒ…å ±ã‚’è¡¨ç¤º
 
 ******************************************************************************/
 
@@ -756,7 +756,7 @@ static void SetCopyItemInfo(struct TPITEM *tpItemInfo, HWND IconWnd, HWND InfoWn
 	int i, iIndex;
 
 	if(tpItemInfo->CheckURL != NULL){
-		//ƒAƒCƒRƒ“‚Ìİ’è
+		//ã‚¢ã‚¤ã‚³ãƒ³ã®è¨­å®š
 		i = GetProtocolIndex(tpItemInfo->CheckURL);
 		if(tpItemInfo->Status & ST_ERROR){
 			iIndex = ICON_ERR;
@@ -773,7 +773,7 @@ static void SetCopyItemInfo(struct TPITEM *tpItemInfo, HWND IconWnd, HWND InfoWn
 		hIcon = ImageList_GetIcon(ListView_GetImageList(GetDlgItem(WWWCWnd, WWWC_LIST), LVSIL_NORMAL), iIndex, 0);
 		SendMessage(IconWnd, STM_SETICON, (WPARAM)hIcon, 0);
 	}
-	//ƒTƒCƒYAXV“ú‚Ìİ’è
+	//ã‚µã‚¤ã‚ºã€æ›´æ–°æ—¥ã®è¨­å®š
 	*Size = '\0';
 	if(tpItemInfo->Size != NULL){
 		lstrcpyn(Size, tpItemInfo->Size, BUFSIZE - 1);
@@ -791,7 +791,7 @@ static void SetCopyItemInfo(struct TPITEM *tpItemInfo, HWND IconWnd, HWND InfoWn
 
 	UpdateMsgProc
 
-	ƒRƒs[‚Ìã‘‚«Šm”F‚ğs‚¤ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	ã‚³ãƒ”ãƒ¼ã®ä¸Šæ›¸ãç¢ºèªã‚’è¡Œã†ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -807,7 +807,7 @@ static BOOL CALLBACK UpdateMsgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 	{
 	case WM_INITDIALOG:
 		tpMsgItemList = (struct TPITEM **)lParam;
-		//ƒ^ƒCƒgƒ‹
+		//ã‚¿ã‚¤ãƒˆãƒ«
 		if((*tpMsgItemList)->Title != NULL && (*tpMsgItemList)->hItem != NULL){
 			TreeView_GetItemInfo(GetDlgItem(WWWCWnd, WWWC_TREE), (*tpMsgItemList)->hItem, FolderName);
 			lstrcpyn(Title, (*tpMsgItemList)->Title, BUFSIZE);
@@ -819,16 +819,16 @@ static BOOL CALLBACK UpdateMsgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 			SendDlgItemMessage(hDlg, IDC_EDIT_COPYMSG_URL, WM_SETTEXT, 0, (LPARAM)(*tpMsgItemList)->CheckURL);
 		}
 
-		//ƒRƒs[æ
+		//ã‚³ãƒ”ãƒ¼å…ˆ
 		SetCopyItemInfo(*tpMsgItemList, GetDlgItem(hDlg, IDC_STATIC_COPYMSG_TOICON),
 			GetDlgItem(hDlg, IDC_STATIC_COPYMSG_TO));
-		//ƒRƒs[Œ³
+		//ã‚³ãƒ”ãƒ¼å…ƒ
 		SetCopyItemInfo(*(tpMsgItemList + 1), GetDlgItem(hDlg, IDC_STATIC_COPYMSG_FROMICON),
 			GetDlgItem(hDlg, IDC_STATIC_COPYMSG_FROM));
 		break;
 
 	case WM_CLOSE:
-		//ƒAƒCƒRƒ“‚Ì‰ğ•ú
+		//ã‚¢ã‚¤ã‚³ãƒ³ã®è§£æ”¾
 		hIcon = (HICON)SendDlgItemMessage(hDlg, IDC_STATIC_COPYMSG_TOICON, STM_GETICON, 0, 0);
 		DestroyIcon(hIcon);
 		hIcon = (HICON)SendDlgItemMessage(hDlg, IDC_STATIC_COPYMSG_FROMICON, STM_GETICON, 0, 0);
@@ -878,7 +878,7 @@ static BOOL CALLBACK UpdateMsgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
 	UpdateItemInfo
 
-	ƒAƒCƒeƒ€‚Ìã‘‚«ˆ—
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ä¸Šæ›¸ãå‡¦ç†
 
 ******************************************************************************/
 
@@ -887,11 +887,11 @@ static int UpdateItemInfo(HWND hWnd, struct TPITEM *tpToItemInfo, struct TPITEM 
 	#define MSGITEMCNT		2
 	struct TPITEM **tpMsgItemList;
 
-	//‚·‚×‚Äã‘‚«
+	//ã™ã¹ã¦ä¸Šæ›¸ã
 	if(UpdateItemFlag == UF_ALLCOPY){
 		return 1;
 	}
-	//‚·‚×‚Äã‘‚«‚µ‚È‚¢
+	//ã™ã¹ã¦ä¸Šæ›¸ãã—ãªã„
 	if(UpdateItemFlag == UF_ALLNOCOPY){
 		return -1;
 	}
@@ -902,21 +902,21 @@ static int UpdateItemInfo(HWND hWnd, struct TPITEM *tpToItemInfo, struct TPITEM 
 		UpdateItemFlag = UF_CANCEL;
 		return -1;
 	}
-	*(tpMsgItemList) = tpToItemInfo;			//ƒRƒs[æ
-	*(tpMsgItemList + 1) = tpFromItemInfo;		//ƒRƒs[Œ³
+	*(tpMsgItemList) = tpToItemInfo;			//ã‚³ãƒ”ãƒ¼å…ˆ
+	*(tpMsgItemList + 1) = tpFromItemInfo;		//ã‚³ãƒ”ãƒ¼å…ƒ
 
 	WaitCursor(FALSE);
-	//ã‘‚«Šm”Fƒ_ƒCƒAƒƒO‚Ì•\¦
+	//ä¸Šæ›¸ãç¢ºèªãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è¡¨ç¤º
 	DialogBoxParam(g_hinst, MAKEINTRESOURCE(IDD_DIALOG_COPYMSG), hWnd, UpdateMsgProc, (LPARAM)tpMsgItemList);
 	WaitCursor(TRUE);
 
 	GlobalFree(tpMsgItemList);
 
-	//‚·‚×‚Äã‘‚«‚µ‚È‚¢AƒLƒƒƒ“ƒZƒ‹
+	//ã™ã¹ã¦ä¸Šæ›¸ãã—ãªã„ã€ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 	if(UpdateItemFlag == UF_ALLNOCOPY || UpdateItemFlag == UF_CANCEL){
 		return -1;
 	}
-	//ã‘‚«‚µ‚È‚¢
+	//ä¸Šæ›¸ãã—ãªã„
 	if(UpdateItemFlag == UF_NOCOPY){
 		UpdateItemFlag = UF_COPY;
 		return -1;
@@ -929,7 +929,7 @@ static int UpdateItemInfo(HWND hWnd, struct TPITEM *tpToItemInfo, struct TPITEM 
 
 	Item_Add
 
-	ƒAƒCƒeƒ€ƒŠƒXƒg‚ÉƒAƒCƒeƒ€î•ñ‚ğ’Ç‰Á
+	ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã«ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’è¿½åŠ 
 
 ******************************************************************************/
 
@@ -944,12 +944,12 @@ int Item_Add(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo)
 	int ListItemCnt;
 	int j;
 
-	//ƒAƒCƒeƒ€ƒŠƒXƒgæ“¾
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆå–å¾—
 	tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	if(tpTreeInfo == NULL){
 		return -1;
 	}
-	//ƒAƒCƒeƒ€î•ñ‚ğ“Ç‚İ‚Ş
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’èª­ã¿è¾¼ã‚€
 	if(tpTreeInfo->ItemList == NULL){
 		if(ReadTreeMem(hWnd, hItem) == FALSE){
 			return -1;
@@ -958,26 +958,26 @@ int Item_Add(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo)
 
 	ItemCnt = tpTreeInfo->ItemListCnt;
 
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚ÌŠm•Û
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®ç¢ºä¿
 	tpItemList = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * (ItemCnt + 1));
 	if(tpItemList == NULL){
 		return -1;
 	}
 
-	//ƒAƒCƒeƒ€î•ñ‚ÌƒRƒs[
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®ã‚³ãƒ”ãƒ¼
 	for(i = 0; i < ItemCnt; i++){
 		if(UpdateItemFlag == UF_NOMSG || ret == 1 || *(tpTreeInfo->ItemList + i) == NULL){
 			*(tpItemList + i) = *(tpTreeInfo->ItemList + i);
 			continue;
 		}
-		//ƒ^ƒCƒgƒ‹‚Ì”äŠr
+		//ã‚¿ã‚¤ãƒˆãƒ«ã®æ¯”è¼ƒ
 		p = ((*(tpTreeInfo->ItemList + i))->Title == NULL) ? "" : (*(tpTreeInfo->ItemList + i))->Title;
 		r = (NewItemInfo->Title == NULL) ? "" : NewItemInfo->Title;
 		if(lstrcmp(p, r) != 0){
 			*(tpItemList + i) = *(tpTreeInfo->ItemList + i);
 			continue;
 		}
-		//URL‚Ì”äŠr
+		//URLã®æ¯”è¼ƒ
 		p = ((*(tpTreeInfo->ItemList + i))->CheckURL == NULL) ? "" : (*(tpTreeInfo->ItemList + i))->CheckURL;
 		r = (NewItemInfo->CheckURL == NULL) ? "" : NewItemInfo->CheckURL;
 		if(lstrcmp(p, r) != 0){
@@ -985,13 +985,13 @@ int Item_Add(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo)
 			continue;
 		}
 
-		//ã‘‚«Šm”F
+		//ä¸Šæ›¸ãç¢ºèª
 		if(UpdateItemInfo(hWnd, *(tpTreeInfo->ItemList + i), NewItemInfo) == -1){
 			GlobalFree(tpItemList);
 			return -1;
 		}
 
-		//ƒ`ƒFƒbƒN’†‚ÌƒAƒCƒeƒ€
+		//ãƒã‚§ãƒƒã‚¯ä¸­ã®ã‚¢ã‚¤ãƒ†ãƒ 
 		if((*(tpTreeInfo->ItemList + i))->IconStatus == ST_CHECK){
 			GlobalFree(tpItemList);
 			UpdateItemFlag = UF_CANCEL;
@@ -999,7 +999,7 @@ int Item_Add(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo)
 			return -1;
 		}
 
-		//Œ»İ•\¦‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ìê‡‚ÍƒAƒCƒeƒ€‚ÉŠÖ˜A‚Â‚¯‚ç‚ê‚½ƒAƒCƒeƒ€î•ñ‚ğ•ÏX‚·‚é
+		//ç¾åœ¨è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®å ´åˆã¯ã‚¢ã‚¤ãƒ†ãƒ ã«é–¢é€£ã¤ã‘ã‚‰ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’å¤‰æ›´ã™ã‚‹
 		if(hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
 			ListItemCnt = ListView_GetItemCount(GetDlgItem(hWnd, WWWC_LIST));
 			for(j = 0; j < ListItemCnt; j++){
@@ -1011,7 +1011,7 @@ int Item_Add(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo)
 					continue;
 				}
 				ListView_SetlParam(GetDlgItem(hWnd, WWWC_LIST), j, (long)NewItemInfo);
-				//ƒ`ƒFƒbƒN‚·‚é/‚µ‚È‚¢İ’è
+				//ãƒã‚§ãƒƒã‚¯ã™ã‚‹/ã—ãªã„è¨­å®š
 				ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), j,
 					((NewItemInfo->CheckSt == 1) ? INDEXTOOVERLAYMASK(ICON_ST_NOCHECK) : 0), LVIS_OVERLAYMASK);
 				ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), j, LVIS_SELECTED, LVIS_SELECTED);
@@ -1019,7 +1019,7 @@ int Item_Add(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo)
 			}
 		}
 
-		//ƒAƒCƒeƒ€‚Ìã‘‚«‚ğs‚¤
+		//ã‚¢ã‚¤ãƒ†ãƒ ã®ä¸Šæ›¸ãã‚’è¡Œã†
 		FreeItemInfo(*(tpTreeInfo->ItemList + i), TRUE);
 		GlobalFree(*(tpTreeInfo->ItemList + i));
 		*(tpItemList + i) = NewItemInfo;
@@ -1028,14 +1028,14 @@ int Item_Add(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo)
 		ret = 1;
 	}
 	if(ret == 0){
-		//V‹KƒAƒCƒeƒ€‚Ì’Ç‰Á
+		//æ–°è¦ã‚¢ã‚¤ãƒ†ãƒ ã®è¿½åŠ 
 		*(tpItemList + i) = NewItemInfo;
 		(*(tpItemList + i))->hItem = hItem;
 
 		if(hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
 			ListView_InsertItemEx(GetDlgItem(hWnd, WWWC_LIST), (char*)LPSTR_TEXTCALLBACK, I_IMAGECALLBACK,
 				(long)(*(tpItemList + i)), -1);
-			//ƒ`ƒFƒbƒN‚·‚é/‚µ‚È‚¢İ’è
+			//ãƒã‚§ãƒƒã‚¯ã™ã‚‹/ã—ãªã„è¨­å®š
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST),
 				ListView_GetItemCount(GetDlgItem(hWnd, WWWC_LIST)) - 1,
 				(((*(tpItemList + i))->CheckSt == 1) ? INDEXTOOVERLAYMASK(ICON_ST_NOCHECK) : 0), LVIS_OVERLAYMASK);
@@ -1046,7 +1046,7 @@ int Item_Add(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo)
 		*(tpItemList + i) = NULL;
 	}
 
-	//‹ŒƒAƒCƒeƒ€ƒŠƒXƒg‚Ì‰ğ•ú
+	//æ—§ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®è§£æ”¾
 	GlobalFree(tpTreeInfo->ItemList);
 	tpTreeInfo->ItemList = tpItemList;
 	tpTreeInfo->ItemListCnt = ItemCnt + 1;
@@ -1058,7 +1058,7 @@ int Item_Add(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo)
 
 	Item_UrlAdd
 
-	URL‚©‚çƒAƒCƒeƒ€‚ğì¬
+	URLã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ ã‚’ä½œæˆ
 
 ******************************************************************************/
 
@@ -1087,7 +1087,7 @@ BOOL Item_UrlAdd(HWND hWnd, char *Title, char *buf, int NameFlag, HTREEITEM hIte
 		}
 		for(r = url; *p != '\0'; p++){
 			if(IS_LEAD_BYTE(p)){
-				//‚QƒoƒCƒgƒR[ƒh‚Ìê‡
+				//ï¼’ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰ã®å ´åˆ
 				*(r++) = *(p++);
 				*(r++) = *p;
 				continue;
@@ -1097,7 +1097,7 @@ BOOL Item_UrlAdd(HWND hWnd, char *Title, char *buf, int NameFlag, HTREEITEM hIte
 		}
 		*r = '\0';
 
-		//V‚µ‚¢ƒAƒCƒeƒ€î•ñ‚ÌŠm•Û
+		//æ–°ã—ã„ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®ç¢ºä¿
 		NewItemInfo = (struct TPITEM *)GlobalAlloc(GPTR, sizeof(struct TPITEM));
 		if(NewItemInfo == NULL){
 			return FALSE;
@@ -1105,7 +1105,7 @@ BOOL Item_UrlAdd(HWND hWnd, char *Title, char *buf, int NameFlag, HTREEITEM hIte
 		NewItemInfo->iSize = sizeof(struct TPITEM);
 		NewItemInfo->hItem = InItem;
 
-		//ƒ^ƒCƒgƒ‹‚ÆURL‚ğİ’è
+		//ã‚¿ã‚¤ãƒˆãƒ«ã¨URLã‚’è¨­å®š
 		NewItemInfo->Title = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(Title) + 1);
 		if(NewItemInfo->Title == NULL){
 			GlobalFree(NewItemInfo);
@@ -1123,7 +1123,7 @@ BOOL Item_UrlAdd(HWND hWnd, char *Title, char *buf, int NameFlag, HTREEITEM hIte
 		lstrcpy(NewItemInfo->CheckURL, url);
 		NewItemInfo->CheckSt = DefNoCheck;
 
-		//ƒAƒCƒeƒ€‚Ì’Ç‰Á
+		//ã‚¢ã‚¤ãƒ†ãƒ ã®è¿½åŠ 
 		UpdateItemFlag = UF_NOMSG;
 		if(Item_Add(hWnd, InItem, NewItemInfo) == -1){
 			FreeItemInfo(NewItemInfo, FALSE);
@@ -1140,10 +1140,10 @@ BOOL Item_UrlAdd(HWND hWnd, char *Title, char *buf, int NameFlag, HTREEITEM hIte
 	if(NameFlag == 0 && InsertIndex != -1){
 		if(InsertIndex == ListView_GetItemCount(GetDlgItem(hWnd, WWWC_LIST)) - 1){
 			SetFocus(GetDlgItem(hWnd, WWWC_LIST));
-			//’Ç‰ÁƒAƒCƒeƒ€‚Ì‘I‘ğ
+			//è¿½åŠ ã‚¢ã‚¤ãƒ†ãƒ ã®é¸æŠ
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), InsertIndex, LVIS_SELECTED, LVIS_SELECTED);
 			ListView_EnsureVisible(GetDlgItem(hWnd, WWWC_LIST), InsertIndex, TRUE);
-			//–¼‘O‚Ì•ÏX
+			//åå‰ã®å¤‰æ›´
 			ListView_EditLabel(GetDlgItem(hWnd, WWWC_LIST), InsertIndex);
 		}else{
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), -1, 0, LVIS_SELECTED);
@@ -1164,7 +1164,7 @@ BOOL Item_UrlAdd(HWND hWnd, char *Title, char *buf, int NameFlag, HTREEITEM hIte
 
 	Item_ListAdd
 
-	ƒAƒCƒeƒ€ƒŠƒXƒg‚É‘¼‚ÌƒAƒCƒeƒ€ƒŠƒXƒg‚ğ’Ç‰Á
+	ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã«ä»–ã®ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã‚’è¿½åŠ 
 
 ******************************************************************************/
 
@@ -1183,7 +1183,7 @@ BOOL Item_ListAdd(HWND hWnd, struct TPITEM **NewItemInfo, int cnt)
 		if((*(NewItemInfo + i)) == NULL){
 			continue;
 		}
-		//ƒAƒCƒeƒ€‚Ì’Ç‰Á
+		//ã‚¢ã‚¤ãƒ†ãƒ ã®è¿½åŠ 
 		(*(NewItemInfo + i))->hItem = TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE));
 		(*(NewItemInfo + i))->CheckSt = DefNoCheck;
 		if(Item_Add(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), *(NewItemInfo + i)) != -1){
@@ -1196,7 +1196,7 @@ BOOL Item_ListAdd(HWND hWnd, struct TPITEM **NewItemInfo, int cnt)
 	}
 	FreeItemList(NewItemInfo, cnt, FALSE);
 
-	//‘I‘ğ‚Ìæ“ªƒAƒCƒeƒ€‚ÉƒtƒH[ƒJƒX‚ğ—^‚¦‚é
+	//é¸æŠã®å…ˆé ­ã‚¢ã‚¤ãƒ†ãƒ ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’ä¸ãˆã‚‹
 	if(ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED) != -1){
 		ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST),
 			ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED),
@@ -1213,7 +1213,7 @@ BOOL Item_ListAdd(HWND hWnd, struct TPITEM **NewItemInfo, int cnt)
 
 	Item_Delete
 
-	ƒAƒCƒeƒ€î•ñ‚Ìíœ
+	ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®å‰Šé™¤
 
 ******************************************************************************/
 
@@ -1222,9 +1222,9 @@ BOOL Item_Delete(struct TPTREE *tpTreeInfo, struct TPITEM *tpItemInfo)
 	struct TPITEM **tmpItemInfo;
 	int ItemCnt, i, j;
 
-	//íœ‚·‚éƒAƒCƒeƒ€î•ñ‚ğŠÜ‚Ü‚È‚¢ƒŠƒXƒg‚ğV‹K‚Éì¬
+	//å‰Šé™¤ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’å«ã¾ãªã„ãƒªã‚¹ãƒˆã‚’æ–°è¦ã«ä½œæˆ
 	ItemCnt = tpTreeInfo->ItemListCnt;
-	//íœ‘ÎÛ‚ªƒŠƒXƒg‚É–³‚¢ê‡‚à‚ ‚Ó‚ê‚È‚¢‚æ‚¤Œ³‚Ì”‚ÅŠm•Û‚·‚é
+	//å‰Šé™¤å¯¾è±¡ãŒãƒªã‚¹ãƒˆã«ç„¡ã„å ´åˆã‚‚ã‚ãµã‚Œãªã„ã‚ˆã†å…ƒã®æ•°ã§ç¢ºä¿ã™ã‚‹
 	tmpItemInfo = (struct TPITEM **)GlobalAlloc(GPTR, sizeof(struct TPITEM *) * ItemCnt);
 	if(tmpItemInfo == NULL){
 		return FALSE;
@@ -1240,7 +1240,7 @@ BOOL Item_Delete(struct TPTREE *tpTreeInfo, struct TPITEM *tpItemInfo)
 			j++;
 		}
 	}
-	//ƒAƒCƒeƒ€î•ñ‚Ì‰ğ•ú
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®è§£æ”¾
 	GlobalFree(tpTreeInfo->ItemList);
 
 	tpTreeInfo->ItemList = tmpItemInfo;
@@ -1253,7 +1253,7 @@ BOOL Item_Delete(struct TPTREE *tpTreeInfo, struct TPITEM *tpItemInfo)
 
 	Item_SelectDelete
 
-	ƒŠƒXƒgƒrƒ…[‚Å‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚ğíœ
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã§é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤
 
 ******************************************************************************/
 
@@ -1270,18 +1270,18 @@ static BOOL Item_SelectDelete(HWND hWnd)
 		return FALSE;
 	}
 	WaitCursor(TRUE);
-	//‘I‘ğƒAƒCƒeƒ€‚ª‘¶İ‚µ‚Ä‚¢‚éŠÔƒ‹[ƒv
+	//é¸æŠã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã—ã¦ã„ã‚‹é–“ãƒ«ãƒ¼ãƒ—
 	while((SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED)) != -1){
 		tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), SelectItem);
 		if(tpItemInfo == NULL){
-			//ƒtƒHƒ‹ƒ_‚Ìê‡‚Í‰º‚ÌŠK‘w‚Ü‚Åíœ‚·‚é
+			//ãƒ•ã‚©ãƒ«ãƒ€ã®å ´åˆã¯ä¸‹ã®éšå±¤ã¾ã§å‰Šé™¤ã™ã‚‹
 			hItem = TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE),
 				TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), SelectItem);
 
 			TreeView_DeleteTreeInfo(hWnd, hItem);
 			ListView_DeleteItem(GetDlgItem(hWnd, WWWC_LIST), SelectItem);
 		}else{
-			//ƒAƒCƒeƒ€î•ñ‚Ìíœ
+			//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®å‰Šé™¤
 			Item_Delete(tpTreeInfo, tpItemInfo);
 			ListView_DeleteItem(GetDlgItem(hWnd, WWWC_LIST), SelectItem);
 		}
@@ -1295,7 +1295,7 @@ static BOOL Item_SelectDelete(HWND hWnd)
 
 	Item_FlagDelete
 
-	íœƒtƒ‰ƒO‚Ì•t‚¢‚½ƒAƒCƒeƒ€‚Ìíœ
+	å‰Šé™¤ãƒ•ãƒ©ã‚°ã®ä»˜ã„ãŸã‚¢ã‚¤ãƒ†ãƒ ã®å‰Šé™¤
 
 ******************************************************************************/
 
@@ -1340,7 +1340,7 @@ BOOL Item_FlagDelete(struct TPTREE *tpTreeInfo)
 		*(tmpItemInfo + j) = *(tpTreeInfo->ItemList + i);
 		j++;
 	}
-	//ƒAƒCƒeƒ€î•ñ‚Ì‰ğ•ú
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®è§£æ”¾
 	GlobalFree(tpTreeInfo->ItemList);
 
 	tpTreeInfo->ItemList = tmpItemInfo;
@@ -1353,7 +1353,7 @@ BOOL Item_FlagDelete(struct TPTREE *tpTreeInfo)
 
 	Item_Create
 
-	ƒAƒCƒeƒ€‚ÌV‹Kì¬
+	ã‚¢ã‚¤ãƒ†ãƒ ã®æ–°è¦ä½œæˆ
 
 ******************************************************************************/
 
@@ -1393,9 +1393,9 @@ BOOL Item_Create(HWND hWnd, int ProtocolIndex)
 	NewItemInfo->hItem = hItem;
 	NewItemInfo->CheckSt = DefNoCheck;
 
-	//ƒAƒCƒeƒ€ƒƒ‚ƒŠ‚ğ‰ğ•ú‚µ‚Ä‚µ‚Ü‚í‚È‚¢‚æ‚¤‚Éƒƒ‚ƒŠƒtƒ‰ƒO‚ğƒJƒEƒ“ƒg
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒ¡ãƒ¢ãƒªã‚’è§£æ”¾ã—ã¦ã—ã¾ã‚ãªã„ã‚ˆã†ã«ãƒ¡ãƒ¢ãƒªãƒ•ãƒ©ã‚°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
 	tpTreeInfo->MemFlag++;
-	//ƒAƒCƒeƒ€‚ÌƒvƒƒpƒeƒB‚ğ•\¦
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¡¨ç¤º
 	ret = Func_Property(hWnd, NewItemInfo);
 	if(IsTreeItem(hWnd, hItem) == FALSE){
 		FreeItemInfo(NewItemInfo, FALSE);
@@ -1410,13 +1410,13 @@ BOOL Item_Create(HWND hWnd, int ProtocolIndex)
 	}
 
 	if(NewItemInfo->Comment != NULL){
-		//ƒRƒƒ“ƒg‚Ì‰üsƒR[ƒh‚ğ•ÏŠ·
+		//ã‚³ãƒ¡ãƒ³ãƒˆã®æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›
 		p = CodeToEsc(NewItemInfo->Comment);
 		GlobalFree(NewItemInfo->Comment);
 		NewItemInfo->Comment = p;
 	}
 
-	//ƒAƒCƒeƒ€‚Ì’Ç‰Á
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®è¿½åŠ 
 	UpdateItemFlag = UF_NOMSG;
 	if(Item_Add(hWnd, hItem, NewItemInfo) == -1){
 		FreeItemInfo(NewItemInfo, FALSE);
@@ -1446,7 +1446,7 @@ BOOL Item_Create(HWND hWnd, int ProtocolIndex)
 
 	Item_Property
 
-	ƒAƒCƒeƒ€‚ÌƒvƒƒpƒeƒB‚ğ•\¦
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¡¨ç¤º
 
 ******************************************************************************/
 
@@ -1460,12 +1460,12 @@ BOOL Item_Property(HWND hWnd)
 	int ret;
 	int i;
 
-	//ƒcƒŠ[‚ÉƒtƒH[ƒJƒX‚ª‚ ‚éê‡‚ÍƒtƒHƒ‹ƒ_‚ÌƒvƒƒpƒeƒB‚ğ•\¦
+	//ãƒ„ãƒªãƒ¼ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒã‚ã‚‹å ´åˆã¯ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¡¨ç¤º
 	if(GetFocus() == GetDlgItem(hWnd, WWWC_TREE)){
 		ViewFolderProperties(hWnd, HiTestItem);
 		return TRUE;
 	}
-	//ƒAƒCƒeƒ€‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍŒ»İ‚ÌƒtƒHƒ‹ƒ_‚ÌƒvƒƒpƒeƒB‚ğ•\¦
+	//ã‚¢ã‚¤ãƒ†ãƒ ãŒé¸æŠã•ã‚Œã¦ã„ãªã„å ´åˆã¯ç¾åœ¨ã®ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¡¨ç¤º
 	if(ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST)) <= 0){
 		ViewFolderProperties(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)));
 		return TRUE;
@@ -1488,23 +1488,23 @@ BOOL Item_Property(HWND hWnd)
 		if(hItem == NULL){
 			return FALSE;
 		}
-		//ƒtƒHƒ‹ƒ_‚ÌƒvƒƒpƒeƒB
+		//ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 		ViewFolderProperties(hWnd, hItem);
 		return TRUE;
 	}
 
-	//ƒvƒƒpƒeƒB—pƒAƒCƒeƒ€‚Ìì¬
+	//ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ç”¨ã‚¢ã‚¤ãƒ†ãƒ ã®ä½œæˆ
 	PropItemInfo = Item_Copy(tpItemInfo);
 	if(PropItemInfo == NULL){
 		return FALSE;
 	}
 
 	if(PropItemInfo->Comment != NULL){
-		//ƒRƒƒ“ƒg‚Ì‰üsƒR[ƒh‚ğ•ÏŠ·
+		//ã‚³ãƒ¡ãƒ³ãƒˆã®æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›
 		EscToCode(PropItemInfo->Comment);
 	}
 
-	//ƒvƒƒpƒeƒB•\¦
+	//ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£è¡¨ç¤º
 	tpTreeInfo->MemFlag++;
 	ret = ShowItemProp(hWnd, PropItemInfo);
 	if(IsTreeItem(hWnd, hItem) == FALSE){
@@ -1521,13 +1521,13 @@ BOOL Item_Property(HWND hWnd)
 	}
 
 	if(PropItemInfo->Comment != NULL){
-		//ƒRƒƒ“ƒg‚Ì‰üsƒR[ƒh‚ğ•ÏŠ·
+		//ã‚³ãƒ¡ãƒ³ãƒˆã®æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›
 		p = CodeToEsc(PropItemInfo->Comment);
 		GlobalFree(PropItemInfo->Comment);
 		PropItemInfo->Comment = p;
 	}
 
-	//ƒAƒCƒeƒ€‚É”½‰f
+	//ã‚¢ã‚¤ãƒ†ãƒ ã«åæ˜ 
 	for(i = 0; i < tpTreeInfo->ItemListCnt; i++){
 		if(tpItemInfo == *(tpTreeInfo->ItemList + i)){
 			PropItemInfo->IconStatus = tpItemInfo->IconStatus;
@@ -1543,7 +1543,7 @@ BOOL Item_Property(HWND hWnd)
 			PropItemInfo->user2 = tpItemInfo->user2;
 			PropItemInfo->RefreshFlag = tpItemInfo->RefreshFlag;
 
-			//DLL‚ªŠÇ—‚·‚éî•ñ‚Íˆø‚«Œp‚®‚½‚ßADLL‚Ì‰ğ•úˆ—‚ÍŒÄ‚Î‚È‚¢
+			//DLLãŒç®¡ç†ã™ã‚‹æƒ…å ±ã¯å¼•ãç¶™ããŸã‚ã€DLLã®è§£æ”¾å‡¦ç†ã¯å‘¼ã°ãªã„
 			FreeItemInfo(tpItemInfo, FALSE);
 			CopyMemory(tpItemInfo, PropItemInfo, sizeof(struct TPITEM));
 			break;
@@ -1557,7 +1557,7 @@ BOOL Item_Property(HWND hWnd)
 		return FALSE;
 	}
 
-	//ƒŠƒXƒgƒrƒ…[‚ÌXV
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®æ›´æ–°
 	if(hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
 		i = ListView_GetMemToIndex(GetDlgItem(hWnd, WWWC_LIST), tpItemInfo);
 		ListView_SetItemText(GetDlgItem(hWnd, WWWC_LIST), i, 0, LPSTR_TEXTCALLBACK);
@@ -1576,7 +1576,7 @@ BOOL Item_Property(HWND hWnd)
 
 	Item_UpCount
 
-	ƒtƒHƒ‹ƒ_“à‚ÌUPƒAƒCƒRƒ“‚Ì”‚Ìæ“¾
+	ãƒ•ã‚©ãƒ«ãƒ€å†…ã®UPã‚¢ã‚¤ã‚³ãƒ³ã®æ•°ã®å–å¾—
 
 ******************************************************************************/
 
@@ -1590,14 +1590,14 @@ int Item_UpCount(HWND hWnd, HTREEITEM hItem)
 		return 0;
 	}
 
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚Ìæ“¾
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®å–å¾—
 	if(tpTreeInfo->ItemList == NULL){
 		ReadTreeMem(hWnd, hItem);
 	}
 	if(tpTreeInfo->ItemList == NULL){
 		return 0;
 	}
-	//ƒtƒHƒ‹ƒ_“à‚ÌUPƒAƒCƒeƒ€‚Ì”‚ğƒJƒEƒ“ƒg
+	//ãƒ•ã‚©ãƒ«ãƒ€å†…ã®UPã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
 	for(i = 0;i < tpTreeInfo->ItemListCnt;i++){
 		if((*(tpTreeInfo->ItemList + i)) == NULL){
 			continue;
@@ -1615,7 +1615,7 @@ int Item_UpCount(HWND hWnd, HTREEITEM hItem)
 
 	Item_Initialize
 
-	ƒAƒCƒRƒ“‚Ì‰Šú‰»
+	ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -1629,10 +1629,10 @@ int Item_Initialize(HWND hWnd, struct TPITEM *tpItemInfo, BOOL InitIconFlag)
 		return -1;
 	}
 	if(InitIconFlag == TRUE || tpItemInfo->Status == ST_UP){
-		//‰Šú‰»
+		//åˆæœŸåŒ–
 		tpItemInfo->Status = ST_DEFAULT;
 	}else{
-		//ƒGƒ‰[‚Ìó‘Ô‚ğœ‹
+		//ã‚¨ãƒ©ãƒ¼ã®çŠ¶æ…‹ã‚’é™¤å»
 		if(tpItemInfo->Status & ST_ERROR) tpItemInfo->Status ^= ST_ERROR;
 		if(tpItemInfo->Status & ST_TIMEOUT) tpItemInfo->Status ^= ST_TIMEOUT;
 	}
@@ -1645,7 +1645,7 @@ int Item_Initialize(HWND hWnd, struct TPITEM *tpItemInfo, BOOL InitIconFlag)
 		return -1;
 	}
 	if(tpProtocol[ProtocolIndex].Func_InitItem == NULL){
-		//ƒvƒƒgƒRƒ‹DLL‚ÌƒAƒCƒeƒ€‰Šú‰»ŠÖ”‚ğŒÄ‚Ô
+		//ãƒ—ãƒ­ãƒˆã‚³ãƒ«DLLã®ã‚¢ã‚¤ãƒ†ãƒ åˆæœŸåŒ–é–¢æ•°ã‚’å‘¼ã¶
 		wsprintf(buf, "%sInitItem", tpProtocol[ProtocolIndex].FuncHeader);
 		tpProtocol[ProtocolIndex].Func_InitItem = GetProcAddress((HMODULE)tpProtocol[ProtocolIndex].lib, buf);
 	}
@@ -1660,7 +1660,7 @@ int Item_Initialize(HWND hWnd, struct TPITEM *tpItemInfo, BOOL InitIconFlag)
 
 	ListItemIni
 
-	ƒŠƒXƒgƒrƒ…[‚Ì‘I‘ğƒAƒCƒeƒ€‚ÌƒAƒCƒRƒ“‚Ì‰Šú‰»
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®é¸æŠã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -1677,17 +1677,17 @@ void ListItemIni(HWND hWnd)
 		return;
 	}
 
-	//‘I‘ğƒAƒCƒeƒ€‚ğ‰Šú‰»
+	//é¸æŠã‚¢ã‚¤ãƒ†ãƒ ã‚’åˆæœŸåŒ–
 	i = -1;
 	while((i = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), i, LVNI_SELECTED)) != -1){
 		tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), i);
 		if(tpItemInfo == NULL){
-			//ƒtƒHƒ‹ƒ_‚Ìê‡‚ÍÄ‹A‚·‚é
+			//ãƒ•ã‚©ãƒ«ãƒ€ã®å ´åˆã¯å†å¸°ã™ã‚‹
 			TreeItemIni(hWnd, TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE), hItem, i), 0);
 			TreeView_SetIconState(hWnd, TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE), hItem, i), 0);
 			TreeView_FreeItem(hWnd, TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE), hItem, i), 1);
 		}else{
-			//ƒAƒCƒRƒ“‚ğ‰Šú‰»
+			//ã‚¢ã‚¤ã‚³ãƒ³ã‚’åˆæœŸåŒ–
 			Item_Initialize(hWnd, tpItemInfo, FALSE);
 		}
 	}
@@ -1699,7 +1699,7 @@ void ListItemIni(HWND hWnd)
 
 	Item_ItemListIni
 
-	ƒAƒCƒeƒ€ƒŠƒXƒg‚Ì‘SƒAƒCƒeƒ€‚ğ‰Šú‰»
+	ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®å…¨ã‚¢ã‚¤ãƒ†ãƒ ã‚’åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -1709,7 +1709,7 @@ void Item_ItemListIni(HWND hWnd, struct TPITEM **tpItemList, int cnt)
 
 	for(i = 0; i < cnt; i++){
 		if((*(tpItemList + i)) != NULL){
-			//ƒAƒCƒRƒ“‚Ì‰Šú‰»
+			//ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 			Item_Initialize(hWnd, (*(tpItemList + i)), FALSE);
 		}
 	}
@@ -1720,7 +1720,7 @@ void Item_ItemListIni(HWND hWnd, struct TPITEM **tpItemList, int cnt)
 
 	Item_MainItemIni
 
-	ƒAƒCƒeƒ€ƒŠƒXƒg‚©‚ç–{‘Ì‚ÌƒAƒCƒeƒ€‚ğŒŸõ‚µ‚Ä‰Šú‰»
+	ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã‹ã‚‰æœ¬ä½“ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¤œç´¢ã—ã¦åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -1732,7 +1732,7 @@ void Item_MainItemIni(HWND hMainWnd, HWND hWnd, struct TPITEM **tpItemList, int 
 	for(i = 0; i < cnt; i++){
 		tpItemInfo = FindMainItem(hMainWnd, (*(tpItemList + i)));
 		if(tpItemInfo != NULL){
-			//ƒAƒCƒRƒ“‚Ì‰Šú‰»
+			//ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 			Item_Initialize(hMainWnd, tpItemInfo, FALSE);
 			TreeView_SetIconState(hMainWnd, (*(tpItemList + i))->hItem, 0);
 		}
@@ -1745,7 +1745,7 @@ void Item_MainItemIni(HWND hMainWnd, HWND hWnd, struct TPITEM **tpItemList, int 
 
 	TreeItemIni
 
-	ƒtƒHƒ‹ƒ_“à‚Ì‘S‚Ä‚ÌƒAƒCƒeƒ€‚ÌƒAƒCƒRƒ“‚Ì‰Šú‰»
+	ãƒ•ã‚©ãƒ«ãƒ€å†…ã®å…¨ã¦ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -1759,14 +1759,14 @@ void CALLBACK TreeItemIni(HWND hWnd, HTREEITEM hItem, long Param)
 		return;
 	}
 
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚Ìæ“¾
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®å–å¾—
 	if(tpTreeInfo->ItemList == NULL){
 		ReadTreeMem(hWnd, hItem);
 	}
 	if(tpTreeInfo->ItemList == NULL){
 		return;
 	}
-	//ƒtƒHƒ‹ƒ_“à‚Ì‘S‚Ä‚ÌƒAƒCƒeƒ€‚ğ‰Šú‰»
+	//ãƒ•ã‚©ãƒ«ãƒ€å†…ã®å…¨ã¦ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’åˆæœŸåŒ–
 	for(i = 0;i < tpTreeInfo->ItemListCnt;i++){
 		if((*(tpTreeInfo->ItemList + i)) == NULL){
 			continue;
@@ -1783,7 +1783,7 @@ void CALLBACK TreeItemIni(HWND hWnd, HTREEITEM hItem, long Param)
 
 	Item_ChangeState
 
-	ƒAƒCƒeƒ€‚Ìó‘Ô‚Ì•ÏX
+	ã‚¢ã‚¤ãƒ†ãƒ ã®çŠ¶æ…‹ã®å¤‰æ›´
 
 ******************************************************************************/
 
@@ -1800,12 +1800,12 @@ BOOL Item_ChangeState(HWND hWnd, int Status)
 	while((i = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), i, LVNI_SELECTED)) != -1){
 		tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), i);
 		if(tpItemInfo != NULL){
-			//ƒAƒCƒeƒ€‚Ìó‘Ô’Ç‰Á
+			//ã‚¢ã‚¤ãƒ†ãƒ ã®çŠ¶æ…‹è¿½åŠ 
 			tpItemInfo->Status |= Status;
 			ListView_RedrawItems(GetDlgItem(hWnd, WWWC_LIST), i, i);
 		}
 	}
-	//•\¦XV
+	//è¡¨ç¤ºæ›´æ–°
 	UpdateWindow(GetDlgItem(hWnd, WWWC_LIST));
 	TreeView_SetIconState(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), 0);
 	TreeView_FreeItem(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), 1);
@@ -1818,7 +1818,7 @@ BOOL Item_ChangeState(HWND hWnd, int Status)
 
 	Item_SwitchCheckState
 
-	ƒAƒCƒeƒ€^ƒtƒHƒ‹ƒ_‚Ìƒ`ƒFƒbƒNƒtƒ‰ƒO‚ÌØ‚è‘Ö‚¦
+	ã‚¢ã‚¤ãƒ†ãƒ ï¼ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒã‚§ãƒƒã‚¯ãƒ•ãƒ©ã‚°ã®åˆ‡ã‚Šæ›¿ãˆ
 
 ******************************************************************************/
 
@@ -1837,19 +1837,19 @@ BOOL Item_SwitchCheckState(HWND hWnd, HTREEITEM hItem)
 			return FALSE;
 		}
 
-		//Ø‚è‘Ö‚¦
+		//åˆ‡ã‚Šæ›¿ãˆ
 		tpTreeInfo->CheckSt = (tpTreeInfo->CheckSt == 0) ? 1 : 0;
-		//ó‘Ô•ÏX
+		//çŠ¶æ…‹å¤‰æ›´
 		status = (tpTreeInfo->CheckSt == 1) ? INDEXTOOVERLAYMASK(ICON_ST_NOCHECK) : 0;
 		TreeView_SetState(GetDlgItem(hWnd, WWWC_TREE), hItem, status, TVIS_OVERLAYMASK);
 		if(TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)) ==
 			TreeView_GetParent(GetDlgItem(hWnd, WWWC_TREE), hItem)){
-			//ƒŠƒXƒgƒrƒ…[‚É”½‰f
+			//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«åæ˜ 
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST),
 				TreeView_GetListIndex(GetDlgItem(hWnd, WWWC_TREE), hItem), status, LVIS_OVERLAYMASK);
 		}
 
-		//ƒtƒHƒ‹ƒ_î•ñ‚Ì•Û‘¶
+		//ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±ã®ä¿å­˜
 		TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, buf, CuDir);
 		PutDirInfo(GetDlgItem(hWnd, WWWC_TREE), buf, hItem);
 		return TRUE;
@@ -1866,21 +1866,21 @@ BOOL Item_SwitchCheckState(HWND hWnd, HTREEITEM hItem)
 				return FALSE;
 			}
 
-			//Ø‚è‘Ö‚¦
+			//åˆ‡ã‚Šæ›¿ãˆ
 			tpTreeInfo->CheckSt = (tpTreeInfo->CheckSt == 0) ? 1 : 0;
-			//ó‘Ô•ÏX
+			//çŠ¶æ…‹å¤‰æ›´
 			status = (tpTreeInfo->CheckSt == 1) ? INDEXTOOVERLAYMASK(ICON_ST_NOCHECK) : 0;
 			TreeView_SetState(GetDlgItem(hWnd, WWWC_TREE), cItem, status, TVIS_OVERLAYMASK);
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), i, status, LVIS_OVERLAYMASK);
 
-			//ƒtƒHƒ‹ƒ_î•ñ‚Ì•Û‘¶
+			//ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±ã®ä¿å­˜
 			TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), cItem, buf, CuDir);
 			PutDirInfo(GetDlgItem(hWnd, WWWC_TREE), buf, cItem);
 
 		}else{
-			//Ø‚è‘Ö‚¦
+			//åˆ‡ã‚Šæ›¿ãˆ
 			tpItemInfo->CheckSt = (tpItemInfo->CheckSt == 0) ? 1 : 0;
-			//ó‘Ô•ÏX
+			//çŠ¶æ…‹å¤‰æ›´
 			status = (tpItemInfo->CheckSt == 1) ? INDEXTOOVERLAYMASK(ICON_ST_NOCHECK) : 0;
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), i, status, LVIS_OVERLAYMASK);
 		}
@@ -1893,7 +1893,7 @@ BOOL Item_SwitchCheckState(HWND hWnd, HTREEITEM hItem)
 
 	FolderDelete
 
-	ƒtƒHƒ‹ƒ_‚Ìíœ
+	ãƒ•ã‚©ãƒ«ãƒ€ã®å‰Šé™¤
 
 ******************************************************************************/
 
@@ -1906,7 +1906,7 @@ static BOOL FolderDelete(HWND hWnd)
 	HANDLE hMem;
 
 	if(GetAsyncKeyState(VK_SHIFT) < 0){
-		//ƒVƒtƒgƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é
+		//ã‚·ãƒ•ãƒˆã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹
 		ShiftFlag = TRUE;
 	}
 
@@ -1915,7 +1915,7 @@ static BOOL FolderDelete(HWND hWnd)
 		return FALSE;
 	}
 
-	//Šm”FƒƒbƒZ[ƒW
+	//ç¢ºèªãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, tmp);
 	wsprintf(msg, QMSG_FOLDERDELETE, tmp);
 	if(MessageBox(hWnd, msg, QMSG_DELETE_TITLE, MB_ICONEXCLAMATION | MB_YESNO) == IDNO){
@@ -1931,12 +1931,12 @@ static BOOL FolderDelete(HWND hWnd)
 		return FALSE;
 	}
 
-	//ƒtƒHƒ‹ƒ_î•ñ‚Ì•Û‘¶
+	//ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±ã®ä¿å­˜
 	SaveTreeMem(hWnd, GetDlgItem(hWnd, WWWC_TREE), hItem);
 
 	pItem = TreeView_GetParent(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	if(ShiftFlag == FALSE && TreeView_IsRecyclerItem(GetDlgItem(hWnd, WWWC_TREE), hItem) == FALSE){
-		//‚²‚İ” ‚ÉˆÚ“®
+		//ã”ã¿ç®±ã«ç§»å‹•
 		hMem = Clipboard_Set_WF_ItemList(hWnd, FLAG_CUT, hItem);
 		if(hMem == NULL){
 			MessageBox(hWnd, EMSG_FOLDERNODELETE, EMSG_FOLDERDELETE_TITLE, MB_ICONEXCLAMATION);
@@ -1951,7 +1951,7 @@ static BOOL FolderDelete(HWND hWnd)
 		GlobalFree(hMem);
 
 	}else{
-		//íœ
+		//å‰Šé™¤
 		TreeView_DeleteTreeInfo(hWnd, hItem);
 	}
 	TreeView_SetIconState(hWnd, pItem, 0);
@@ -1964,7 +1964,7 @@ static BOOL FolderDelete(HWND hWnd)
 
 	DeleteItem
 
-	ƒAƒCƒeƒ€‚Ìíœ
+	ã‚¢ã‚¤ãƒ†ãƒ ã®å‰Šé™¤
 
 ******************************************************************************/
 
@@ -1980,13 +1980,13 @@ BOOL DeleteItem(HWND hWnd)
 	BOOL CheckFlag = FALSE;
 	HANDLE hMem;
 
-	//ƒcƒŠ[‚ÉƒtƒH[ƒJƒX‚ª‚ ‚éê‡‚ÍƒtƒHƒ‹ƒ_‚Ìíœ
+	//ãƒ„ãƒªãƒ¼ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒã‚ã‚‹å ´åˆã¯ãƒ•ã‚©ãƒ«ãƒ€ã®å‰Šé™¤
 	if(GetFocus() == GetDlgItem(hWnd, WWWC_TREE)){
 		return FolderDelete(hWnd);
 	}
 
 	if(GetAsyncKeyState(VK_SHIFT) < 0){
-		//ƒVƒtƒgƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éê‡
+		//ã‚·ãƒ•ãƒˆã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆ
 		ShiftFlag = TRUE;
 	}
 
@@ -2001,7 +2001,7 @@ BOOL DeleteItem(HWND hWnd)
 	}
 
 	if(ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST)) == 1){
-		//ˆêŒ‘I‘ğ‚Ìê‡‚ÍÚ×‚ÈŠm”FƒƒbƒZ[ƒW‚ğ•\¦
+		//ä¸€ä»¶é¸æŠã®å ´åˆã¯è©³ç´°ãªç¢ºèªãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
 		tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST),
 			ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED));
 		if(tpItemInfo == NULL){
@@ -2020,7 +2020,7 @@ BOOL DeleteItem(HWND hWnd)
 			return FALSE;
 		}
 	}else{
-		//Šm”FƒƒbƒZ[ƒW
+		//ç¢ºèªãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 		wsprintf(msg, QMSG_MANYITEMDELETE,
 			ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST)));
 		if(MessageBox(hWnd, msg, QMSG_DELETE_TITLE, MB_ICONEXCLAMATION | MB_YESNO) == IDNO){
@@ -2028,7 +2028,7 @@ BOOL DeleteItem(HWND hWnd)
 		}
 	}
 
-	//ƒ`ƒFƒbƒN’†‚ÌƒAƒCƒeƒ€‚ª‚ ‚éê‡‚ÍƒGƒ‰[‚ğ•\¦
+	//ãƒã‚§ãƒƒã‚¯ä¸­ã®ã‚¢ã‚¤ãƒ†ãƒ ãŒã‚ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’è¡¨ç¤º
 	SelectItem = -1;
 	while((SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), SelectItem, LVNI_SELECTED)) != -1){
 		tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), SelectItem);
@@ -2056,12 +2056,12 @@ BOOL DeleteItem(HWND hWnd)
 	}
 
 	WaitCursor(TRUE);
-	//ƒtƒHƒ‹ƒ_î•ñ‚Ì•Û‘¶
+	//ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±ã®ä¿å­˜
 	SaveTreeMem(hWnd, GetDlgItem(hWnd, WWWC_TREE), TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)));
 
 	if(ShiftFlag == FALSE && TreeView_IsRecyclerItem(GetDlgItem(hWnd, WWWC_TREE),
 		TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))) == FALSE){
-		//‚²‚İ” ‚ÉˆÚ“®‚·‚éƒAƒCƒeƒ€‚ğ•¶š—ñ‚É‚·‚é
+		//ã”ã¿ç®±ã«ç§»å‹•ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ–‡å­—åˆ—ã«ã™ã‚‹
 		hMem = Clipboard_Set_WF_ItemList(hWnd, FLAG_CUT, NULL);
 		if(hMem == NULL){
 			WaitCursor(FALSE);
@@ -2070,7 +2070,7 @@ BOOL DeleteItem(HWND hWnd)
 		}
 		UpdateItemFlag = UF_NOMSG;
 
-		//‚²‚İ” ‚ÉˆÚ“®‚·‚é
+		//ã”ã¿ç®±ã«ç§»å‹•ã™ã‚‹
 		if(DragDrop_GetDropItem(hWnd, hMem, DND_RECY, RecyclerItem) != FALSE){
 			TreeView_NoFileDelete(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), 0);
 			ListView_RefreshFolder(hWnd);
@@ -2078,7 +2078,7 @@ BOOL DeleteItem(HWND hWnd)
 		}
 		GlobalFree(hMem);
 	}else{
-		//íœ
+		//å‰Šé™¤
 		Item_SelectDelete(hWnd);
 	}
 	TreeView_SetIconState(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), 0);
@@ -2092,7 +2092,7 @@ BOOL DeleteItem(HWND hWnd)
 
 	CheckRecycler
 
-	‚²‚İ” ‚Ìó‘Ô‚ğƒ`ƒFƒbƒN
+	ã”ã¿ç®±ã®çŠ¶æ…‹ã‚’ãƒã‚§ãƒƒã‚¯
 
 ******************************************************************************/
 
@@ -2116,7 +2116,7 @@ BOOL CheckRecycler(HWND hWnd)
 			if((*(tpTreeInfo->ItemList + i)) == NULL){
 				continue;
 			}
-			//‚²‚İ” ‚ÉƒAƒCƒeƒ€‚ª‘¶İ‚·‚é
+			//ã”ã¿ç®±ã«ã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã™ã‚‹
 			return TRUE;
 		}
 	}
@@ -2124,7 +2124,7 @@ BOOL CheckRecycler(HWND hWnd)
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), RecyclerItem, buf, CuDir);
 	wsprintf(FileName, "%s\\"DATAFILENAME, buf);
 	if (GetFileSerchSize(FileName) > 0) {
-		//‚²‚İ” ‚ÉƒAƒCƒeƒ€‚ª‘¶İ‚·‚é
+		//ã”ã¿ç®±ã«ã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã™ã‚‹
 		return TRUE;
 	}
 	return FALSE;
@@ -2135,7 +2135,7 @@ BOOL CheckRecycler(HWND hWnd)
 
 	ClearRecycler
 
-	‚²‚İ” ‚ğ‹ó‚É‚·‚é
+	ã”ã¿ç®±ã‚’ç©ºã«ã™ã‚‹
 
 ******************************************************************************/
 
@@ -2145,12 +2145,12 @@ BOOL ClearRecycler(HWND hWnd, BOOL Flag)
 	char buf[BUFSIZE];
 	int ListIndex;
 
-	//‚²‚İ” ‚Ìƒ`ƒFƒbƒN
+	//ã”ã¿ç®±ã®ãƒã‚§ãƒƒã‚¯
 	if(CheckRecycler(hWnd) == FALSE){
 		return FALSE;
 	}
 
-	//Šm”FƒƒbƒZ[ƒW
+	//ç¢ºèªãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	if(Flag == FALSE && MessageBox(hWnd, QMSG_CLEARRECYCLER, QMSG_CLEARRECYCLER_TITLE,
 		MB_ICONEXCLAMATION | MB_YESNO) == IDNO){
 		return FALSE;
@@ -2169,12 +2169,12 @@ BOOL ClearRecycler(HWND hWnd, BOOL Flag)
 		return FALSE;
 	}
 
-	//Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚ª‚²‚İ” ‚Ì’†‚Ìê‡‚Í‚²‚İ” ‚ğ‘I‘ğ‚·‚é
+	//ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ãŒã”ã¿ç®±ã®ä¸­ã®å ´åˆã¯ã”ã¿ç®±ã‚’é¸æŠã™ã‚‹
 	if(TreeView_IsRecyclerItem(GetDlgItem(hWnd, WWWC_TREE), TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))) == TRUE){
 		TreeView_SelectItem(GetDlgItem(hWnd, WWWC_TREE), RecyclerItem);
 	}
 
-	//‚²‚İ” ‚ğƒtƒHƒ‹ƒ_‚²‚Æíœ
+	//ã”ã¿ç®±ã‚’ãƒ•ã‚©ãƒ«ãƒ€ã”ã¨å‰Šé™¤
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), RecyclerItem, buf, CuDir);
 	DeleteDirTree(buf, FALSE);
 	RemoveDirectory(buf);
@@ -2185,7 +2185,7 @@ BOOL ClearRecycler(HWND hWnd, BOOL Flag)
 			TreeView_GetChild(GetDlgItem(hWnd, WWWC_TREE), RecyclerItem));
 	}
 
-	//‚²‚İ” ‚Ìì¬
+	//ã”ã¿ç®±ã®ä½œæˆ
 	tpTreeInfo = (struct TPTREE *)GlobalAlloc(GPTR, sizeof(struct TPTREE));
 	if(tpTreeInfo == NULL){
 		ErrMsg(hWnd, GetLastError(), NULL);
@@ -2203,7 +2203,7 @@ BOOL ClearRecycler(HWND hWnd, BOOL Flag)
 
 	TreeView_SetIconState(hWnd, RecyclerItem, 0);
 
-	//•\¦XV
+	//è¡¨ç¤ºæ›´æ–°
 	if(TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)) == RootItem){
 		ListIndex = TreeView_GetListIndex(GetDlgItem(hWnd, WWWC_TREE), RecyclerItem);
 		ListView_RedrawItems(GetDlgItem(hWnd, WWWC_LIST), ListIndex, ListIndex);

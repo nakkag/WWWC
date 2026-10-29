@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -46,7 +46,7 @@ static int PropRet;
 static HMODULE hModThemes;
 #endif	//OP_XP_STYLE
 
-//ŠO•”ŽQÆ
+//å¤–éƒ¨å‚ç…§
 extern HINSTANCE g_hinst;
 extern char DefDirPath[];
 extern char CurrentUser[];
@@ -88,7 +88,7 @@ static BOOL CALLBACK OptionCheckProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM
 
 	init_themes
 
-	XP—pƒXƒ^ƒCƒ‹‚Ì‰Šú‰»
+	XPç”¨ã‚¹ã‚¿ã‚¤ãƒ«ã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -104,7 +104,7 @@ static void init_themes(void)
 
 	themes_free
 
-	XP—pƒXƒ^ƒCƒ‹‚Ì‰ð•ú
+	XPç”¨ã‚¹ã‚¿ã‚¤ãƒ«ã®è§£æ”¾
 
 ******************************************************************************/
 
@@ -121,7 +121,7 @@ static void themes_free(void)
 
 	open_theme
 
-	XP—pƒXƒ^ƒCƒ‹‚ðŠJ‚­
+	XPç”¨ã‚¹ã‚¿ã‚¤ãƒ«ã‚’é–‹ã
 
 ******************************************************************************/
 
@@ -148,7 +148,7 @@ long open_theme(const HWND hWnd, const WCHAR *class_name)
 
 	close_theme
 
-	XP—pƒXƒ^ƒCƒ‹‚ð•Â‚¶‚é
+	XPç”¨ã‚¹ã‚¿ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 
 ******************************************************************************/
 
@@ -175,7 +175,7 @@ void close_theme(long hTheme)
 
 	close_theme
 
-	XP—pƒXƒ^ƒCƒ‹‚ÅƒXƒNƒ[ƒ‹ƒo[‚Ìƒ{ƒ^ƒ“‚Ì•`‰æ
+	XPç”¨ã‚¹ã‚¿ã‚¤ãƒ«ã§ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒœã‚¿ãƒ³ã®æç”»
 
 ******************************************************************************/
 
@@ -242,7 +242,7 @@ BOOL draw_theme_scroll(LPDRAWITEMSTRUCT lpDrawItem, UINT i, long hTheme)
 
 	DrawScrollControl
 
-	ƒXƒNƒ[ƒ‹ƒo[‚Ìƒ{ƒ^ƒ“‚Ì•`‰æ
+	ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒœã‚¿ãƒ³ã®æç”»
 
 ******************************************************************************/
 
@@ -251,18 +251,18 @@ void DrawScrollControl(LPDRAWITEMSTRUCT lpDrawItem, UINT i)
 	#define FOCUSRECT_SIZE		3
 
 	if(lpDrawItem->itemState & ODS_DISABLED){
-		//Žg—p•s”\
+		//ä½¿ç”¨ä¸èƒ½
 		i |= DFCS_INACTIVE;
 	}
 	if(lpDrawItem->itemState & ODS_SELECTED){
-		//‘I‘ð
+		//é¸æŠž
 		i |= DFCS_PUSHED;
 	}
 
-	//ƒtƒŒ[ƒ€ƒRƒ“ƒgƒ[ƒ‹‚Ì•`‰æ
+	//ãƒ•ãƒ¬ãƒ¼ãƒ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®æç”»
 	DrawFrameControl(lpDrawItem->hDC, &(lpDrawItem->rcItem), DFC_SCROLL, i);
 
-	//ƒtƒH[ƒJƒX
+	//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹
 	if(lpDrawItem->itemState & ODS_FOCUS){
 		lpDrawItem->rcItem.left += FOCUSRECT_SIZE;
 		lpDrawItem->rcItem.top += FOCUSRECT_SIZE;
@@ -277,7 +277,7 @@ void DrawScrollControl(LPDRAWITEMSTRUCT lpDrawItem, UINT i)
 
 	AllocGetText
 
-	EDIT‚ÉÝ’è‚³‚ê‚Ä‚¢‚éƒTƒCƒY•ª‚Ìƒƒ‚ƒŠ‚ðŠm•Û‚µ‚ÄEDIT‚Ì“à—e‚ðÝ’è‚·‚é
+	EDITã«è¨­å®šã•ã‚Œã¦ã„ã‚‹ã‚µã‚¤ã‚ºåˆ†ã®ãƒ¡ãƒ¢ãƒªã‚’ç¢ºä¿ã—ã¦EDITã®å†…å®¹ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -301,7 +301,7 @@ static void AllocGetText(HWND hEdit, char **buf)
 
 	OptionItemProc
 
-	ƒvƒƒgƒRƒ‹‚ª“o˜^‚³‚ê‚Ä‚¢‚È‚¢ƒAƒCƒeƒ€‚ÌƒvƒƒpƒeƒB
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«ãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 
 ******************************************************************************/
 
@@ -322,17 +322,17 @@ static BOOL CALLBACK OptionItemProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		}
 
 		if(tpItemInfo->Title != NULL && *tpItemInfo->Title != '\0'){
-			tmp = (char *)GlobalAlloc(GPTR, lstrlen(tpItemInfo->Title) + lstrlen("‚ÌƒvƒƒpƒeƒB") + 1);
+			tmp = (char *)GlobalAlloc(GPTR, lstrlen(tpItemInfo->Title) + lstrlen("ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£") + 1);
 			if(tmp != NULL){
-				wsprintf(tmp, "%s‚ÌƒvƒƒpƒeƒB", tpItemInfo->Title);
+				wsprintf(tmp, "%sã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£", tpItemInfo->Title);
 			}
 			SetWindowText(hDlg, tmp);
 			GlobalFree(tmp);
 		}else{
-			SetWindowText(hDlg, "ƒvƒƒpƒeƒB");
+			SetWindowText(hDlg, "ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£");
 		}
 
-		//ƒAƒCƒRƒ“‚ðÝ’è
+		//ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¨­å®š
 		hIcon = ImageList_GetIcon(ListView_GetImageList(GetDlgItem(WWWCWnd, WWWC_LIST), LVSIL_NORMAL), ICON_NOICON, 0);
 		SendDlgItemMessage(hDlg, IDC_STATIC_ICON, STM_SETICON, (WPARAM)hIcon, 0);
 
@@ -345,7 +345,7 @@ static BOOL CALLBACK OptionItemProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_UPDATE), WM_SETTEXT, 0,
 			(LPARAM)((tpItemInfo->Date != NULL) ? tpItemInfo->Date : ""));
 
-		//ƒRƒƒ“ƒg‚ð•\Ž¦
+		//ã‚³ãƒ¡ãƒ³ãƒˆã‚’è¡¨ç¤º
 		if(tpItemInfo->Comment != NULL){
 			SendDlgItemMessage(hDlg, IDC_EDIT_COMMENT, WM_SETTEXT, 0, (LPARAM)tpItemInfo->Comment);
 		}
@@ -371,19 +371,19 @@ static BOOL CALLBACK OptionItemProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 				break;
 			}
 
-			//ƒ^ƒCƒgƒ‹
+			//ã‚¿ã‚¤ãƒˆãƒ«
 			AllocGetText(GetDlgItem(hDlg, IDC_EDIT_TITLE), &tpItemInfo->Title);
 
-			//ƒ`ƒFƒbƒN‚·‚éURL
+			//ãƒã‚§ãƒƒã‚¯ã™ã‚‹URL
 			AllocGetText(GetDlgItem(hDlg, IDC_EDIT_CHECKURL), &tpItemInfo->CheckURL);
 
-			//•\Ž¦‚·‚éURL
+			//è¡¨ç¤ºã™ã‚‹URL
 			AllocGetText(GetDlgItem(hDlg, IDC_EDIT_VIEWURL), &tpItemInfo->ViewURL);
 
-			//ƒRƒƒ“ƒg
+			//ã‚³ãƒ¡ãƒ³ãƒˆ
 			AllocGetText(GetDlgItem(hDlg, IDC_EDIT_COMMENT), &tpItemInfo->Comment);
 
-			//ƒAƒCƒRƒ“‚Ì”jŠü
+			//ã‚¢ã‚¤ã‚³ãƒ³ã®ç ´æ£„
 			hIcon = (HICON)SendDlgItemMessage(hDlg, IDC_STATIC_ICON, STM_GETICON, 0, 0);
 			DestroyIcon(hIcon);
 
@@ -403,7 +403,7 @@ static BOOL CALLBACK OptionItemProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 
 	ShowItemProp
 
-	ƒAƒCƒeƒ€‚ÌƒvƒƒpƒeƒB•\Ž¦
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£è¡¨ç¤º
 
 ******************************************************************************/
 
@@ -420,7 +420,7 @@ BOOL ShowItemProp(HWND hWnd, struct TPITEM *tpItemInfo)
 		Func_Property = GetProcAddress((HMODULE)tpProtocol[ProtocolIndex].lib, buf);
 	}
 
-	//ƒAƒCƒeƒ€‚ÌƒvƒƒpƒeƒB‚ð•\Ž¦
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¡¨ç¤º
 	if(Func_Property == NULL){
 		return DialogBoxParam(g_hinst,
 			MAKEINTRESOURCE(IDD_DIALOG_ITEM), hWnd, OptionItemProc, (LPARAM)tpItemInfo);
@@ -434,7 +434,7 @@ BOOL ShowItemProp(HWND hWnd, struct TPITEM *tpItemInfo)
 
 	FindCheckTree
 
-	ƒ`ƒFƒbƒN’†‚ÌƒAƒCƒeƒ€‚ðŒŸõ‚·‚é
+	ãƒã‚§ãƒƒã‚¯ä¸­ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¤œç´¢ã™ã‚‹
 
 ******************************************************************************/
 
@@ -466,7 +466,7 @@ int FindPropItem(HWND hWnd, HTREEITEM hItem)
 
 	OptionNotifyProc
 
-	ƒvƒƒpƒeƒBƒV[ƒg‚ÌƒCƒxƒ“ƒg‚Ì’Ê’m
+	ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆã®ã‚¤ãƒ™ãƒ³ãƒˆã®é€šçŸ¥
 
 ******************************************************************************/
 
@@ -481,7 +481,7 @@ LRESULT OptionNotifyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		SendMessage(hDlg, WM_COMMAND, IDOK, 0);
 		break;
 
-	case PSN_QUERYCANCEL:		//ƒLƒƒƒ“ƒZƒ‹
+	case PSN_QUERYCANCEL:		//ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 		SendMessage(hDlg, WM_COMMAND, IDPCANCEL, 0);
 		break;
 
@@ -496,7 +496,7 @@ LRESULT OptionNotifyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	DialogLvNotifyProc
 
-	ƒIƒvƒVƒ‡ƒ“‰æ–Ê‚ÌƒŠƒXƒgƒrƒ…[ƒƒbƒZ[ƒW
+	ã‚ªãƒ—ã‚·ãƒ§ãƒ³ç”»é¢ã®ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
 ******************************************************************************/
 
@@ -512,20 +512,20 @@ LRESULT DialogLvNotifyProc(HWND hWnd, LPARAM lParam, HWND hListView)
 
 	switch(plv->hdr.code)
 	{
-	case LVN_ITEMCHANGED:		//ƒAƒCƒeƒ€‚Ì‘I‘ðó‘Ô‚Ì•ÏX
+	case LVN_ITEMCHANGED:		//ã‚¢ã‚¤ãƒ†ãƒ ã®é¸æŠžçŠ¶æ…‹ã®å¤‰æ›´
 		return SendMessage(hWnd, WM_LV_EVENT, plv->hdr.code, lParam);
 	}
 
 	switch(CForm->code)
 	{
-	case NM_DBLCLK:				//ƒ_ƒuƒ‹ƒNƒŠƒbƒN
+	case NM_DBLCLK:				//ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯
 		SendMessage(hWnd, WM_COMMAND, IDC_BUTTON_EDIT, 0);
 		return 1;
 	}
 
 	switch(LKey->hdr.code)
 	{
-	case LVN_KEYDOWN:			//ƒL[ƒ_ƒEƒ“
+	case LVN_KEYDOWN:			//ã‚­ãƒ¼ãƒ€ã‚¦ãƒ³
 		if(LKey->wVKey == VK_DELETE){
 			SendMessage(hWnd, WM_COMMAND, IDC_BUTTON_DELETE, 0);
 			return 1;
@@ -539,7 +539,7 @@ LRESULT DialogLvNotifyProc(HWND hWnd, LPARAM lParam, HWND hListView)
 
 	OptionFolderProc
 
-	ƒtƒHƒ‹ƒ_ƒvƒƒpƒeƒB‚ÌƒvƒƒV[ƒWƒƒ
+	ãƒ•ã‚©ãƒ«ãƒ€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -558,7 +558,7 @@ static BOOL CALLBACK OptionFolderProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
-		//ƒAƒCƒRƒ“‚ðÝ’è
+		//ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¨­å®š
 		i = TreeView_GetItemInfo(GetDlgItem(WWWCWnd, WWWC_TREE), PropItem, buf);
 		if(PropItem != RootItem){
 			hIcon = ImageList_GetIcon(ListView_GetImageList(GetDlgItem(WWWCWnd, WWWC_LIST), LVSIL_NORMAL), i, 0);
@@ -571,14 +571,14 @@ static BOOL CALLBACK OptionFolderProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 		}
 		SendDlgItemMessage(hDlg, IDC_STATIC_ICON, STM_SETICON, (WPARAM)hIcon, 0);
 
-		//ƒtƒHƒ‹ƒ_–¼‚ð•\Ž¦
+		//ãƒ•ã‚©ãƒ«ãƒ€åã‚’è¡¨ç¤º
 		SendDlgItemMessage(hDlg, IDC_EDIT_TITLE, WM_SETTEXT, 0, (LPARAM)buf);
 
-		//êŠ‚ð•\Ž¦
+		//å ´æ‰€ã‚’è¡¨ç¤º
 		TreeView_GetPath(GetDlgItem(WWWCWnd, WWWC_TREE), PropItem, FolderPath, CuDir);
 		SendDlgItemMessage(hDlg, IDC_EDIT_LOCATE, WM_SETTEXT, 0, (LPARAM)FolderPath);
 
-		//ƒAƒCƒeƒ€”‚ðŽæ“¾
+		//ã‚¢ã‚¤ãƒ†ãƒ æ•°ã‚’å–å¾—
 		tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(WWWCWnd, WWWC_TREE), PropItem);
 		if(tpTreeInfo == NULL){
 			break;
@@ -601,7 +601,7 @@ static BOOL CALLBACK OptionFolderProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 			}
 		}
 
-		//ƒtƒHƒ‹ƒ_”‚ðŽæ“¾
+		//ãƒ•ã‚©ãƒ«ãƒ€æ•°ã‚’å–å¾—
 		TreeCnt = 0;
 		cItem = TreeView_GetChild(GetDlgItem(WWWCWnd, WWWC_TREE), PropItem);
 		while(cItem != NULL){
@@ -609,18 +609,18 @@ static BOOL CALLBACK OptionFolderProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 			cItem = TreeView_GetNextSibling(GetDlgItem(WWWCWnd, WWWC_TREE), cItem);
 		}
 
-		//ƒAƒCƒeƒ€”AƒtƒHƒ‹ƒ_”‚ð•\Ž¦
+		//ã‚¢ã‚¤ãƒ†ãƒ æ•°ã€ãƒ•ã‚©ãƒ«ãƒ€æ•°ã‚’è¡¨ç¤º
 		wsprintf(buf, STR_ITEMCNT, ItemCnt, TreeCnt);
 		SendDlgItemMessage(hDlg, IDC_EDIT_INFO, WM_SETTEXT, 0, (LPARAM)buf);
 
-		//ì¬“úŽž‚ð•\Ž¦
+		//ä½œæˆæ—¥æ™‚ã‚’è¡¨ç¤º
 		if(GetFileMakeDay(FolderPath, buf) == TRUE){
 			SendDlgItemMessage(hDlg, IDC_EDIT_MAKEDAY, WM_SETTEXT, 0, (LPARAM)buf);
 		}else{
 			SendDlgItemMessage(hDlg, IDC_EDIT_MAKEDAY, WM_SETTEXT, 0, (LPARAM)STR_NOMAKEDATE);
 		}
 
-		//ƒRƒƒ“ƒg‚ð•\Ž¦
+		//ã‚³ãƒ¡ãƒ³ãƒˆã‚’è¡¨ç¤º
 		SendDlgItemMessage(hDlg, IDC_EDIT_COMMENT, EM_LIMITTEXT, MAXSIZE - 2, 0);
 		if(tpTreeInfo->Comment != NULL){
 			tmp = (char *)GlobalAlloc(GPTR, lstrlen(tpTreeInfo->Comment) + 1);
@@ -666,7 +666,7 @@ static BOOL CALLBACK OptionFolderProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 			tpTreeInfo->Comment = CodeToEsc(tmp);
 			GlobalFree(tmp);
 
-			//ƒAƒCƒRƒ“‚Ì”jŠü
+			//ã‚¢ã‚¤ã‚³ãƒ³ã®ç ´æ£„
 			hIcon = (HICON)SendDlgItemMessage(hDlg, IDC_STATIC_ICON, STM_GETICON, 0, 0);
 			DestroyIcon(hIcon);
 			break;
@@ -684,13 +684,13 @@ static BOOL CALLBACK OptionFolderProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 
 	ViewFolderProperties
 
-	ƒtƒHƒ‹ƒ_ƒvƒƒpƒeƒB•\Ž¦
+	ãƒ•ã‚©ãƒ«ãƒ€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£è¡¨ç¤º
 
 ******************************************************************************/
 
 int ViewFolderProperties(HWND hWnd, HTREEITEM hItem)
 {
-#define sizeof_PROPSHEETHEADER		40	//ŒÃ‚¢ƒRƒ‚ƒ“ƒRƒ“ƒgƒ[ƒ‹‘Îô
+#define sizeof_PROPSHEETHEADER		40	//å¤ã„ã‚³ãƒ¢ãƒ³ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«å¯¾ç­–
 	PROPSHEETPAGE psp;
 	PROPSHEETHEADER psh;
 	HPROPSHEETPAGE hpsp[PROP_CNT_FOLDER];
@@ -738,7 +738,7 @@ int ViewFolderProperties(HWND hWnd, HTREEITEM hItem)
 
 	OptionCheckProc
 
-	ƒ`ƒFƒbƒNƒIƒvƒVƒ‡ƒ“‚ÌƒvƒƒV[ƒWƒƒ
+	ãƒã‚§ãƒƒã‚¯ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -749,9 +749,9 @@ static BOOL CALLBACK OptionCheckProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
-		//ƒAƒCƒRƒ“‚ÌÝ’è
+		//ã‚¢ã‚¤ã‚³ãƒ³ã®è¨­å®š
 		SendDlgItemMessage(hDlg, IDC_STATIC_ICON, STM_SETICON, (WPARAM)LoadIcon(NULL, IDI_APPLICATION), 0);
-		//ƒXƒsƒ“ƒRƒ“ƒgƒ[ƒ‹‚ÌÝ’è
+		//ã‚¹ãƒ”ãƒ³ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®è¨­å®š
 		SendDlgItemMessage(hDlg, IDC_SPIN_CHECKMAX, UDM_SETRANGE, 0, (LPARAM)MAKELONG((short)CHECK_MAX, (short)1));
 
 		if(*GeneralUser != '\0'){
@@ -815,8 +815,8 @@ static BOOL CALLBACK OptionCheckProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM
 			}else{
 				*GeneralUser = '\0';
 			}
-			//‹¤’Ê‚ÅŽg—p‚·‚éê‡‚Ìƒ†[ƒU–¼‚ðÝ’è
-			//‹ó‚Ìê‡‚Íƒ†[ƒU–ˆ‚ÌÝ’è
+			//å…±é€šã§ä½¿ç”¨ã™ã‚‹å ´åˆã®ãƒ¦ãƒ¼ã‚¶åã‚’è¨­å®š
+			//ç©ºã®å ´åˆã¯ãƒ¦ãƒ¼ã‚¶æ¯Žã®è¨­å®š
 			wsprintf(buf, "%s\\%s", DefDirPath, GENERAL_INI);
 			profile_initialize(buf, TRUE);
 			profile_write_string("GENERAL", "User", GeneralUser, buf);
@@ -855,13 +855,13 @@ static BOOL CALLBACK OptionCheckProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM
 
 	ViewProperties
 
-	ƒIƒvƒVƒ‡ƒ“‚Ì‰æ–Ê‚Ì•\Ž¦
+	ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ç”»é¢ã®è¡¨ç¤º
 
 ******************************************************************************/
 
 int ViewProperties(HWND hWnd)
 {
-#define sizeof_PROPSHEETHEADER		40	//ŒÃ‚¢ƒRƒ‚ƒ“ƒRƒ“ƒgƒ[ƒ‹‘Îô
+#define sizeof_PROPSHEETHEADER		40	//å¤ã„ã‚³ãƒ¢ãƒ³ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«å¯¾ç­–
 	PROPSHEETPAGE psp;
 	PROPSHEETHEADER psh;
 	HPROPSHEETPAGE hpsp[PROP_CNT_OPTION];
@@ -898,7 +898,7 @@ int ViewProperties(HWND hWnd)
 	psh.nStartPage = 0;
 
 #ifdef OP_XP_STYLE
-	//XPƒXƒ^ƒCƒ‹‚Ì‰Šú‰»
+	//XPã‚¹ã‚¿ã‚¤ãƒ«ã®åˆæœŸåŒ–
 	init_themes();
 #endif	//OP_XP_STYLE
 	PropRet = 0;

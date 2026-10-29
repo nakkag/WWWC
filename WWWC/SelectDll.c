@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
 
 	WWWC
 
@@ -30,9 +30,9 @@
 	Global Variables
 **************************************************************************/
 
-//�O���Q��
-extern HINSTANCE g_hinst;				//�A�v���P�[�V�����̃C���X�^���X�n���h��
-extern HWND WWWCWnd;					//�{��
+//外部参照
+extern HINSTANCE g_hinst;				//アプリケーションのインスタンスハンドル
+extern HWND WWWCWnd;					//本体
 
 extern HWND ProtocolWnd;
 extern HWND ToolWnd;
@@ -59,7 +59,7 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
 	AddProtocol
 
-	�v���g�R���̒ǉ�
+	プロトコルの追加
 
 ******************************************************************************/
 
@@ -91,7 +91,7 @@ static BOOL AddProtocol(struct TP_PROTOCOL *NewProtocol)
 
 	AddTool
 
-	�v���g�R���̒ǉ�
+	プロトコルの追加
 
 ******************************************************************************/
 
@@ -123,7 +123,7 @@ static BOOL AddTool(struct TP_TOOLS *NewTool)
 
 	SelectDllProc
 
-	DLL���v���g�R���A�c�[���I���E�B���h�E�v���V�[�W��
+	DLL内プロトコル、ツール選択ウィンドウプロシージャ
 
 ******************************************************************************/
 
@@ -157,10 +157,10 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 			break;
 		}
 
-		//�v���g�R�����擾�֐��̃A�h���X���擾
+		//プロトコル情報取得関数のアドレスを取得
 		Func_GetProtocolList = GetProcAddress((HMODULE)hLib, "GetProtocolList");
 		if(Func_GetProtocolList != NULL){
-			//�v���g�R�������擾
+			//プロトコル情報を取得
 			while(1){
 				ZeroMemory(&tpProtocolSet, sizeof(struct TPPROTOCOLSET));
 				tpProtocolSet.iSize = sizeof(struct TPPROTOCOLSET);
@@ -172,10 +172,10 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 			}
 		}
 
-		//�c�[���擾�֐��̃A�h���X���擾
+		//ツール取得関数のアドレスを取得
 		Func_GetToolList = GetProcAddress((HMODULE)hLib, "GetToolList");
 		if(Func_GetToolList != NULL){
-			//�c�[�������擾
+			//ツール情報を取得
 			cnt = 0;
 			while(1){
 				ZeroMemory(&GetTool, sizeof(struct TP_GETTOOL));
@@ -233,10 +233,10 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 				break;
 			}
 
-			//�v���g�R�����擾�֐��̃A�h���X���擾
+			//プロトコル情報取得関数のアドレスを取得
 			Func_GetProtocolList = GetProcAddress((HMODULE)hLib, "GetProtocolList");
 			if(Func_GetProtocolList != NULL){
-				//�v���g�R���̒ǉ�
+				//プロトコルの追加
 				for(i = 0; i < SendDlgItemMessage(hDlg, IDC_LIST_PROTOCOL, LB_GETCOUNT, 0, 0); i++){
 					if(SendDlgItemMessage(hDlg, IDC_LIST_PROTOCOL, LB_GETSEL, i, 0) == 0){
 						continue;
@@ -245,7 +245,7 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 					tpProtocolSet.iSize = sizeof(struct TPPROTOCOLSET);
 					tpProtocolSet.UpIconIndex = -1;
 
-					//�v���g�R�������擾
+					//プロトコル情報を取得
 					ret = Func_GetProtocolList(i, &tpProtocolSet);
 					if(ret <= -1){
 						break;
@@ -258,7 +258,7 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 					tpProtocolInfo.IconIndex = tpProtocolSet.IconIndex;
 					lstrcpy(tpProtocolInfo.UpIconFile, tpProtocolSet.UpIconFile);
 					tpProtocolInfo.UpIconIndex = tpProtocolSet.UpIconIndex;
-					//������Ƀv���g�R�����Ƃ� FreeLibrary ����邽�ߎQ�Ƃ��ʂɎ擾����
+					//解放時にプロトコルごとに FreeLibrary されるため参照を個別に取得する
 					tpProtocolInfo.lib = LoadLibrary(DLLPath);
 
 					if(AddProtocol(&tpProtocolInfo) == FALSE){
@@ -275,10 +275,10 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 				}
 			}
 
-			//�c�[���擾�֐��̃A�h���X���擾
+			//ツール取得関数のアドレスを取得
 			Func_GetToolList = GetProcAddress((HMODULE)hLib, "GetToolList");
 			if(Func_GetToolList != NULL){
-				//�c�[���̒ǉ�
+				//ツールの追加
 				for(i = 0; i < SendDlgItemMessage(hDlg, IDC_LIST_TOOL, LB_GETCOUNT, 0, 0); i++){
 					if(SendDlgItemMessage(hDlg, IDC_LIST_TOOL, LB_GETSEL, i, 0) == 0){
 						continue;
@@ -291,7 +291,7 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 					ZeroMemory(&tpSetTool, sizeof(struct TP_TOOLS));
 					CopyMemory(&tpSetTool, &GetTool, sizeof(struct TP_GETTOOL));
 					lstrcpy(tpSetTool.FileName, DLLPath);
-					//������Ƀc�[�����Ƃ� FreeLibrary ����邽�ߎQ�Ƃ��ʂɎ擾����
+					//解放時にツールごとに FreeLibrary されるため参照を個別に取得する
 					tpSetTool.lib = LoadLibrary(DLLPath);
 
 					if(AddTool(&tpSetTool) == FALSE){
@@ -308,7 +308,7 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 				}
 			}
 
-			//�C���[�W���X�g�̍X�V
+			//イメージリストの更新
 			ListView_SetItemImage(GetDlgItem(WWWCWnd, WWWC_LIST), LvLIconSize, LVSIL_NORMAL);
 			ListView_SetItemImage(GetDlgItem(WWWCWnd, WWWC_LIST), LvSIconSize, LVSIL_SMALL);
 			SetProtocolImage(WWWCWnd);
@@ -336,7 +336,7 @@ static BOOL CALLBACK SelectDllProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
 	SelectDll
 
-	DLL�I���E�B���h�E�̕\��
+	DLL選択ウィンドウの表示
 
 ******************************************************************************/
 
@@ -352,7 +352,7 @@ BOOL SelectDll(HWND hWnd, char *DLLPath)
 		return FALSE;
 	}
 
-	//�����p�X����ʂ�DLL���ǂݍ��܂�Ȃ��悤�t���p�X�ɕϊ�����
+	//検索パスから別のDLLが読み込まれないようフルパスに変換する
 	len = GetFullPathName(DLLPath, BUFSIZE, FullPath, &FilePart);
 	if(len == 0 || len >= BUFSIZE){
 		MessageBox(hWnd, EMSG_DLLPATH, EMSG_DLL_TITLE, MB_OK | MB_ICONEXCLAMATION);
@@ -368,7 +368,7 @@ BOOL SelectDll(HWND hWnd, char *DLLPath)
 		return FALSE;
 	}
 
-	//DLL��ǂݍ��ނ�DLL���̃R�[�h�����s����邽�ߓǂݍ��ޑO�Ɋm�F����
+	//DLLを読み込むとDLL内のコードが実行されるため読み込む前に確認する
 	msg = (char *)GlobalAlloc(GMEM_FIXED, lstrlen(QMSG_LOADDLL) + lstrlen(FullPath) + 1);
 	if(msg == NULL){
 		return FALSE;

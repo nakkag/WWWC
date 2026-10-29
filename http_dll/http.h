@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
 
 	WWWC (wwwc.dll)
 
@@ -29,11 +29,11 @@
 
 #define BUFSIZE							256
 #define MAXSIZE							32768
-#define PASS_BUFSIZE					1024				/* �Í��������p�X���[�h������̍ő� */
-#define RECVSIZE						32768				/* ��M�T�C�Y */
-#define MAX_RECVSIZE					(32 * 1024 * 1024)	/* �ő��M�T�C�Y */
+#define PASS_BUFSIZE					1024				/* 暗号化したパスワード文字列の最大 */
+#define RECVSIZE						32768				/* 受信サイズ */
+#define MAX_RECVSIZE					(32 * 1024 * 1024)	/* 最大受信サイズ */
 
-//�I�[�̎�O�ł̂�2�o�C�g�����̐擪�o�C�g�Ƃ��Ĉ���
+//終端の手前でのみ2バイト文字の先頭バイトとして扱う
 #define IS_LEAD_BYTE(p)					(IsDBCSLeadByte((BYTE)*(p)) == TRUE && *((p) + 1) != '\0')
 
 #define OP1_REQTYPE						0
@@ -54,12 +54,12 @@
 #define OP2_USER						5
 #define OP2_PASS						6
 #define OP2_REFERER						7
-#define OP2_NOARCHIVE						8				/* �A�[�J�C�u���Ȃ� */
-#define OP2_ARCHIVE_NOIMAGE				9				/* �摜���A�[�J�C�u���Ȃ� */
-#define OP2_ARCHIVE_NOCSS					10				/* CSS���A�[�J�C�u���Ȃ� */
-#define OP2_ARCHIVE_JS					11				/* JavaScript���A�[�J�C�u���� */
-#define OP2_ARCHIVE_GEN					12				/* �ۑ����鐢�㐔 (0 �� 1) */
-#define OP2_USERAGENT					13				/* User-Agent (��̏ꍇ�� USER_AGENT) */
+#define OP2_NOARCHIVE						8				/* アーカイブしない */
+#define OP2_ARCHIVE_NOIMAGE				9				/* 画像をアーカイブしない */
+#define OP2_ARCHIVE_NOCSS					10				/* CSSをアーカイブしない */
+#define OP2_ARCHIVE_JS					11				/* JavaScriptをアーカイブする */
+#define OP2_ARCHIVE_GEN					12				/* 保存する世代数 (0 は 1) */
+#define OP2_USERAGENT					13				/* User-Agent (空の場合は USER_AGENT) */
 
 #define USER_AGENT						L"WWWC/1.20"
 
@@ -79,12 +79,12 @@ struct TPHTTP{
 	HWND hWnd;
 	HANDLE hThread;
 
-	char *SvName;						/* �T�[�o�� */
-	char *Path;							/* �p�X */
-	int Port;							/* �|�[�g�ԍ� */
+	char *SvName;						/* サーバ名 */
+	char *Path;							/* パス */
+	int Port;							/* ポート番号 */
 
-	char *hSvName;						/* HOST�T�[�o�� */
-	int hPort;							/* HOST�|�[�g�ԍ� */
+	char *hSvName;						/* HOSTサーバ名 */
+	int hPort;							/* HOSTポート番号 */
 
 	char *buf;
 	long Size;
@@ -95,31 +95,31 @@ struct TPHTTP{
 	char *user;
 	char *pass;
 
-	//�ȉ��̓`�F�b�N�����̃X���b�h�Ƃ̋��L���
-	struct TPITEM *tpItemInfo;			/* �`�F�b�N���̃A�C�e�� (���C���X���b�h�ł̂ݎQ��) */
-	LONG RefCnt;						/* �Q�ƃJ�E���g (�A�C�e���ƃX���b�h�ƒʒm���b�Z�[�W) */
-	CRITICAL_SECTION cs;				/* �X���b�h�Ƃ̔r�� */
-	BOOL CancelFlag;					/* ���~ (�A�C�e������؂藣���ς�) */
-	void *hSession;						/* WinHTTP�̃n���h�� */
+	//以下はチェック処理のスレッドとの共有情報
+	struct TPITEM *tpItemInfo;			/* チェック中のアイテム (メインスレッドでのみ参照) */
+	LONG RefCnt;						/* 参照カウント (アイテムとスレッドと通知メッセージ) */
+	CRITICAL_SECTION cs;				/* スレッドとの排他 */
+	BOOL CancelFlag;					/* 中止 (アイテムから切り離し済み) */
+	void *hSession;						/* WinHTTPのハンドル */
 	void *hConnect;
 	void *hRequest;
-	WCHAR *ReqURL;						/* �v������URL */
-	WCHAR *ProxyName;					/* �v���L�V (�g�p���Ȃ��ꍇ��NULL) */
-	WCHAR *SendHeader;					/* ���M�w�b�_ */
-	WCHAR *ProxyUser;					/* HTTPS�ڑ����̃v���L�V�F�� */
+	WCHAR *ReqURL;						/* 要求するURL */
+	WCHAR *ProxyName;					/* プロキシ (使用しない場合はNULL) */
+	WCHAR *SendHeader;					/* 送信ヘッダ */
+	WCHAR *ProxyUser;					/* HTTPS接続時のプロキシ認証 */
 	WCHAR *ProxyPass;
-	WCHAR *UserAgent;					/* �A�C�e���� User-Agent (NULL �̏ꍇ�� USER_AGENT) */
-	BOOL HeadRequest;					/* HEAD���N�G�X�g */
-	BOOL NoRedirect;					/* �������_�C���N�g���s��Ȃ� */
-	BOOL NeedBody;						/* �{�������ׂĎ�M���� */
-	int Mode;							/* �����̎�� (Param3) */
-	DWORD TimeOutMs;					/* �^�C���A�E�g (�~���b) */
-	DWORD ErrCode;						/* �G���[��� */
+	WCHAR *UserAgent;					/* アイテムの User-Agent (NULL の場合は USER_AGENT) */
+	BOOL HeadRequest;					/* HEADリクエスト */
+	BOOL NoRedirect;					/* 自動リダイレクトを行わない */
+	BOOL NeedBody;						/* 本文をすべて受信する */
+	int Mode;							/* 処理の種類 (Param3) */
+	DWORD TimeOutMs;					/* タイムアウト (ミリ秒) */
+	DWORD ErrCode;						/* エラー情報 */
 	char *ErrDef;
 	char *ErrFunc;
-	DWORD ProgressTick;					/* ��M�󋵂̒ʒm���� */
-	HMODULE hModule;					/* �X���b�h���ێ�����DLL�̎Q�� */
-	struct TPHTTP *Next;				/* ���s���̃��X�g */
+	DWORD ProgressTick;					/* 受信状況の通知時刻 */
+	HMODULE hModule;					/* スレッドが保持するDLLの参照 */
+	struct TPHTTP *Next;				/* 実行中のリスト */
 	struct TPHTTP *Prev;
 };
 

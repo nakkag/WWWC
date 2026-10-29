@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC (wwwc.dll)
 
@@ -35,25 +35,25 @@
 	Define
 **************************************************************************/
 
-#define ARCHIVE_DIR_EXT			".archive"				/* ƒ†[ƒUƒfƒBƒŒƒNƒgƒŠ–¼‚É•t‰Á‚·‚é */
+#define ARCHIVE_DIR_EXT			".archive"				/* ãƒ¦ãƒ¼ã‚¶ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã«ä»˜åŠ ã™ã‚‹ */
 #define ARCHIVE_RES_DIR			"res"
 #define ARCHIVE_RES_DAT			"res.dat"
 #define ARCHIVE_LATEST			"latest.dat"
 #define ARCHIVE_INDEX				"index.html"
 #define ARCHIVE_URLFILE			"url.txt"
 
-#define ARCHIVE_KEYLEN			16						/* ƒL[‚ÆƒŠƒ\[ƒX–¼‚ÌƒnƒbƒVƒ…‚ÌŒ…” */
-#define ARCHIVE_MAX_RES			300						/* 1ƒy[ƒW‚Åæ“¾‚·‚éƒŠƒ\[ƒX‚ÌÅ‘å” */
-#define ARCHIVE_MAX_RESSIZE		(10 * 1024 * 1024)		/* ƒŠƒ\[ƒX1‚Â‚ÌÅ‘åƒTƒCƒY */
-#define ARCHIVE_MAX_TOTAL			(100 * 1024 * 1024)		/* 1ƒy[ƒW‚Åæ“¾‚·‚éƒŠƒ\[ƒX‚Ì‡Œv‚ÌÅ‘å */
+#define ARCHIVE_KEYLEN			16						/* ã‚­ãƒ¼ã¨ãƒªã‚½ãƒ¼ã‚¹åã®ãƒãƒƒã‚·ãƒ¥ã®æ¡æ•° */
+#define ARCHIVE_MAX_RES			300						/* 1ãƒšãƒ¼ã‚¸ã§å–å¾—ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã®æœ€å¤§æ•° */
+#define ARCHIVE_MAX_RESSIZE		(10 * 1024 * 1024)		/* ãƒªã‚½ãƒ¼ã‚¹1ã¤ã®æœ€å¤§ã‚µã‚¤ã‚º */
+#define ARCHIVE_MAX_TOTAL			(100 * 1024 * 1024)		/* 1ãƒšãƒ¼ã‚¸ã§å–å¾—ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã®åˆè¨ˆã®æœ€å¤§ */
 #define ARCHIVE_MAX_REDIRECT		10
 #define ARCHIVE_MAX_QUEUE			200
-#define ARCHIVE_CSS_DEPTH			3						/* @import ‚ğ‚½‚Ç‚é[‚³ */
+#define ARCHIVE_CSS_DEPTH			3						/* @import ã‚’ãŸã©ã‚‹æ·±ã• */
 #define ARCHIVE_MAX_DATFILE		(4 * 1024 * 1024)
 #define ARCHIVE_MAX_GENFILES		1000
-#define ARCHIVE_DIR_MARGIN		40						/* ƒfƒBƒŒƒNƒgƒŠ–¼‚É•t‰Á‚·‚éƒtƒ@ƒCƒ‹–¼‚Ì•ª */
+#define ARCHIVE_DIR_MARGIN		40						/* ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã«ä»˜åŠ ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«åã®åˆ† */
 #define ARCHIVE_END_WAIT			5000
-#define ARCHIVE_FINISH_WAIT		30000					/* I—¹‚Éæ“¾‘Ò‚¿‚ÌƒA[ƒJƒCƒu‚ğˆ—‚·‚éŠÔ */
+#define ARCHIVE_FINISH_WAIT		30000					/* çµ‚äº†æ™‚ã«å–å¾—å¾…ã¡ã®ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã‚’å‡¦ç†ã™ã‚‹æ™‚é–“ */
 
 #define WWWC_WNDCLASS			"WWWCWindowClass"
 
@@ -119,12 +119,12 @@ static HANDLE ArchiveThread;
 static ARCHIVE_JOB *ArchiveQueue;
 static int ArchiveQueueCnt;
 static volatile LONG ArchiveStop;
-static BOOL ArchiveRestart;						/* ’â~Œã‚ÉÄŠJ‚·‚é */
+static BOOL ArchiveRestart;						/* åœæ­¢å¾Œã«å†é–‹ã™ã‚‹ */
 static volatile LONG ArchiveBusy;
-static char ArchiveRunningKey[ARCHIVE_KEYLEN + 1];		/* æ“¾’†‚ÌƒAƒCƒeƒ€‚ÌƒL[ (ArchiveCs ‚Å•ÛŒì) */
+static char ArchiveRunningKey[ARCHIVE_KEYLEN + 1];		/* å–å¾—ä¸­ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚­ãƒ¼ (ArchiveCs ã§ä¿è­·) */
 static char ArchiveUserDir[MAX_PATH];
 
-//ŠO•”QÆ
+//å¤–éƒ¨å‚ç…§
 extern int TimeOut;
 extern int Proxy;
 extern char pServer[];
@@ -200,7 +200,7 @@ static void WideFree(WCHAR *p)
 	}
 }
 
-/* MD5 ‚Ì16i•\‹L (digits Œ…) */
+/* MD5 ã®16é€²è¡¨è¨˜ (digits æ¡) */
 static void HashHex(const void *data, long len, char *ret, int digits)
 {
 	MD5_CTX context;
@@ -216,7 +216,7 @@ static void HashHex(const void *data, long len, char *ret, int digits)
 	ret[digits] = '\0';
 }
 
-/* §Œä•¶š‚ğŠÜ‚Ü‚È‚¢•¶š—ñ‚© */
+/* åˆ¶å¾¡æ–‡å­—ã‚’å«ã¾ãªã„æ–‡å­—åˆ—ã‹ */
 static BOOL IsSafeText(const char *s)
 {
 	for(; *s != '\0'; s++){
@@ -232,7 +232,7 @@ static BOOL IsHttp(const char *url)
 	return (url != NULL && (lstrcmpni((char *)url, "http://", 7) == 0 || lstrcmpni((char *)url, "https://", 8) == 0)) ? TRUE : FALSE;
 }
 
-/* ƒtƒ@ƒCƒ‹‚Ì“à—e‚ğ“Ç‚İ‚Ş */
+/* ãƒ•ã‚¡ã‚¤ãƒ«ã®å†…å®¹ã‚’èª­ã¿è¾¼ã‚€ */
 static char *ReadAll(const char *path, long max, long *len)
 {
 	HANDLE hFile;
@@ -262,7 +262,7 @@ static char *ReadAll(const char *path, long max, long *len)
 	return buf;
 }
 
-/* ˆêƒtƒ@ƒCƒ‹‚É‘‚«‚ñ‚Å‚©‚ç’u‚«Š·‚¦‚é */
+/* ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã‚“ã§ã‹ã‚‰ç½®ãæ›ãˆã‚‹ */
 static BOOL WriteAll(const char *path, const char *data, long len)
 {
 	char tmp[MAX_PATH];
@@ -287,7 +287,7 @@ static BOOL WriteAll(const char *path, const char *data, long len)
 	return TRUE;
 }
 
-/* ƒCƒ“ƒ^[ƒlƒbƒg‚©‚çæ“¾‚µ‚½ƒtƒ@ƒCƒ‹‚Å‚ ‚é‚±‚Æ‚ğ‹L˜^‚·‚é (Zone.Identifier) */
+/* ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒƒãƒˆã‹ã‚‰å–å¾—ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã§ã‚ã‚‹ã“ã¨ã‚’è¨˜éŒ²ã™ã‚‹ (Zone.Identifier) */
 static void SetZoneIdentifier(const char *path, const char *url)
 {
 	char stream[MAX_PATH + 32];
@@ -345,7 +345,7 @@ static BOOL EnsureDir(const char *path)
 	return (attr != INVALID_FILE_ATTRIBUTES && (attr & FILE_ATTRIBUTE_DIRECTORY) != 0) ? TRUE : FALSE;
 }
 
-/* ¢‘ã‚Ìƒtƒ@ƒCƒ‹–¼‚© (YYYYMMDD-HHMMSS[-n].html ‚Ü‚½‚Í .txt) */
+/* ä¸–ä»£ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‹ (YYYYMMDD-HHMMSS[-n].html ã¾ãŸã¯ .txt) */
 static BOOL IsGenName(const char *name)
 {
 	const char *p;
@@ -368,7 +368,7 @@ static int CompareName(const void *a, const void *b)
 	return lstrcmp(*(const char **)a, *(const char **)b);
 }
 
-/* ¢‘ã‚Ìƒtƒ@ƒCƒ‹–¼‚Ìˆê—— (ŒÃ‚¢‡) */
+/* ä¸–ä»£ã®ãƒ•ã‚¡ã‚¤ãƒ«åã®ä¸€è¦§ (å¤ã„é †) */
 static int ListGens(const char *dir, char ***list)
 {
 	WIN32_FIND_DATA fd;
@@ -432,7 +432,7 @@ static void FreeList(char **list, int cnt)
 	Paths
 **************************************************************************/
 
-/* WWWC ‚ÌƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ğæ“¾ */
+/* WWWC ã®ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’å–å¾— */
 static BOOL CALLBACK FindMainProc(HWND hWnd, LPARAM lParam)
 {
 	char cls[64];
@@ -467,8 +467,8 @@ static HWND GetMainWindow(HWND hWnd)
 
 	Archive_GetRoot
 
-	ƒA[ƒJƒCƒu‚ğ•Û‘¶‚·‚éƒfƒBƒŒƒNƒgƒŠ (ƒ†[ƒUƒfƒBƒŒƒNƒgƒŠ‚Æ“¯‚¶êŠ‚Ì ƒ†[ƒU–¼.archive)
-	ƒ†[ƒUƒfƒBƒŒƒNƒgƒŠ‚Ì’†‚ÍƒtƒHƒ‹ƒ_‚ÌƒcƒŠ[‚Æ‚µ‚Äˆµ‚í‚ê‚é‚½‚ßg—p‚µ‚È‚¢
+	ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã‚’ä¿å­˜ã™ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª (ãƒ¦ãƒ¼ã‚¶ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¨åŒã˜å ´æ‰€ã® ãƒ¦ãƒ¼ã‚¶å.archive)
+	ãƒ¦ãƒ¼ã‚¶ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ä¸­ã¯ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ„ãƒªãƒ¼ã¨ã—ã¦æ‰±ã‚ã‚Œã‚‹ãŸã‚ä½¿ç”¨ã—ãªã„
 
 ******************************************************************************/
 
@@ -483,7 +483,7 @@ BOOL Archive_GetRoot(HWND hWnd, char *ret)
 		*buf = '\0';
 		SendMessage(mWnd, WM_WWWC_GETINIPATH, 0, (LPARAM)buf);
 		buf[MAX_PATH - 1] = '\0';
-		//––”ö‚Ì \ ‚ğœ‚­
+		//æœ«å°¾ã® \ ã‚’é™¤ã
 		for(p = buf + lstrlen(buf); p > buf && *(p - 1) == '\\'; p--);
 		*p = '\0';
 		if(*buf != '\0'){
@@ -497,7 +497,7 @@ BOOL Archive_GetRoot(HWND hWnd, char *ret)
 	return TRUE;
 }
 
-/* ƒAƒCƒeƒ€‚ÌƒA[ƒJƒCƒu‚ÌƒfƒBƒŒƒNƒgƒŠ */
+/* ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª */
 static BOOL GetItemDir(HWND hWnd, const char *url, char *ret, char *key)
 {
 	char root[MAX_PATH];
@@ -529,7 +529,7 @@ static void FreeResp(ARCHIVE_RESP *r)
 	ZeroMemory(r, sizeof(ARCHIVE_RESP));
 }
 
-/* ƒwƒbƒ_‚Ì’l‚ğæ“¾ */
+/* ãƒ˜ãƒƒãƒ€ã®å€¤ã‚’å–å¾— */
 static void QueryHeader(HINTERNET hReq, DWORD info, char *ret, int size)
 {
 	WCHAR *w;
@@ -558,7 +558,7 @@ static void QueryHeader(HINTERNET hReq, DWORD info, char *ret, int size)
 	MemFree(w);
 }
 
-/* Content-Type ‚©‚çí—Ş‚Æ•¶šƒR[ƒh‚ğæ“¾ */
+/* Content-Type ã‹ã‚‰ç¨®é¡ã¨æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’å–å¾— */
 static void ParseContentType(ARCHIVE_RESP *r)
 {
 	char *p, *c;
@@ -588,7 +588,7 @@ static void ParseContentType(ARCHIVE_RESP *r)
 
 	ArchiveFetch
 
-	URL‚ğæ“¾‚·‚é (ƒŠƒ_ƒCƒŒƒNƒg‚Í‚±‚±‚Åˆ—‚µA”FØî•ñ‚Í“¯‚¶Ú‘±æ‚É‚Ì‚İ‘—‚é)
+	URLã‚’å–å¾—ã™ã‚‹ (ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã¯ã“ã“ã§å‡¦ç†ã—ã€èªè¨¼æƒ…å ±ã¯åŒã˜æ¥ç¶šå…ˆã«ã®ã¿é€ã‚‹)
 
 ******************************************************************************/
 
@@ -647,14 +647,14 @@ static BOOL ArchiveFetch(ARCHIVE_JOB *job, const char *url, const char *lastmod,
 		}
 		flags = WINHTTP_OPTION_REDIRECT_POLICY_NEVER;
 		WinHttpSetOption(hReq, WINHTTP_OPTION_REDIRECT_POLICY, &flags, sizeof(flags));
-		//Windows ‚ÌƒƒOƒIƒ“î•ñ‚ğ©“®‚Å‘—M‚µ‚È‚¢
+		//Windows ã®ãƒ­ã‚°ã‚ªãƒ³æƒ…å ±ã‚’è‡ªå‹•ã§é€ä¿¡ã—ãªã„
 		flags = WINHTTP_AUTOLOGON_SECURITY_LEVEL_HIGH;
 		WinHttpSetOption(hReq, WINHTTP_OPTION_AUTOLOGON_POLICY, &flags, sizeof(flags));
 		if(job->ProxyUser != NULL && job->ProxyPass != NULL){
 			WinHttpSetOption(hReq, WINHTTP_OPTION_PROXY_USERNAME, job->ProxyUser, lstrlenW(job->ProxyUser));
 			WinHttpSetOption(hReq, WINHTTP_OPTION_PROXY_PASSWORD, job->ProxyPass, lstrlenW(job->ProxyPass));
 		}
-		//‘—Mƒwƒbƒ_
+		//é€ä¿¡ãƒ˜ãƒƒãƒ€
 		Buf_Str(&hb, "Accept: */*");
 		if(hop == 0 && etag != NULL && *etag != '\0' && IsSafeText(etag) == TRUE){
 			Buf_Str(&hb, "\r\nIf-None-Match: ");
@@ -682,7 +682,7 @@ static BOOL ArchiveFetch(ARCHIVE_JOB *job, const char *url, const char *lastmod,
 			break;
 		}
 		if(status == 301 || status == 302 || status == 303 || status == 307 || status == 308){
-			//ƒŠƒ_ƒCƒŒƒNƒg (http, https ‚Ì‚İ)
+			//ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆ (http, https ã®ã¿)
 			QueryHeader(hReq, WINHTTP_QUERY_LOCATION, loc, sizeof(loc));
 			next = (*loc != '\0') ? CreateMoveURL(cur, loc) : NULL;
 			MemFree(cur);
@@ -708,7 +708,7 @@ static BOOL ArchiveFetch(ARCHIVE_JOB *job, const char *url, const char *lastmod,
 			QueryHeader(hReq, WINHTTP_QUERY_ETAG, r->ETag, sizeof(r->ETag));
 			QueryHeader(hReq, WINHTTP_QUERY_LAST_MODIFIED, r->LastMod, sizeof(r->LastMod));
 			ParseContentType(r);
-			//–{•¶
+			//æœ¬æ–‡
 			while(ArchiveStop == 0){
 				size = 0;
 				if(WinHttpQueryDataAvailable(hReq, &size) == FALSE){
@@ -746,7 +746,7 @@ static BOOL ArchiveFetch(ARCHIVE_JOB *job, const char *url, const char *lastmod,
 				break;
 			}
 			if(body.p == NULL){
-				//–{•¶‚ª‹ó
+				//æœ¬æ–‡ãŒç©º
 				body.p = (char *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, 1);
 				if(body.p == NULL){
 					break;
@@ -804,7 +804,7 @@ static ARCHIVE_ENTRY *FindEntry(ARCHIVE_JOB *job, const char *url)
 	return NULL;
 }
 
-/* ƒŠƒ\[ƒX‚Ìƒtƒ@ƒCƒ‹–¼‚© (16Œ…‚Ì16i + Šg’£q) */
+/* ãƒªã‚½ãƒ¼ã‚¹ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‹ (16æ¡ã®16é€² + æ‹¡å¼µå­) */
 static BOOL IsResName(const char *name)
 {
 	const char *p;
@@ -915,7 +915,7 @@ static void SaveEntries(ARCHIVE_JOB *job)
 	Resources
 **************************************************************************/
 
-/* •Û‘¶‚·‚éƒŠƒ\[ƒX‚ÌŠg’£q (•Û‘¶‚µ‚È‚¢í—Ş‚Í NULL) */
+/* ä¿å­˜ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã®æ‹¡å¼µå­ (ä¿å­˜ã—ãªã„ç¨®é¡ã¯ NULL) */
 static const char *ResExt(int type, ARCHIVE_RESP *r, const char *url)
 {
 	static const struct { const char *type; const char *ext; } img[] = {
@@ -975,7 +975,7 @@ static const char *AddMemo(ARCHIVE_JOB *job, const char *url, int type, const ch
 
 	ResolveRes
 
-	ƒŠƒ\[ƒX‚ğæ“¾‚µ‚Ä•Û‘¶‚µAƒtƒ@ƒCƒ‹–¼‚ğ•Ô‚· (‘‚«Š·‚¦ˆ—‚©‚çŒÄ‚Î‚ê‚é)
+	ãƒªã‚½ãƒ¼ã‚¹ã‚’å–å¾—ã—ã¦ä¿å­˜ã—ã€ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¿”ã™ (æ›¸ãæ›ãˆå‡¦ç†ã‹ã‚‰å‘¼ã°ã‚Œã‚‹)
 
 ******************************************************************************/
 
@@ -1007,7 +1007,7 @@ static const char *ResolveRes(void *ctx, const char *url, int type)
 	}
 	job->ResCount++;
 
-	//‘O‰ñæ“¾‚µ‚½‚à‚Ì‚ª‚ ‚éê‡‚Í•ÏX‚ª‚ ‚Á‚½‚Æ‚«‚Ì‚İæ“¾‚·‚é (CSS‚Í’†‚ÌURL‚ğˆ—‚·‚é‚½‚ß–ˆ‰ñæ“¾)
+	//å‰å›å–å¾—ã—ãŸã‚‚ã®ãŒã‚ã‚‹å ´åˆã¯å¤‰æ›´ãŒã‚ã£ãŸã¨ãã®ã¿å–å¾—ã™ã‚‹ (CSSã¯ä¸­ã®URLã‚’å‡¦ç†ã™ã‚‹ãŸã‚æ¯å›å–å¾—)
 	e = FindEntry(job, url);
 	cond = FALSE;
 	if(type != RES_CSS && e != NULL && e->file != NULL){
@@ -1024,7 +1024,7 @@ static const char *ResolveRes(void *ctx, const char *url, int type)
 		data = r.Body;
 		len = r.Len;
 		if(type == RES_CSS){
-			//CSS“à‚ÌURL‚ğ‘‚«Š·‚¦‚é ([‚¢ @import ‚Íâ‘ÎURL‚É‚·‚é‚Ì‚İ)
+			//CSSå†…ã®URLã‚’æ›¸ãæ›ãˆã‚‹ (æ·±ã„ @import ã¯çµ¶å¯¾URLã«ã™ã‚‹ã®ã¿)
 			job->CssDepth++;
 			css = Archive_RewriteCss(r.Body, r.Len, r.FinalUrl, "",
 				(job->CssDepth < ARCHIVE_CSS_DEPTH) ? ResolveRes : NULL, job, &len);
@@ -1056,7 +1056,7 @@ static const char *ResolveRes(void *ctx, const char *url, int type)
 	Generations
 **************************************************************************/
 
-/* QÆ‚³‚ê‚Ä‚¢‚éƒŠƒ\[ƒX‚Ìˆó‚ğ•t‚¯‚é */
+/* å‚ç…§ã•ã‚Œã¦ã„ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã®å°ã‚’ä»˜ã‘ã‚‹ */
 static void MarkRefs(const char *data, long len, char **names, BOOL *mark, int cnt)
 {
 	const char *p, *end = data + len;
@@ -1076,7 +1076,7 @@ static void MarkRefs(const char *data, long len, char **names, BOOL *mark, int c
 	}
 }
 
-/* g‚í‚ê‚Ä‚¢‚È‚¢ƒŠƒ\[ƒX‚ğíœ‚·‚é */
+/* ä½¿ã‚ã‚Œã¦ã„ãªã„ãƒªã‚½ãƒ¼ã‚¹ã‚’å‰Šé™¤ã™ã‚‹ */
 static void CleanResources(ARCHIVE_JOB *job, char **gens, int gcnt)
 {
 	WIN32_FIND_DATA fd;
@@ -1121,17 +1121,17 @@ static void CleanResources(ARCHIVE_JOB *job, char **gens, int gcnt)
 	if(mark == NULL || scanned == NULL){
 		goto end;
 	}
-	//¢‘ã‚Ìƒy[ƒW‚©‚çQÆ‚³‚ê‚Ä‚¢‚é‚à‚Ì
+	//ä¸–ä»£ã®ãƒšãƒ¼ã‚¸ã‹ã‚‰å‚ç…§ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®
 	for(i = 0; i < gcnt; i++){
 		wsprintf(path, "%s\\%s", job->Dir, gens[i]);
 		if((buf = ReadAll(path, MAX_RECVSIZE * 2, &len)) == NULL){
-			//“Ç‚ß‚È‚¢ê‡‚Ííœ‚µ‚È‚¢
+			//èª­ã‚ãªã„å ´åˆã¯å‰Šé™¤ã—ãªã„
 			goto end;
 		}
 		MarkRefs(buf, len, names, mark, cnt);
 		MemFree(buf);
 	}
-	//CSS‚©‚çQÆ‚³‚ê‚Ä‚¢‚é‚à‚Ì
+	//CSSã‹ã‚‰å‚ç…§ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®
 	do{
 		again = FALSE;
 		for(i = 0; i < cnt; i++){
@@ -1168,7 +1168,7 @@ end:
 	FreeList(names, cnt);
 }
 
-/* HTML‚Ì“Áê•¶š‚ğ•ÏŠ·‚µ‚Ä’Ç‰Á */
+/* HTMLã®ç‰¹æ®Šæ–‡å­—ã‚’å¤‰æ›ã—ã¦è¿½åŠ  */
 static void AddHtmlText(ARCHIVE_BUF *b, const char *s)
 {
 	for(; *s != '\0'; s++){
@@ -1187,7 +1187,7 @@ static void AddHtmlText(ARCHIVE_BUF *b, const char *s)
 	}
 }
 
-/* ¢‘ã‚Ìˆê——ƒy[ƒW‚ğì¬‚·‚é (UTF-8) */
+/* ä¸–ä»£ã®ä¸€è¦§ãƒšãƒ¼ã‚¸ã‚’ä½œæˆã™ã‚‹ (UTF-8) */
 static void WriteIndex(ARCHIVE_JOB *job, char **gens, int gcnt)
 {
 	ARCHIVE_BUF b;
@@ -1213,7 +1213,7 @@ static void WriteIndex(ARCHIVE_JOB *job, char **gens, int gcnt)
 	AddHtmlText(&b, job->Url);
 	Buf_Str(&b, "</p>\r\n<ul>\r\n");
 	for(i = gcnt - 1; i >= 0; i--){
-		//YYYYMMDD-HHMMSS ‚ğ•\¦—p‚É‚·‚é
+		//YYYYMMDD-HHMMSS ã‚’è¡¨ç¤ºç”¨ã«ã™ã‚‹
 		wsprintf(date, "%.4s/%.2s/%.2s %.2s:%.2s:%.2s", gens[i], gens[i] + 4, gens[i] + 6, gens[i] + 9, gens[i] + 11, gens[i] + 13);
 		Buf_Str(&b, "<li><a href=\"");
 		AddHtmlText(&b, gens[i]);
@@ -1235,7 +1235,7 @@ static void WriteIndex(ARCHIVE_JOB *job, char **gens, int gcnt)
 	Buf_Free(&b);
 }
 
-/* V‚µ‚¢¢‘ã‚Ìƒtƒ@ƒCƒ‹–¼ */
+/* æ–°ã—ã„ä¸–ä»£ã®ãƒ•ã‚¡ã‚¤ãƒ«å */
 static BOOL NewGenName(ARCHIVE_JOB *job, const char *ext, char *ret)
 {
 	SYSTEMTIME st;
@@ -1262,7 +1262,7 @@ static BOOL NewGenName(ARCHIVE_JOB *job, const char *ext, char *ret)
 
 	RunJob
 
-	ƒy[ƒW‚ğæ“¾‚µ‚ÄƒA[ƒJƒCƒu‚·‚é (ƒXƒŒƒbƒh‚ÅÀs)
+	ãƒšãƒ¼ã‚¸ã‚’å–å¾—ã—ã¦ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã™ã‚‹ (ã‚¹ãƒ¬ãƒƒãƒ‰ã§å®Ÿè¡Œ)
 
 ******************************************************************************/
 
@@ -1279,7 +1279,7 @@ static void RunJob(ARCHIVE_JOB *job)
 	BOOL html, write = TRUE, found;
 
 	ZeroMemory(&r, sizeof(ARCHIVE_RESP));
-	//Archive ƒtƒHƒ‹ƒ_AƒAƒCƒeƒ€‚ÌƒtƒHƒ‹ƒ_AƒŠƒ\[ƒX‚ÌƒtƒHƒ‹ƒ_‚Ì‡‚Éì¬‚·‚é
+	//Archive ãƒ•ã‚©ãƒ«ãƒ€ã€ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ•ã‚©ãƒ«ãƒ€ã€ãƒªã‚½ãƒ¼ã‚¹ã®ãƒ•ã‚©ãƒ«ãƒ€ã®é †ã«ä½œæˆã™ã‚‹
 	lstrcpy(path, job->Dir);
 	for(p = path + lstrlen(path); p > path && *p != '\\'; p--);
 	*p = '\0';
@@ -1300,7 +1300,7 @@ static void RunJob(ARCHIVE_JOB *job)
 	}
 	LoadEntries(job);
 
-	//ƒy[ƒW‚Ìæ“¾ (¬Œ÷‚µ‚½ê‡‚Ì‚İƒA[ƒJƒCƒu‚·‚é)
+	//ãƒšãƒ¼ã‚¸ã®å–å¾— (æˆåŠŸã—ãŸå ´åˆã®ã¿ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã™ã‚‹)
 	if(ArchiveFetch(job, job->Url, NULL, NULL, MAX_RECVSIZE, &r) == FALSE || r.Status != 200 || ArchiveStop != 0){
 		goto end;
 	}
@@ -1315,7 +1315,7 @@ static void RunJob(ARCHIVE_JOB *job)
 	}
 	HashHex(r.Body, r.Len, md5, 32);
 
-	//UTF-16 ‚Í‘‚«Š·‚¦‚¸‚É•Û‘¶‚·‚é
+	//UTF-16 ã¯æ›¸ãæ›ãˆãšã«ä¿å­˜ã™ã‚‹
 	if(html == TRUE && !(r.Len >= 2 && (((unsigned char)r.Body[0] == 0xFF && (unsigned char)r.Body[1] == 0xFE) ||
 		((unsigned char)r.Body[0] == 0xFE && (unsigned char)r.Body[1] == 0xFF)))){
 		out = Archive_RewriteHtml(r.Body, r.Len, r.FinalUrl, r.Charset, job->Js, ResolveRes, job, &outlen);
@@ -1324,7 +1324,7 @@ static void RunJob(ARCHIVE_JOB *job)
 		}
 	}
 
-	//‘O‰ñ‚Ì¢‘ã‚Æ”äŠr‚·‚é
+	//å‰å›ã®ä¸–ä»£ã¨æ¯”è¼ƒã™ã‚‹
 	*oldmd5 = *oldgen = '\0';
 	wsprintf(path, "%s\\%s", job->Dir, ARCHIVE_LATEST);
 	if((latest = ReadAll(path, 1024, NULL)) != NULL){
@@ -1344,7 +1344,7 @@ static void RunJob(ARCHIVE_JOB *job)
 		}
 	}
 	if(found == TRUE && IsGenName(oldgen) == TRUE && lstrcmp(oldmd5, md5) == 0){
-		//ƒy[ƒW‚Í•Ï‚í‚Á‚Ä‚¢‚È‚¢ê‡‚ÍƒŠƒ\[ƒX‚ª•Ï‚í‚Á‚½‚Æ‚«‚Ì‚İ’u‚«Š·‚¦‚é
+		//ãƒšãƒ¼ã‚¸ã¯å¤‰ã‚ã£ã¦ã„ãªã„å ´åˆã¯ãƒªã‚½ãƒ¼ã‚¹ãŒå¤‰ã‚ã£ãŸã¨ãã®ã¿ç½®ãæ›ãˆã‚‹
 		lstrcpy(gen, oldgen);
 		wsprintf(path, "%s\\%s", job->Dir, gen);
 		if((old = ReadAll(path, MAX_RECVSIZE * 2, &oldlen)) != NULL){
@@ -1371,7 +1371,7 @@ static void RunJob(ARCHIVE_JOB *job)
 		}
 	}
 
-	//¢‘ã”‚ğ’´‚¦‚½‚à‚Ì‚ğíœ
+	//ä¸–ä»£æ•°ã‚’è¶…ãˆãŸã‚‚ã®ã‚’å‰Šé™¤
 	FreeList(gens, gcnt);
 	gcnt = ListGens(job->Dir, &gens);
 	for(i = 0; i < gcnt - job->Generation; i++){
@@ -1386,7 +1386,7 @@ static void RunJob(ARCHIVE_JOB *job)
 	CleanResources(job, gens, gcnt);
 	SaveEntries(job);
 
-	//Œ³‚ÌURL (Šm”F—p)
+	//å…ƒã®URL (ç¢ºèªç”¨)
 	{
 		ARCHIVE_BUF b;
 		ZeroMemory(&b, sizeof(ARCHIVE_BUF));
@@ -1448,7 +1448,7 @@ static DWORD WINAPI ArchiveThreadProc(LPVOID lpParam)
 		if(job != NULL){
 			ArchiveQueue = job->next;
 			ArchiveQueueCnt--;
-			//æ‚èo‚µ‚Æ“¯‚Éˆ—’†‚É‚·‚é (I—¹‚Ì‘Ò‹@‚Å‹ó‚Æ”»’è‚³‚ê‚È‚¢‚æ‚¤)
+			//å–ã‚Šå‡ºã—ã¨åŒæ™‚ã«å‡¦ç†ä¸­ã«ã™ã‚‹ (çµ‚äº†æ™‚ã®å¾…æ©Ÿã§ç©ºã¨åˆ¤å®šã•ã‚Œãªã„ã‚ˆã†)
 			InterlockedExchange(&ArchiveBusy, 1);
 			lstrcpy(ArchiveRunningKey, job->Key);
 		}
@@ -1473,7 +1473,7 @@ static DWORD WINAPI ArchiveThreadProc(LPVOID lpParam)
 
 	Archive_Init
 
-	‰Šú‰»
+	åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -1492,7 +1492,7 @@ void Archive_Init(void)
 
 	Archive_End
 
-	I—¹ (æ“¾’†‚Ì‚à‚Ì‚Í’†~‚·‚é)
+	çµ‚äº† (å–å¾—ä¸­ã®ã‚‚ã®ã¯ä¸­æ­¢ã™ã‚‹)
 
 ******************************************************************************/
 
@@ -1506,7 +1506,7 @@ void Archive_End(void)
 	if(ArchiveCsInit == FALSE){
 		return;
 	}
-	//ƒ`ƒFƒbƒNŒã‚ÉI—¹‚·‚éê‡‚È‚Ç‚Ì‚½‚ßAæ“¾‘Ò‚¿‚Ì‚à‚Ì‚ğˆê’èŠÔ‚Ü‚Åˆ—‚·‚é
+	//ãƒã‚§ãƒƒã‚¯å¾Œã«çµ‚äº†ã™ã‚‹å ´åˆãªã©ã®ãŸã‚ã€å–å¾—å¾…ã¡ã®ã‚‚ã®ã‚’ä¸€å®šæ™‚é–“ã¾ã§å‡¦ç†ã™ã‚‹
 	if(ArchiveThread != NULL){
 		start = GetTickCount();
 		while(GetTickCount() - start < ARCHIVE_FINISH_WAIT){
@@ -1533,7 +1533,7 @@ void Archive_End(void)
 	}
 	if(ArchiveThread != NULL){
 		SetEvent(ArchiveEvent);
-		//ƒXƒŒƒbƒh‚ÍDLL‚ÌQÆ‚ğ‚Á‚Ä‚¢‚é‚½‚ßA‘Ò‹@ŠÔ“à‚ÉI‚í‚ç‚È‚¢ê‡‚àDLL‚Í‰ğ•ú‚³‚ê‚È‚¢
+		//ã‚¹ãƒ¬ãƒƒãƒ‰ã¯DLLã®å‚ç…§ã‚’æŒã£ã¦ã„ã‚‹ãŸã‚ã€å¾…æ©Ÿæ™‚é–“å†…ã«çµ‚ã‚ã‚‰ãªã„å ´åˆã‚‚DLLã¯è§£æ”¾ã•ã‚Œãªã„
 		if(WaitForSingleObject(ArchiveThread, ARCHIVE_END_WAIT) != WAIT_TIMEOUT){
 			CloseHandle(ArchiveThread);
 			ArchiveThread = NULL;
@@ -1547,7 +1547,7 @@ void Archive_End(void)
 
 	ResumeArchive
 
-	’â~‚µ‚½ƒA[ƒJƒCƒu‚Ìæ“¾‚ğÄŠJ‚·‚é (ƒXƒŒƒbƒh‚ªI—¹‚µ‚Ä‚¢‚È‚¢ê‡‚ÍÄŠJ‚µ‚È‚¢)
+	åœæ­¢ã—ãŸã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã®å–å¾—ã‚’å†é–‹ã™ã‚‹ (ã‚¹ãƒ¬ãƒƒãƒ‰ãŒçµ‚äº†ã—ã¦ã„ãªã„å ´åˆã¯å†é–‹ã—ãªã„)
 
 ******************************************************************************/
 
@@ -1580,7 +1580,7 @@ static BOOL ResumeArchive(void)
 
 	Archive_Restart
 
-	ƒvƒƒgƒRƒ‹‚ÌÄ“Ç‚İ‚İ‚ÅI—¹’Ê’m‚ÌŒã‚ÉŒÄ‚Î‚ê‚½ê‡‚ÉƒA[ƒJƒCƒu‚Ìæ“¾‚ğÄŠJ‚·‚é
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã®å†èª­ã¿è¾¼ã¿ã§çµ‚äº†é€šçŸ¥ã®å¾Œã«å‘¼ã°ã‚ŒãŸå ´åˆã«ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã®å–å¾—ã‚’å†é–‹ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1598,7 +1598,7 @@ void Archive_Restart(void)
 
 	Archive_IsAuthItem
 
-	”FØ‚ğİ’è‚µ‚½ƒAƒCƒeƒ€‚© (”FØ‚ª•K—v‚Èƒy[ƒW‚ÍƒA[ƒJƒCƒu‚µ‚È‚¢)
+	èªè¨¼ã‚’è¨­å®šã—ãŸã‚¢ã‚¤ãƒ†ãƒ ã‹ (èªè¨¼ãŒå¿…è¦ãªãƒšãƒ¼ã‚¸ã¯ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã—ãªã„)
 
 ******************************************************************************/
 
@@ -1616,7 +1616,7 @@ BOOL Archive_IsAuthItem(struct TPITEM *tpItemInfo)
 	if(tpItemInfo->CheckURL == NULL){
 		return FALSE;
 	}
-	//URL ‚Éƒ†[ƒU–¼‚ğŠÜ‚Şê‡
+	//URL ã«ãƒ¦ãƒ¼ã‚¶åã‚’å«ã‚€å ´åˆ
 	sv = (char *)GlobalAlloc(GPTR, lstrlen(tpItemInfo->CheckURL) + 1);
 	user = (char *)GlobalAlloc(GPTR, lstrlen(tpItemInfo->CheckURL) + 1);
 	if(sv == NULL || user == NULL){
@@ -1629,7 +1629,7 @@ BOOL Archive_IsAuthItem(struct TPITEM *tpItemInfo)
 	return ret;
 }
 
-/* ƒAƒCƒeƒ€‚ÌƒvƒƒLƒV */
+/* ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ—ãƒ­ã‚­ã‚· */
 static void GetProxy(struct TPITEM *tpItemInfo, ARCHIVE_JOB *job)
 {
 	char ItemProxy[BUFSIZE], ItemPort[BUFSIZE], sv[BUFSIZE], proxy[BUFSIZE * 2];
@@ -1662,7 +1662,7 @@ static void GetProxy(struct TPITEM *tpItemInfo, ARCHIVE_JOB *job)
 	}
 }
 
-/* ƒA[ƒJƒCƒu‚µ‚½ƒy[ƒW‚ª‚ ‚é‚© */
+/* ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã—ãŸãƒšãƒ¼ã‚¸ãŒã‚ã‚‹ã‹ */
 static BOOL HasPage(const char *dir)
 {
 	char **gens;
@@ -1678,7 +1678,7 @@ static BOOL HasPage(const char *dir)
 
 	Archive_Request
 
-	ƒ`ƒFƒbƒN‚É¬Œ÷‚µ‚½ƒy[ƒW‚ÌƒA[ƒJƒCƒu‚ğ—v‹‚·‚é (ƒƒCƒ“ƒXƒŒƒbƒh‚ÅÀs)
+	ãƒã‚§ãƒƒã‚¯ã«æˆåŠŸã—ãŸãƒšãƒ¼ã‚¸ã®ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã‚’è¦æ±‚ã™ã‚‹ (ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰ã§å®Ÿè¡Œ)
 
 ******************************************************************************/
 
@@ -1701,7 +1701,7 @@ void Archive_Request(HWND hWnd, struct TPITEM *tpItemInfo, BOOL Update)
 	if(GetItemDir(hWnd, tpItemInfo->CheckURL, dir, key) == FALSE){
 		return;
 	}
-	//XV‚ª–³‚¢ê‡‚ÍƒA[ƒJƒCƒu‚ª–³‚¢‚Æ‚«‚Ì‚İ
+	//æ›´æ–°ãŒç„¡ã„å ´åˆã¯ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ãŒç„¡ã„ã¨ãã®ã¿
 	if(Update == FALSE && HasPage(dir) == TRUE){
 		return;
 	}
@@ -1732,7 +1732,7 @@ void Archive_Request(HWND hWnd, struct TPITEM *tpItemInfo, BOOL Update)
 	job->Generation = (gen < 1) ? 1 : ((gen > ARCHIVE_GEN_MAX) ? ARCHIVE_GEN_MAX : gen);
 	job->TimeOutMs = (TimeOut > 0) ? TimeOut * 1000 : 0;
 	GetProxy(tpItemInfo, job);
-	//ƒ`ƒFƒbƒN‚Æ“¯‚¶ User-Agent ‚ğg‚¤
+	//ãƒã‚§ãƒƒã‚¯ã¨åŒã˜ User-Agent ã‚’ä½¿ã†
 	if(GetOptionString(tpItemInfo->Option2, ua, OP2_USERAGENT) == TRUE){
 		NormalizeUserAgent(ua);
 		if(*ua != '\0'){
@@ -1756,7 +1756,7 @@ void Archive_Request(HWND hWnd, struct TPITEM *tpItemInfo, BOOL Update)
 	LeaveCriticalSection(&ArchiveCs);
 
 	if(ArchiveThread == NULL){
-		//ƒXƒŒƒbƒh‚ÌÀs’†‚ÉDLL‚ª‰ğ•ú‚³‚ê‚È‚¢‚æ‚¤QÆ‚ğæ“¾‚·‚é
+		//ã‚¹ãƒ¬ãƒƒãƒ‰ã®å®Ÿè¡Œä¸­ã«DLLãŒè§£æ”¾ã•ã‚Œãªã„ã‚ˆã†å‚ç…§ã‚’å–å¾—ã™ã‚‹
 		if(GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCSTR)ArchiveThreadProc, &hModule) == FALSE){
 			return;
 		}
@@ -1775,7 +1775,7 @@ void Archive_Request(HWND hWnd, struct TPITEM *tpItemInfo, BOOL Update)
 
 	Archive_Exists
 
-	ƒAƒCƒeƒ€‚ÌƒA[ƒJƒCƒu‚ª‚ ‚é‚©
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ãŒã‚ã‚‹ã‹
 
 ******************************************************************************/
 
@@ -1790,7 +1790,7 @@ BOOL Archive_Exists(HWND hWnd, struct TPITEM *tpItemInfo)
 }
 
 
-/* ƒfƒBƒŒƒNƒgƒŠ“à‚Ìƒtƒ@ƒCƒ‹‚ğíœ‚·‚é (ƒTƒuƒfƒBƒŒƒNƒgƒŠ‚Ííœ‚µ‚È‚¢) */
+/* ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã™ã‚‹ (ã‚µãƒ–ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¯å‰Šé™¤ã—ãªã„) */
 static void DeleteFiles(const char *dir)
 {
 	WIN32_FIND_DATA fd;
@@ -1823,8 +1823,8 @@ static void DeleteFiles(const char *dir)
 
 	Archive_Delete
 
-	ƒAƒCƒeƒ€‚ÌƒA[ƒJƒCƒu‚ğíœ‚·‚é
-	(–ß‚è’l 1: íœ‚µ‚½ 0: ƒA[ƒJƒCƒu‚ª–³‚¢ -1: æ“¾’† -2: íœ‚Å‚«‚È‚©‚Á‚½)
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã‚’å‰Šé™¤ã™ã‚‹
+	(æˆ»ã‚Šå€¤ 1: å‰Šé™¤ã—ãŸ 0: ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ãŒç„¡ã„ -1: å–å¾—ä¸­ -2: å‰Šé™¤ã§ããªã‹ã£ãŸ)
 
 ******************************************************************************/
 
@@ -1844,12 +1844,12 @@ int Archive_Delete(HWND hWnd, struct TPITEM *tpItemInfo)
 	}
 	if(ArchiveCsInit == TRUE){
 		EnterCriticalSection(&ArchiveCs);
-		//æ“¾’†‚Ì‚à‚Ì‚Ííœ‚µ‚È‚¢
+		//å–å¾—ä¸­ã®ã‚‚ã®ã¯å‰Šé™¤ã—ãªã„
 		if(lstrcmp(ArchiveRunningKey, key) == 0){
 			LeaveCriticalSection(&ArchiveCs);
 			return -1;
 		}
-		//æ“¾‘Ò‚¿‚Ì‚à‚Ì‚Íæ‚èÁ‚·
+		//å–å¾—å¾…ã¡ã®ã‚‚ã®ã¯å–ã‚Šæ¶ˆã™
 		for(prev = NULL, job = ArchiveQueue; job != NULL; job = next){
 			next = job->next;
 			if(lstrcmp(job->Key, key) == 0){
@@ -1872,7 +1872,7 @@ int Archive_Delete(HWND hWnd, struct TPITEM *tpItemInfo)
 		}
 	}
 
-	//ƒŠƒ\[ƒXAƒy[ƒW‚Ì‡‚Éíœ‚·‚é (ì¬‚µ‚½‚à‚ÌˆÈŠO‚ÌƒTƒuƒfƒBƒŒƒNƒgƒŠ‚Ííœ‚µ‚È‚¢)
+	//ãƒªã‚½ãƒ¼ã‚¹ã€ãƒšãƒ¼ã‚¸ã®é †ã«å‰Šé™¤ã™ã‚‹ (ä½œæˆã—ãŸã‚‚ã®ä»¥å¤–ã®ã‚µãƒ–ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¯å‰Šé™¤ã—ãªã„)
 	wsprintf(path, "%s\\%s", dir, ARCHIVE_RES_DIR);
 	DeleteFiles(path);
 	RemoveDirectory(path);
@@ -1886,7 +1886,7 @@ int Archive_Delete(HWND hWnd, struct TPITEM *tpItemInfo)
 
 	Archive_Open
 
-	ƒAƒCƒeƒ€‚ÌƒA[ƒJƒCƒu‚ğŠJ‚­
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã‚’é–‹ã
 
 ******************************************************************************/
 
@@ -1901,7 +1901,7 @@ int Archive_Open(HWND hWnd, struct TPITEM *tpItemInfo)
 		MessageBox(hWnd, STR_ERR_MSG_ARCHIVE_NONE, STR_ERR_TITLE_ARCHIVE, MB_ICONEXCLAMATION);
 		return -1;
 	}
-	//•¡”‚Ì¢‘ã‚ª‚ ‚éê‡‚Íˆê——‚ğŠJ‚­
+	//è¤‡æ•°ã®ä¸–ä»£ãŒã‚ã‚‹å ´åˆã¯ä¸€è¦§ã‚’é–‹ã
 	wsprintf(path, "%s\\%s", dir, ARCHIVE_INDEX);
 	if(cnt <= 1 || FileExists(path) == FALSE){
 		wsprintf(path, "%s\\%s", dir, gens[cnt - 1]);

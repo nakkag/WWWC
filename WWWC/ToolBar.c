@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -26,16 +26,16 @@
 	Define
 **************************************************************************/
 
-#define BANDSIZE_X			22			//ƒoƒ“ƒhƒTƒCƒY
+#define BANDSIZE_X			22			//ãƒãƒ³ãƒ‰ã‚µã‚¤ã‚º
 #define BANDSIZE_Y			22
 
-#define BUTTON_MAX			100			//ƒ{ƒ^ƒ“‚ÌÅ‘å”
-#define TBMAXBUTTON			26			//ƒ{ƒ^ƒ“‚Ì”
-#define TBMAXBITMAP			14			//ƒ{ƒ^ƒ“ƒrƒbƒgƒ}ƒbƒv‚Ì”
-#define TBICONSIZE_X		16			//ƒ{ƒ^ƒ“ƒrƒbƒgƒ}ƒbƒv‚ÌƒTƒCƒY
+#define BUTTON_MAX			100			//ãƒœã‚¿ãƒ³ã®æœ€å¤§æ•°
+#define TBMAXBUTTON			26			//ãƒœã‚¿ãƒ³ã®æ•°
+#define TBMAXBITMAP			14			//ãƒœã‚¿ãƒ³ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®æ•°
+#define TBICONSIZE_X		16			//ãƒœã‚¿ãƒ³ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ã‚µã‚¤ã‚º
 #define TBICONSIZE_Y		16
 
-#define ICON_VIEW_CNT		5			//•W€‚Ìƒ{ƒ^ƒ“‚Ì”
+#define ICON_VIEW_CNT		5			//æ¨™æº–ã®ãƒœã‚¿ãƒ³ã®æ•°
 #define ICON_STD_CNT		7
 
 
@@ -75,8 +75,8 @@ static TBBUTTON tbb[] = {
 };
 static TBBUTTON _tbb[sizeof(tbb) / sizeof(TBBUTTON)];
 
-//ŠO•”QÆ
-extern HINSTANCE g_hinst;				//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
+//å¤–éƒ¨å‚ç…§
+extern HINSTANCE g_hinst;				//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
 extern HWND AniWnd;
 extern char ViewTbItem[];
 extern int ViewTb;
@@ -86,13 +86,13 @@ extern int TbStyle;
 
 	ReTbButtonInfo
 
-	ƒc[ƒ‹ƒo[î•ñ‚ÌƒŠƒZƒbƒg
+	ãƒ„ãƒ¼ãƒ«ãƒãƒ¼æƒ…å ±ã®ãƒªã‚»ãƒƒãƒˆ
 
 ******************************************************************************/
 
 void ReTbButtonInfo(void)
 {
-	//ƒc[ƒ‹ƒo[‚Ìî•ñ‚ğƒŠƒZƒbƒg
+	//ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®æƒ…å ±ã‚’ãƒªã‚»ãƒƒãƒˆ
 	CopyMemory(tbb, _tbb, sizeof(_tbb));
 }
 
@@ -101,7 +101,7 @@ void ReTbButtonInfo(void)
 
 	TbSetButton
 
-	ƒc[ƒ‹ƒo[î•ñ‚Ìİ’è
+	ãƒ„ãƒ¼ãƒ«ãƒãƒ¼æƒ…å ±ã®è¨­å®š
 
 ******************************************************************************/
 
@@ -110,7 +110,7 @@ static int TbSetButton(TBBUTTON *tbtn, char *TBbuf)
 	char buf[BUFSIZE], *p, *r;
 	int i, j;
 
-	//•¶š—ñ‚©‚çƒc[ƒ‹ƒo[î•ñ‚ğì¬
+	//æ–‡å­—åˆ—ã‹ã‚‰ãƒ„ãƒ¼ãƒ«ãƒãƒ¼æƒ…å ±ã‚’ä½œæˆ
 	r = buf;
 	i = 0;
 	for(p = TBbuf;*p != '\0';p++){
@@ -118,7 +118,7 @@ static int TbSetButton(TBBUTTON *tbtn, char *TBbuf)
 			*r = '\0';
 			j = atoi(buf);
 			if(j < 0 || j >= (int)(sizeof(_tbb) / sizeof(_tbb[0])) || lstrlen(buf) <= 0){
-				//ƒZƒpƒŒ[ƒ^
+				//ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿
 				(tbtn + i)->iBitmap = 0;
 				(tbtn + i)->idCommand = 0;
 				(tbtn + i)->fsState = 0;
@@ -126,7 +126,7 @@ static int TbSetButton(TBBUTTON *tbtn, char *TBbuf)
 				(tbtn + i)->dwData = 0;
 				(tbtn + i)->iString = 0;
 			}else{
-				//ƒc[ƒ‹ƒo[î•ñ‚ÌƒRƒs[
+				//ãƒ„ãƒ¼ãƒ«ãƒãƒ¼æƒ…å ±ã®ã‚³ãƒ”ãƒ¼
 				*(tbtn + i) = *(tbb + j);
 			}
 			i++;
@@ -146,7 +146,7 @@ static int TbSetButton(TBBUTTON *tbtn, char *TBbuf)
 
 	SetTbBitmap
 
-	•W€‚Ìƒc[ƒ‹ƒo[ƒrƒbƒgƒ}ƒbƒv‚Ìİ’è
+	æ¨™æº–ã®ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®è¨­å®š
 
 ******************************************************************************/
 
@@ -169,7 +169,7 @@ static void SetTbBitmap(HWND hWnd, int id, int bitmapIndex)
 
 	CreateTB
 
-	ƒc[ƒ‹ƒo[‚Ìì¬
+	ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ä½œæˆ
 
 ******************************************************************************/
 
@@ -182,10 +182,10 @@ void CreateTB(HWND hWnd)
 
 	CopyMemory(_tbb, tbb, sizeof(tbb));
 
-	//ƒc[ƒ‹ƒo[î•ñ‚Ìİ’è
+	//ãƒ„ãƒ¼ãƒ«ãƒãƒ¼æƒ…å ±ã®è¨­å®š
 	i = TbSetButton(setTBB, ViewTbItem);
 
-	//ƒc[ƒ‹ƒo[‚Ìì¬
+	//ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ä½œæˆ
 	TbWnd = CreateToolbarEx(hWnd, WS_CHILD | TBSTYLE_TOOLTIPS,
 		WWWC_TB, TBMAXBITMAP, g_hinst, IDR_TOOLBAR, setTBB, i, 0, 0,
 		TBICONSIZE_X, TBICONSIZE_Y, sizeof(TBBUTTON));
@@ -202,7 +202,7 @@ void CreateTB(HWND hWnd)
 	ShowWindow(AniWnd, SW_SHOW);
 	SendDlgItemMessage(hWnd, WWWC_TB, TB_AUTOSIZE, 0, 0);
 
-	//•W€‚Ìƒc[ƒ‹ƒo[ƒrƒbƒgƒ}ƒbƒv‚Ìİ’è
+	//æ¨™æº–ã®ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®è¨­å®š
 	tb.hInst = HINST_COMMCTRL;
 
 	tb.nID = IDB_VIEW_SMALL_COLOR;
@@ -233,7 +233,7 @@ void CreateTB(HWND hWnd)
 
 	ToolBar_NotifyProc
 
-	ƒc[ƒ‹ƒo[‚ÌƒJƒXƒ^ƒ}ƒCƒY
+	ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚º
 
 ******************************************************************************/
 
@@ -251,11 +251,11 @@ LRESULT ToolBar_NotifyProc(HWND hWnd, LPARAM lParam)
 
 	switch(pHdr->hdr.code)
 	{
-	case TBN_ENDADJUST:		//ƒJƒXƒ^ƒ}ƒCƒY‚ÌI—¹
+	case TBN_ENDADJUST:		//ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚ºã®çµ‚äº†
 		count = SendMessage(TbWnd, TB_BUTTONCOUNT, 0, 0);
 		*ViewTbItem = '\0';
 
-		//•Û‘¶—p•¶š—ñ‚Ìì¬
+		//ä¿å­˜ç”¨æ–‡å­—åˆ—ã®ä½œæˆ
 		for (loop = 0;loop < count;loop++){
 			SendMessage(TbWnd, TB_GETBUTTON, loop, (LPARAM)&Btns);
 			if(Btns.fsStyle == TBSTYLE_SEP){
@@ -277,13 +277,13 @@ LRESULT ToolBar_NotifyProc(HWND hWnd, LPARAM lParam)
 		UpdateWindow(TbWnd);
 		break;
 
-	case TBN_QUERYDELETE:	//íœ
+	case TBN_QUERYDELETE:	//å‰Šé™¤
 		return TRUE;
 
-	case TBN_QUERYINSERT:	//’Ç‰Á
+	case TBN_QUERYINSERT:	//è¿½åŠ 
 		return TRUE;
 
-	case TBN_GETBUTTONINFO:	//ƒ{ƒ^ƒ“•¶š—ñ‚Ìæ“¾
+	case TBN_GETBUTTONINFO:	//ãƒœã‚¿ãƒ³æ–‡å­—åˆ—ã®å–å¾—
 		if(pHdr->iItem < TBMAXBUTTON){
 			pHdr->tbButton = tbb[pHdr->iItem];
 			dwtemp = SendMessage(pHdr->hdr.hwndFrom, TB_GETSTATE, tbb[pHdr->iItem].idCommand, 0);
@@ -302,7 +302,7 @@ LRESULT ToolBar_NotifyProc(HWND hWnd, LPARAM lParam)
 			return FALSE;
 		}
 
-	case TBN_RESET:			//ƒŠƒZƒbƒg
+	case TBN_RESET:			//ãƒªã‚»ãƒƒãƒˆ
 		count = SendMessage(TbWnd, TB_BUTTONCOUNT, 0, 0);
 		for(loop = 0;loop < count;loop++){
 			SendMessage(TbWnd, TB_DELETEBUTTON, 0, 0);
@@ -311,7 +311,7 @@ LRESULT ToolBar_NotifyProc(HWND hWnd, LPARAM lParam)
 		SendMessage(TbWnd, TB_ADDBUTTONS, i, (LPARAM)StartBtns);
 		break;
 
-	case TTN_NEEDTEXT:		//ƒc[ƒ‹ƒ`ƒbƒv—p‚Ì•¶š—ñ‚Ìæ“¾
+	case TTN_NEEDTEXT:		//ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ç”¨ã®æ–‡å­—åˆ—ã®å–å¾—
 		pTT = (TOOLTIPTEXT*)lParam;
 		pTT->hinst = g_hinst;
 		pTT->lpszText = MAKEINTRESOURCE(pTT->hdr.idFrom);
@@ -326,7 +326,7 @@ LRESULT ToolBar_NotifyProc(HWND hWnd, LPARAM lParam)
 
 	ShowTbMenu
 
-	‰Ÿ‚³‚ê‚½ƒ{ƒ^ƒ“‚ÌˆÊ’u‚Éƒƒjƒ…[‚ğ•\¦
+	æŠ¼ã•ã‚ŒãŸãƒœã‚¿ãƒ³ã®ä½ç½®ã«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤º
 
 ******************************************************************************/
 
@@ -339,7 +339,7 @@ void ShowTbMenu(HWND hWnd, HMENU hMenu, int cmd)
 	UINT ret;
 	int i, count;
 
-	//ƒ{ƒ^ƒ“‚ÌˆÊ’u‚ğŒŸõ
+	//ãƒœã‚¿ãƒ³ã®ä½ç½®ã‚’æ¤œç´¢
 	count = SendMessage(TbWnd, TB_BUTTONCOUNT, 0, 0);
 	for(i = 0; i < count; i++){
 		SendMessage(TbWnd, TB_GETBUTTON, i, (LPARAM)&tbButton);
@@ -349,19 +349,19 @@ void ShowTbMenu(HWND hWnd, HMENU hMenu, int cmd)
 	}
 	if(i >= count){
 		GetCursorPos((LPPOINT)&apos);
-		//ƒƒjƒ…[‚ğ•\¦
+		//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤º
 		ret = (UINT)TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_RIGHTBUTTON | TPM_LEFTBUTTON | TPM_RETURNCMD,
 			apos.x, apos.y, 0, hWnd, NULL);
 
 	}else{
-		//ƒ{ƒ^ƒ“‚ÌˆÊ’u‚ğæ“¾
+		//ãƒœã‚¿ãƒ³ã®ä½ç½®ã‚’å–å¾—
 		GetWindowRect(TbWnd, &WinRect);
 		SendMessage(TbWnd, TB_GETITEMRECT, i, (LPARAM)&TbRect);
 		TbRect.left += WinRect.left;
 		TbRect.bottom += WinRect.top;
 
 		SendMessage(TbWnd, TB_PRESSBUTTON, cmd, (LPARAM) MAKELONG(1, 0));
-		//ƒƒjƒ…[‚ğ•\¦
+		//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤º
 		ret = (UINT)TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_RIGHTBUTTON | TPM_LEFTBUTTON | TPM_RETURNCMD,
 			TbRect.left, TbRect.bottom, 0, hWnd, NULL);
 		SendMessage(TbWnd, TB_PRESSBUTTON, cmd, (LPARAM) MAKELONG(0, 0));

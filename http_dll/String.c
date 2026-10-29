@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC (wwwc.dll)
 
@@ -40,9 +40,9 @@
 	Define
 **************************************************************************/
 
-#define ESC					0x1B		/* ƒGƒXƒP[ƒvƒR[ƒh */
+#define ESC					0x1B		/* ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚³ãƒ¼ãƒ‰ */
 
-//RTFƒwƒbƒ_
+//RTFãƒ˜ãƒƒãƒ€
 #define RTF_HEAD	"{\\rtf1\\ansi\\ansicpg932\\deff0\\deflang1033\\deflangfe1041"\
 	"{\\fonttbl{\\f0\\fnil\\fprq2\\fcharset128 \\'82\\'6c\\'82\\'72 \\'83\\'53\\'83\\'56\\'83\\'62\\'83\\'4e;}"\
 	"{\\f1\\froman\\fprq1\\fcharset128 \\'82\\'6c\\'82\\'72 \\'82\\'6f\\'83\\'53\\'83\\'56\\'83\\'62\\'83\\'4e;}}\r\n"\
@@ -56,7 +56,7 @@
 	Global Variables
 **************************************************************************/
 
-//ŠO•”QÆ
+//å¤–éƒ¨å‚ç…§
 extern int TimeZone;
 extern int PassProtect;
 
@@ -73,7 +73,7 @@ extern char TimeFormat[];
 
 	BadNameCheck
 
-	ƒtƒ@ƒCƒ‹–¼‚Æ‚µ‚Ä•s³‚È•¶š‚ğ•ÏŠ·‚·‚é
+	ãƒ•ã‚¡ã‚¤ãƒ«åã¨ã—ã¦ä¸æ­£ãªæ–‡å­—ã‚’å¤‰æ›ã™ã‚‹
 
 ******************************************************************************/
 
@@ -88,7 +88,7 @@ void BadNameCheck(char *buf, char NewChar)
 	char *p;
 	int i;
 
-	//ƒfƒoƒCƒX–¼ (Šg’£q‚Ì—L–³‚É‚©‚©‚í‚ç‚¸) ‚Íƒtƒ@ƒCƒ‹–¼‚É‚Å‚«‚È‚¢‚½‚ßæ“ª‚Ì•¶š‚ğ•ÏŠ·‚·‚é
+	//ãƒ‡ãƒã‚¤ã‚¹å (æ‹¡å¼µå­ã®æœ‰ç„¡ã«ã‹ã‹ã‚ã‚‰ãš) ã¯ãƒ•ã‚¡ã‚¤ãƒ«åã«ã§ããªã„ãŸã‚å…ˆé ­ã®æ–‡å­—ã‚’å¤‰æ›ã™ã‚‹
 	for(p = buf, i = 0; *p != '\0' && *p != '.' && i < sizeof(base) - 1; p++, i++){
 		base[i] = *p;
 	}
@@ -121,9 +121,9 @@ void BadNameCheck(char *buf, char NewChar)
 
 	EncodePassword
 
-	ƒpƒXƒ[ƒh‚ğ•Û‘¶—p‚Ì•¶š—ñ‚É•ÏŠ·‚·‚é
-	(Windows‚Ìƒ†[ƒU‚É•R•t‚¯‚ÄˆÃ†‰»‚µ "dp:" + 16i•\‹L‚É‚·‚éB
-	 –³Œø‚Ìê‡‚â¸”s‚µ‚½ê‡‚Í]—ˆ‚ÌŒ`®)
+	ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ä¿å­˜ç”¨ã®æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹
+	(Windowsã®ãƒ¦ãƒ¼ã‚¶ã«ç´ä»˜ã‘ã¦æš—å·åŒ–ã— "dp:" + 16é€²è¡¨è¨˜ã«ã™ã‚‹ã€‚
+	 ç„¡åŠ¹ã®å ´åˆã‚„å¤±æ•—ã—ãŸå ´åˆã¯å¾“æ¥ã®å½¢å¼)
 
 ******************************************************************************/
 
@@ -155,7 +155,7 @@ void EncodePassword(char *pass, char *ret, int size)
 			LocalFree(out.pbData);
 		}
 	}
-	//]—ˆ‚ÌŒ`® (ret ‚Éû‚Ü‚é’·‚³‚Ü‚Å)
+	//å¾“æ¥ã®å½¢å¼ (ret ã«åã¾ã‚‹é•·ã•ã¾ã§)
 	for(r = ret; *pass != '\0' && r + 2 < ret + size; pass++, r += 2){
 		wsprintf(r, "%02x", ((BYTE)*pass) ^ 0xFF);
 	}
@@ -167,7 +167,7 @@ void EncodePassword(char *pass, char *ret, int size)
 
 	DecodePassword
 
-	•Û‘¶—p‚Ì•¶š—ñ‚©‚çƒpƒXƒ[ƒh‚ğ•œŒ³‚·‚é (]—ˆ‚ÌŒ`®‚É‚à‘Î‰)
+	ä¿å­˜ç”¨ã®æ–‡å­—åˆ—ã‹ã‚‰ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å¾©å…ƒã™ã‚‹ (å¾“æ¥ã®å½¢å¼ã«ã‚‚å¯¾å¿œ)
 
 ******************************************************************************/
 
@@ -184,7 +184,7 @@ BOOL DecodePassword(char *buf, char *ret, int size)
 		return FALSE;
 	}
 	if(lstrcmpn(buf, PASS_PREFIX, lstrlen(PASS_PREFIX)) != 0){
-		//]—ˆ‚ÌŒ`®
+		//å¾“æ¥ã®å½¢å¼
 		tmp[2] = '\0';
 		for(p = buf, r = ret; *p != '\0' && *(p + 1) != '\0' && r < ret + size - 1; p += 2, r++){
 			tmp[0] = *p;
@@ -230,7 +230,7 @@ BOOL DecodePassword(char *buf, char *ret, int size)
 
 	str2hash
 
-	•¶š—ñ‚ÌƒnƒbƒVƒ…’l‚ğæ“¾
+	æ–‡å­—åˆ—ã®ãƒãƒƒã‚·ãƒ¥å€¤ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -251,7 +251,7 @@ UINT str2hash(const TCHAR *str)
 
 	GetStrLen
 
-	”äŠr—p‚Ì•¶š—ñ‚Ì’·‚³‚ğæ“¾‚·‚é
+	æ¯”è¼ƒç”¨ã®æ–‡å­—åˆ—ã®é•·ã•ã‚’å–å¾—ã™ã‚‹
 
 ******************************************************************************/
 
@@ -275,7 +275,7 @@ static int GetStrLen(const char *buf, int len)
 
 	lstrcmpn
 
-	w’è•¶š”‚Å”äŠr
+	æŒ‡å®šæ–‡å­—æ•°ã§æ¯”è¼ƒ
 
 ******************************************************************************/
 
@@ -298,7 +298,7 @@ int lstrcmpn(char *buf1, char *buf2, int len)
 
 	lstrcmpni
 
-	‘å•¶š‚Æ¬•¶š‚ğ‹æ•Ê‚µ‚È‚¢”äŠr
+	å¤§æ–‡å­—ã¨å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„æ¯”è¼ƒ
 
 ******************************************************************************/
 
@@ -321,7 +321,7 @@ int lstrcmpni(char *buf1, char *buf2, int len)
 
 	iStrCpy
 
-	•¶š—ñ‚ğƒRƒs[‚µ‚ÄÅŒã‚Ì•¶š‚ÌƒAƒhƒŒƒX‚ğ•Ô‚·
+	æ–‡å­—åˆ—ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦æœ€å¾Œã®æ–‡å­—ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™
 
 ******************************************************************************/
 
@@ -342,7 +342,7 @@ char *iStrCpy(char *ret, char *buf)
 
 	iStrCpyW
 
-	•¶š—ñ‚ğƒRƒs[‚µ‚ÄÅŒã‚Ì•¶š‚ÌƒAƒhƒŒƒX‚ğ•Ô‚·
+	æ–‡å­—åˆ—ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦æœ€å¾Œã®æ–‡å­—ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™
 
 ******************************************************************************/
 
@@ -361,7 +361,7 @@ WCHAR *iStrCpyW(WCHAR *ret, char *buf)
 
 	str_match
 
-	2‚Â‚Ì•¶š—ñ‚ğƒƒCƒ‹ƒhƒJ[ƒh(*)‚ğg‚Á‚Ä”äŠr‚ğs‚¤
+	2ã¤ã®æ–‡å­—åˆ—ã‚’ãƒ¯ã‚¤ãƒ«ãƒ‰ã‚«ãƒ¼ãƒ‰(*)ã‚’ä½¿ã£ã¦æ¯”è¼ƒã‚’è¡Œã†
 
 ******************************************************************************/
 
@@ -406,7 +406,7 @@ BOOL str_match(const TCHAR *ptn, const TCHAR *str)
 
 	LresultCmp
 
-	Œ‹‰Ê‚ÆŒÃ‚¢Œ‹‰Ê‚ğ”äŠr‚·‚é
+	çµæœã¨å¤ã„çµæœã‚’æ¯”è¼ƒã™ã‚‹
 
 ******************************************************************************/
 
@@ -419,11 +419,11 @@ int LresultCmp(char *Oldbuf, char *Newbuf)
 	}
 	len = lstrlen(Oldbuf);
 	if(*(Oldbuf + len - 1) == '*'){
-		/* XVƒ}[ƒN‚ğœ‹‚·‚é */
+		/* æ›´æ–°ãƒãƒ¼ã‚¯ã‚’é™¤å»ã™ã‚‹ */
 		len--;
 	}
 	if(lstrcmpn(Oldbuf, Newbuf, len) != 0){
-		/* XVƒ}[ƒN‚ğ•t‚¯‚é */
+		/* æ›´æ–°ãƒãƒ¼ã‚¯ã‚’ä»˜ã‘ã‚‹ */
 		lstrcat(Newbuf, "*");
 		return 1;
 	}
@@ -435,19 +435,19 @@ int LresultCmp(char *Oldbuf, char *Newbuf)
 
 	GetURL
 
-	URL‚©‚çƒT[ƒo–¼‚ÆƒpƒX‚ğ’Šo
+	URLã‹ã‚‰ã‚µãƒ¼ãƒåã¨ãƒ‘ã‚¹ã‚’æŠ½å‡º
 
 ******************************************************************************/
 
 int GetURL(char *URL, char *server, char *path, int DefPort, char *user, char *pass)
 {
-	char *p, *r, *t, wk[10];		/* ì‹Æ—p—Ìˆæ */
+	char *p, *r, *t, wk[10];		/* ä½œæ¥­ç”¨é ˜åŸŸ */
 	char us[BUFSIZE], ps[BUFSIZE];
 	int port;
 
 	port = DefPort;
 
-	/* ƒXƒL[ƒ€–¼‚ğæ“¾‚·‚é */
+	/* ã‚¹ã‚­ãƒ¼ãƒ åã‚’å–å¾—ã™ã‚‹ */
 	if(lstrcmpni(URL, "http://", 7) == 0){
 		p = URL + 7;
 	}else if(lstrcmpni(URL, "https://", 8) == 0){
@@ -456,14 +456,14 @@ int GetURL(char *URL, char *server, char *path, int DefPort, char *user, char *p
 		return -1;
 	}
 
-	/* ƒT[ƒo–¼‚ğæ“¾‚·‚é */
+	/* ã‚µãƒ¼ãƒåã‚’å–å¾—ã™ã‚‹ */
 	for(r = server; *p != '/' && *p != '\0'; p++, r++){
 		*r = *p;
 	}
 	*r = '\0';
 
 	if(path != NULL){
-		/* æ“¾‚·‚éƒy[ƒW‚ÌƒpƒX‚ğæ“¾‚·‚é */
+		/* å–å¾—ã™ã‚‹ãƒšãƒ¼ã‚¸ã®ãƒ‘ã‚¹ã‚’å–å¾—ã™ã‚‹ */
 		for(r = path; *p != '#' && *p != '\0'; p++, r++){
 			*r = *p;
 		}
@@ -505,7 +505,7 @@ int GetURL(char *URL, char *server, char *path, int DefPort, char *user, char *p
 		MoveMemory(server, p, lstrlen(p) + 1);
 	}
 
-	/* ƒT[ƒo–¼:ƒ|[ƒg ‚Æ‚È‚Á‚Ä‚¢‚éê‡‚Í•ªŠ„‚·‚é */
+	/* ã‚µãƒ¼ãƒå:ãƒãƒ¼ãƒˆ ã¨ãªã£ã¦ã„ã‚‹å ´åˆã¯åˆ†å‰²ã™ã‚‹ */
 	for(p = server; *p != ':' && *p != '\0'; p++);
 	if(*p == ':'){
 		for(t = p + 1, r = wk; *t != '\0'; t++, r++){
@@ -523,7 +523,7 @@ int GetURL(char *URL, char *server, char *path, int DefPort, char *user, char *p
 		*p = '\0';
 	}
 
-	/* ƒy[ƒW‚Ìw’è‚ª–³‚¢ê‡‚ÍA/ (ƒ‹[ƒg)‚ğİ’è‚·‚é */
+	/* ãƒšãƒ¼ã‚¸ã®æŒ‡å®šãŒç„¡ã„å ´åˆã¯ã€/ (ãƒ«ãƒ¼ãƒˆ)ã‚’è¨­å®šã™ã‚‹ */
 	if(path != NULL && *path == '\0'){
 		lstrcpy(path, "/");
 	}
@@ -535,7 +535,7 @@ int GetURL(char *URL, char *server, char *path, int DefPort, char *user, char *p
 
 	IsWebURL
 
-	http, https ‚ÌURL‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚é (ˆø—p•„‚ğŠÜ‚Ş‚à‚Ì‚Íœ‚­)
+	http, https ã®URLã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹ (å¼•ç”¨ç¬¦ã‚’å«ã‚€ã‚‚ã®ã¯é™¤ã)
 
 ******************************************************************************/
 
@@ -562,7 +562,7 @@ BOOL IsWebURL(char *URL)
 
 	CreateMoveURL
 
-	ˆÚ“®æ‚ÌURL‚ğì¬
+	ç§»å‹•å…ˆã®URLã‚’ä½œæˆ
 
 ******************************************************************************/
 
@@ -577,7 +577,7 @@ char *CreateMoveURL(char *FromURL, char *ToURL)
 	}
 	if(lstrcmpni(ToURL, "http://", 7) == 0 ||
 		lstrcmpni(ToURL, "https://", 8) == 0){
-		//Š®‘S‚ÈURL
+		//å®Œå…¨ãªURL
 		ret = GlobalAlloc(GPTR, lstrlen(ToURL) + 1);
 		if(ret != NULL) lstrcpy(ret, ToURL);
 		return ret;
@@ -593,18 +593,18 @@ char *CreateMoveURL(char *FromURL, char *ToURL)
 		return NULL;
 	}
 
-	//http, https ˆÈŠO‚ÌƒXƒL[ƒ€‚ÌURL‚É‚ÍˆÚ“®‚µ‚È‚¢
+	//http, https ä»¥å¤–ã®ã‚¹ã‚­ãƒ¼ãƒ ã®URLã«ã¯ç§»å‹•ã—ãªã„
 	for(p = ToURL; (*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') ||
 		(*p >= '0' && *p <= '9') || *p == '+' || *p == '-' || *p == '.'; p++);
 	if(p != ToURL && *p == ':'){
 		return NULL;
 	}
 
-	//ƒT[ƒo–¼‚ÌI‚í‚è
+	//ã‚µãƒ¼ãƒåã®çµ‚ã‚ã‚Š
 	for(e = r; *e != '\0' && *e != '/' && *e != '?' && *e != '#'; e++);
 
 	if(*ToURL == '/' && *(ToURL + 1) == '/'){
-		//ƒXƒL[ƒ€‚Ì‚İŒ»İ‚ÌURL‚ğg—p
+		//ã‚¹ã‚­ãƒ¼ãƒ ã®ã¿ç¾åœ¨ã®URLã‚’ä½¿ç”¨
 		ret = GlobalAlloc(GPTR, SchemeLen + lstrlen(ToURL) + 1);
 		if(ret == NULL){
 			return NULL;
@@ -615,19 +615,19 @@ char *CreateMoveURL(char *FromURL, char *ToURL)
 	}
 
 	if(*ToURL == '/'){
-		//ƒ‹[ƒg‚©‚ç•ÏX
+		//ãƒ«ãƒ¼ãƒˆã‹ã‚‰å¤‰æ›´
 		p = e;
 
 	}else if(*ToURL == '?' || *ToURL == '#'){
-		//ƒpƒX‚Í‚»‚Ì‚Ü‚Ü‚ÅƒNƒGƒŠ (‚Ü‚½‚Íƒtƒ‰ƒOƒƒ“ƒg) ‚ğ•ÏX
+		//ãƒ‘ã‚¹ã¯ãã®ã¾ã¾ã§ã‚¯ã‚¨ãƒª (ã¾ãŸã¯ãƒ•ãƒ©ã‚°ãƒ¡ãƒ³ãƒˆ) ã‚’å¤‰æ›´
 		for(p = e; *p != '\0' && *p != '#' && (*ToURL == '#' || *p != '?'); p++);
 
 	}else{
-		//ƒy[ƒW‚Ì‚İ•ÏX (ƒNƒGƒŠ‚æ‚è‘O‚ÌÅŒã‚Ì / ‚ÌŸ‚©‚ç’u‚«Š·‚¦‚é)
+		//ãƒšãƒ¼ã‚¸ã®ã¿å¤‰æ›´ (ã‚¯ã‚¨ãƒªã‚ˆã‚Šå‰ã®æœ€å¾Œã® / ã®æ¬¡ã‹ã‚‰ç½®ãæ›ãˆã‚‹)
 		for(q = e; *q != '\0' && *q != '?' && *q != '#'; q++);
 		for(p = q; p > e && *(p - 1) != '/'; p--);
 		if(p == e){
-			//ƒy[ƒWw’è‚È‚µ
+			//ãƒšãƒ¼ã‚¸æŒ‡å®šãªã—
 			ret = GlobalAlloc(GPTR, (e - FromURL) + 1 + lstrlen(ToURL) + 1);
 			if(ret == NULL){
 				return NULL;
@@ -653,7 +653,7 @@ char *CreateMoveURL(char *FromURL, char *ToURL)
 
 	GetOptionString
 
-	ƒIƒvƒVƒ‡ƒ“‚Ì•¶š—ñ‚ğæ“¾‚·‚é (ret ‚Í BUFSIZE ˆÈãA’´‚¦‚é•”•ª‚ÍØ‚èÌ‚Ä)
+	ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹ (ret ã¯ BUFSIZE ä»¥ä¸Šã€è¶…ãˆã‚‹éƒ¨åˆ†ã¯åˆ‡ã‚Šæ¨ã¦)
 
 ******************************************************************************/
 
@@ -667,7 +667,7 @@ BOOL GetOptionString(char *buf, char *ret, int num)
 
 	GetOptionStringEx
 
-	ƒIƒvƒVƒ‡ƒ“‚Ì•¶š—ñ‚ğæ“¾‚·‚é (ret ‚ÌƒTƒCƒY‚ğw’èA’´‚¦‚é•”•ª‚ÍØ‚èÌ‚Ä)
+	ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹ (ret ã®ã‚µã‚¤ã‚ºã‚’æŒ‡å®šã€è¶…ãˆã‚‹éƒ¨åˆ†ã¯åˆ‡ã‚Šæ¨ã¦)
 
 ******************************************************************************/
 
@@ -705,8 +705,8 @@ BOOL GetOptionStringEx(char *buf, char *ret, int size, int num)
 
 	NormalizeUserAgent
 
-	User-Agent ‚Ég‚¦‚È‚¢•¶š‚ğœ‚­
-	(§Œä•¶š‚Æ8ƒrƒbƒg•¶š‚ğœ‚«A€–Ú‚Ì‹æØ‚è‚É‚È‚ç‚È‚¢‚æ‚¤ ; ‚ğ‘±‚¯‚È‚¢)
+	User-Agent ã«ä½¿ãˆãªã„æ–‡å­—ã‚’é™¤ã
+	(åˆ¶å¾¡æ–‡å­—ã¨8ãƒ“ãƒƒãƒˆæ–‡å­—ã‚’é™¤ãã€é …ç›®ã®åŒºåˆ‡ã‚Šã«ãªã‚‰ãªã„ã‚ˆã† ; ã‚’ç¶šã‘ãªã„)
 
 ******************************************************************************/
 
@@ -715,7 +715,7 @@ void NormalizeUserAgent(char *buf)
 	char *p, *r;
 
 	for(p = r = buf; *p != '\0'; p++){
-		//2ƒoƒCƒg•¶š‚ÍŒã‘±ƒoƒCƒg‚àŠÜ‚ß‚Äœ‚­
+		//2ãƒã‚¤ãƒˆæ–‡å­—ã¯å¾Œç¶šãƒã‚¤ãƒˆã‚‚å«ã‚ã¦é™¤ã
 		if(IsDBCSLeadByte((BYTE)*p) == TRUE && *(p + 1) != '\0'){
 			p++;
 			continue;
@@ -728,10 +728,10 @@ void NormalizeUserAgent(char *buf)
 		}
 		*(r++) = *p;
 	}
-	//––”ö‚Ì‹ó”’‚Æ ; ‚ğœ‚­
+	//æœ«å°¾ã®ç©ºç™½ã¨ ; ã‚’é™¤ã
 	for(; r > buf && (*(r - 1) == ' ' || *(r - 1) == ';'); r--);
 	*r = '\0';
-	//æ“ª‚Ì‹ó”’‚ğœ‚­
+	//å…ˆé ­ã®ç©ºç™½ã‚’é™¤ã
 	for(p = buf; *p == ' '; p++);
 	if(p != buf){
 		MoveMemory(buf, p, lstrlen(p) + 1);
@@ -743,7 +743,7 @@ void NormalizeUserAgent(char *buf)
 
 	ReplaceOptionFields
 
-	ƒIƒvƒVƒ‡ƒ“‚Ìw’è‚Ì€–Ú‚ğ’u‚«Š·‚¦‚½•¶š—ñ‚ğì¬‚·‚é (‘¼‚Ì€–Ú‚Í‚»‚Ì‚Ü‚Üc‚·)
+	ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®šã®é …ç›®ã‚’ç½®ãæ›ãˆãŸæ–‡å­—åˆ—ã‚’ä½œæˆã™ã‚‹ (ä»–ã®é …ç›®ã¯ãã®ã¾ã¾æ®‹ã™)
 
 ******************************************************************************/
 
@@ -758,7 +758,7 @@ char *ReplaceOptionFields(char *buf, int start, int cnt, char **vals)
 	if(start < 0 || cnt <= 0 || start + cnt > MAX_OPTION_FIELD){
 		return NULL;
 	}
-	//€–Ú‚É•ªŠ„
+	//é …ç›®ã«åˆ†å‰²
 	if(buf != NULL && *buf != '\0'){
 		p = buf;
 		while(n < MAX_OPTION_FIELD){
@@ -808,7 +808,7 @@ char *ReplaceOptionFields(char *buf, int start, int cnt, char **vals)
 
 	GetOptionInt
 
-	ƒIƒvƒVƒ‡ƒ“‚Ì”’l‚ğæ“¾‚·‚é
+	ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æ•°å€¤ã‚’å–å¾—ã™ã‚‹
 
 ******************************************************************************/
 
@@ -847,7 +847,7 @@ int GetOptionInt(char *buf, int num)
 
 	DelCrLf
 
-	CR, LF ‚ğíœ‚·‚é
+	CR, LF ã‚’å‰Šé™¤ã™ã‚‹
 
 ******************************************************************************/
 
@@ -873,7 +873,7 @@ void DelCrLf(char *buf)
 
 	DelCtrlChar
 
-	§Œä•¶š‚ğ‹ó”’‚É•ÏŠ·‚·‚é
+	åˆ¶å¾¡æ–‡å­—ã‚’ç©ºç™½ã«å¤‰æ›ã™ã‚‹
 
 ******************************************************************************/
 
@@ -884,7 +884,7 @@ void DelCtrlChar(char *buf)
 	if(buf == NULL){
 		return;
 	}
-	//SJIS‚Ì2ƒoƒCƒg–Ú‚É§Œä•¶š‚ÍŠÜ‚Ü‚ê‚È‚¢‚½‚ß1ƒoƒCƒg‚¸‚Â”»’è‚·‚é
+	//SJISã®2ãƒã‚¤ãƒˆç›®ã«åˆ¶å¾¡æ–‡å­—ã¯å«ã¾ã‚Œãªã„ãŸã‚1ãƒã‚¤ãƒˆãšã¤åˆ¤å®šã™ã‚‹
 	for(p = buf; *p != '\0'; p++){
 		if((unsigned char)*p < 0x20 || *p == 0x7F){
 			*p = ' ';
@@ -897,7 +897,7 @@ void DelCtrlChar(char *buf)
 
 	StrNextContent
 
-	ƒwƒbƒ_“à‚ÌŸ‚ÌƒRƒ“ƒeƒ“ƒc‚Ìæ“ª‚ÉˆÚ“®‚·‚é
+	ãƒ˜ãƒƒãƒ€å†…ã®æ¬¡ã®ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®å…ˆé ­ã«ç§»å‹•ã™ã‚‹
 
 ******************************************************************************/
 
@@ -926,7 +926,7 @@ char *StrNextContent(char *p)
 
 	GetHeadContentSize
 
-	ƒwƒbƒ_“à‚Ìw’è‚Ìî•ñ‚ğ’·‚³‚ğæ“¾‚·‚é
+	ãƒ˜ãƒƒãƒ€å†…ã®æŒ‡å®šã®æƒ…å ±ã‚’é•·ã•ã‚’å–å¾—ã™ã‚‹
 
 ******************************************************************************/
 
@@ -938,7 +938,7 @@ int GetHeadContentSize(char *buf, char *str)
 	p = buf;
 	while(1){
 		if(lstrcmpni(p, str, lstrlen(str)) != 0){
-			//Ÿ‚ÌƒRƒ“ƒeƒ“ƒc‚ÉˆÚ“®‚·‚é
+			//æ¬¡ã®ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã«ç§»å‹•ã™ã‚‹
 			p = StrNextContent(p);
 			if(*p == '\0' || *p == '\r' || *p == '\n'){
 				break;
@@ -976,7 +976,7 @@ int GetHeadContentSize(char *buf, char *str)
 
 	GetHeadContent
 
-	ƒwƒbƒ_“à‚Ìw’è‚Ìî•ñ‚ğæ“¾‚·‚é
+	ãƒ˜ãƒƒãƒ€å†…ã®æŒ‡å®šã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 
 ******************************************************************************/
 
@@ -987,7 +987,7 @@ BOOL GetHeadContent(char *buf, char *str, char *ret)
 	p = buf;
 	while(1){
 		if(lstrcmpni(p, str, lstrlen(str)) != 0){
-			//Ÿ‚ÌƒRƒ“ƒeƒ“ƒc‚ÉˆÚ“®‚·‚é
+			//æ¬¡ã®ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã«ç§»å‹•ã™ã‚‹
 			p = StrNextContent(p);
 			if(*p == '\0' || *p == '\r' || *p == '\n'){
 				break;
@@ -1025,7 +1025,7 @@ BOOL GetHeadContent(char *buf, char *str, char *ret)
 
 	HeaderSize
 
-	ƒwƒbƒ_‚ÌƒTƒCƒY‚ğæ“¾‚·‚é
+	ãƒ˜ãƒƒãƒ€ã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1061,7 +1061,7 @@ long HeaderSize(char *buf)
 
 	GetTagType
 
-	METAƒ^ƒO‚Ìƒ^ƒCƒv‚ğæ“¾
+	METAã‚¿ã‚°ã®ã‚¿ã‚¤ãƒ—ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -1069,7 +1069,7 @@ static BOOL GetTagType(char *t, char *type, char *ret)
 {
 	char *r;
 
-	//type–¼‚Æƒ}ƒbƒ`‚·‚é‚à‚Ì‚ğŒŸõ
+	//typeåã¨ãƒãƒƒãƒã™ã‚‹ã‚‚ã®ã‚’æ¤œç´¢
 	while(*t != '\0'){
 		for(; *t == ' ' || *t == '\r' || *t == '\n' || *t == '\t'; t++);
 		if(lstrcmpni(t, type, lstrlen(type)) == 0){
@@ -1088,7 +1088,7 @@ static BOOL GetTagType(char *t, char *type, char *ret)
 
 	t = t + lstrlen(type);
 
-	//ƒ^ƒCƒv‚Ì“à—e‚ğæ“¾
+	//ã‚¿ã‚¤ãƒ—ã®å†…å®¹ã‚’å–å¾—
 	if(*t != '\0' && (*t == ' ' || *t == '\r' || *t == '\n' || *t == '\t' || *t == '=')){
 		for(; *t != '\"' && *t != '\0'; t++);
 		if(*t == '\0'){
@@ -1111,7 +1111,7 @@ static BOOL GetTagType(char *t, char *type, char *ret)
 
 	GetMETATag
 
-	METAƒ^ƒO‚Ì“à—e‚ğæ“¾
+	METAã‚¿ã‚°ã®å†…å®¹ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -1126,7 +1126,7 @@ char *GetMETATag(char *buf, char *type, char *name, char *contentname)
 	p = buf;
 	while(*p != '\0'){
 		if(*p != '<'){
-			//ƒ^ƒO‚ÌŠJn‚Ü‚ÅˆÚ“®‚·‚é
+			//ã‚¿ã‚°ã®é–‹å§‹ã¾ã§ç§»å‹•ã™ã‚‹
 			if(IS_LEAD_BYTE(p)){
 				p++;
 			}
@@ -1136,12 +1136,12 @@ char *GetMETATag(char *buf, char *type, char *name, char *contentname)
 		p++;
 		for(; *p == ' '; p++);
 
-		//HEAD‚ÌI‚í‚è‚Ìê‡‚Íˆ—‚ğ”²‚¯‚é
+		//HEADã®çµ‚ã‚ã‚Šã®å ´åˆã¯å‡¦ç†ã‚’æŠœã‘ã‚‹
 		if(lstrcmpni(p, "/head", 5) == 0){
 			return NULL;
 		}
 
-		//ƒ^ƒO‚ÌI‚í‚è‚Ü‚ÅˆÚ“®‚·‚é
+		//ã‚¿ã‚°ã®çµ‚ã‚ã‚Šã¾ã§ç§»å‹•ã™ã‚‹
 		for(r = p; *r != '>' && *r != '\0'; r++){
 			if(IS_LEAD_BYTE(r)){
 				r++;
@@ -1149,7 +1149,7 @@ char *GetMETATag(char *buf, char *type, char *name, char *contentname)
 		}
 
 		if(lstrcmpni(p, "meta", 4) == 0){
-			//METAƒ^ƒO‚Ìê‡
+			//METAã‚¿ã‚°ã®å ´åˆ
 			TagContent = (char *)GlobalAlloc(GPTR, r - p + 2);
 			if(TagContent == NULL){
 				return NULL;
@@ -1166,14 +1166,14 @@ char *GetMETATag(char *buf, char *type, char *name, char *contentname)
 				return NULL;
 			}
 
-			//ƒ^ƒO‚Ì’†g‚ğƒRƒs[
+			//ã‚¿ã‚°ã®ä¸­èº«ã‚’ã‚³ãƒ”ãƒ¼
 			t = TagContent;
 			while(r > p){
 				*(t++) = *(p++);
 			}
 			*t = '\0';
 
-			//METAƒ^ƒO‚Ì“à—e‚ªWWWC‚ÌMETA‚ª‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚é
+			//METAã‚¿ã‚°ã®å†…å®¹ãŒWWWCã®METAãŒã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 			if(GetTagType(TagContent + 4, type, TagType) == TRUE && lstrcmpi(TagType, name) == 0 &&
 				GetTagType(TagContent + 4, contentname, content) == TRUE){
 				GlobalFree(TagContent);
@@ -1194,7 +1194,7 @@ char *GetMETATag(char *buf, char *type, char *name, char *contentname)
 
 	GetTagContentSize
 
-	w’è‚Ìƒ^ƒO‚É‹²‚Ü‚ê‚½•¶š—ñ‚ÌƒTƒCƒY
+	æŒ‡å®šã®ã‚¿ã‚°ã«æŒŸã¾ã‚ŒãŸæ–‡å­—åˆ—ã®ã‚µã‚¤ã‚º
 
 ******************************************************************************/
 
@@ -1211,7 +1211,7 @@ int GetTagContentSize(char *buf, char *tag)
 			for(; *p == ' '; p++);
 			ContentFlag = (lstrcmpni(p, tag, lstrlen(tag)) == 0) ? TRUE : FALSE;
 
-			//ƒ^ƒO‚ÌI‚í‚è‚Ìê‡‚Íˆ—‚ğ”²‚¯‚é
+			//ã‚¿ã‚°ã®çµ‚ã‚ã‚Šã®å ´åˆã¯å‡¦ç†ã‚’æŠœã‘ã‚‹
 			if(*p == '/' && lstrcmpni(p + 1, tag, lstrlen(tag)) == 0){
 				return ret;
 			}
@@ -1227,7 +1227,7 @@ int GetTagContentSize(char *buf, char *tag)
 			continue;
 		}
 
-		//w’è‚Ìƒ^ƒO‚Å‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+		//æŒ‡å®šã®ã‚¿ã‚°ã§ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		if(ContentFlag == FALSE){
 			if(IS_LEAD_BYTE(p)){
 				p++;
@@ -1236,7 +1236,7 @@ int GetTagContentSize(char *buf, char *tag)
 			continue;
 		}
 
-		//w’è‚Ìƒ^ƒO‚Ìê‡‚ÍƒRƒs[‚ğs‚¤
+		//æŒ‡å®šã®ã‚¿ã‚°ã®å ´åˆã¯ã‚³ãƒ”ãƒ¼ã‚’è¡Œã†
 		switch(*p)
 		{
 		case '\r': case '\n':
@@ -1266,7 +1266,7 @@ int GetTagContentSize(char *buf, char *tag)
 
 	GetTagContent
 
-	w’è‚Ìƒ^ƒO‚É‹²‚Ü‚ê‚½•¶š—ñ‚ğæ“¾
+	æŒ‡å®šã®ã‚¿ã‚°ã«æŒŸã¾ã‚ŒãŸæ–‡å­—åˆ—ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -1283,7 +1283,7 @@ BOOL GetTagContent(char *buf, char *tag, char *content)
 			for(; *p == ' '; p++);
 			ContentFlag = (lstrcmpni(p, tag, lstrlen(tag)) == 0) ? TRUE : FALSE;
 
-			//ƒ^ƒO‚ÌI‚í‚è‚Ìê‡‚Íˆ—‚ğ”²‚¯‚é
+			//ã‚¿ã‚°ã®çµ‚ã‚ã‚Šã®å ´åˆã¯å‡¦ç†ã‚’æŠœã‘ã‚‹
 			if(*p == '/' && lstrcmpni(p + 1, tag, lstrlen(tag)) == 0){
 				*r = '\0';
 				return ((*content == '\0') ? FALSE : TRUE);
@@ -1300,7 +1300,7 @@ BOOL GetTagContent(char *buf, char *tag, char *content)
 			continue;
 		}
 
-		//w’è‚Ìƒ^ƒO‚Å‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+		//æŒ‡å®šã®ã‚¿ã‚°ã§ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		if(ContentFlag == FALSE){
 			if(IS_LEAD_BYTE(p)){
 				p++;
@@ -1309,7 +1309,7 @@ BOOL GetTagContent(char *buf, char *tag, char *content)
 			continue;
 		}
 
-		//w’è‚Ìƒ^ƒO‚Ìê‡‚ÍƒRƒs[‚ğs‚¤
+		//æŒ‡å®šã®ã‚¿ã‚°ã®å ´åˆã¯ã‚³ãƒ”ãƒ¼ã‚’è¡Œã†
 		switch(*p)
 		{
 		case '\r': case '\n':
@@ -1338,7 +1338,7 @@ BOOL GetTagContent(char *buf, char *tag, char *content)
 
 	DelTagSize
 
-	HTMLƒ^ƒO‚ğœ‹‚µ‚½ƒTƒCƒY‚ğæ“¾
+	HTMLã‚¿ã‚°ã‚’é™¤å»ã—ãŸã‚µã‚¤ã‚ºã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -1353,10 +1353,10 @@ int DelTagSize(char *buf)
 	while(*p != '\0'){
 		switch(*p)
 		{
-		//ƒ^ƒO‚ÌŠJn
+		//ã‚¿ã‚°ã®é–‹å§‹
 		case '<':
 			if(lstrcmpn(p,"<!--",4) == 0){
-				//ƒRƒƒ“ƒgŠJn
+				//ã‚³ãƒ¡ãƒ³ãƒˆé–‹å§‹
 				CommentFlag = TRUE;
 				break;
 			}
@@ -1365,20 +1365,20 @@ int DelTagSize(char *buf)
 			}
 			break;
 
-		//ƒ^ƒO‚ÌI—¹
+		//ã‚¿ã‚°ã®çµ‚äº†
 		case '>':
 			if(CommentFlag == TRUE){
 				if(lstrcmpn(p - 2,"-->",3) != 0){
 					break;
 				}
-				//ƒRƒƒ“ƒgI—¹
+				//ã‚³ãƒ¡ãƒ³ãƒˆçµ‚äº†
 				CommentFlag = FALSE;
 				break;
 			}
 			Tag = FALSE;
 			break;
 
-		//‰üs‚Æ‹ó”’‚ğ–³‹
+		//æ”¹è¡Œã¨ç©ºç™½ã‚’ç„¡è¦–
 		case '\r':
 		case '\n':
 		case '\t':
@@ -1387,7 +1387,7 @@ int DelTagSize(char *buf)
 
 		default:
 			if(Tag == FALSE && CommentFlag == FALSE){
-				//ƒ^ƒO“à‚Å‚Í–³‚¢ê‡
+				//ã‚¿ã‚°å†…ã§ã¯ç„¡ã„å ´åˆ
 				if(IS_LEAD_BYTE(p)){
 					p++;
 					retlen++;
@@ -1395,7 +1395,7 @@ int DelTagSize(char *buf)
 				retlen++;
 				break;
 			}
-			//ƒ^ƒO“à‚Ìê‡
+			//ã‚¿ã‚°å†…ã®å ´åˆ
 			if(IS_LEAD_BYTE(p)){
 				p++;
 			}
@@ -1411,7 +1411,7 @@ int DelTagSize(char *buf)
 
 	ConvHTMLChar
 
-	HTML‚Ì“Áê•¶š‚Ì•ÏŠ·
+	HTMLã®ç‰¹æ®Šæ–‡å­—ã®å¤‰æ›
 
 ******************************************************************************/
 
@@ -1461,7 +1461,7 @@ void ConvHTMLChar(char *buf)
 				*(t++) = 'c';
 			}else if(*r == '#'){
 				for(s = r + 1; *s >= '0' && *s <= '9'; s++);
-				//§Œä•¶š‚â”ÍˆÍŠO‚Ì’l‚Í•ÏŠ·‚µ‚È‚¢
+				//åˆ¶å¾¡æ–‡å­—ã‚„ç¯„å›²å¤–ã®å€¤ã¯å¤‰æ›ã—ãªã„
 				if(*s != ';' || s - (r + 1) > 3 || atoi(r + 1) < 0x20 || atoi(r + 1) > 0x7E){
 					r--;
 					*(t++) = *(r++);
@@ -1487,7 +1487,7 @@ void ConvHTMLChar(char *buf)
 
 	DateAdd
 
-	“ú•t‚ÌŒvZ‚ğs‚¤
+	æ—¥ä»˜ã®è¨ˆç®—ã‚’è¡Œã†
 
 ******************************************************************************/
 
@@ -1519,7 +1519,7 @@ void DateAdd(SYSTEMTIME *sTime, int time)
 
 	FormatDateConv
 
-	ƒtƒH[ƒ}ƒbƒg‚É‚µ‚½‚ª‚Á‚Ä“ú•t‚Ì“WŠJ‚ğs‚¤
+	ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«ã—ãŸãŒã£ã¦æ—¥ä»˜ã®å±•é–‹ã‚’è¡Œã†
 
 ******************************************************************************/
 
@@ -1546,11 +1546,11 @@ static int FormatDateConv(char *format, char *buf, SYSTEMTIME *gTime)
 	while(*p != '\0'){
 		switch(*p)
 		{
-		case 'w':	//—j“ú
+		case 'w':	//æ›œæ—¥
 			for(; IS_ALPHA(*r); r++);
 			break;
 
-		case 'd':	//“ú
+		case 'd':	//æ—¥
 			for(t = tmp; IS_NUM(*r); r++){
 				*(t++) = *r;
 			}
@@ -1561,7 +1561,7 @@ static int FormatDateConv(char *format, char *buf, SYSTEMTIME *gTime)
 			}
 			break;
 
-		case 'm':	//Œ
+		case 'm':	//æœˆ
 			for(t = tmp; IS_ALPHA(*r); r++){
 				*(t++) = *r;
 			}
@@ -1577,7 +1577,7 @@ static int FormatDateConv(char *format, char *buf, SYSTEMTIME *gTime)
 			gTime->wMonth = i + 1;
 			break;
 
-		case 'y':	//”N
+		case 'y':	//å¹´
 			for(t = tmp; IS_NUM(*r); r++){
 				*(t++) = *r;
 			}
@@ -1592,7 +1592,7 @@ static int FormatDateConv(char *format, char *buf, SYSTEMTIME *gTime)
 			}
 			break;
 
-		case 'h':	//
+		case 'h':	//æ™‚
 			for(t = tmp; IS_NUM(*r); r++){
 				*(t++) = *r;
 			}
@@ -1600,7 +1600,7 @@ static int FormatDateConv(char *format, char *buf, SYSTEMTIME *gTime)
 			gTime->wHour = atoi(tmp);
 			break;
 
-		case 'n':	//•ª
+		case 'n':	//åˆ†
 			for(t = tmp; IS_NUM(*r); r++){
 				*(t++) = *r;
 			}
@@ -1608,7 +1608,7 @@ static int FormatDateConv(char *format, char *buf, SYSTEMTIME *gTime)
 			gTime->wMinute = atoi(tmp);
 			break;
 
-		case 's':	//•b
+		case 's':	//ç§’
 			for(t = tmp; IS_NUM(*r); r++){
 				*(t++) = *r;
 			}
@@ -1649,7 +1649,7 @@ static int FormatDateConv(char *format, char *buf, SYSTEMTIME *gTime)
 
 	DateConv
 
-	“ú•t‚Ì•ÏŠ·‚ğs‚¤
+	æ—¥ä»˜ã®å¤‰æ›ã‚’è¡Œã†
 
 ******************************************************************************/
 
@@ -1711,7 +1711,7 @@ int DateConv(char *buf, char *ret)
 
 	CreateDateTime
 
-	“ú•tAŠÔ‚ğw’è‚ÌŒ`®‚Å•Ô‚·
+	æ—¥ä»˜ã€æ™‚é–“ã‚’æŒ‡å®šã®å½¢å¼ã§è¿”ã™
 
 ******************************************************************************/
 
@@ -1748,7 +1748,7 @@ int CreateDateTime(char *ret)
 
 	eBase
 
-	Base64ƒGƒ“ƒR[ƒh
+	Base64ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰
 
 ******************************************************************************/
 
@@ -1812,7 +1812,7 @@ void eBase(char *buf, char *ret)
 
 	SjisShift
 
-	JIS‚Ì2ƒoƒCƒg‚ğSJIS‚É•ÏŠ·‚·‚é
+	JISã®2ãƒã‚¤ãƒˆã‚’SJISã«å¤‰æ›ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1839,7 +1839,7 @@ void SjisShift(int *ph, int *pl)
 
 	NextChar
 
-	•¶š‚ğæ“¾‚µ‚ÄŸ‚Ì•¶š‚ÉˆÚ“®‚·‚é (I’[‚Å‚ÍˆÚ“®‚µ‚È‚¢)
+	æ–‡å­—ã‚’å–å¾—ã—ã¦æ¬¡ã®æ–‡å­—ã«ç§»å‹•ã™ã‚‹ (çµ‚ç«¯ã§ã¯ç§»å‹•ã—ãªã„)
 
 ******************************************************************************/
 
@@ -1859,7 +1859,7 @@ static int NextChar(char **p)
 
 	JIS_SJIS
 
-	JIS‚ğSJIS‚É•ÏŠ·‚·‚é
+	JISã‚’SJISã«å¤‰æ›ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1957,7 +1957,7 @@ char *JIS_SJIS(char *buf, char *ret)
 
 	EUC_SJIS
 
-	EUC‚ğSJIS‚É•ÏŠ·‚·‚é
+	EUCã‚’SJISã«å¤‰æ›ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1972,11 +1972,11 @@ char *EUC_SJIS(char *buf, char *ret)
 		c = *(p++) & 0xFF;
 		d = *p & 0xFF;
 		if ((c >= 0xa1 && c <= 0xfe) && (d >= 0xa1 && d <= 0xfe)){
-			//EUC‚ğJIS‚É•ÏŠ·
+			//EUCã‚’JISã«å¤‰æ›
 			c &= ~0x80;
 			d &= ~0x80;
 
-			//JIS‚ğSJIS‚É•ÏŠ·
+			//JISã‚’SJISã«å¤‰æ›
 			SjisShift((int *)&c, (int *)&d);
 
 			*(r++) = (char)c;
@@ -1995,7 +1995,7 @@ char *EUC_SJIS(char *buf, char *ret)
 
 	GetKanjiType
 
-	Š¿šƒR[ƒh‚Ìí—Ş‚ğæ“¾‚·‚é
+	æ¼¢å­—ã‚³ãƒ¼ãƒ‰ã®ç¨®é¡ã‚’å–å¾—ã™ã‚‹
 
 ******************************************************************************/
 
@@ -2028,7 +2028,7 @@ int GetKanjiType(unsigned char *str)
 
 	ConvStrCode
 
-	JIS‚©EUC‚ÌŠ¿šƒR[ƒh‚ğSJIS‚É•ÏŠ·‚·‚é
+	JISã‹EUCã®æ¼¢å­—ã‚³ãƒ¼ãƒ‰ã‚’SJISã«å¤‰æ›ã™ã‚‹
 
 ******************************************************************************/
 
@@ -2047,21 +2047,21 @@ char *ConvStrCode(char *buf, char *ret)
 			p++;
 			break;
 
-		case 1:		//SJIS”¼ŠpƒJƒi
+		case 1:		//SJISåŠè§’ã‚«ãƒŠ
 		case 2:		//SJIS
 			return iStrCpy(ret, buf);
 
-		case 4:		//EUC”¼ŠpƒJƒi
+		case 4:		//EUCåŠè§’ã‚«ãƒŠ
 		case 8:		//EUC
 			return EUC_SJIS(buf, ret);
 
-		case 9:		//EUC‚©SJIS”¼ŠpƒJƒi
+		case 9:		//EUCã‹SJISåŠè§’ã‚«ãƒŠ
 			eucflag = TRUE;
 			p += 2;
 			break;
 
-		case 16:	//VJIS
-		case 32:	//‹ŒJIS
+		case 16:	//æ–°JIS
+		case 32:	//æ—§JIS
 			return JIS_SJIS(buf, ret);
 
 		default:
@@ -2082,7 +2082,7 @@ char *ConvStrCode(char *buf, char *ret)
 
 	convUtf8
 
-	UTF-8‚É•ÏŠ·
+	UTF-8ã«å¤‰æ›
 
 ******************************************************************************/
 
@@ -2128,7 +2128,7 @@ static char *convUtf8(char *buf) {
 
 	SrcConv
 
-	ƒ\[ƒX‚ğSJIS‚É•ÏŠ·‚·‚é
+	ã‚½ãƒ¼ã‚¹ã‚’SJISã«å¤‰æ›ã™ã‚‹
 
 ******************************************************************************/
 
@@ -2153,7 +2153,7 @@ char *SrcConv(char *buf, long Size)
 
 	GetHtml2RtfSize
 
-	HTML‚ğRTF‚É•ÏŠ·‚µ‚½‚Æ‚«‚ÌƒTƒCƒY‚Ìæ“¾
+	HTMLã‚’RTFã«å¤‰æ›ã—ãŸã¨ãã®ã‚µã‚¤ã‚ºã®å–å¾—
 
 ******************************************************************************/
 
@@ -2271,7 +2271,7 @@ int GetHtml2RtfSize(char *buf)
 
 		default:
 			if(IS_LEAD_BYTE(p)){
-				//Html2Rtf ‚Æ“¯‚¶‚­2ƒoƒCƒg–Ú‚àÁ”ï‚·‚é (•Ê‚Ì•¶š‚Æ‚µ‚Äˆµ‚¤‚Æó‘Ô‚ª‚¸‚ê‚ÄƒTƒCƒY‚ª•s‘«‚·‚é)
+				//Html2Rtf ã¨åŒã˜ã2ãƒã‚¤ãƒˆç›®ã‚‚æ¶ˆè²»ã™ã‚‹ (åˆ¥ã®æ–‡å­—ã¨ã—ã¦æ‰±ã†ã¨çŠ¶æ…‹ãŒãšã‚Œã¦ã‚µã‚¤ã‚ºãŒä¸è¶³ã™ã‚‹)
 				len += 8;
 				p++;
 			}else{
@@ -2293,7 +2293,7 @@ int GetHtml2RtfSize(char *buf)
 
 	Html2Rtf
 
-	HTML‚ğRTF‚É•ÏŠ·
+	HTMLã‚’RTFã«å¤‰æ›
 
 ******************************************************************************/
 

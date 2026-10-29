@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
 
 	WWWC
 
@@ -18,260 +18,260 @@
 **************************************************************************/
 
 //General
-#define NEWITEMNAME						"�V�����A�C�e��"
-#define FOLDERNAME						"�t�H���_"
+#define NEWITEMNAME						"新しいアイテム"
+#define FOLDERNAME						"フォルダ"
 
-#define STR_COPYNAME					"�R�s�[ �` "
-#define STR_COPYNAME_CNT				"�R�s�[ (%d) �` "
+#define STR_COPYNAME					"コピー ～ "
+#define STR_COPYNAME_CNT				"コピー (%d) ～ "
 
-#define EMSG_PROP_TITLE					"�v���p�e�B"
-#define EMSG_PROP						"�ݒ�ł���v���p�e�B�͂���܂���B"
+#define EMSG_PROP_TITLE					"プロパティ"
+#define EMSG_PROP						"設定できるプロパティはありません。"
 
-#define QMSG_DELETE_TITLE				"�폜�̊m�F"
-#define QMSG_DELETE						"�I������Ă��鍀�ڂ��폜���Ă���낵���ł����H"
+#define QMSG_DELETE_TITLE				"削除の確認"
+#define QMSG_DELETE						"選択されている項目を削除してもよろしいですか？"
 
 //main.c
 #define CLIPBOARDFORMAT					"WWWC ItemData"
 #define DEFAULTUSER						"DEFAULT"
 
-#define MENU_STR_NEWITEM				"�V�K�쐬(&N)"
+#define MENU_STR_NEWITEM				"新規作成(&N)"
 
-#define ABOUTTITLE						"�o�[�W�������"
+#define ABOUTTITLE						"バージョン情報"
 
-#define IMSG_DOUBLESTART				"���ɋN�����Ă��܂�"
+#define IMSG_DOUBLESTART				"既に起動しています"
 
-#define QMSG_ALLINITICON_TITLE			"�A�C�R���̏������̊m�F"
-#define QMSG_ALLINITICON				"���ׂẴA�C�R�������������Ă���낵���ł����H"
-#define QMSG_END_TITLE					"�I��"
-#define QMSG_END_CHECKCANCEL			"�`�F�b�N���̃A�C�e�������݂��܂����A�I�����Ă���낵���ł����H"
+#define QMSG_ALLINITICON_TITLE			"アイコンの初期化の確認"
+#define QMSG_ALLINITICON				"すべてのアイコンを初期化してもよろしいですか？"
+#define QMSG_END_TITLE					"終了"
+#define QMSG_END_CHECKCANCEL			"チェック中のアイテムが存在しますが、終了してもよろしいですか？"
 
-#define EMSG_OLEINIT					"OLE�̏������Ɏ��s���܂����B"
-#define EMSG_WINSOCKINIT				"WinSock�̏������Ɏ��s���܂����B"
-#define EMSG_ATEXIT						"atexit�Ɏ��s���܂����B"
-#define EMSG_REGWINDOWCLASS				"WindowClass�̓o�^�Ɏ��s���܂����B"
-#define EMSG_CREATEWINDOW				"Window�̍쐬�Ɏ��s���܂����B"
-#define EMSG_CREATECONTROL				"�R���g���[���̍쐬�Ɏ��s���܂����B"
-#define EMSG_CREATEUPMSG				"�X�V���b�Z�[�W�̍쐬�Ɏ��s���܂����B"
+#define EMSG_OLEINIT					"OLEの初期化に失敗しました。"
+#define EMSG_WINSOCKINIT				"WinSockの初期化に失敗しました。"
+#define EMSG_ATEXIT						"atexitに失敗しました。"
+#define EMSG_REGWINDOWCLASS				"WindowClassの登録に失敗しました。"
+#define EMSG_CREATEWINDOW				"Windowの作成に失敗しました。"
+#define EMSG_CREATECONTROL				"コントロールの作成に失敗しました。"
+#define EMSG_CREATEUPMSG				"更新メッセージの作成に失敗しました。"
 
 //AutoCheck.c
-#define LISTCOL_TITLE					"����"
+#define LISTCOL_TITLE					"時間"
 
 #define STRWEEK_STRLEN					3
-#define STRWEEK_SUN						"��"
-#define STRWEEK_MON						"��"
-#define STRWEEK_TUE						"��"
-#define STRWEEK_WED						"��"
-#define STRWEEK_THU						"��"
-#define STRWEEK_FRI						"��"
-#define STRWEEK_SAT						"�y"
+#define STRWEEK_SUN						"日"
+#define STRWEEK_MON						"月"
+#define STRWEEK_TUE						"火"
+#define STRWEEK_WED						"水"
+#define STRWEEK_THU						"木"
+#define STRWEEK_FRI						"金"
+#define STRWEEK_SAT						"土"
 
-#define LISTSTR_MIN						"%d���� �Ƀ`�F�b�N"
-#define LISTSTR_NOU						"%d���Ԗ� �Ƀ`�F�b�N"
-#define LISTSTR_DAY						"%02d�� %02d�� �Ƀ`�F�b�N"
-#define LISTSTR_WEEK					"%s�j�� %02d�� %02d�� �Ƀ`�F�b�N"
-#define LISTSTR_MON						"%d�� %02d�� %02d�� �Ƀ`�F�b�N"
+#define LISTSTR_MIN						"%d分毎 にチェック"
+#define LISTSTR_NOU						"%d時間毎 にチェック"
+#define LISTSTR_DAY						"%02d時 %02d分 にチェック"
+#define LISTSTR_WEEK					"%s曜日 %02d時 %02d分 にチェック"
+#define LISTSTR_MON						"%d日 %02d時 %02d分 にチェック"
 
-#define TIMEOPTIONSTR_HOU				"��"
-#define TIMEOPTIONSTR_MIN				"��"
-#define TIMEOPTIONSTR_EVERYHOU			"���Ԗ�"
-#define TIMEOPTIONSTR_EVERYMIN			"����"
+#define TIMEOPTIONSTR_HOU				"時"
+#define TIMEOPTIONSTR_MIN				"分"
+#define TIMEOPTIONSTR_EVERYHOU			"時間毎"
+#define TIMEOPTIONSTR_EVERYMIN			"分毎"
 
-#define TIMEOPTIONERRMSG_TITLE			"�����`�F�b�N����"
-#define TIMEOPTIONERRMSG_DAY			"\"��\" �����͂���Ă��܂���B"
-#define TIMEOPTIONERRMSG_HOU			"\"��\" �����͂���Ă��܂���B"
-#define TIMEOPTIONERRMSG_MIN			"\"��\" �����͂���Ă��܂���B"
+#define TIMEOPTIONERRMSG_TITLE			"自動チェック時間"
+#define TIMEOPTIONERRMSG_DAY			"\"日\" が入力されていません。"
+#define TIMEOPTIONERRMSG_HOU			"\"時\" が入力されていません。"
+#define TIMEOPTIONERRMSG_MIN			"\"分\" が入力されていません。"
 
 //ClipBoard.c
-#define EMSG_FOLDERCOPY_TITLE			"�t�H���_�̃R�s�[�̃G���["
-#define EMSG_PATHLENGTH					"�t�H���_�̃p�X���������邽�ߏ����ł��܂���B"
-#define EMSG_PATHLENGTH_TITLE			"�t�H���_�̃G���["
-#define EMSG_FOLDERCOPY_CUR				"%s ���R�s�[�ł��܂���B���葤�Ǝ󂯑��̃t�H���_�������ł��B"
-#define EMSG_FOLDERCOPY_SUB				"%s ���R�s�[�ł��܂���B�󂯑��̃t�H���_�́A���葤�t�H���_�̃T�u�t�H���_�ł��B"
-#define EMSG_FOLDERCOPY_ERR				"�t�H���_�̃R�s�[�Ɏ��s���܂����B"
+#define EMSG_FOLDERCOPY_TITLE			"フォルダのコピーのエラー"
+#define EMSG_PATHLENGTH					"フォルダのパスが長すぎるため処理できません。"
+#define EMSG_PATHLENGTH_TITLE			"フォルダのエラー"
+#define EMSG_FOLDERCOPY_CUR				"%s をコピーできません。送り側と受け側のフォルダが同じです。"
+#define EMSG_FOLDERCOPY_SUB				"%s をコピーできません。受け側のフォルダは、送り側フォルダのサブフォルダです。"
+#define EMSG_FOLDERCOPY_ERR				"フォルダのコピーに失敗しました。"
 
-#define EMSG_MOVEDIR_TITLE				"�t�H���_�̈ړ��̃G���["
+#define EMSG_MOVEDIR_TITLE				"フォルダの移動のエラー"
 
 //DragDrop.c
-#define EMSG_ITEMREAD_TITLE				"�A�C�e���̓ǂݍ���"
-#define EMSG_ITEMREAD					"�A�C�e�����t�@�C�����J���܂���ł����B"
+#define EMSG_ITEMREAD_TITLE				"アイテムの読み込み"
+#define EMSG_ITEMREAD					"アイテム情報ファイルが開けませんでした。"
 
 //File.c
 #define FILEDATE_FORMAT					"%s %s"
 
 #define STR_NOTITLE						"(no-title)"
 
-#define ICON_FILE_FILTER				"*.*", "���ׂẴt�@�C�� (*.*)\0*.*\0\0"
+#define ICON_FILE_FILTER				"*.*", "すべてのファイル (*.*)\0*.*\0\0"
 
-#define EMSG_SAVE_TITLE					"�ۑ��G���["
-#define EMSG_EXEC_TITLE					"���s�G���["
-#define EMSG_EXEC_BATCH					"�A�C�e���̏��Ƀo�b�`�t�@�C���̈����Ƃ��Ďg�p�ł��Ȃ��������܂܂�Ă��邽�ߎ��s���܂���B"
-#define Q_MSG_EXECITEM					"���̃A�C�e���͊֘A�t����ꂽ�A�v���P�[�V�����ŊJ����܂��B�J���܂����H\n\n%s"
-#define Q_TITLE_EXECITEM				"�A�C�e���̎��s"
+#define EMSG_SAVE_TITLE					"保存エラー"
+#define EMSG_EXEC_TITLE					"実行エラー"
+#define EMSG_EXEC_BATCH					"アイテムの情報にバッチファイルの引数として使用できない文字が含まれているため実行しません。"
+#define Q_MSG_EXECITEM					"このアイテムは関連付けられたアプリケーションで開かれます。開きますか？\n\n%s"
+#define Q_TITLE_EXECITEM				"アイテムの実行"
 
-#define EMSG_DISKFULL					"�󂫃f�B�X�N�e�ʂ�����Ȃ����߃A�C�e������ۑ��ł��܂���B"
+#define EMSG_DISKFULL					"空きディスク容量が足らないためアイテム情報を保存できません。"
 
 //Item.c
-#define STR_UPDATEMSG					"�t�H���_ '%s' �ɂ͊��� '%s' �A�C�e�������݂��܂��B"
-#define STR_UPDATEINFO					"�T�C�Y: %s\n�X�V����: %s"
+#define STR_UPDATEMSG					"フォルダ '%s' には既に '%s' アイテムが存在します。"
+#define STR_UPDATEINFO					"サイズ: %s\n更新日時: %s"
 
-#define QMSG_FOLDERDELETE				"�t�H���_ '%s' �ƃt�H���_���̂��ׂẴA�C�e�����폜���Ă���낵���ł����H"
-#define QMSG_ITEMDELETE					"'%s' ���폜���Ă���낵���ł����H"
-#define QMSG_MANYITEMDELETE				"������ %d �̃A�C�e�����폜���Ă���낵���ł����H"
+#define QMSG_FOLDERDELETE				"フォルダ '%s' とフォルダ内のすべてのアイテムを削除してもよろしいですか？"
+#define QMSG_ITEMDELETE					"'%s' を削除してもよろしいですか？"
+#define QMSG_MANYITEMDELETE				"これらの %d 個のアイテムを削除してもよろしいですか？"
 
-#define QMSG_CLEARRECYCLER_TITLE		"���ݔ�����ɂ���"
-#define QMSG_CLEARRECYCLER				"���ݔ�����ɂ��Ă���낵���ł����H"
+#define QMSG_CLEARRECYCLER_TITLE		"ごみ箱を空にする"
+#define QMSG_CLEARRECYCLER				"ごみ箱を空にしてもよろしいですか？"
 
-#define EMSG_FOLDERDELETE_TITLE			"�t�H���_�̍폜"
-#define EMSG_FOLDERCHECK				"�`�F�b�N���̃t�H���_�͍폜�ł��܂���B"
-#define EMSG_FOLDERPROP					"�������̃A�C�e�������݂��邽�ߍ폜�ł��܂���ł����B"
-#define EMSG_FOLDERNODELETE				"�폜�ł��܂���ł����B"
+#define EMSG_FOLDERDELETE_TITLE			"フォルダの削除"
+#define EMSG_FOLDERCHECK				"チェック中のフォルダは削除できません。"
+#define EMSG_FOLDERPROP					"処理中のアイテムが存在するため削除できませんでした。"
+#define EMSG_FOLDERNODELETE				"削除できませんでした。"
 
-#define EMSG_ITEMDELETE_TITLE			"�A�C�e���̍폜"
-#define EMSG_ITEMCHECK					"�`�F�b�N���̃A�C�e���͍폜�ł��܂���B"
-#define EMSG_ITEMNODELETE				"�폜�ł��܂���ł����B"
+#define EMSG_ITEMDELETE_TITLE			"アイテムの削除"
+#define EMSG_ITEMCHECK					"チェック中のアイテムは削除できません。"
+#define EMSG_ITEMNODELETE				"削除できませんでした。"
 
-#define EMSG_CLEARRECYCLER_TITLE		"���ݔ�����ɂ���"
-#define EMSG_CLEARRECYCLER				"�`�F�b�N���̃A�C�e�������݂��邽�߂��ݔ�����ɂł��܂���ł����B"
-#define EMSG_PROPRECYCLER				"�������̃A�C�e�������݂��邽�߂��ݔ�����ɂł��܂���ł����B"
+#define EMSG_CLEARRECYCLER_TITLE		"ごみ箱を空にする"
+#define EMSG_CLEARRECYCLER				"チェック中のアイテムが存在するためごみ箱を空にできませんでした。"
+#define EMSG_PROPRECYCLER				"処理中のアイテムが存在するためごみ箱を空にできませんでした。"
 
-#define EMSG_CHECKUPDATE_TITLE			"�㏑��"
-#define EMSG_CHECKUPDATE				"�`�F�b�N���̃A�C�e���̂��ߏ㏑���ł��܂���ł����B"
+#define EMSG_CHECKUPDATE_TITLE			"上書き"
+#define EMSG_CHECKUPDATE				"チェック中のアイテムのため上書きできませんでした。"
 
-#define EMSG_NOPROPITEM					"�A�C�e����������܂���ł����B"
+#define EMSG_NOPROPITEM					"アイテムが見つかりませんでした。"
 
 //ListView.c
-#define COLUMN_NAME						"���O"
-#define COLUMN_CHECKURL					"�`�F�b�N����URL"
-#define COLUMN_SIZE						"�T�C�Y"
-#define COLUMN_DATE						"�X�V����"
-#define COLUMN_CHECKDATE				"�`�F�b�N����"
-#define COLUMN_OLDSIZE					"���T�C�Y"
-#define COLUMN_OLDDATE					"���X�V����"
-#define COLUMN_VIEWURL					"�\������URL"
-#define COLUMN_OPTION1					"�I�v�V����1"
-#define COLUMN_OPTION2					"�I�v�V����2"
-#define COLUMN_COMMENT					"�R�����g"
-#define COLUMN_ERROR					"�G���[���"
-#define COLUMN_PATH						"�p�X"
-#define COLUMN_DLLDATA1					"�v���g�R�����1"
-#define COLUMN_DLLDATA2					"�v���g�R�����2"
+#define COLUMN_NAME						"名前"
+#define COLUMN_CHECKURL					"チェックするURL"
+#define COLUMN_SIZE						"サイズ"
+#define COLUMN_DATE						"更新日時"
+#define COLUMN_CHECKDATE				"チェック日時"
+#define COLUMN_OLDSIZE					"旧サイズ"
+#define COLUMN_OLDDATE					"旧更新日時"
+#define COLUMN_VIEWURL					"表示するURL"
+#define COLUMN_OPTION1					"オプション1"
+#define COLUMN_OPTION2					"オプション2"
+#define COLUMN_COMMENT					"コメント"
+#define COLUMN_ERROR					"エラー情報"
+#define COLUMN_PATH						"パス"
+#define COLUMN_DLLDATA1					"プロトコル情報1"
+#define COLUMN_DLLDATA2					"プロトコル情報2"
 
 //Menu.c
-#define MENU_STR_OPEN					"�J��(&O)"
-#define MENU_STR_CLEARRECY				"���ݔ�����ɂ���(&B)"
-#define MENU_STR_FOLDERTREECHECK		"�K�w�`�F�b�N(&K)"
-#define MENU_STR_SERACH					"����(&F)..."
+#define MENU_STR_OPEN					"開く(&O)"
+#define MENU_STR_CLEARRECY				"ごみ箱を空にする(&B)"
+#define MENU_STR_FOLDERTREECHECK		"階層チェック(&K)"
+#define MENU_STR_SERACH					"検索(&F)..."
 
-#define MENU_STR_UNDO_TITLE				"���ɖ߂�"
+#define MENU_STR_UNDO_TITLE				"元に戻す"
 #define MENU_STR_UNDO_KEY				"(&U)\tCtrl+Z"
 
 #define MENU_STR_UNDO_NON				MENU_STR_UNDO_TITLE""MENU_STR_UNDO_KEY
-#define MENU_STR_UNDO_MOVE				MENU_STR_UNDO_TITLE" - �ړ�"MENU_STR_UNDO_KEY
-#define MENU_STR_UNDO_COPY				MENU_STR_UNDO_TITLE" - �R�s�["MENU_STR_UNDO_KEY
-#define MENU_STR_UNDO_DELETE			MENU_STR_UNDO_TITLE" - �폜"MENU_STR_UNDO_KEY
-#define MENU_STR_UNDO_NAME				MENU_STR_UNDO_TITLE" - ���O�̕ύX"MENU_STR_UNDO_KEY
+#define MENU_STR_UNDO_MOVE				MENU_STR_UNDO_TITLE" - 移動"MENU_STR_UNDO_KEY
+#define MENU_STR_UNDO_COPY				MENU_STR_UNDO_TITLE" - コピー"MENU_STR_UNDO_KEY
+#define MENU_STR_UNDO_DELETE			MENU_STR_UNDO_TITLE" - 削除"MENU_STR_UNDO_KEY
+#define MENU_STR_UNDO_NAME				MENU_STR_UNDO_TITLE" - 名前の変更"MENU_STR_UNDO_KEY
 
 //Option.c
-#define STR_ITEMCNT						"�A�C�e����: %d�A�t�H���_��: %d"
-#define STR_NOMAKEDATE					"(�s��)"
-#define STR_PROPTITLE					"%s�̃v���p�e�B"
-#define STR_OPTIONTITLE					"�I�v�V����"
+#define STR_ITEMCNT						"アイテム数: %d、フォルダ数: %d"
+#define STR_NOMAKEDATE					"(不明)"
+#define STR_PROPTITLE					"%sのプロパティ"
+#define STR_OPTIONTITLE					"オプション"
 
-#define FILEFILTER_WAV					"�T�E���h (*.wav)\0*.wav\0���ׂẴt�@�C�� (*.*)\0*.*\0\0"
+#define FILEFILTER_WAV					"サウンド (*.wav)\0*.wav\0すべてのファイル (*.*)\0*.*\0\0"
 
 //Protocol.c
-#define PROTOCOL_FILEFILTER				"DLL (*.dll)\0*.dll\0���ׂẴt�@�C�� (*.*)\0*.*\0\0"
+#define PROTOCOL_FILEFILTER				"DLL (*.dll)\0*.dll\0すべてのファイル (*.*)\0*.*\0\0"
 
-#define PROTOCOL_LISTCOL_TITLE			"�^�C�g��"
+#define PROTOCOL_LISTCOL_TITLE			"タイトル"
 #define PROTOCOL_LISTCOL_DLL			"DLL"
-#define PROTOCOL_LISTCOL_FUNCHEAD		"�w�b�_"
-#define PROTOCOL_LISTCOL_ICONFILE		"�A�C�R���t�@�C��"
-#define PROTOCOL_LISTCOL_ICONINDEX		"�A�C�R���C���f�b�N�X"
-#define PROTOCOL_LISTCOL_UPICONFILE		"UP�A�C�R���t�@�C��"
-#define PROTOCOL_LISTCOL_UPICONINDEX	"UP�A�C�R���C���f�b�N�X"
+#define PROTOCOL_LISTCOL_FUNCHEAD		"ヘッダ"
+#define PROTOCOL_LISTCOL_ICONFILE		"アイコンファイル"
+#define PROTOCOL_LISTCOL_ICONINDEX		"アイコンインデックス"
+#define PROTOCOL_LISTCOL_UPICONFILE		"UPアイコンファイル"
+#define PROTOCOL_LISTCOL_UPICONINDEX	"UPアイコンインデックス"
 
-#define EMSG_SELECT_TITLE_PROTOCOL		"�v���g�R���I��"
-#define EMSG_SELECT_PROTOCOL			"�ǉ�����v���g�R����I�����Ă��������B"
+#define EMSG_SELECT_TITLE_PROTOCOL		"プロトコル選択"
+#define EMSG_SELECT_PROTOCOL			"追加するプロトコルを選択してください。"
 
 //SelectDll.c
 #define EMSG_DLL_TITLE					"DLL"
-#define EMSG_DLL						"DLL����v���g�R���ƃc�[���̏�񂪌�����܂���ł����B"
-#define EMSG_SELECT						"�ǉ�����v���g�R���y�уc�[����I�����Ă��������B"
-#define EMSG_DLLPATH						"DLL�̃p�X���s���ł��B"
-#define QMSG_LOADDLL					"����DLL��ǂݍ��݂܂��B\nDLL��ǂݍ��ނ�DLL���̃v���O���������s����܂��B�M���ł���DLL�̏ꍇ�̂ݓǂݍ���ł��������B\n\n%s\n\n�ǂݍ��݂܂����H"
+#define EMSG_DLL						"DLLからプロトコルとツールの情報が見つかりませんでした。"
+#define EMSG_SELECT						"追加するプロトコル及びツールを選択してください。"
+#define EMSG_DLLPATH						"DLLのパスが不正です。"
+#define QMSG_LOADDLL					"次のDLLを読み込みます。\nDLLを読み込むとDLL内のプログラムが実行されます。信頼できるDLLの場合のみ読み込んでください。\n\n%s\n\n読み込みますか？"
 
 //SelectIcon.c
-#define FILEFILTER_ICON					"�A�C�R�� �t�@�C��\0*.ico;*.exe;*.dll;*.icl\0" \
-											"�v���O����\0*.exe\0���C�u����\0*.dll;*.icl\0" \
-											"�A�C�R��\0*.ico\0���ׂẴt�@�C��\0*.*\0\0"
+#define FILEFILTER_ICON					"アイコン ファイル\0*.ico;*.exe;*.dll;*.icl\0" \
+											"プログラム\0*.exe\0ライブラリ\0*.dll;*.icl\0" \
+											"アイコン\0*.ico\0すべてのファイル\0*.*\0\0"
 
 //StatusBar.c
-#define ITEMMSG							"%d �̃A�C�e��"
-#define ITEMMSG_UP						"%d �̃A�C�e�� (UP�A�C�e�� %d ��)"
-#define ITEMSELECTMSG					"%d �̃A�C�e����I��"
+#define ITEMMSG							"%d 個のアイテム"
+#define ITEMMSG_UP						"%d 個のアイテム (UPアイテム %d 個)"
+#define ITEMSELECTMSG					"%d 個のアイテムを選択"
 
 //Tool.c
-#define NOMENUITEM						"(�Ȃ�)"
-#define TOOL_FILE_FILTER				"�c�[�� (*.exe;*.dll)\0*.exe;*.dll\0���ׂẴt�@�C�� (*.*)\0*.*\0\0"
+#define NOMENUITEM						"(なし)"
+#define TOOL_FILE_FILTER				"ツール (*.exe;*.dll)\0*.exe;*.dll\0すべてのファイル (*.*)\0*.*\0\0"
 
-#define TOOL_LISTCOL_TITLE				"�^�C�g��"
-#define TOOL_LISTCOL_FILENAME			"�t�@�C����"
-#define TOOL_LISTCOL_EXEOPTION			"���s�I�v�V����"
-#define TOOL_LISTCOL_EXEPROTOCOL		"���s�v���g�R��"
-#define TOOL_LISTCOL_MENUINDEX			"���j���[�ʒu"
-#define TOOL_LISTCOL_SKEY				"�V���[�g�J�b�g�L�["
-#define TOOL_LISTCOL_CTRL				"�L�[ 1"
-#define TOOL_LISTCOL_KEY				"�L�[ 2"
-#define TOOL_LISTCOL_COMMANDLINE		"�R�}���h���C��"
-#define TOOL_LISTCOL_DLLFUNC			"�֐�(DLL)"
+#define TOOL_LISTCOL_TITLE				"タイトル"
+#define TOOL_LISTCOL_FILENAME			"ファイル名"
+#define TOOL_LISTCOL_EXEOPTION			"実行オプション"
+#define TOOL_LISTCOL_EXEPROTOCOL		"実行プロトコル"
+#define TOOL_LISTCOL_MENUINDEX			"メニュー位置"
+#define TOOL_LISTCOL_SKEY				"ショートカットキー"
+#define TOOL_LISTCOL_CTRL				"キー 1"
+#define TOOL_LISTCOL_KEY				"キー 2"
+#define TOOL_LISTCOL_COMMANDLINE		"コマンドライン"
+#define TOOL_LISTCOL_DLLFUNC			"関数(DLL)"
 
-#define EMSG_NOINPUT_TITLE				"�c�[���ݒ�"
-#define EMSG_NOINPUT					"\"�^�C�g��\" �����͂���Ă��܂���B"
+#define EMSG_NOINPUT_TITLE				"ツール設定"
+#define EMSG_NOINPUT					"\"タイトル\" が入力されていません。"
 
-#define EMSG_SELECT_TITLE_TOOL			"�c�[���I��"
-#define EMSG_SELECT_TOOL				"�ǉ�����c�[����I�����Ă��������B"
+#define EMSG_SELECT_TITLE_TOOL			"ツール選択"
+#define EMSG_SELECT_TOOL				"追加するツールを選択してください。"
 
-#define TOOL_TITLE_COMMANDLINE			"�R�}���h���C��(&C):"
-#define TOOL_TITLE_DLLFUNC				"���s����֐���:"
+#define TOOL_TITLE_COMMANDLINE			"コマンドライン(&C):"
+#define TOOL_TITLE_DLLFUNC				"実行する関数名:"
 
-#define TOOL_PROTOCOL_ALL				"&0. ���ׂ� (*)"
+#define TOOL_PROTOCOL_ALL				"&0. すべて (*)"
 
-#define COMMANDLINE_u					"&1. %u - �\������URL, ���ݒ莞�`�F�b�N����URL"
-#define COMMANDLINE_c					"&2. %c - �`�F�b�N����URL"
-#define COMMANDLINE_v					"&3. %v - �\������URL"
-#define COMMANDLINE_t					"&4. %t - �A�C�e���̖��O"
-#define COMMANDLINE_s					"&5. %s - �A�C�e���̃T�C�Y"
-#define COMMANDLINE_d					"&6. %d - �A�C�e���̍X�V����"
-#define COMMANDLINE_k					"&7. %k - �A�C�e���̃`�F�b�N����"
-#define COMMANDLINE_m					"&8. %m - �A�C�e���ɐݒ肳��Ă���R�����g"
-#define COMMANDLINE_f					"&9. %f - �J���Ă���t�H���_�̎��p�X"
-#define COMMANDLINE_F					"&10. %F - �J���Ă���t�H���_�̎��p�X (�Z���`��)"
-#define COMMANDLINE_p					"&11. %p - ���[�U�f�B���N�g���̃p�X"
-#define COMMANDLINE_P					"&12. %P - ���[�U�f�B���N�g���̃p�X (�Z���`��)"
+#define COMMANDLINE_u					"&1. %u - 表示するURL, 未設定時チェックするURL"
+#define COMMANDLINE_c					"&2. %c - チェックするURL"
+#define COMMANDLINE_v					"&3. %v - 表示するURL"
+#define COMMANDLINE_t					"&4. %t - アイテムの名前"
+#define COMMANDLINE_s					"&5. %s - アイテムのサイズ"
+#define COMMANDLINE_d					"&6. %d - アイテムの更新日時"
+#define COMMANDLINE_k					"&7. %k - アイテムのチェック日時"
+#define COMMANDLINE_m					"&8. %m - アイテムに設定されているコメント"
+#define COMMANDLINE_f					"&9. %f - 開いているフォルダの実パス"
+#define COMMANDLINE_F					"&10. %F - 開いているフォルダの実パス (短い形式)"
+#define COMMANDLINE_p					"&11. %p - ユーザディレクトリのパス"
+#define COMMANDLINE_P					"&12. %P - ユーザディレクトリのパス (短い形式)"
 
 //TreeView.c
-#define NEWFOLDER						"�V�����t�H���_"
+#define NEWFOLDER						"新しいフォルダ"
 
-#define EMSG_CHANGEFILENAME_TITLE		"���O�̕ύX"
-#define EMSG_CHANGEFILENAME				"�t�@�C�����Ɏ��̕����͎g���܂���B\n\t\\ / : , ; * ? \" < > |"
+#define EMSG_CHANGEFILENAME_TITLE		"名前の変更"
+#define EMSG_CHANGEFILENAME				"ファイル名に次の文字は使えません。\n\t\\ / : , ; * ? \" < > |"
 
-#define EMSG_DIRMOVE_TITLE				"�t�H���_�̈ړ�"
-#define EMSG_DIRMOVE					"�A�C�e�����t�@�C�����J���܂���ł����B"
+#define EMSG_DIRMOVE_TITLE				"フォルダの移動"
+#define EMSG_DIRMOVE					"アイテム情報ファイルが開けませんでした。"
 
 //undo.c
-#define QMSG_ITEMDELETE_UNDO			"�폜�����A�C�e��������܂�����낵���ł����H"
+#define QMSG_ITEMDELETE_UNDO			"削除されるアイテムがありますがよろしいですか？"
 
 //UpMessage.c
-#define STR_UPMSG						"%d ���X�V���ꂽ�\��������A�C�e��������܂��B\n\n%s %s"
-#define STR_NOTUPMSG					"%d ���X�V���ꂽ�\��������A�C�e��������܂��B\n�� �Ō�̃`�F�b�N�ł͍X�V�͂���܂���ł����B\n%s %s"
-#define STR_ZEROMSG						"�X�V���ꂽ�A�C�e���͂���܂���B\n\n%s %s"
-#define STR_NOUPMSG						"�X�V���ꂽ�A�C�e���͂���܂���B"
+#define STR_UPMSG						"%d 件更新された可能性があるアイテムがあります。\n\n%s %s"
+#define STR_NOTUPMSG					"%d 件更新された可能性があるアイテムがあります。\n※ 最後のチェックでは更新はありませんでした。\n%s %s"
+#define STR_ZEROMSG						"更新されたアイテムはありません。\n\n%s %s"
+#define STR_NOUPMSG						"更新されたアイテムはありません。"
 
-#define BTN_UPINFO_ON					"�ڍ�(&D) >>"
-#define BTN_UPINFO_OFF					"�ڍ�(&D) <<"
+#define BTN_UPINFO_ON					"詳細(&D) >>"
+#define BTN_UPINFO_OFF					"詳細(&D) <<"
 
-#define EMSG_MAINSHOW_TITLE				"�\��"
-#define EMSG_NOMAINITEM					"�{�̂���A�C�e����������܂���ł����B"
+#define EMSG_MAINSHOW_TITLE				"表示"
+#define EMSG_NOMAINITEM					"本体からアイテムが見つかりませんでした。"
 
 #endif
 /* End of source */

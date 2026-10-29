@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -38,7 +38,7 @@ static HWND ClipNext;
 static struct TPITEM **tpDeleteItemList;
 static int tpDeleteItemListCnt;
 
-//ŠO•”QÆ
+//å¤–éƒ¨å‚ç…§
 extern char CuDir[];
 extern HWND TbWnd;
 extern HMENU hPOPUP;
@@ -67,7 +67,7 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag);
 
 	Clipboard_SetChain
 
-	ƒNƒŠƒbƒvƒ{[ƒhƒrƒ…[ƒAƒ`ƒF[ƒ“‚ÉƒEƒBƒ“ƒhƒE‚ğƒZƒbƒg‚·‚é
+	ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ“ãƒ¥ãƒ¼ã‚¢ãƒã‚§ãƒ¼ãƒ³ã«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 
 ******************************************************************************/
 
@@ -81,7 +81,7 @@ void Clipboard_SetChain(HWND hWnd)
 
 	Clipboard_DeleteChain
 
-	ƒNƒŠƒbƒvƒ{[ƒhƒrƒ…[ƒAƒ`ƒF[ƒ“‚ÉƒEƒBƒ“ƒhƒE‚ğíœ‚·‚é
+	ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ“ãƒ¥ãƒ¼ã‚¢ãƒã‚§ãƒ¼ãƒ³ã«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’å‰Šé™¤ã™ã‚‹
 
 ******************************************************************************/
 
@@ -98,7 +98,7 @@ void Clipboard_DeleteChain(HWND hWnd)
 
 	Clipboard_ChangeChain
 
-	ƒNƒŠƒbƒvƒ{[ƒhƒrƒ…[ƒAƒ`ƒF[ƒ“‚Ì•ÏXİ’è
+	ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ“ãƒ¥ãƒ¼ã‚¢ãƒã‚§ãƒ¼ãƒ³ã®å¤‰æ›´è¨­å®š
 
 ******************************************************************************/
 
@@ -117,7 +117,7 @@ void Clipboard_ChangeChain(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	Clipboard_Draw
 
-	ƒNƒŠƒbƒvƒ{[ƒh‚Ì“à—e‚Ì•Ï‰»
+	ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã®å†…å®¹ã®å¤‰åŒ–
 
 ******************************************************************************/
 
@@ -135,19 +135,19 @@ void Clipboard_Draw(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	SendMessage(TbWnd, TB_ENABLEBUTTON, ID_MENUITEM_PASTE, (LPARAM) MAKELONG(!(ret), 0));
 
 	if(CutCntFlag == FALSE && CutItem != NULL){
-		//Šù‚Éíœ‚³‚ê‚½ƒtƒHƒ‹ƒ_‚ğƒcƒŠ[ƒrƒ…[‚©‚çíœ
+		//æ—¢ã«å‰Šé™¤ã•ã‚ŒãŸãƒ•ã‚©ãƒ«ãƒ€ã‚’ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‹ã‚‰å‰Šé™¤
 		pItem = TreeView_GetParent(GetDlgItem(hWnd, WWWC_TREE), CutItem);
 
 		TreeView_NoFileDelete(hWnd, CutItem, 0);
 		ListView_RefreshFolder(hWnd);
 		if(TreeEditFlag == FALSE){
-			//Šù‚Éíœ‚³‚ê‚½ƒAƒCƒeƒ€‚ğíœ
+			//æ—¢ã«å‰Šé™¤ã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤
 			Item_Select(hWnd, CutItem);
 			TreeView_SetIconState(hWnd, CutItem, 0);
 		}else{
 			TreeView_SetIconState(hWnd, pItem, 0);
 		}
-		//Ø‚èæ‚èƒ}[ƒN‚Ì‰ğœ
+		//åˆ‡ã‚Šå–ã‚Šãƒãƒ¼ã‚¯ã®è§£é™¤
 		Clipboard_DeleteCutStatus(hWnd);
 
 		CutItem = NULL;
@@ -161,7 +161,7 @@ void Clipboard_Draw(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	Clipboard_DeleteCutStatus
 
-	Ø‚èæ‚èƒ}[ƒN‚Ìœ‹
+	åˆ‡ã‚Šå–ã‚Šãƒãƒ¼ã‚¯ã®é™¤å»
 
 ******************************************************************************/
 
@@ -171,7 +171,7 @@ BOOL Clipboard_DeleteCutStatus(HWND hWnd)
 		return TRUE;
 	}
 	if(TreeEditFlag == TRUE){
-		//ƒcƒŠ[‚ÉØ‚èæ‚èƒ}[ƒN‚ª‚ ‚éê‡
+		//ãƒ„ãƒªãƒ¼ã«åˆ‡ã‚Šå–ã‚Šãƒãƒ¼ã‚¯ãŒã‚ã‚‹å ´åˆ
 		TreeEditFlag = FALSE;
 		TreeView_SetState(GetDlgItem(hWnd, WWWC_TREE), CutItem, 0, TVIS_CUT);
 		CutItem = NULL;
@@ -190,7 +190,7 @@ BOOL Clipboard_DeleteCutStatus(HWND hWnd)
 
 	Clipboard_Set_WF_FolderPath
 
-	ƒtƒHƒ‹ƒ_‚Ìî•ñ‚ğ•¶š—ñ‚Ìƒnƒ“ƒhƒ‹‚Éİ’è
+	ãƒ•ã‚©ãƒ«ãƒ€ã®æƒ…å ±ã‚’æ–‡å­—åˆ—ã®ãƒãƒ³ãƒ‰ãƒ«ã«è¨­å®š
 
 ******************************************************************************/
 
@@ -206,12 +206,12 @@ static HANDLE Clipboard_Set_WF_FolderPath(HWND hWnd, int mode, HTREEITEM ClipIte
 	if(ClipItem == RootItem || ClipItem == RecyclerItem){
 		return NULL;
 	}
-	//eƒtƒHƒ‹ƒ_‚ÌƒpƒX
+	//è¦ªãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), TreeView_GetParent(GetDlgItem(hWnd, WWWC_TREE), ClipItem), ppath, CuDir);
 	lstrcat(ppath, "\\"DATAFILENAME);
-	//ƒtƒHƒ‹ƒ_‚ÌƒpƒX
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), ClipItem, path, CuDir);
-	//ƒtƒHƒ‹ƒ_‚Ì–¼‘O
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®åå‰
 	TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), ClipItem, name);
 
 	if((hMem = GlobalAlloc(GHND, 1 + lstrlen(ppath) + 2 + 1 + lstrlen(path) + 1 + lstrlen(name) + 3)) == NULL){
@@ -224,7 +224,7 @@ static HANDLE Clipboard_Set_WF_FolderPath(HWND hWnd, int mode, HTREEITEM ClipIte
 		ErrMsg(hWnd, ErrCode, NULL);
 		return NULL;
 	}
-	//ƒtƒHƒ‹ƒ_î•ñ•¶š—ñ‚Ìì¬
+	//ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±æ–‡å­—åˆ—ã®ä½œæˆ
 	wsprintf(buf,"%c%s\r\n%c%s\t%s\r\n",mode, ppath, FLAG_FOLDER, path, name);
 
 	GlobalUnlock(hMem);
@@ -236,7 +236,7 @@ static HANDLE Clipboard_Set_WF_FolderPath(HWND hWnd, int mode, HTREEITEM ClipIte
 
 	Clipboard_Set_WF_ItemList
 
-	ƒAƒCƒeƒ€‚Ìî•ñ‚ğ•¶š—ñ‚Ìƒnƒ“ƒhƒ‹‚Éİ’è
+	ã‚¢ã‚¤ãƒ†ãƒ ã®æƒ…å ±ã‚’æ–‡å­—åˆ—ã®ãƒãƒ³ãƒ‰ãƒ«ã«è¨­å®š
 	(WWWC_ClipFormat)
 
 ******************************************************************************/
@@ -260,7 +260,7 @@ HANDLE Clipboard_Set_WF_ItemList(HWND hWnd, int mode, HTREEITEM ClipItem)
 		return Clipboard_Set_WF_FolderPath(hWnd, mode, ClipItem);
 	}
 
-	//ì¬‚·‚é•¶š—ñ‚ÌƒTƒCƒY‚Ìæ“¾
+	//ä½œæˆã™ã‚‹æ–‡å­—åˆ—ã®ã‚µã‚¤ã‚ºã®å–å¾—
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), TmpBuf, CuDir);
 	wsprintf(SourcePath, "%s\\"DATAFILENAME, TmpBuf);
 	cnt = lstrlen(SourcePath) + 3;			//mode + Path + '\r' + '\n'
@@ -268,13 +268,13 @@ HANDLE Clipboard_Set_WF_ItemList(HWND hWnd, int mode, HTREEITEM ClipItem)
 	SelectItem = -1;
 	while((SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), SelectItem, LVNI_SELECTED)) != -1){
 		tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), SelectItem);
-		if(tpItemInfo != NULL){				//ƒAƒCƒeƒ€‚Ìê‡
-			//ƒAƒCƒeƒ€•¶š—ñ‚ÌƒTƒCƒY
+		if(tpItemInfo != NULL){				//ã‚¢ã‚¤ãƒ†ãƒ ã®å ´åˆ
+			//ã‚¢ã‚¤ãƒ†ãƒ æ–‡å­—åˆ—ã®ã‚µã‚¤ã‚º
 			cnt += ItemSize(tpItemInfo);
 			continue;
 		}
 
-		//ƒtƒHƒ‹ƒ_•¶š—ñ‚ÌƒTƒCƒY
+		//ãƒ•ã‚©ãƒ«ãƒ€æ–‡å­—åˆ—ã®ã‚µã‚¤ã‚º
 		hItem = TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE),
 			TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), SelectItem);
 		if(hItem == RecyclerItem){
@@ -286,7 +286,7 @@ HANDLE Clipboard_Set_WF_ItemList(HWND hWnd, int mode, HTREEITEM ClipItem)
 		cnt += lstrlen(TmpBuf) + 2;			//name + '\r' + '\n'
 	}
 
-	//Šm•Û
+	//ç¢ºä¿
 	if((hMem = GlobalAlloc(GHND, cnt + 1)) == NULL){
 		ErrMsg(hWnd, GetLastError(), NULL);
 		return NULL;
@@ -309,26 +309,26 @@ HANDLE Clipboard_Set_WF_ItemList(HWND hWnd, int mode, HTREEITEM ClipItem)
 	SelectItem = -1;
 	while((SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), SelectItem, LVNI_SELECTED)) != -1){
 		tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), SelectItem);
-		if(tpItemInfo != NULL){				//ƒAƒCƒeƒ€‚Ìê‡
-			//ƒAƒCƒeƒ€î•ñ‚ğ•¶š—ñ‚É‚·‚é
+		if(tpItemInfo != NULL){				//ã‚¢ã‚¤ãƒ†ãƒ ã®å ´åˆ
+			//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’æ–‡å­—åˆ—ã«ã™ã‚‹
 			p = SetItemString(tpItemInfo, p);
 			continue;
 		}
 
-		//ƒtƒHƒ‹ƒ_•¶š—ñ‚Ì’Ç‰Á
+		//ãƒ•ã‚©ãƒ«ãƒ€æ–‡å­—åˆ—ã®è¿½åŠ 
 		hItem = TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE),
 			TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), SelectItem);
 		if(hItem == RecyclerItem){
 			continue;
 		}
 
-		//ƒtƒHƒ‹ƒ_ƒtƒ‰ƒO
+		//ãƒ•ã‚©ãƒ«ãƒ€ãƒ•ãƒ©ã‚°
 		*(p++) = FLAG_FOLDER;
-		//ƒpƒX
+		//ãƒ‘ã‚¹
 		TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, TmpBuf, CuDir);
 		for(r = TmpBuf;*r != '\0';r++) *(p++) = *r;
 		*(p++) = '\t';
-		//–¼‘O
+		//åå‰
 		TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, TmpBuf);
 		for(r = TmpBuf;*r != '\0';r++) *(p++) = *r;
 		*(p++) = '\r', *(p++) = '\n';
@@ -344,7 +344,7 @@ HANDLE Clipboard_Set_WF_ItemList(HWND hWnd, int mode, HTREEITEM ClipItem)
 
 	Clipboard_Set_TEXT_FolderPath
 
-	ƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğ•¶š—ñ‚Ìƒnƒ“ƒhƒ‹‚Éİ’è
+	ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’æ–‡å­—åˆ—ã®ãƒãƒ³ãƒ‰ãƒ«ã«è¨­å®š
 	(CF_TEXT)
 
 ******************************************************************************/
@@ -355,7 +355,7 @@ static HANDLE Clipboard_Set_TEXT_FolderPath(HWND hWnd, HTREEITEM hItem)
 	char path[BUFSIZE];
 	char *buf;
 
-	//ƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğæ“¾
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’å–å¾—
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, path, CuDir);
 
 	if((hMemText = GlobalAlloc(GHND, lstrlen(path) + 1)) == NULL){
@@ -366,7 +366,7 @@ static HANDLE Clipboard_Set_TEXT_FolderPath(HWND hWnd, HTREEITEM hItem)
 		return NULL;
 	}
 
-	//ƒpƒX‚ğƒRƒs[
+	//ãƒ‘ã‚¹ã‚’ã‚³ãƒ”ãƒ¼
 	lstrcpy(buf, path);
 
 	GlobalUnlock(hMemText);
@@ -378,7 +378,7 @@ static HANDLE Clipboard_Set_TEXT_FolderPath(HWND hWnd, HTREEITEM hItem)
 
 	Clipboard_Set_TEXT_ItemInfo
 
-	’PˆêƒAƒCƒeƒ€‚Ìî•ñ‚ğ•¶š—ñ‚Ìƒnƒ“ƒhƒ‹‚Éİ’è‚·‚é
+	å˜ä¸€ã‚¢ã‚¤ãƒ†ãƒ ã®æƒ…å ±ã‚’æ–‡å­—åˆ—ã®ãƒãƒ³ãƒ‰ãƒ«ã«è¨­å®šã™ã‚‹
 	(CF_TEXT)
 
 ******************************************************************************/
@@ -396,7 +396,7 @@ static HANDLE Clipboard_Set_TEXT_ItemInfo(struct TPITEM *tpItemInfo)
 	}
 	ProtocolIndex = GetProtocolIndex(tpItemInfo->CheckURL);
 	if(ProtocolIndex == -1 || tpProtocol[ProtocolIndex].lib == NULL){
-		//ƒvƒƒgƒRƒ‹‚ğ¯•Ê‚Å‚«‚È‚©‚Á‚½ê‡‚ÍAƒ`ƒFƒbƒN‚·‚éURL‚ğİ’è
+		//ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã‚’è­˜åˆ¥ã§ããªã‹ã£ãŸå ´åˆã¯ã€ãƒã‚§ãƒƒã‚¯ã™ã‚‹URLã‚’è¨­å®š
 		if(tpItemInfo->CheckURL == NULL || tpItemInfo->CheckURL[0] == '\0'){
 			return NULL;
 		}
@@ -413,7 +413,7 @@ static HANDLE Clipboard_Set_TEXT_ItemInfo(struct TPITEM *tpItemInfo)
 		return hMemText;
 	}
 
-	//ƒvƒƒgƒRƒ‹DLL‚ÌƒAƒCƒeƒ€‚Ì•¶š—ñ‚ğæ“¾‚·‚éŠÖ”‚ğŒÄ‚Ô
+	//ãƒ—ãƒ­ãƒˆã‚³ãƒ«DLLã®ã‚¢ã‚¤ãƒ†ãƒ ã®æ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹é–¢æ•°ã‚’å‘¼ã¶
 	wsprintf(buf, "%sGetItemText", tpProtocol[ProtocolIndex].FuncHeader);
 	Func_GetItemText = GetProcAddress((HMODULE)tpProtocol[ProtocolIndex].lib, buf);
 	if(Func_GetItemText == NULL){
@@ -427,7 +427,7 @@ static HANDLE Clipboard_Set_TEXT_ItemInfo(struct TPITEM *tpItemInfo)
 
 	Clipboard_Set_TEXT
 
-	CF_TEXT‚Ì•¶š—ñ‚ğì¬
+	CF_TEXTã®æ–‡å­—åˆ—ã‚’ä½œæˆ
 
 ******************************************************************************/
 
@@ -441,11 +441,11 @@ HANDLE Clipboard_Set_TEXT(HWND hWnd, HTREEITEM hStrItem)
 		if(hStrItem == RootItem || hStrItem == RecyclerItem){
 			return NULL;
 		}
-		//ƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğİ’è
+		//ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’è¨­å®š
 		return Clipboard_Set_TEXT_FolderPath(hWnd, hStrItem);
 	}
 
-	//ƒtƒH[ƒJƒX‚ğ‚ÂƒAƒCƒeƒ€‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
+	//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æŒã¤ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
 	if((SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_FOCUSED)) == -1){
 		SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED);
 	}
@@ -457,11 +457,11 @@ HANDLE Clipboard_Set_TEXT(HWND hWnd, HTREEITEM hStrItem)
 	if(tpItemInfo == NULL){
 		hItem = TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE),
 			TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), SelectItem);
-		//ƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğİ’è
+		//ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’è¨­å®š
 		return Clipboard_Set_TEXT_FolderPath(hWnd, hItem);
 
 	}else{
-		//ƒAƒCƒeƒ€‚Ìî•ñ‚ğİ’è
+		//ã‚¢ã‚¤ãƒ†ãƒ ã®æƒ…å ±ã‚’è¨­å®š
 		return Clipboard_Set_TEXT_ItemInfo(tpItemInfo);
 	}
 	return NULL;
@@ -472,7 +472,7 @@ HANDLE Clipboard_Set_TEXT(HWND hWnd, HTREEITEM hStrItem)
 
 	Clipboard_SetTreeData
 
-	ƒNƒŠƒbƒvƒ{[ƒh‚ÉƒcƒŠ[ƒAƒCƒeƒ€‚ğİ’è‚·‚é
+	ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ãƒ„ãƒªãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -485,17 +485,17 @@ static BOOL Clipboard_SetTreeData(HWND hWnd, int mode)
 		return FALSE;
 	}
 
-	//ƒtƒHƒ‹ƒ_î•ñ‚Ì•Û‘¶
+	//ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±ã®ä¿å­˜
 	SaveTreeMem(hWnd, GetDlgItem(hWnd, WWWC_TREE), HiTestItem);
 
 	if(mode == FLAG_CUT){
-		//Ø‚èæ‚è‚Ìƒ}ƒXƒN‚ğİ’è
+		//åˆ‡ã‚Šå–ã‚Šã®ãƒã‚¹ã‚¯ã‚’è¨­å®š
 		TreeView_SetState(GetDlgItem(hWnd, WWWC_TREE), HiTestItem, TVIS_CUT, TVIS_CUT);
 		CutCntFlag = TRUE;
 		CutItem = HiTestItem;
 	}
 
-	//ƒNƒŠƒbƒvƒ{[ƒh‚ğŠJ‚­
+	//ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‚’é–‹ã
 	if(OpenClipboard(hWnd) == FALSE){
 		ErrMsg(hWnd, GetLastError(), NULL);
 		CutItem = NULL;
@@ -509,14 +509,14 @@ static BOOL Clipboard_SetTreeData(HWND hWnd, int mode)
 		return FALSE;
 	}
 
-	//ƒtƒHƒ‹ƒ_î•ñ
+	//ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±
 	hMem = Clipboard_Set_WF_ItemList(hWnd, mode, HiTestItem);
 	if(hMem == NULL){
 		CloseClipboard();
 		CutItem = NULL;
 		return FALSE;
 	}
-	//“Æ©ƒtƒH[ƒ}ƒbƒg‚Ìİ’è
+	//ç‹¬è‡ªãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®è¨­å®š
 	if(SetClipboardData(WWWC_ClipFormat, hMem) == NULL){
 		ErrCode = GetLastError();
 		CloseClipboard();
@@ -525,7 +525,7 @@ static BOOL Clipboard_SetTreeData(HWND hWnd, int mode)
 		return FALSE;
 	}
 
-	//ƒhƒƒbƒvƒtƒ@ƒCƒ‹
+	//ãƒ‰ãƒ­ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«
 	if(DragDrop_CreateTreeDropFiles(hWnd, HiTestItem, Clip_DirName) == FALSE){
 		return FALSE;
 	}
@@ -534,14 +534,14 @@ static BOOL Clipboard_SetTreeData(HWND hWnd, int mode)
 	}
 	FreeDropFiles();
 
-	//ƒtƒHƒ‹ƒ_‚ÌƒpƒX
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹
 	hMemText = Clipboard_Set_TEXT(hWnd, HiTestItem);
 	if(hMemText != NULL){
 		SetClipboardData(CF_TEXT, hMemText);
 	}
 
 	CloseClipboard();
-	//ƒcƒŠ[‚Å‚Ìˆ—‚ğ¦‚·ƒtƒ‰ƒO‚ğİ’è
+	//ãƒ„ãƒªãƒ¼ã§ã®å‡¦ç†ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 	TreeEditFlag = TRUE;
 	return TRUE;
 }
@@ -551,7 +551,7 @@ static BOOL Clipboard_SetTreeData(HWND hWnd, int mode)
 
 	Clipboard_SetItemData
 
-	ƒNƒŠƒbƒvƒ{[ƒh‚Éƒf[ƒ^‚ğİ’è‚·‚é
+	ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -566,27 +566,27 @@ BOOL Clipboard_SetItemData(HWND hWnd, int mode)
 	TreeEditFlag = FALSE;
 
 	if(GetFocus() == GetDlgItem(hWnd, WWWC_TREE)){
-		//ƒtƒHƒ‹ƒ_
+		//ãƒ•ã‚©ãƒ«ãƒ€
 		return Clipboard_SetTreeData(hWnd, mode);
 	}
 
-	//ƒtƒHƒ‹ƒ_î•ñ‚Ì•Û‘¶
+	//ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±ã®ä¿å­˜
 	SaveTreeMem(hWnd, GetDlgItem(hWnd, WWWC_TREE), TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)));
 
 	SelectItem = -1;
 	while((SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), SelectItem, LVNI_SELECTED)) != -1){
 		if(mode == FLAG_CUT){
-			//Ø‚èæ‚èƒ}ƒXƒN‚ğİ’è
+			//åˆ‡ã‚Šå–ã‚Šãƒã‚¹ã‚¯ã‚’è¨­å®š
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), SelectItem, LVIS_CUT, LVIS_CUT);
 		}
 	}
 	if(mode == FLAG_CUT){
-		//Ø‚èæ‚èƒtƒ‰ƒO‚Ìİ’è
+		//åˆ‡ã‚Šå–ã‚Šãƒ•ãƒ©ã‚°ã®è¨­å®š
 		CutCntFlag = TRUE;
 		CutItem = TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE));
 	}
 
-	//ƒNƒŠƒbƒvƒ{[ƒh‚ğŠJ‚­
+	//ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‚’é–‹ã
 	if(OpenClipboard(hWnd) == FALSE){
 		ErrMsg(hWnd, GetLastError(), NULL);
 		CutItem = NULL;
@@ -600,7 +600,7 @@ BOOL Clipboard_SetItemData(HWND hWnd, int mode)
 		return FALSE;
 	}
 
-	//ƒAƒCƒeƒ€î•ñ
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±
 	hMem = Clipboard_Set_WF_ItemList(hWnd, mode, NULL);
 	if(hMem == NULL){
 		CloseClipboard();
@@ -613,7 +613,7 @@ BOOL Clipboard_SetItemData(HWND hWnd, int mode)
 		return FALSE;
 	}
 
-	//ƒhƒƒbƒvƒtƒ@ƒCƒ‹
+	//ãƒ‰ãƒ­ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«
 	if(DragDrop_CreateDropFiles(hWnd, Clip_DirName) == FALSE){
 		return FALSE;
 	}
@@ -622,7 +622,7 @@ BOOL Clipboard_SetItemData(HWND hWnd, int mode)
 	}
 	FreeDropFiles();
 
-	//ƒAƒCƒeƒ€î•ñ‚Ì•¶š—ñ‚Ìƒnƒ“ƒhƒ‹
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®æ–‡å­—åˆ—ã®ãƒãƒ³ãƒ‰ãƒ«
 	hMemText = Clipboard_Set_TEXT(hWnd, NULL);
 	if(hMemText != NULL){
 		SetClipboardData(CF_TEXT, hMemText);
@@ -637,7 +637,7 @@ BOOL Clipboard_SetItemData(HWND hWnd, int mode)
 
 	IsUserDataPath
 
-	ƒ†[ƒUƒfƒBƒŒƒNƒgƒŠ“à‚ÌƒpƒX‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚é (“\‚è•t‚¯‚ç‚ê‚½ƒf[ƒ^“à‚ÌƒpƒX—p)
+	ãƒ¦ãƒ¼ã‚¶ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã®ãƒ‘ã‚¹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹ (è²¼ã‚Šä»˜ã‘ã‚‰ã‚ŒãŸãƒ‡ãƒ¼ã‚¿å†…ã®ãƒ‘ã‚¹ç”¨)
 
 ******************************************************************************/
 
@@ -650,7 +650,7 @@ static BOOL IsUserDataPath(char *path)
 	if(lstrcmpni(path, CuDir, len) != 0 || *(path + len) != '\\'){
 		return FALSE;
 	}
-	//ãˆÊ‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğw‚·—v‘f‚Í‹–‰Â‚µ‚È‚¢
+	//ä¸Šä½ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’æŒ‡ã™è¦ç´ ã¯è¨±å¯ã—ãªã„
 	for(p = path + len; *p != '\0'; p++){
 		if(IS_LEAD_BYTE(p)){
 			p++;
@@ -673,7 +673,7 @@ static BOOL IsUserDataPath(char *path)
 
 	IsUserItemFile
 
-	ƒ†[ƒUƒfƒBƒŒƒNƒgƒŠ“à‚ÌƒAƒCƒeƒ€ƒtƒ@ƒCƒ‹‚ÌƒpƒX‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚é
+	ãƒ¦ãƒ¼ã‚¶ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã®ã‚¢ã‚¤ãƒ†ãƒ ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 
 ******************************************************************************/
 
@@ -694,7 +694,7 @@ static BOOL IsUserItemFile(char *path)
 
 	CopyFolder
 
-	ƒtƒHƒ‹ƒ_‚ÌƒRƒs[
+	ãƒ•ã‚©ãƒ«ãƒ€ã®ã‚³ãƒ”ãƒ¼
 
 ******************************************************************************/
 
@@ -714,7 +714,7 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 		return FALSE;
 	}
 
-	//‘—‚è‘¤‚Æó‚¯‘¤‚ÌƒtƒHƒ‹ƒ_‚ª“¯‚¶
+	//é€ã‚Šå´ã¨å—ã‘å´ã®ãƒ•ã‚©ãƒ«ãƒ€ãŒåŒã˜
 	if(lstrcmpi(Path, FromPath) == 0){
 		if(mode == FLAG_COPY){
 			wsprintf(Msg, EMSG_FOLDERCOPY_CUR, Name);
@@ -722,7 +722,7 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 		}
 		return FALSE;
 	}
-	//ó‚¯‘¤‚ÌƒtƒHƒ‹ƒ_‚ÍA‘—‚è‘¤ƒtƒHƒ‹ƒ_‚ÌƒTƒuƒtƒHƒ‹ƒ_
+	//å—ã‘å´ã®ãƒ•ã‚©ãƒ«ãƒ€ã¯ã€é€ã‚Šå´ãƒ•ã‚©ãƒ«ãƒ€ã®ã‚µãƒ–ãƒ•ã‚©ãƒ«ãƒ€
 	if(lstrcmpni(Path, FromPath, lstrlen(FromPath)) == 0 &&
 		(Path[lstrlen(FromPath)] == '\\' || Path[lstrlen(FromPath)] == '/')){
 		wsprintf(Msg, EMSG_FOLDERCOPY_SUB, Name);
@@ -730,7 +730,7 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 		return FALSE;
 	}
 
-	//ƒTƒuƒtƒHƒ‹ƒ_‚ğŠÜ‚ß‚ÄƒpƒX‚ª’·‚·‚¬‚éê‡‚ÍƒGƒ‰[ (ƒRƒs[‚É•t‰Á‚³‚ê‚é–¼‘O‚Ì•ª‚Ì—]—T‚ğc‚·)
+	//ã‚µãƒ–ãƒ•ã‚©ãƒ«ãƒ€ã‚’å«ã‚ã¦ãƒ‘ã‚¹ãŒé•·ã™ãã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼ (ã‚³ãƒ”ãƒ¼æ™‚ã«ä»˜åŠ ã•ã‚Œã‚‹åå‰ã®åˆ†ã®ä½™è£•ã‚’æ®‹ã™)
 	if(lstrlen(Path) + 1 + lstrlen(Name) + COPYNAME_MARGIN + GetDirChildPathLength(FromPath) > MAX_TREEPATH){
 		MessageBox(hWnd, EMSG_PATHLENGTH, EMSG_FOLDERCOPY_TITLE, MB_ICONSTOP);
 		return FALSE;
@@ -739,7 +739,7 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 	wsprintf(CopyPath, "%s\\%s", Path, DirName);
 
 	if(DnDFlag & DND_RECY || hItem == RecyclerItem){
-		//Šù‚É‘¶İ‚·‚éƒtƒHƒ‹ƒ_–¼‚Ìê‡‚Í”Ô†‚ğ•t‚¯‚é
+		//æ—¢ã«å­˜åœ¨ã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€åã®å ´åˆã¯ç•ªå·ã‚’ä»˜ã‘ã‚‹
 		i = 1;
 		lstrcpy(CopyName, DirName);
 		while(GetDirSerch(CopyPath) == TRUE){
@@ -750,20 +750,20 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 		lstrcpy(Name, CopyName);
 	}
 	if(mode == FLAG_COPY){
-		//ƒfƒBƒŒƒNƒgƒŠ‚ÌƒRƒs[
+		//ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ã‚³ãƒ”ãƒ¼
 		if(CopyDirTree(hWnd, FromPath, Path, DirName, Name) == -1){
 			return FALSE;
 		}
 
 	}else{
-		//ˆÚ“®æ‚ÆˆÚ“®Œ³‚ª“¯‚¶ê‡‚Íˆ—‚ğs‚í‚È‚¢
+		//ç§»å‹•å…ˆã¨ç§»å‹•å…ƒãŒåŒã˜å ´åˆã¯å‡¦ç†ã‚’è¡Œã‚ãªã„
 		if(lstrcmpi(FromPath, CopyPath) == 0){
 			return FALSE;
 		}
 
-		//Šù‚É‘¶İ‚·‚éƒfƒBƒŒƒNƒgƒŠ‚Ìê‡‚ÍƒRƒs[Œãíœ‚ğs‚¤
+		//æ—¢ã«å­˜åœ¨ã™ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å ´åˆã¯ã‚³ãƒ”ãƒ¼å¾Œå‰Šé™¤ã‚’è¡Œã†
 		if(GetDirSerch(CopyPath) == TRUE){
-			//ƒfƒBƒŒƒNƒgƒŠ‚ÌƒRƒs[
+			//ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ã‚³ãƒ”ãƒ¼
 			if(CopyDirTree(hWnd, FromPath, Path, DirName, NULL) == -1){
 				return FALSE;
 			}
@@ -771,7 +771,7 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 			RemoveDirectory(FromPath);
 
 		}else{
-			//ƒfƒBƒŒƒNƒgƒŠ‚ÌˆÚ“®
+			//ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ç§»å‹•
 			if(MoveFile(FromPath, CopyPath) == FALSE){
 				ErrMsg(hWnd, GetLastError(), EMSG_MOVEDIR_TITLE);
 				return FALSE;
@@ -788,7 +788,7 @@ static BOOL CopyFolder(HWND hWnd, HTREEITEM hItem, char *FromPath, char *Name, i
 
 	CopyItemInfo
 
-	ƒAƒCƒeƒ€î•ñ‚ÌƒRƒs[
+	ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®ã‚³ãƒ”ãƒ¼
 
 ******************************************************************************/
 
@@ -803,21 +803,21 @@ static BOOL CopyItemInfo(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo,
 	int ret;
 	int i;
 
-	//ˆÚ“®æ‚ÆˆÚ“®Œ³‚ª“¯‚¶ê‡
+	//ç§»å‹•å…ˆã¨ç§»å‹•å…ƒãŒåŒã˜å ´åˆ
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, TmpBuf, CuDir);
 	wsprintf(ToPath, "%s\\"DATAFILENAME, TmpBuf);
 	if(lstrcmpi(ToPath, SourcePath) == 0){
-		//ˆÚ“®‚Ìê‡‚Íˆ—‚ğs‚í‚È‚¢
+		//ç§»å‹•ã®å ´åˆã¯å‡¦ç†ã‚’è¡Œã‚ãªã„
 		if(mode == FLAG_CUT){
 			return FALSE;
 		}
 
-		//ƒAƒCƒeƒ€ƒŠƒXƒgæ“¾
+		//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆå–å¾—
 		tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), hItem);
 		if(tpTreeInfo == NULL){
 			return FALSE;
 		}
-		//ƒAƒCƒeƒ€î•ñ‚ğ“Ç‚İ‚Ş
+		//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’èª­ã¿è¾¼ã‚€
 		if(tpTreeInfo->ItemList == NULL){
 			if(ReadTreeMem(hWnd, hItem) == FALSE){
 				return FALSE;
@@ -826,7 +826,7 @@ static BOOL CopyItemInfo(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo,
 		if(NewItemInfo->Title == NULL){
 			return TRUE;
 		}
-		//ƒAƒCƒeƒ€‚Ì–¼‘O‚ğ•ÏX‚·‚é
+		//ã‚¢ã‚¤ãƒ†ãƒ ã®åå‰ã‚’å¤‰æ›´ã™ã‚‹
 		TmpTitle = (char *)GlobalAlloc(GPTR, lstrlen(NewItemInfo->Title) + lstrlen(STR_COPYNAME) + 1);
 		wsprintf(TmpTitle, STR_COPYNAME"%s", NewItemInfo->Title);
 		cnt = 1;
@@ -844,7 +844,7 @@ static BOOL CopyItemInfo(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo,
 				if(cnt++ > 100){
 					return FALSE;
 				}
-				//“¯‚¶ƒAƒCƒeƒ€‚ª‘¶İ‚·‚éê‡‚Í”Ô†‚ğ•t‚¯‚Äs‚­
+				//åŒã˜ã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ç•ªå·ã‚’ä»˜ã‘ã¦è¡Œã
 				wsprintf(TmpBuf, STR_COPYNAME_CNT, cnt);
 				TmpTitle = (char *)GlobalAlloc(GPTR, lstrlen(NewItemInfo->Title) + lstrlen(TmpBuf) + 1);
 				wsprintf(TmpTitle, "%s%s", TmpBuf, NewItemInfo->Title);
@@ -858,7 +858,7 @@ static BOOL CopyItemInfo(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo,
 		NewItemInfo->Title = TmpTitle;
 	}
 
-	//ƒAƒCƒeƒ€‚Ì’Ç‰Á
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®è¿½åŠ 
 	ret = Item_Add(hWnd, hItem, NewItemInfo);
 	if(ret == -1){
 		return FALSE;
@@ -866,12 +866,12 @@ static BOOL CopyItemInfo(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo,
 
 	SetItemToUndo(NewItemInfo);
 
-	//ƒRƒs[‚Ìê‡‚ÍƒAƒCƒeƒ€íœ‚ğs‚í‚È‚¢
+	//ã‚³ãƒ”ãƒ¼ã®å ´åˆã¯ã‚¢ã‚¤ãƒ†ãƒ å‰Šé™¤ã‚’è¡Œã‚ãªã„
 	if(mode == FLAG_COPY || *SourcePath == '\0'){
 		return TRUE;
 	}
 
-	//ˆÚ“®‚³‚ê‚½ƒAƒCƒeƒ€‚Ìíœ
+	//ç§»å‹•ã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã®å‰Šé™¤
 	if(tpDeleteItemList == NULL){
 		return TRUE;
 	}
@@ -879,20 +879,20 @@ static BOOL CopyItemInfo(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo,
 		if(*(tpDeleteItemList + i) == NULL){
 			continue;
 		}
-		//ƒ^ƒCƒgƒ‹‚Ì”äŠr
+		//ã‚¿ã‚¤ãƒˆãƒ«ã®æ¯”è¼ƒ
 		p = ((*(tpDeleteItemList + i))->Title == NULL) ? "" : (*(tpDeleteItemList + i))->Title;
 		r = (NewItemInfo->Title == NULL) ? "" : NewItemInfo->Title;
 		if(lstrcmp(p, r) != 0){
 			continue;
 		}
-		//URL‚Ì”äŠr
+		//URLã®æ¯”è¼ƒ
 		p = ((*(tpDeleteItemList + i))->CheckURL == NULL) ? "" : (*(tpDeleteItemList + i))->CheckURL;
 		r = (NewItemInfo->CheckURL == NULL) ? "" : NewItemInfo->CheckURL;
 		if(lstrcmp(p, r) != 0){
 			continue;
 		}
 
-		//ƒAƒCƒeƒ€‚Ìíœ
+		//ã‚¢ã‚¤ãƒ†ãƒ ã®å‰Šé™¤
 		FreeItemInfo(*(tpDeleteItemList + i), TRUE);
 		GlobalFree(*(tpDeleteItemList + i));
 		*(tpDeleteItemList + i) = NULL;
@@ -906,7 +906,7 @@ static BOOL CopyItemInfo(HWND hWnd, HTREEITEM hItem, struct TPITEM *NewItemInfo,
 
 	StringToItem
 
-	ƒAƒCƒeƒ€î•ñ•¶š—ñ‚©‚çƒAƒCƒeƒ€î•ñ‚ğì¬‚·‚é
+	ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±æ–‡å­—åˆ—ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’ä½œæˆã™ã‚‹
 
 ******************************************************************************/
 
@@ -929,14 +929,14 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 	*SourcePath = '\0';
 	tpDeleteItemList = NULL;
 
-	//ˆÚ“®æ‚ÌƒpƒX
+	//ç§»å‹•å…ˆã®ãƒ‘ã‚¹
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, TmpBuf, CuDir);
 	wsprintf(ToPath, "%s\\"DATAFILENAME, TmpBuf);
 
 	r = buf;
 	for(p = Data;*p != '\0';p++){
 		if(*p != '\r'){
-			//ƒoƒbƒtƒ@‚ğ’´‚¦‚és‚ÍØ‚è‹l‚ß‚é
+			//ãƒãƒƒãƒ•ã‚¡ã‚’è¶…ãˆã‚‹è¡Œã¯åˆ‡ã‚Šè©°ã‚ã‚‹
 			if(*p != '\n' && r < buf + MAXSIZE - 1){
 				*(r++) = *p;
 			}
@@ -949,21 +949,21 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 		}
 
 		if(*buf == FLAG_COPY || *buf == FLAG_CUT){
-			//•ÒWƒtƒ‰ƒO + ˆÚ“®Œ³ƒtƒ@ƒCƒ‹
+			//ç·¨é›†ãƒ•ãƒ©ã‚° + ç§»å‹•å…ƒãƒ•ã‚¡ã‚¤ãƒ«
 			t = buf + 1;
-			//ƒpƒX
+			//ãƒ‘ã‚¹
 			r = SourcePath;
 			for(;*t != '\t' && *t != '\0' && r < SourcePath + BUFSIZE - 1;t++, r++){
 				*r = *t;
 			}
 			*r = '\0';
-			//ƒoƒbƒtƒ@‚Éû‚Ü‚ç‚È‚¢ƒpƒX‚Íg—p‚µ‚È‚¢
+			//ãƒãƒƒãƒ•ã‚¡ã«åã¾ã‚‰ãªã„ãƒ‘ã‚¹ã¯ä½¿ç”¨ã—ãªã„
 			if(*t != '\t' && *t != '\0'){
 				*SourcePath = '\0';
 				r = buf;
 				continue;
 			}
-			//ƒ†[ƒUƒfƒBƒŒƒNƒgƒŠ“à‚ÌƒAƒCƒeƒ€ƒtƒ@ƒCƒ‹ˆÈŠO‚ÌƒpƒX‚Íg—p‚µ‚È‚¢
+			//ãƒ¦ãƒ¼ã‚¶ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã®ã‚¢ã‚¤ãƒ†ãƒ ãƒ•ã‚¡ã‚¤ãƒ«ä»¥å¤–ã®ãƒ‘ã‚¹ã¯ä½¿ç”¨ã—ãªã„
 			if(IsUserItemFile(SourcePath) == FALSE){
 				*SourcePath = '\0';
 				r = buf;
@@ -973,16 +973,16 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 			if(*buf == FLAG_COPY || DnDFlag & DND_COPY){
 				//*SourcePath = '\0';
 			}else{
-				//ˆÚ“®‚Éíœ‚·‚éƒAƒCƒeƒ€ƒŠƒXƒg
+				//ç§»å‹•æ™‚ã«å‰Šé™¤ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆ
 				tpDeleteItemList = ReadItemList(SourcePath, &tpDeleteItemListCnt, NULL);
 				ret = FLAG_CUT;
 			}
 
-			//Undo‚Ì‰Šú‰»
+			//Undoã®åˆæœŸåŒ–
 			InitUndo(hWnd, SourcePath, hItem, ret);
 
 		}else if(*buf == FLAG_FOLDER){
-			//ƒtƒHƒ‹ƒ_ƒtƒ‰ƒO + ˆÚ“®Œ³ƒfƒBƒŒƒNƒgƒŠ + ƒtƒHƒ‹ƒ_–¼
+			//ãƒ•ã‚©ãƒ«ãƒ€ãƒ•ãƒ©ã‚° + ç§»å‹•å…ƒãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª + ãƒ•ã‚©ãƒ«ãƒ€å
 			t = buf + 1;
 
 			r = FromPath;
@@ -990,12 +990,12 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 				*r = *t;
 			}
 			*r = '\0';
-			//ƒoƒbƒtƒ@‚Éû‚Ü‚ç‚È‚¢ƒpƒX‚Íg—p‚µ‚È‚¢
+			//ãƒãƒƒãƒ•ã‚¡ã«åã¾ã‚‰ãªã„ãƒ‘ã‚¹ã¯ä½¿ç”¨ã—ãªã„
 			if(*t != '\t' && *t != '\0'){
 				r = buf;
 				continue;
 			}
-			//ƒ†[ƒUƒfƒBƒŒƒNƒgƒŠ“à‚ÌƒtƒHƒ‹ƒ_ˆÈŠO‚ÌƒpƒX‚Íg—p‚µ‚È‚¢
+			//ãƒ¦ãƒ¼ã‚¶ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã®ãƒ•ã‚©ãƒ«ãƒ€ä»¥å¤–ã®ãƒ‘ã‚¹ã¯ä½¿ç”¨ã—ãªã„
 			if(IsUserDataPath(FromPath) == FALSE){
 				r = buf;
 				continue;
@@ -1003,7 +1003,7 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 			if(*t == '\t'){
 				t++;
 			}
-			//–¼‘O
+			//åå‰
 			r = Name;
 			for(;*t != '\0' && r < Name + BUFSIZE - 1;t++, r++){
 				*r = *t;
@@ -1013,26 +1013,26 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 				r = buf;
 				continue;
 			}
-			//ƒtƒHƒ‹ƒ_–¼‚Æ‚µ‚Äg—p‚Å‚«‚È‚¢–¼‘O‚Íˆ—‚µ‚È‚¢
+			//ãƒ•ã‚©ãƒ«ãƒ€åã¨ã—ã¦ä½¿ç”¨ã§ããªã„åå‰ã¯å‡¦ç†ã—ãªã„
 			if(FileNameCheck(Name) == FALSE){
 				r = buf;
 				continue;
 			}
 
-			//ƒRƒs[AØ‚èæ‚è
+			//ã‚³ãƒ”ãƒ¼ã€åˆ‡ã‚Šå–ã‚Š
 			if(CopyFolder(hWnd, hItem, FromPath, Name, ret, DnDFlag) == FALSE){
 				ret = -1;
 				break;
 			}
 			if(hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
-				//‘I‘ğ‚Ì‰ğœ
+				//é¸æŠã®è§£é™¤
 				if(SelInitFlag == FALSE){
 					ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), -1, 0, LVIS_SELECTED);
 					SelInitFlag = TRUE;
 				}
-				//ƒŠƒXƒgƒrƒ…[‚É•\¦‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ì”
+				//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®æ•°
 				ListFolderCnt = ListView_GetFolderCount(GetDlgItem(hWnd, WWWC_LIST));
-				//ƒcƒŠ[ƒrƒ…[‚É•\¦‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ì”
+				//ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®æ•°
 				TreeFolderCnt = TreeView_GetChildCount(GetDlgItem(hWnd, WWWC_TREE), hItem);
 
 				if(ListFolderCnt < TreeFolderCnt){
@@ -1052,13 +1052,13 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 			}
 
 		}else{
-			//‘I‘ğ‚Ì‰ğœ
+			//é¸æŠã®è§£é™¤
 			if(SelInitFlag == FALSE && (ret == FLAG_COPY || lstrcmpi(ToPath, SourcePath) != 0)){
 				ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), -1, 0, LVIS_SELECTED);
 				SelInitFlag = TRUE;
 			}
 
-			//ƒAƒCƒeƒ€î•ñ
+			//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±
 			tpItemInfo = (struct TPITEM *)GlobalAlloc(GPTR, sizeof(struct TPITEM));
 			if(tpItemInfo != NULL){
 				tpItemInfo->iSize = sizeof(struct TPITEM);
@@ -1089,7 +1089,7 @@ static int StringToItem(HWND hWnd, HTREEITEM hItem, char *Data, int DnDFlag)
 
 	Clipboard_Get_WF_String
 
-	ƒAƒCƒeƒ€î•ñ•¶š—ñ‚ğˆ—‚·‚é
+	ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±æ–‡å­—åˆ—ã‚’å‡¦ç†ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1100,14 +1100,14 @@ int Clipboard_Get_WF_String(HWND hWnd, HTREEITEM hItem, char *buf, int DnDFlag)
 	ListView_SetRedraw(GetDlgItem(hWnd, WWWC_LIST), LDF_NODRAW);
 	SendDlgItemMessage(hWnd, WWWC_TREE, WM_SETREDRAW, (WPARAM)FALSE, 0);
 
-	//ƒAƒCƒeƒ€‚ğ’Ç‰Á
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ 
 	ret = StringToItem(hWnd, hItem, buf, DnDFlag);
 	TreeView_FreeItem(hWnd, hItem, 1);
 
-	//’Ç‰Á‚³‚ê‚½ƒtƒHƒ‹ƒ_‚ğƒŠƒXƒgƒrƒ…[‚É”½‰f
+	//è¿½åŠ ã•ã‚ŒãŸãƒ•ã‚©ãƒ«ãƒ€ã‚’ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«åæ˜ 
 	ListView_FolderRedraw(hWnd, FALSE);
 
-	//‘I‘ğ‚Ìæ“ªƒAƒCƒeƒ€‚ÉƒtƒH[ƒJƒX‚ğ—^‚¦‚é
+	//é¸æŠã®å…ˆé ­ã‚¢ã‚¤ãƒ†ãƒ ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’ä¸ãˆã‚‹
 	if(ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED) != -1){
 		ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST),
 			ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED),
@@ -1129,7 +1129,7 @@ int Clipboard_Get_WF_String(HWND hWnd, HTREEITEM hItem, char *buf, int DnDFlag)
 
 	Clipboard_CheckFormat
 
-	ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚Ìƒ`ƒFƒbƒN
+	ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ãƒã‚§ãƒƒã‚¯
 
 ******************************************************************************/
 
@@ -1148,7 +1148,7 @@ int Clipboard_CheckFormat(void)
 
 	Clipboard_GetData
 
-	ƒNƒŠƒbƒvƒ{[ƒh‚©‚çƒf[ƒ^‚ğæ“¾‚µˆ—‚·‚é
+	ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã—å‡¦ç†ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1159,24 +1159,24 @@ void Clipboard_GetData(HWND hWnd)
 	char *buf;
 	int ret;
 
-	//ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚Ìƒ`ƒFƒbƒN
+	//ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ãƒã‚§ãƒƒã‚¯
 	ret = Clipboard_CheckFormat();
 	if(ret <= 0){
 		return;
 	}
-	//ƒNƒŠƒbƒvƒ{[ƒh‚ğŠJ‚­
+	//ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‚’é–‹ã
 	if(OpenClipboard(hWnd) == FALSE){
 		return;
 	}
 
 	switch(ret)
 	{
-	case CF_TEXT:		//ƒeƒLƒXƒg
+	case CF_TEXT:		//ãƒ†ã‚­ã‚¹ãƒˆ
 		hClip = GetClipboardData(CF_TEXT);
 		if((buf = GlobalLock(hClip)) == NULL){
 			break;
 		}
-		//ƒvƒƒgƒRƒ‹‚ğ¯•Ê‚Å‚«‚½ê‡‚ÍƒAƒCƒeƒ€‚Æ‚µ‚Ä’Ç‰Á
+		//ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã‚’è­˜åˆ¥ã§ããŸå ´åˆã¯ã‚¢ã‚¤ãƒ†ãƒ ã¨ã—ã¦è¿½åŠ 
 		if(IsTerminatedMem(hClip, buf) == TRUE && GetProtocolIndex(buf) != -1){
 			SetFocus(GetDlgItem(hWnd, WWWC_LIST));
 			Item_UrlAdd(hWnd, NEWITEMNAME, buf, 0, NULL);
@@ -1184,12 +1184,12 @@ void Clipboard_GetData(HWND hWnd)
 		GlobalUnlock(hClip);
 		break;
 
-	case CF_HDROP:		//ƒhƒƒbƒvƒtƒ@ƒCƒ‹
+	case CF_HDROP:		//ãƒ‰ãƒ­ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«
 		hClip = GetClipboardData(CF_HDROP);
 		DragDrop_GetDropFiles(hWnd, hClip, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)));
 		break;
 
-	default:			//“Æ©Œ`®
+	default:			//ç‹¬è‡ªå½¢å¼
 		hItem = TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE));
 
 		hClip = GetClipboardData(WWWC_ClipFormat);
@@ -1204,7 +1204,7 @@ void Clipboard_GetData(HWND hWnd)
 		WaitCursor(TRUE);
 
 		UpdateItemFlag = UF_COPY;
-		//ƒAƒCƒeƒ€‚ğ’Ç‰Á
+		//ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ 
 		ret = Clipboard_Get_WF_String(hWnd, hItem, buf, 0);
 		GlobalUnlock(hClip);
 

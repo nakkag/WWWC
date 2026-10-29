@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -50,9 +50,9 @@ HACCEL hToolAccel;
 struct TP_TOOLS *ToolList;
 int ToolListCnt = 0;
 
-//ŠO•”QÆ
-extern HINSTANCE g_hinst;				//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
-extern HWND WWWCWnd;					//–{‘Ì
+//å¤–éƒ¨å‚ç…§
+extern HINSTANCE g_hinst;				//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
+extern HWND WWWCWnd;					//æœ¬ä½“
 extern struct TP_PROTOCOL *tpProtocol;
 extern int ProtocolCnt;
 
@@ -63,7 +63,7 @@ extern int gCheckFlag;
 
 	FreeTool
 
-	ƒc[ƒ‹î•ñ‚ğ‰ğ•ú‚·‚é
+	ãƒ„ãƒ¼ãƒ«æƒ…å ±ã‚’è§£æ”¾ã™ã‚‹
 
 ******************************************************************************/
 
@@ -71,7 +71,7 @@ void FreeTool(void)
 {
 	int i;
 
-	//ƒc[ƒ‹î•ñ‚ğ‰ğ•ú
+	//ãƒ„ãƒ¼ãƒ«æƒ…å ±ã‚’è§£æ”¾
 	for(i = 0;i < ToolListCnt;i++){
 		if(ToolList[i].lib != NULL){
 			FreeLibrary(ToolList[i].lib);
@@ -93,7 +93,7 @@ void FreeTool(void)
 
 	CreateToolAccelerator
 
-	ƒc[ƒ‹‚ÌƒVƒ‡[ƒgƒJƒbƒgƒL[‚ğì¬
+	ãƒ„ãƒ¼ãƒ«ã®ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã‚’ä½œæˆ
 
 ******************************************************************************/
 
@@ -131,7 +131,7 @@ void CreateToolAccelerator(void)
 
 	SetToolMenu
 
-	ƒEƒBƒ“ƒhƒEƒƒjƒ…[‚Ìƒc[ƒ‹‚ğİ’è‚·‚é
+	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒ„ãƒ¼ãƒ«ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -153,11 +153,11 @@ void SetToolMenu(HWND hWnd)
 	}
 
 	MenuCnt = 0;
-	//ƒc[ƒ‹‚ÌƒŠƒXƒg‚©‚çƒƒjƒ…[‚ğì¬
+	//ãƒ„ãƒ¼ãƒ«ã®ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ä½œæˆ
 	for(i = 0;i < ToolListCnt;i++){
 		if((ToolList[i].Action & TOOL_EXEC_WINDOWMENU) != 0 && ToolList[i].title[0] != '\0'){
 			if(lstrcmp(ToolList[i].title, "-") == 0){
-				// ƒƒjƒ…[–¼‚ª "-" ‚¾‚Á‚½ê‡‚ÍƒZƒpƒŒ[ƒ^‚É‚·‚é
+				// ãƒ¡ãƒ‹ãƒ¥ãƒ¼åãŒ "-" ã ã£ãŸå ´åˆã¯ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ã«ã™ã‚‹
 				AppendMenu(ToolMenu, MF_SEPARATOR, 0, NULL);
 			}else{
 				p = iStrCpy(buf, ToolList[i].title);
@@ -202,7 +202,7 @@ void SetToolMenu(HWND hWnd)
 
 	DllToolExec
 
-	DLL‚Ìƒc[ƒ‹‚ğÀs‚·‚é
+	DLLã®ãƒ„ãƒ¼ãƒ«ã‚’å®Ÿè¡Œã™ã‚‹
 
 ******************************************************************************/
 
@@ -218,18 +218,18 @@ int DllToolExec(HWND hWnd, int i, struct TPITEM **ToolItemList, int ToolItemList
 		}
 	}
 
-	//ƒc[ƒ‹‚ÌŠÖ”–¼‚©‚çƒAƒhƒŒƒX‚ğæ“¾
+	//ãƒ„ãƒ¼ãƒ«ã®é–¢æ•°åã‹ã‚‰ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—
 	if(ToolList[i].Func_Tool == NULL){
 		ToolList[i].Func_Tool = GetProcAddress((HMODULE)ToolList[i].lib, ToolList[i].func);
 	}
 	if(ToolList[i].Func_Tool == NULL){
 		ErrMsg(hWnd, GetLastError(), NULL);
 	}else{
-		//DLL“à‚Ìƒc[ƒ‹‚ğÀs
+		//DLLå†…ã®ãƒ„ãƒ¼ãƒ«ã‚’å®Ÿè¡Œ
 		ret = ToolList[i].Func_Tool(hWnd, ToolItemList, ToolItemListCnt, type, CheckType);
 	}
 	if(WWWCWnd == NULL || IsWindow(WWWCWnd) == 0){
-		//ƒvƒƒZƒX‚Ì‹­§I—¹
+		//ãƒ—ãƒ­ã‚»ã‚¹ã®å¼·åˆ¶çµ‚äº†
 		exit(0);
 	}
 	return ret;
@@ -240,7 +240,7 @@ int DllToolExec(HWND hWnd, int i, struct TPITEM **ToolItemList, int ToolItemList
 
 	DllToolProp
 
-	DLL‚Ìƒc[ƒ‹‚ÌƒvƒƒpƒeƒB‚ğ•\¦
+	DLLã®ãƒ„ãƒ¼ãƒ«ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¡¨ç¤º
 
 ******************************************************************************/
 
@@ -255,15 +255,15 @@ static int DllToolProp(HWND hWnd, char *File, char *Func)
 		return 0;
 	}
 
-	//ƒc[ƒ‹‚ÌŠÖ”–¼‚©‚çƒAƒhƒŒƒX‚ğæ“¾
+	//ãƒ„ãƒ¼ãƒ«ã®é–¢æ•°åã‹ã‚‰ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—
 	Func_Tool = GetProcAddress((HMODULE)hLib, Func);
 	if(Func_Tool != NULL){
-		//DLL“à‚Ìƒc[ƒ‹‚ğÀs
+		//DLLå†…ã®ãƒ„ãƒ¼ãƒ«ã‚’å®Ÿè¡Œ
 		ret = Func_Tool(hWnd, NULL, -1, TOOL_EXEC_PORP, 0);
 	}
 	FreeLibrary(hLib);
 	if(WWWCWnd == NULL || IsWindow(WWWCWnd) == 0){
-		//ƒvƒƒZƒX‚Ì‹­§I—¹
+		//ãƒ—ãƒ­ã‚»ã‚¹ã®å¼·åˆ¶çµ‚äº†
 		exit(0);
 	}
 	return ret;
@@ -274,7 +274,7 @@ static int DllToolProp(HWND hWnd, char *File, char *Func)
 
 	ExecTool
 
-	ƒc[ƒ‹‚ğÀs
+	ãƒ„ãƒ¼ãƒ«ã‚’å®Ÿè¡Œ
 
 ******************************************************************************/
 
@@ -304,20 +304,20 @@ void ExecTool(HWND hWnd, int id, BOOL MenuFlag)
 	}
 
 	if((ToolList[id].Action & TOOL_EXEC_SAVEFOLDER) != 0){
-		//ƒtƒHƒ‹ƒ_‚Ì“à—e‚ğ•Û‘¶
+		//ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã‚’ä¿å­˜
 		SendMessage(hWnd, WM_FOLDER_SAVE, 0, 0);
 	}
 
 	if(MenuFlag == TRUE){
-		//ƒEƒBƒ“ƒhƒEƒƒjƒ…[
+		//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 		i = tpTreeInfo->ItemListCnt;
 		ToolItemList = Item_ProtocolSelect(tpTreeInfo->ItemList, &i, ToolList[id].Protocol);
 		if(ToolItemList != NULL){
 			if(str_match("*.dll", ToolList[id].FileName) == TRUE){
-				//DLL‚ÌÀs
+				//DLLã®å®Ÿè¡Œ
 				DllToolExec(hWnd, id, ToolItemList, i, TOOL_EXEC_WINDOWMENU, 0);
 			}else{
-				//ƒc[ƒ‹‚Éİ’è‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ğÀs
+				//ãƒ„ãƒ¼ãƒ«ã«è¨­å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’å®Ÿè¡Œ
 				ExecItemFile(hWnd, ToolList[id].FileName, ToolList[id].CommandLine, NULL,
 					ToolList[id].Action & TOOL_EXEC_SYNC);
 			}
@@ -330,16 +330,16 @@ void ExecTool(HWND hWnd, int id, BOOL MenuFlag)
 			GlobalFree(TmpItemList);
 		}
 		if(ToolItemList != NULL){
-			//ƒAƒCƒeƒ€ƒƒjƒ…[
+			//ã‚¢ã‚¤ãƒ†ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 			if(str_match("*.dll", ToolList[id].FileName) == TRUE){
-				//DLL‚ÌÀs
+				//DLLã®å®Ÿè¡Œ
 				DllToolExec(hWnd, id, ToolItemList, i, TOOL_EXEC_ITEMMENU, 0);
 			}else{
 				for(j = 0; j < i; j++){
 					if((*(ToolItemList + j)) == NULL){
 						continue;
 					}
-					//ƒc[ƒ‹‚Éİ’è‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ğÀs
+					//ãƒ„ãƒ¼ãƒ«ã«è¨­å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’å®Ÿè¡Œ
 					ExecItemFile(hWnd, ToolList[id].FileName, ToolList[id].CommandLine, (*(ToolItemList + j)),
 						ToolList[id].Action & TOOL_EXEC_SYNC);
 				}
@@ -352,11 +352,11 @@ void ExecTool(HWND hWnd, int id, BOOL MenuFlag)
 	}
 
 	if((ToolList[id].Action & TOOL_EXEC_SAVEFOLDER) != 0){
-		//ƒtƒHƒ‹ƒ_‚Ì“à—e‚ğ“Ç‚İ’¼‚·
+		//ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã‚’èª­ã¿ç›´ã™
 		SendMessage(hWnd, WM_FOLDER_LOAD, 0, 0);
 	}
 
-	//ƒAƒCƒRƒ“‚Ì‰Šú‰»
+	//ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 	if(ToolList[id].Action & TOOL_EXEC_INITITEM){
 		if(MenuFlag == TRUE){
 			i = tpTreeInfo->ItemListCnt;
@@ -377,7 +377,7 @@ void ExecTool(HWND hWnd, int id, BOOL MenuFlag)
 			TreeView_SetIconState(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), 0);
 		}
 	}
-	//ƒtƒHƒ‹ƒ_‚Ì“à—e‚Ì•Û‘¶
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã®ä¿å­˜
 	if(tpTreeInfo != NULL){
 		if(hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
 			ListView_RefreshItem(GetDlgItem(hWnd, WWWC_LIST));
@@ -391,7 +391,7 @@ void ExecTool(HWND hWnd, int id, BOOL MenuFlag)
 
 	SubItemExecTool
 
-	ƒAƒCƒeƒ€ƒŠƒXƒg‚©‚çƒc[ƒ‹‚ÌÀs
+	ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ„ãƒ¼ãƒ«ã®å®Ÿè¡Œ
 
 ******************************************************************************/
 
@@ -403,12 +403,12 @@ void SubItemExecTool(HWND hWnd, int id, struct TPITEM **ToolItemList, int cnt, i
 		return;
 	}
 	if((ToolList[id].Action & TOOL_EXEC_SAVEFOLDER) != 0){
-		//ƒtƒHƒ‹ƒ_‚Ì“à—e‚ğ•Û‘¶
+		//ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã‚’ä¿å­˜
 		SendMessage(WWWCWnd, WM_FOLDER_SAVE, 0, 0);
 	}
 
 	if(str_match("*.dll", ToolList[id].FileName) == TRUE){
-		//DLL‚ÌÀs
+		//DLLã®å®Ÿè¡Œ
 		DllToolExec(hWnd, id, ToolItemList, cnt, Action, CheckType);
 	}else{
 		if(Action == TOOL_EXEC_ITEMMENU){
@@ -416,7 +416,7 @@ void SubItemExecTool(HWND hWnd, int id, struct TPITEM **ToolItemList, int cnt, i
 				if((*(ToolItemList + j)) == NULL){
 					continue;
 				}
-				//ƒc[ƒ‹‚Éİ’è‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ğÀs
+				//ãƒ„ãƒ¼ãƒ«ã«è¨­å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’å®Ÿè¡Œ
 				ExecItemFile(hWnd, ToolList[id].FileName, ToolList[id].CommandLine, (*(ToolItemList + j)),
 					ToolList[id].Action & TOOL_EXEC_SYNC);
 			}
@@ -435,7 +435,7 @@ void SubItemExecTool(HWND hWnd, int id, struct TPITEM **ToolItemList, int cnt, i
 
 	SetDLLToolListProc
 
-	DLL“à‚Ìƒc[ƒ‹‚ğæ“¾‚µ‚ÄƒŠƒXƒg•\¦‚·‚éƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	DLLå†…ã®ãƒ„ãƒ¼ãƒ«ã‚’å–å¾—ã—ã¦ãƒªã‚¹ãƒˆè¡¨ç¤ºã™ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -463,7 +463,7 @@ static BOOL CALLBACK SetDLLToolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 			break;
 		}
 
-		//ƒc[ƒ‹æ“¾ŠÖ”‚ÌƒAƒhƒŒƒX‚ğæ“¾
+		//ãƒ„ãƒ¼ãƒ«å–å¾—é–¢æ•°ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—
 		Func_GetToolList = GetProcAddress((HMODULE)hLib, "GetToolList");
 		if(Func_GetToolList == NULL){
 			ErrMsg(hDlg, GetLastError(), NULL);
@@ -472,7 +472,7 @@ static BOOL CALLBACK SetDLLToolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 			break;
 		}
 
-		//ƒc[ƒ‹î•ñ‚ğæ“¾
+		//ãƒ„ãƒ¼ãƒ«æƒ…å ±ã‚’å–å¾—
 		cnt = 0;
 		while(1){
 			ZeroMemory(&GetTool, sizeof(struct TP_GETTOOL));
@@ -492,7 +492,7 @@ static BOOL CALLBACK SetDLLToolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 
 	case WM_COMMAND:
 		if(HIWORD(wParam) == LBN_DBLCLK){
-			//ƒŠƒXƒg‚Å€–Ú‚ªƒ_ƒuƒ‹ƒNƒŠƒbƒN‚³‚ê‚½ê‡
+			//ãƒªã‚¹ãƒˆã§é …ç›®ãŒãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸå ´åˆ
 			if((HWND)lParam == GetDlgItem(hDlg, IDC_LIST_DLLENTRY)){
 				SendMessage(hDlg, WM_COMMAND, IDOK, 0);
 			}
@@ -501,7 +501,7 @@ static BOOL CALLBACK SetDLLToolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 		switch(wParam)
 		{
 		case IDOK:
-			//ƒŠƒXƒg‚Ì‘I‘ğ€–Ú‚ğæ“¾
+			//ãƒªã‚¹ãƒˆã®é¸æŠé …ç›®ã‚’å–å¾—
 			i = SendDlgItemMessage(hDlg, IDC_LIST_DLLENTRY, LB_GETCURSEL, 0, 0);
 			if(i == -1){
 				MessageBox(hDlg, EMSG_SELECT_TOOL, EMSG_SELECT_TITLE_TOOL, MB_OK | MB_ICONEXCLAMATION);
@@ -517,7 +517,7 @@ static BOOL CALLBACK SetDLLToolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 				break;
 			}
 
-			//ƒc[ƒ‹æ“¾ŠÖ”‚ÌƒAƒhƒŒƒX‚ğæ“¾
+			//ãƒ„ãƒ¼ãƒ«å–å¾—é–¢æ•°ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—
 			Func_GetToolList = GetProcAddress((HMODULE)hLib, "GetToolList");
 			if(Func_GetToolList == NULL){
 				ErrMsg(hDlg, GetLastError(), NULL);
@@ -554,7 +554,7 @@ static BOOL CALLBACK SetDLLToolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 
 	EnableProtocol
 
-	ƒvƒƒgƒRƒ‹İ’è‚Ì—LŒø–³ŒøØ‚è‘Ö‚¦
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«è¨­å®šã®æœ‰åŠ¹ç„¡åŠ¹åˆ‡ã‚Šæ›¿ãˆ
 
 ******************************************************************************/
 
@@ -575,7 +575,7 @@ static void EnableProtocol(HWND hDlg)
 
 	ToolInfoToDialog
 
-	ƒc[ƒ‹‚Ìî•ñ‚ğƒ_ƒCƒƒO‚É•\¦‚·‚é
+	ãƒ„ãƒ¼ãƒ«ã®æƒ…å ±ã‚’ãƒ€ã‚¤ãƒ­ã‚°ã«è¡¨ç¤ºã™ã‚‹
 
 ******************************************************************************/
 
@@ -587,7 +587,7 @@ static void ToolInfoToDialog(HWND hDlg, struct TP_TOOLS *tpSetTool, char *funcSt
 	SendDlgItemMessage(hDlg, IDC_EDIT_TITLE, WM_SETTEXT, 0, (LPARAM)tpSetTool->title);
 	SendDlgItemMessage(hDlg, IDC_EDIT_FILENAME, WM_SETTEXT, 0, (LPARAM)tpSetTool->FileName);
 
-	/* ƒzƒbƒgƒL[‚Ìİ’è */
+	/* ãƒ›ãƒƒãƒˆã‚­ãƒ¼ã®è¨­å®š */
 	i = 0;
 	if(tpSetTool->Ctrl & 4){
 		i |= HOTKEYF_SHIFT;
@@ -645,7 +645,7 @@ static void ToolInfoToDialog(HWND hDlg, struct TP_TOOLS *tpSetTool, char *funcSt
 
 	VisibleToolOption
 
-	g—p‚Å‚«‚È‚¢ƒIƒvƒVƒ‡ƒ“‚ğ”ñ•\¦‚É‚·‚é
+	ä½¿ç”¨ã§ããªã„ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’éè¡¨ç¤ºã«ã™ã‚‹
 
 ******************************************************************************/
 
@@ -685,15 +685,15 @@ static void VisibleToolOption(HWND hDlg, int HideOption)
 
 	SetToolExeProc
 
-	ƒc[ƒ‹‚Ì•ÒW‚ğs‚¤ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	ãƒ„ãƒ¼ãƒ«ã®ç·¨é›†ã‚’è¡Œã†ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
 static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	struct TP_TOOLS *tpSetTool;
-	HMENU hMenu;		//ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚Ìƒnƒ“ƒhƒ‹
-	RECT ButtonRect;	//ƒ{ƒ^ƒ“‚ÌˆÊ’u
+	HMENU hMenu;		//ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
+	RECT ButtonRect;	//ãƒœã‚¿ãƒ³ã®ä½ç½®
 	HINSTANCE hLib;
 	FARPROC Func_GetToolHideOption;
 	char buf[BUFSIZE], tmp[BUFSIZE];
@@ -712,7 +712,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		hThemeP = open_theme(GetDlgItem(hDlg, IDC_BUTTON_PUROTOCOL), L"SCROLLBAR");
 		hThemeC = open_theme(GetDlgItem(hDlg, IDC_BUTTON_COMMANDLINE), L"SCROLLBAR");
 #endif	//OP_XP_STYLE
-		//ƒXƒsƒ“ƒRƒ“ƒgƒ[ƒ‹‚Ìİ’è
+		//ã‚¹ãƒ”ãƒ³ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®è¨­å®š
 		SendDlgItemMessage(hDlg, IDC_SPIN_MENUINDEX,
 			UDM_SETRANGE, 0, (LPARAM)MAKELONG((short)100, (short)-1));
 
@@ -729,7 +729,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		break;
 
 	case WM_DRAWITEM:
-		//•`‰æ‚·‚éƒtƒŒ[ƒ€ƒRƒ“ƒgƒ[ƒ‹ƒXƒ^ƒCƒ‹‚ğİ’è
+		//æç”»ã™ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
 		switch((UINT)wParam)
 		{
 		case IDC_BUTTON_PUROTOCOL:
@@ -740,7 +740,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		default:
 			return FALSE;
 		}
-		//ƒ{ƒ^ƒ“‚Ì•`‰æ
+		//ãƒœã‚¿ãƒ³ã®æç”»
 #ifdef OP_XP_STYLE
 		if(hThemeP != 0 && hThemeC != 0){
 			draw_theme_scroll((LPDRAWITEMSTRUCT)lParam, i, (i == IDC_BUTTON_PUROTOCOL) ? hThemeP : hThemeC);
@@ -754,7 +754,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 
 #ifdef OP_XP_STYLE
 	case WM_THEMECHANGED:
-		//ƒe[ƒ}‚Ì•ÏX
+		//ãƒ†ãƒ¼ãƒã®å¤‰æ›´
 		if(hThemeP != 0 && hThemeC != 0){
 			close_theme(hThemeP);
 			close_theme(hThemeC);
@@ -779,7 +779,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		if(hLib == NULL){
 			break;
 		}
-		//ƒc[ƒ‹æ“¾ŠÖ”‚ÌƒAƒhƒŒƒX‚ğæ“¾
+		//ãƒ„ãƒ¼ãƒ«å–å¾—é–¢æ•°ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—
 		Func_GetToolHideOption = GetProcAddress((HMODULE)hLib, "GetToolHideOption");
 		if(Func_GetToolHideOption == NULL){
 			FreeLibrary(hLib);
@@ -813,7 +813,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			EnableProtocol(hDlg);
 			break;
 
-		//ƒtƒ@ƒCƒ‹‘I‘ğ
+		//ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠ
 		case IDC_BUTTON_FILESELECT:
 			SetFocus(GetDlgItem(hDlg, IDC_EDIT_FILENAME));
 			if(FileSelect(hDlg, "", TOOL_FILE_FILTER, NULL, buf, NULL, 1) == -1){
@@ -827,7 +827,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 				*tmp = '\0';
 				SendDlgItemMessage(hDlg, IDC_EDIT_TITLE, WM_GETTEXT, BUFSIZE - 1, (LPARAM)tmp);
 				if(*tmp == '\0'){
-					//ƒ^ƒCƒgƒ‹‚Ìİ’è
+					//ã‚¿ã‚¤ãƒˆãƒ«ã®è¨­å®š
 					r = "";
 					for(p = buf; *p != '\0'; p++){
 						if(IS_LEAD_BYTE(p)){
@@ -844,7 +844,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			}
 			lParam = (LPARAM)buf;
 
-		//DLL“à‚ÌŠÖ”‘I‘ğ
+		//DLLå†…ã®é–¢æ•°é¸æŠ
 		case DLLSELECT:
 			tpSetTool = (struct TP_TOOLS *)GlobalAlloc(GPTR, sizeof(struct TP_TOOLS));
 			if(tpSetTool == NULL){
@@ -867,7 +867,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			GlobalFree(tpSetTool);
 			break;
 
-		//ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚à‚µ‚­‚ÍŠÖ” ‘I‘ğƒ{ƒ^ƒ“
+		//ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‚‚ã—ãã¯é–¢æ•° é¸æŠãƒœã‚¿ãƒ³
 		case IDC_BUTTON_COMMANDLINE:
 			*buf = '\0';
 			SendDlgItemMessage(hDlg, IDC_EDIT_FILENAME, WM_GETTEXT, BUFSIZE - 1, (LPARAM)buf);
@@ -895,7 +895,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			DestroyMenu(hMenu);
 			break;
 
-		//ƒvƒƒgƒRƒ‹‘I‘ğƒƒjƒ…[•\¦
+		//ãƒ—ãƒ­ãƒˆã‚³ãƒ«é¸æŠãƒ¡ãƒ‹ãƒ¥ãƒ¼è¡¨ç¤º
 		case IDC_BUTTON_PUROTOCOL:
 			hMenu = CreatePopupMenu();
 
@@ -922,7 +922,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			*tpSetTool->FileName = '\0';
 			SendDlgItemMessage(hDlg, IDC_EDIT_FILENAME, WM_GETTEXT, BUFSIZE - 1, (LPARAM)tpSetTool->FileName);
 
-			/* ƒzƒbƒgƒL[‚Ìæ“¾ */
+			/* ãƒ›ãƒƒãƒˆã‚­ãƒ¼ã®å–å¾— */
 			i = SendDlgItemMessage(hDlg,IDC_HOTKEY, HKM_GETHOTKEY, 0, 0);
 			tpSetTool->Key = LOBYTE(i);
 			i = HIBYTE(i);
@@ -982,7 +982,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 
 		default:
 			if(LOWORD(wParam) >= ID_MENU_PUROTOCOL && LOWORD(wParam) < ID_MENU_PUROTOCOL + 100){
-				//ƒvƒƒgƒRƒ‹‘I‘ğƒƒjƒ…[
+				//ãƒ—ãƒ­ãƒˆã‚³ãƒ«é¸æŠãƒ¡ãƒ‹ãƒ¥ãƒ¼
 				i = LOWORD(wParam) - ID_MENU_PUROTOCOL;
 				if(i >= ProtocolCnt){
 					SendDlgItemMessage(hDlg, IDC_EDIT_PROTOCOL, WM_SETTEXT, 0, (LPARAM)"*");
@@ -1017,7 +1017,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 				SetFocus(GetDlgItem(hDlg, IDC_EDIT_PROTOCOL));
 
 			}else if(LOWORD(wParam) >= ID_MENU_COMMANDLINE && LOWORD(wParam) < ID_MENU_COMMANDLINE + 100){
-				//ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‘I‘ğƒƒjƒ…[
+				//ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³é¸æŠãƒ¡ãƒ‹ãƒ¥ãƒ¼
 				*buf = '\0';
 				SendDlgItemMessage(hDlg, IDC_EDIT_COMMANDLINE, WM_GETTEXT, BUFSIZE - 1, (LPARAM)buf);
 				switch(LOWORD(wParam) - ID_MENU_COMMANDLINE)
@@ -1055,7 +1055,7 @@ static BOOL CALLBACK SetToolExeProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 
 	ListToToolInfo
 
-	ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒeƒ€‚æ‚èƒc[ƒ‹‚Ìî•ñ‚ğİ’è‚·‚é
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚ˆã‚Šãƒ„ãƒ¼ãƒ«ã®æƒ…å ±ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -1089,7 +1089,7 @@ static void ListToToolInfo(HWND hListView, int SelectItem, struct TP_TOOLS *tpSe
 
 	ToolInfoToList
 
-	ƒc[ƒ‹‚Ìî•ñ‚ğƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒeƒ€‚Éİ’è‚·‚é
+	ãƒ„ãƒ¼ãƒ«ã®æƒ…å ±ã‚’ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã«è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -1148,7 +1148,7 @@ static void ToolInfoToList(HWND hListView, int SelectItem, struct TP_TOOLS *tpSe
 
 	SetLvToolIcon
 
-	ƒŠƒXƒgƒrƒ…[‚ÉƒAƒCƒRƒ“‚ğİ’è
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¨­å®š
 
 ******************************************************************************/
 
@@ -1185,7 +1185,7 @@ static void SetLvToolIcon(HWND hListView)
 
 	SetToolProc
 
-	ƒc[ƒ‹î•ñˆê——‚ÌƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	ãƒ„ãƒ¼ãƒ«æƒ…å ±ä¸€è¦§ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -1208,7 +1208,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		hThemeUp = open_theme(GetDlgItem(hDlg, IDC_BUTTON_UP), L"SCROLLBAR");
 		hThemeDown = open_theme(GetDlgItem(hDlg, IDC_BUTTON_DOWN), L"SCROLLBAR");
 #endif	//OP_XP_STYLE
-		//ƒŠƒXƒgƒrƒ…[‚ÌƒJƒ‰ƒ€‚Ìİ’è
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ©ãƒ ã®è¨­å®š
 		i = 0;
 		lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 
@@ -1281,7 +1281,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		lvc.iSubItem = i;
 		ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST_TOOL), i, &lvc);
 
-		//ƒŠƒXƒgƒrƒ…[‚ÌƒXƒ^ƒCƒ‹‚Ìİ’è
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¹ã‚¿ã‚¤ãƒ«ã®è¨­å®š
 		SetWindowLong(GetDlgItem(hDlg, IDC_LIST_TOOL), GWL_STYLE,
 			GetWindowLong(GetDlgItem(hDlg, IDC_LIST_TOOL), GWL_STYLE) | LVS_SHOWSELALWAYS);
 		SendDlgItemMessage(hDlg, IDC_LIST_TOOL, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
@@ -1290,7 +1290,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		ListView_SetRedraw(GetDlgItem(hDlg, IDC_LIST_TOOL), LDF_NODRAW);
 		ListView_SetItemCount(GetDlgItem(hDlg, IDC_LIST_TOOL), ToolListCnt);
-		//ƒc[ƒ‹î•ñ‚ğƒŠƒXƒgƒrƒ…[‚É’Ç‰Á
+		//ãƒ„ãƒ¼ãƒ«æƒ…å ±ã‚’ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¿½åŠ 
 		if(ToolList != NULL){
 			for(i = 0;i < ToolListCnt;i++){
 				if((ToolList + i) == NULL){
@@ -1322,7 +1322,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_DRAWITEM:
-		//•`‰æ‚·‚éƒtƒŒ[ƒ€ƒRƒ“ƒgƒ[ƒ‹ƒXƒ^ƒCƒ‹‚ğİ’è
+		//æç”»ã™ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
 		switch((UINT)wParam)
 		{
 		case IDC_BUTTON_UP:
@@ -1336,7 +1336,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		default:
 			return FALSE;
 		}
-		//ƒ{ƒ^ƒ“‚Ì•`‰æ
+		//ãƒœã‚¿ãƒ³ã®æç”»
 #ifdef OP_XP_STYLE
 		if(hThemeUp != 0 && hThemeDown != 0){
 			draw_theme_scroll((LPDRAWITEMSTRUCT)lParam, i, (i == DFCS_SCROLLUP) ? hThemeUp : hThemeDown);
@@ -1350,7 +1350,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 #ifdef OP_XP_STYLE
 	case WM_THEMECHANGED:
-		//ƒe[ƒ}‚Ì•ÏX
+		//ãƒ†ãƒ¼ãƒã®å¤‰æ›´
 		if(hThemeUp != 0 && hThemeDown != 0){
 			close_theme(hThemeUp);
 			close_theme(hThemeDown);
@@ -1391,7 +1391,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_COMMAND:
 		switch(wParam)
 		{
-		//ƒAƒCƒeƒ€‚ğã‚ÉˆÚ“®
+		//ã‚¢ã‚¤ãƒ†ãƒ ã‚’ä¸Šã«ç§»å‹•
 		case IDC_BUTTON_UP:
 			if((SelectItem = ListView_GetNextItem(GetDlgItem(hDlg, IDC_LIST_TOOL), -1, LVNI_SELECTED)) == -1){
 				break;
@@ -1403,7 +1403,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			SetFocus(GetDlgItem(hDlg, IDC_BUTTON_UP));
 			break;
 
-		//ƒAƒCƒeƒ€‚ğ‰º‚ÉˆÚ“®
+		//ã‚¢ã‚¤ãƒ†ãƒ ã‚’ä¸‹ã«ç§»å‹•
 		case IDC_BUTTON_DOWN:
 			if((SelectItem = ListView_GetNextItem(GetDlgItem(hDlg, IDC_LIST_TOOL), -1, LVNI_SELECTED)) == -1){
 				break;
@@ -1426,7 +1426,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			if(ToolList == NULL){
 				abort();
 			}
-			//ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒeƒ€‚ğƒc[ƒ‹î•ñ‚Éİ’è‚·‚é
+			//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒ„ãƒ¼ãƒ«æƒ…å ±ã«è¨­å®šã™ã‚‹
 			for(i = 0;i < ToolListCnt;i++){
 				ListToToolInfo(GetDlgItem(hDlg, IDC_LIST_TOOL), i, ToolList + i);
 				if(str_match("*.dll", ToolList[i].FileName) == TRUE){
@@ -1438,7 +1438,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			ToolWnd = NULL;
 			break;
 
-		//’Ç‰Á
+		//è¿½åŠ 
 		case IDC_BUTTON_ADD:
 			tpSetTool = (struct TP_TOOLS *)GlobalAlloc(GPTR, sizeof(struct TP_TOOLS));
 			if(tpSetTool == NULL){
@@ -1457,7 +1457,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GlobalFree(tpSetTool);
 			break;
 
-		//•ÒW
+		//ç·¨é›†
 		case IDC_BUTTON_PEDIT:
 			if((SelectItem = ListView_GetNextItem(GetDlgItem(hDlg, IDC_LIST_TOOL), -1, LVNI_SELECTED)) == -1){
 				break;
@@ -1475,7 +1475,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GlobalFree(tpSetTool);
 			break;
 
-		//íœ
+		//å‰Šé™¤
 		case IDC_BUTTON_DELETE:
 			if((SelectItem = ListView_GetNextItem(GetDlgItem(hDlg, IDC_LIST_TOOL), -1, LVNI_SELECTED)) == -1){
 				break;
@@ -1489,7 +1489,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
 			break;
 
-		//ƒvƒƒpƒeƒB
+		//ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 		case IDC_BUTTON_EDIT:
 			if((SelectItem = ListView_GetNextItem(GetDlgItem(hDlg, IDC_LIST_TOOL), -1, LVNI_SELECTED)) != -1){
 				char fname[BUFSIZE], funcname[BUFSIZE];
@@ -1500,11 +1500,11 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				ListView_GetItemText(GetDlgItem(hDlg, IDC_LIST_TOOL), SelectItem, 9, funcname, BUFSIZE - 1);
 
 				if(*funcname == '\0'){
-					//ŠÖ”‚ª–³‚¢ê‡‚Í•ÒWƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚±‚Æ‚É‚·‚é
+					//é–¢æ•°ãŒç„¡ã„å ´åˆã¯ç·¨é›†ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸã“ã¨ã«ã™ã‚‹
 					SendMessage(hDlg, WM_COMMAND, IDC_BUTTON_PEDIT, 0);
 					break;
 				}
-				//DLL“à‚ÌŠÖ”‚ğƒvƒƒpƒeƒBƒ‚[ƒh‚ÅŒÄ‚Ô
+				//DLLå†…ã®é–¢æ•°ã‚’ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ¢ãƒ¼ãƒ‰ã§å‘¼ã¶
 				if(DllToolProp(hDlg, fname, funcname) == 0){
 					MessageBox(hDlg, EMSG_PROP, EMSG_PROP_TITLE, MB_OK | MB_ICONEXCLAMATION);
 				}
@@ -1513,7 +1513,7 @@ BOOL CALLBACK SetToolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 
-	//DLL‚©‚ç‚ÌƒƒbƒZ[ƒW‚ğ–{‘Ì‚É“]‘—
+	//DLLã‹ã‚‰ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æœ¬ä½“ã«è»¢é€
 	case WM_GETVERSION:
 	case WM_GETMAINWINDOW:
 	case WM_GETUPWINDOW:

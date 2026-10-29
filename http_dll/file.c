@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
 
 	WWWC (wwwc.dll)
 
@@ -54,13 +54,13 @@ int ExecItem(HWND hWnd, char *buf, char *cmdline);
 
 	FILE_InitItem
 
-	�A�C�e���̏�����
+	アイテムの初期化
 
 ******************************************************************************/
 
 __declspec(dllexport) int CALLBACK FILE_InitItem(HWND hWnd, struct TPITEM *tpItemInfo)
 {
-	/* �X�V�}�[�N(*)���������� */
+	/* 更新マーク(*)を除去する */
 	if(tpItemInfo->Size != NULL && tpItemInfo->Size[0] != '\0' && tpItemInfo->Size[lstrlen(tpItemInfo->Size) - 1] == '*'){
 		tpItemInfo->Size[lstrlen(tpItemInfo->Size) - 1] = '\0';
 	}
@@ -75,7 +75,7 @@ __declspec(dllexport) int CALLBACK FILE_InitItem(HWND hWnd, struct TPITEM *tpIte
 
 	FILE_Initialize
 
-	�`�F�b�N�J�n�̏�����
+	チェック開始の初期化
 
 ******************************************************************************/
 
@@ -89,7 +89,7 @@ __declspec(dllexport) int CALLBACK FILE_Initialize(HWND hWnd, struct TPITEM *tpI
 
 	FILE_Cancel
 
-	�`�F�b�N�̃L�����Z��
+	チェックのキャンセル
 
 ******************************************************************************/
 
@@ -103,7 +103,7 @@ __declspec(dllexport) int CALLBACK FILE_Cancel(HWND hWnd, struct TPITEM *tpItemI
 
 	FILE_Timer
 
-	�^�C�}�[ (1�b�Ԋu)
+	タイマー (1秒間隔)
 
 ******************************************************************************/
 
@@ -117,7 +117,7 @@ __declspec(dllexport) int CALLBACK FILE_Timer(HWND hWnd, struct TPITEM *tpItemIn
 
 	FILE_Start
 
-	�`�F�b�N�̊J�n
+	チェックの開始
 
 ******************************************************************************/
 
@@ -143,20 +143,20 @@ __declspec(dllexport) int CALLBACK FILE_Start(HWND hWnd, struct TPITEM *tpItemIn
 	if((hFindFile = FindFirstFile(FileName, &FindData)) != INVALID_HANDLE_VALUE){
 		FindClose(hFindFile);
 
-		//�T�C�Y�̔�r
+		//サイズの比較
 		wsprintf(buf, "%ld", (long)FindData.nFileSizeLow);
-		/* �O��`�F�b�N���̂��̂Ɣ�r���� */
+		/* 前回チェック時のものと比較する */
 		if(GetOptionInt(tpItemInfo->Option1, 1) == 0 && LresultCmp(tpItemInfo->Size, buf) != 0){
 			CmpMsg = ST_UP;
 		}
-		/* �A�C�e���ɍ���̃`�F�b�N���e���Z�b�g���� */
+		/* アイテムに今回のチェック内容をセットする */
 		if(tpItemInfo->Size != NULL){
 			GlobalFree(tpItemInfo->Size);
 		}
 		tpItemInfo->Size = (char *)GlobalAlloc(GPTR, sizeof(char) * lstrlen(buf) + 1);
 		lstrcpy(tpItemInfo->Size, buf);
 
-		//�X�V���̔�r
+		//更新日の比較
 		FileTimeToLocalFileTime(&(FindData.ftLastWriteTime), &lFileTime);
 		FileTimeToSystemTime(&lFileTime, &fSysTime);
 
@@ -180,11 +180,11 @@ __declspec(dllexport) int CALLBACK FILE_Start(HWND hWnd, struct TPITEM *tpItemIn
 		}
 		wsprintf(buf, "%s %s", fDay, fTime);
 
-		/* �O��`�F�b�N���̂��̂Ɣ�r���� */
+		/* 前回チェック時のものと比較する */
 		if(GetOptionInt(tpItemInfo->Option1, 0) == 0 && LresultCmp(tpItemInfo->Date, buf) != 0){
 			CmpMsg = ST_UP;
 		}
-		/* �A�C�e���ɍ���̃`�F�b�N���e���Z�b�g���� */
+		/* アイテムに今回のチェック内容をセットする */
 		if(tpItemInfo->Date != NULL){
 			GlobalFree(tpItemInfo->Date);
 		}
@@ -202,7 +202,7 @@ __declspec(dllexport) int CALLBACK FILE_Start(HWND hWnd, struct TPITEM *tpItemIn
 
 	FILE_GetItemText
 
-	�N���b�v�{�[�h�p�A�C�e���̃e�L�X�g�̐ݒ�
+	クリップボード用アイテムのテキストの設定
 
 ******************************************************************************/
 
@@ -234,7 +234,7 @@ __declspec(dllexport) HANDLE CALLBACK FILE_GetItemText(struct TPITEM *tpItemInfo
 
 	FILE_CreateDropItem
 
-	�A�C�e���̃h���b�v�t�@�C���̐ݒ�
+	アイテムのドロップファイルの設定
 
 ******************************************************************************/
 
@@ -246,7 +246,7 @@ __declspec(dllexport) BOOL CALLBACK FILE_CreateDropItem(struct TPITEM *tpItemInf
 		return FALSE;
 	}
 	for(buf = tpItemInfo->CheckURL + lstrlen("file:"); *buf == '/' && *buf != '\0'; buf++);
-	//�Ăяo�����̃o�b�t�@�Ɏ��܂�Ȃ��p�X�͍쐬���Ȃ�
+	//呼び出し側のバッファに収まらないパスは作成しない
 	if(lstrlen(buf) >= BUFSIZE){
 		return FALSE;
 	}
@@ -259,7 +259,7 @@ __declspec(dllexport) BOOL CALLBACK FILE_CreateDropItem(struct TPITEM *tpItemInf
 
 	FILE_ExecItem
 
-	�A�C�e���̎��s
+	アイテムの実行
 
 ******************************************************************************/
 
@@ -273,7 +273,7 @@ __declspec(dllexport) int CALLBACK FILE_ExecItem(HWND hWnd, char *Action, struct
 			for(buf = tpItemInfo->CheckURL + lstrlen("file:"); *buf == '/' && *buf != '\0'; buf++);
 		}
 		if(buf != NULL && *buf != '\0'){
-			//�C�ӂ̃t�@�C�������s����邽�ߊm�F���Ă�����s����
+			//任意のファイルが実行されるため確認してから実行する
 			if(ConfirmOpenURL(hWnd, buf) == FALSE){
 				return -1;
 			}
@@ -283,7 +283,7 @@ __declspec(dllexport) int CALLBACK FILE_ExecItem(HWND hWnd, char *Action, struct
 			return -1;
 		}
 	}
-	// 1 ��Ԃ��ƃA�C�R��������������B
+	// 1 を返すとアイコンを初期化する。
 	return rc;
 }
 
@@ -292,7 +292,7 @@ __declspec(dllexport) int CALLBACK FILE_ExecItem(HWND hWnd, char *Action, struct
 
 	FilePropertyProc
 
-	�A�C�e���̃v���p�e�B�ݒ�_�C�A���O
+	アイテムのプロパティ設定ダイアログ
 
 ******************************************************************************/
 
@@ -306,12 +306,12 @@ static BOOL CALLBACK FilePropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
-		/* �E�B���h�E�ɃA�C�e������Ҕ����� */
+		/* ウィンドウにアイテム情報を待避する */
 		SetWindowLong(hDlg,DWL_USER,(long)lParam);
 
 		tpItemInfo = (struct TPITEM *)lParam;
 		
-		/* �A�C�e���̏�񂪋�łȂ��ꍇ�̓A�C�e���̓��e��\������ */
+		/* アイテムの情報が空でない場合はアイテムの内容を表示する */
 		if(tpItemInfo->Title != NULL){
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_TITLE), WM_SETTEXT, 0, (LPARAM)tpItemInfo->Title);
 		}else{
@@ -357,10 +357,10 @@ static BOOL CALLBACK FilePropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 			break;
 
 		case IDOK:
-			/* �E�B���h�E����A�C�e���̏����擾���� */
+			/* ウィンドウからアイテムの情報を取得する */
 			tpItemInfo = (struct TPITEM *)GetWindowLong(hDlg, DWL_USER);
 			
-			/* �^�C�g�� */
+			/* タイトル */
 			if(tpItemInfo->Title != NULL){
 				GlobalFree(tpItemInfo->Title);
 			}
@@ -376,7 +376,7 @@ static BOOL CALLBACK FilePropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_URL), WM_GETTEXT,
 				SendMessage(GetDlgItem(hDlg, IDC_EDIT_URL), WM_GETTEXTLENGTH, 0, 0) + 1, (LPARAM)tpItemInfo->CheckURL);
 
-			/* �R�����g */
+			/* コメント */
 			if(tpItemInfo->Comment != NULL){
 				GlobalFree(tpItemInfo->Comment);
 			}
@@ -384,7 +384,7 @@ static BOOL CALLBACK FilePropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_COMMENT), WM_GETTEXT,
 				SendMessage(GetDlgItem(hDlg, IDC_EDIT_COMMENT), WM_GETTEXTLENGTH, 0, 0) + 1, (LPARAM)tpItemInfo->Comment);
 
-			/* �`�F�b�N�I�v�V���� */
+			/* チェックオプション */
 			if(tpItemInfo->Option1 != NULL){
 				GlobalFree(tpItemInfo->Option1);
 			}
@@ -413,13 +413,13 @@ static BOOL CALLBACK FilePropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 
 	FILE_Property
 
-	�A�C�e���̃v���p�e�B
+	アイテムのプロパティ
 
 ******************************************************************************/
 
 __declspec(dllexport) int CALLBACK FILE_Property(HWND hWnd, struct TPITEM *tpItemInfo)
 {
-	/* �v���p�e�B�̃_�C�A���O��\������ */
+	/* プロパティのダイアログを表示する */
 	if(DialogBoxParam(ghinst, MAKEINTRESOURCE(IDD_DIALOG_FILEPROP), hWnd, FilePropertyProc, (long)tpItemInfo) == FALSE){
 		return -1;
 	}
@@ -431,7 +431,7 @@ __declspec(dllexport) int CALLBACK FILE_Property(HWND hWnd, struct TPITEM *tpIte
 
 	FILE_ProtocolProperty
 
-	�v���g�R���̃v���p�e�B
+	プロトコルのプロパティ
 
 ******************************************************************************/
 
@@ -445,7 +445,7 @@ __declspec(dllexport) int CALLBACK FILE_ProtocolProperty(HWND hWnd)
 
 	FILE_GetInfo
 
-	�v���g�R�����
+	プロトコル情報
 
 ******************************************************************************/
 
@@ -472,7 +472,7 @@ __declspec(dllexport) int CALLBACK FILE_GetInfo(struct TPPROTOCOLINFO *tpInfo)
 
 	FILE_EndNotify
 
-	WWWC�̏I���̒ʒm
+	WWWCの終了の通知
 
 ******************************************************************************/
 

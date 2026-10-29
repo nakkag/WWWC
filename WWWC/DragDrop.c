@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
 
 	WWWC
 
@@ -35,10 +35,10 @@
 #define FMT_TEXT				2
 #define FMT_HDROP				3
 
-#define NEWITEMNAME				"�V�����A�C�e��"
+#define NEWITEMNAME				"新しいアイテム"
 
-#define EMSG_ITEMREAD_TITLE		"�A�C�e���̓ǂݍ���"
-#define EMSG_ITEMREAD			"�A�C�e�����t�@�C�����J���܂���ł����B"
+#define EMSG_ITEMREAD_TITLE		"アイテムの読み込み"
+#define EMSG_ITEMREAD			"アイテム情報ファイルが開けませんでした。"
 
 
 /**************************************************************************
@@ -49,7 +49,7 @@ char **DropFileNameList;
 int DropFileCnt;
 UINT MenuEffect;
 
-//�O���Q��
+//外部参照
 extern char CuDir[];
 extern char TempDir[];
 extern struct TP_PROTOCOL *tpProtocol;
@@ -78,7 +78,7 @@ static UINT DragDrop_ShowMenu(HWND hWnd, BOOL defFlag);
 
 	DragDrop_SetDropFileMem
 
-	�h���b�v�t�@�C���̍쐬
+	ドロップファイルの作成
 
 ******************************************************************************/
 
@@ -87,7 +87,7 @@ HDROP DragDrop_SetDropFileMem(HWND hWnd)
 	if(DropFileNameList == NULL){
 		return NULL;
 	}
-	//�h���b�v�t�@�C�����X�g�̍쐬
+	//ドロップファイルリストの作成
 	return CreateDropFileMem(DropFileNameList, DropFileCnt);
 }
 
@@ -96,7 +96,7 @@ HDROP DragDrop_SetDropFileMem(HWND hWnd)
 
 	CreateDropFile
 
-	�h���b�v�t�@�C���p������̍쐬
+	ドロップファイル用文字列の作成
 
 ******************************************************************************/
 
@@ -127,7 +127,7 @@ static BOOL CreateDropFile(struct TPITEM *tpItemInfo, char *fPath, char *iPath, 
 
 	CreateTreeDropFiles
 
-	�K�w�I�Ƀh���b�v�t�@�C���̕�������쐬
+	階層的にドロップファイルの文字列を作成
 
 ******************************************************************************/
 
@@ -148,7 +148,7 @@ static void CreateTreeDropFiles(HWND hWnd, HTREEITEM hItem, char *fPath, char *i
 	}
 	ItemCnt = tpTreeInfo->ItemListCnt;
 
-	//�A�C�e���̃h���b�v�t�@�C����������쐬
+	//アイテムのドロップファイル文字列を作成
 	for(i = 0;i < ItemCnt;i++){
 		if((*(tpTreeInfo->ItemList + i)) == NULL){
 			continue;
@@ -156,11 +156,11 @@ static void CreateTreeDropFiles(HWND hWnd, HTREEITEM hItem, char *fPath, char *i
 		CreateDropFile((*(tpTreeInfo->ItemList + i)), fPath, iPath, ItemPath);
 	}
 
-	//�h���b�v�t�@�C���p�ꎞ�f�B���N�g���̍쐬
+	//ドロップファイル用一時ディレクトリの作成
 	cItem = TreeView_GetChild(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	while(cItem != NULL){
 		TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), cItem, buf);
-		//�p�X����������t�H���_�͍쐬���Ȃ�
+		//パスが長すぎるフォルダは作成しない
 		if(lstrlen(fPath) + 1 + lstrlen(iPath) + 1 + lstrlen(buf) >= MAX_PATH){
 			cItem = TreeView_GetNextSibling(GetDlgItem(hWnd, WWWC_TREE), cItem);
 			continue;
@@ -180,7 +180,7 @@ static void CreateTreeDropFiles(HWND hWnd, HTREEITEM hItem, char *fPath, char *i
 
 	DragDrop_CreateTreeDropFiles
 
-	�c���[�r���[�A�C�e�����h���b�v�t�@�C���̕�������쐬
+	ツリービューアイテムよりドロップファイルの文字列を作成
 
 ******************************************************************************/
 
@@ -194,22 +194,22 @@ BOOL DragDrop_CreateTreeDropFiles(HWND hWnd, HTREEITEM hItem, char *TempDirName)
 
 	DropFileCnt = 0;
 
-	//�t�@�C�����̔z����쐬����
+	//ファイル名の配列を作成する
 	if((DropFileNameList = (char **)GlobalAlloc(GPTR, sizeof(char *))) == NULL){
 		ErrMsg(hWnd, GetLastError(), NULL);
 		return FALSE;
 	}
 
-	//�h���b�v�t�@�C���p�ꎞ�f�B���N�g���̍쐬
+	//ドロップファイル用一時ディレクトリの作成
 	wsprintf(DndPath, "%s\\%s", TempDir, TempDirName);
 	if(GetDirSerch(DndPath) == TRUE){
 		DeleteDirTree(DndPath, TRUE);
 	}
 	CreateDirectory(DndPath, NULL);
 
-	//�h���b�v�t�@�C���p������̍쐬
+	//ドロップファイル用文字列の作成
 	TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, buf);
-	//�p�X����������t�H���_�͍쐬���Ȃ�
+	//パスが長すぎるフォルダは作成しない
 	if(lstrlen(DndPath) + 1 + lstrlen(buf) >= MAX_PATH){
 		GlobalFree(DropFileNameList);
 		DropFileNameList = NULL;
@@ -230,7 +230,7 @@ BOOL DragDrop_CreateTreeDropFiles(HWND hWnd, HTREEITEM hItem, char *TempDirName)
 	lstrcpy(*DropFileNameList, ItemPath);
 	DropFileCnt = 1;
 
-	//�K�w�I�Ƀh���b�v�t�@�C���̍쐬
+	//階層的にドロップファイルの作成
 	CreateTreeDropFiles(hWnd, hItem, DndPath, buf);
 
 	CallTreeItem(hWnd, hItem, (FARPROC)TreeView_FreeItem, 1);
@@ -243,7 +243,7 @@ BOOL DragDrop_CreateTreeDropFiles(HWND hWnd, HTREEITEM hItem, char *TempDirName)
 
 	DragDrop_CreateDropFiles
 
-	���X�g�r���[�̑I���A�C�e�����h���b�v�t�@�C���̕�����̍쐬
+	リストビューの選択アイテムよりドロップファイルの文字列の作成
 
 ******************************************************************************/
 
@@ -258,7 +258,7 @@ BOOL DragDrop_CreateDropFiles(HWND hWnd, char *TempDirName)
 
 	WaitCursor(TRUE);
 
-	//�t�@�C�����̔z����쐬����
+	//ファイル名の配列を作成する
 	DropFileNameList = (char **)GlobalAlloc(GPTR, sizeof(char *) *
 		ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST)));
 	if(DropFileNameList == NULL){
@@ -285,7 +285,7 @@ BOOL DragDrop_CreateDropFiles(HWND hWnd, char *TempDirName)
 			}
 
 			TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, buf);
-			//�p�X����������t�H���_�͍쐬���Ȃ�
+			//パスが長すぎるフォルダは作成しない
 			if(lstrlen(DndPath) + 1 + lstrlen(buf) >= MAX_PATH){
 				continue;
 			}
@@ -337,7 +337,7 @@ BOOL DragDrop_CreateDropFiles(HWND hWnd, char *TempDirName)
 
 	FreeDropFiles
 
-	�h���b�v�t�@�C���̕���������
+	ドロップファイルの文字列を解放
 
 ******************************************************************************/
 
@@ -345,7 +345,7 @@ void FreeDropFiles(void)
 {
 	int i;
 
-	//�t�@�C�����̔z����������
+	//ファイル名の配列を解放する
 	for(i = 0;i < DropFileCnt;i++){
 		GlobalFree(*(DropFileNameList + i));
 	}
@@ -359,7 +359,7 @@ void FreeDropFiles(void)
 
 	DeleteTmpDropFiles
 
-	�h���b�v�t�@�C���p�̈ꎞ�f�B���N�g���̍폜
+	ドロップファイル用の一時ディレクトリの削除
 
 ******************************************************************************/
 
@@ -379,8 +379,8 @@ void DeleteTmpDropFiles(char *TempDirName)
 
 	DragDrop_MouseMove
 
-	�E�B���h�E���Ń}�E�X���ړ������Ƃ��Ƀ}�E�X�̉��̃A�C�e����
-	�n�C���C�g�\���ɂ���
+	ウィンドウ内でマウスが移動したときにマウスの下のアイテムを
+	ハイライト表示にする
 
 ******************************************************************************/
 
@@ -398,7 +398,7 @@ static BOOL DragDrop_MouseMove(HWND hWnd)
 	if(hPointWnd == GetDlgItem(hWnd, WWWC_TREE)){			//TreeView
 		ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), -1, 0, LVIS_DROPHILITED);
 
-		//�}�E�X�̉���TreeView�A�C�e���̃n���h�����擾
+		//マウスの下のTreeViewアイテムのハンドルを取得
 		hItem = TreeView_GetHiTestItem(GetDlgItem(hWnd, WWWC_TREE));
 		if(hItem == NULL){
 			KillTimer(hWnd, TIMER_TREEEXPAND);
@@ -410,10 +410,10 @@ static BOOL DragDrop_MouseMove(HWND hWnd)
 			return TRUE;
 		}
 
-		//�}�E�X�̉��̃A�C�e�����n�C���C�g��Ԃɂ���
+		//マウスの下のアイテムをハイライト状態にする
 		TreeView_SelectDropTarget(GetDlgItem(hWnd, WWWC_TREE), hItem);
 
-		//�A�C�e������ʏ�ɕ\��������
+		//アイテムを画面上に表示させる
 		if(TreeView_GetFirstVisible(GetDlgItem(hWnd, WWWC_TREE)) == hItem){
 			TreeView_EnsureVisible(GetDlgItem(hWnd, WWWC_TREE),
 				TreeView_GetPrevVisible(GetDlgItem(hWnd, WWWC_TREE), hItem));
@@ -421,7 +421,7 @@ static BOOL DragDrop_MouseMove(HWND hWnd)
 			TreeView_EnsureVisible(GetDlgItem(hWnd, WWWC_TREE), hItem);
 		}
 
-		//��莞�ԓ����A�C�e���̏ꍇ�͓W�J���s��
+		//一定時間同じアイテムの場合は展開を行う
 		KillTimer(hWnd, TIMER_TREEEXPAND);
 		SetTimer(hWnd, TIMER_TREEEXPAND, 700, NULL);
 		return TRUE;
@@ -430,7 +430,7 @@ static BOOL DragDrop_MouseMove(HWND hWnd)
 		KillTimer(hWnd, TIMER_TREEEXPAND);
 		TreeView_SelectDropTarget(GetDlgItem(hWnd, WWWC_TREE), NULL);
 
-		//�}�E�X�̉���ListView�A�C�e���̃C���f�b�N�X���擾
+		//マウスの下のListViewアイテムのインデックスを取得
 		iItem = ListView_GetHiTestItem(GetDlgItem(hWnd, WWWC_LIST));
 		if(iItem == -1){
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), -1, 0, LVIS_DROPHILITED);
@@ -444,27 +444,27 @@ static BOOL DragDrop_MouseMove(HWND hWnd)
 			}
 		}
 
-		//���Ƀn�C���C�g����Ă���ꍇ
+		//既にハイライトされている場合
 		if(ListView_GetItemState(GetDlgItem(hWnd, WWWC_LIST), iItem, LVIS_DROPHILITED) == LVIS_DROPHILITED){
 			return TRUE;
 		}
 
 		tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), iItem);
 		if(tpItemInfo != NULL){
-			//�t�H���_�ł͂Ȃ��ꍇ�̓n�C���C�g���s��Ȃ�
+			//フォルダではない場合はハイライトを行わない
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), -1, 0, LVIS_DROPHILITED);
 
-			//�A�C�e������ʏ�ɕ\��������
+			//アイテムを画面上に表示させる
 			ListView_EnsureVisible(GetDlgItem(hWnd, WWWC_LIST), iItem - 1, TRUE);
 			ListView_EnsureVisible(GetDlgItem(hWnd, WWWC_LIST), iItem + 1, TRUE);
 			return TRUE;
 		}
 
-		//�}�E�X�̉��̃A�C�e�����n�C���C�g��Ԃɂ���
+		//マウスの下のアイテムをハイライト状態にする
 		ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), -1, 0, LVIS_DROPHILITED);
 		ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), iItem, LVIS_DROPHILITED, LVIS_DROPHILITED);
 
-		//�A�C�e������ʏ�ɕ\��������
+		//アイテムを画面上に表示させる
 		ListView_EnsureVisible(GetDlgItem(hWnd, WWWC_LIST), iItem - 1, TRUE);
 		ListView_EnsureVisible(GetDlgItem(hWnd, WWWC_LIST), iItem + 1, TRUE);
 		return TRUE;
@@ -483,7 +483,7 @@ static BOOL DragDrop_MouseMove(HWND hWnd)
 
 	DragDrop_GetHitestFolder
 
-	�}�E�X�̉��̃t�H���_�A�C�e���̃n���h�����擾����
+	マウスの下のフォルダアイテムのハンドルを取得する
 
 ******************************************************************************/
 
@@ -511,7 +511,7 @@ static HTREEITEM DragDrop_GetHitestFolder(HWND hWnd)
 		}
 
 		tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), iItem);
-		//�t�H���_�ł͂Ȃ��ꍇ�� NULL ��Ԃ�
+		//フォルダではない場合は NULL を返す
 		if(tpItemInfo != NULL){
 			return TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE));
 		}
@@ -529,7 +529,7 @@ static HTREEITEM DragDrop_GetHitestFolder(HWND hWnd)
 
 	DragDrop_ShowMenu
 
-	�h���b�O���h���b�v�p�̃��j���[��\������
+	ドラッグ＆ドロップ用のメニューを表示する
 
 ******************************************************************************/
 
@@ -538,7 +538,7 @@ static UINT DragDrop_ShowMenu(HWND hWnd, BOOL defFlag)
 	UINT ret;
 	UINT MenuEffect;
 
-	//�f�t�H���g�̃��j���[���ڂ�ݒ�
+	//デフォルトのメニュー項目を設定
 	if(defFlag == TRUE){
 		SetMenuDefaultItem(GetSubMenu(hPOPUP, MENU_POP_DGDP), ID_MENU_DGDP_COPY, 0);
 	}else{
@@ -568,7 +568,7 @@ static UINT DragDrop_ShowMenu(HWND hWnd, BOOL defFlag)
 
 	DragDrop_GetDropItem
 
-	�h���b�v�A�C�e����񕶎�����A�C�e�����쐬
+	ドロップアイテム情報文字列よりアイテムを作成
 
 ******************************************************************************/
 
@@ -604,7 +604,7 @@ BOOL DragDrop_GetDropItem(HWND hWnd, HGLOBAL hMem, int dwEffect, HTREEITEM hItem
 		WaitCursor(FALSE);
 		return FALSE;
 	}
-	//�A�C�e������ǂݍ���
+	//アイテム情報を読み込む
 	if(tpTreeInfo->ItemList == NULL){
 		if(ReadTreeMem(hWnd, hItem) == FALSE){
 			MessageBox(hWnd, EMSG_ITEMREAD, EMSG_ITEMREAD_TITLE, MB_ICONSTOP);
@@ -613,7 +613,7 @@ BOOL DragDrop_GetDropItem(HWND hWnd, HGLOBAL hMem, int dwEffect, HTREEITEM hItem
 		}
 	}
 
-	//�A�C�e����񕶎��񂩂�A�C�e�����쐬
+	//アイテム情報文字列からアイテムを作成
 	if((buf = GlobalLock(hMem)) == NULL){
 		WaitCursor(FALSE);
 		return FALSE;
@@ -638,7 +638,7 @@ BOOL DragDrop_GetDropItem(HWND hWnd, HGLOBAL hMem, int dwEffect, HTREEITEM hItem
 
 	DragDrop_GetDropItemFiles
 
-	�h���b�v���ꂽ�t�@�C�����v���g�R��DLL�ɏ���������
+	ドロップされたファイルをプロトコルDLLに処理させる
 
 ******************************************************************************/
 
@@ -651,7 +651,7 @@ void DragDrop_GetDropItemFiles(HWND hWnd, char *buf, HTREEITEM hItem)
 	int pIndex;
 	int ret;
 
-	//�g���q�𒊏o
+	//拡張子を抽出
 	p = buf;
 	r = NULL;
 	while(*p != '\0'){
@@ -666,7 +666,7 @@ void DragDrop_GetDropItemFiles(HWND hWnd, char *buf, HTREEITEM hItem)
 		return;
 	}
 	r++;
-	//�g���q�ɑΉ������v���g�R�����擾
+	//拡張子に対応したプロトコルを取得
 	ProtocolIndex = -1;
 	for(pIndex = 0;pIndex < ProtocolCnt;pIndex++){
 		if(*(tpProtocol[pIndex].FileType) != '\0' && strlistcmp(r, tpProtocol[pIndex].FileType, '\t') == TRUE){
@@ -687,23 +687,23 @@ void DragDrop_GetDropItemFiles(HWND hWnd, char *buf, HTREEITEM hItem)
 			return;
 		}
 
-		//�]�����̃t�@�C������A�C�e�����X�g���擾����
+		//転送元のファイルからアイテムリストを取得する
 		tpFromItemInfo = ReadItemList(buf, &FromCnt, NULL);
 		if(tpFromItemInfo == NULL){
 			return;
 		}
 		UpdateItemFlag = UF_COPY;
-		//�]����ɃA�C�e����ǉ�����
+		//転送先にアイテムを追加する
 		for(i = 0;i < FromCnt;i++){
 			if(*(tpFromItemInfo + i) == NULL){
 				continue;
 			}
 
-			//�A�C�e���̒ǉ�
+			//アイテムの追加
 			if(Item_Add(hWnd, hItem, *(tpFromItemInfo + i)) != -1){
 				*(tpFromItemInfo + i) = NULL;
 			}
-			//�R�s�[���L�����Z������Ă���ꍇ
+			//コピーがキャンセルされている場合
 			if(UpdateItemFlag == UF_CANCEL){
 				break;
 			}
@@ -715,7 +715,7 @@ void DragDrop_GetDropItemFiles(HWND hWnd, char *buf, HTREEITEM hItem)
 		TreeView_FreeItem(hWnd, hItem, 1);
 		return;
 	}
-	//�h���b�v�t�@�C������������֐����Ă�
+	//ドロップファイルを処理する関数を呼ぶ
 	if((tpProtocol + ProtocolIndex)->Func_DropFile == NULL){
 		wsprintf(funcName, "%sDropFile", (tpProtocol + ProtocolIndex)->FuncHeader);
 		(tpProtocol + ProtocolIndex)->Func_DropFile = GetProcAddress((HMODULE)(tpProtocol + ProtocolIndex)->lib, funcName);
@@ -734,7 +734,7 @@ void DragDrop_GetDropItemFiles(HWND hWnd, char *buf, HTREEITEM hItem)
 
 	switch(ret)
 	{
-	case DROPFILE_NEWITEM:		//�A�C�e���̒ǉ�
+	case DROPFILE_NEWITEM:		//アイテムの追加
 		if(Item_Add(hWnd, hItem, tpItemInfo) == -1){
 			FreeItemInfo(tpItemInfo, FALSE);
 			GlobalFree(tpItemInfo);
@@ -754,7 +754,7 @@ void DragDrop_GetDropItemFiles(HWND hWnd, char *buf, HTREEITEM hItem)
 
 	DragDrop_GetDropTree
 
-	�h���b�v���ꂽ�f�B���N�g�����K�w�I�ɏ�������
+	ドロップされたディレクトリを階層的に処理する
 
 ******************************************************************************/
 
@@ -767,7 +767,7 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 	char buf[PATH_BUFSIZE];
 	HTREEITEM cItem;
 
-	//�o�b�t�@�Ɏ��܂�Ȃ��p�X�͏������Ȃ�
+	//バッファに収まらないパスは処理しない
 	if(lstrlen(Path) + 2 >= PATH_BUFSIZE){
 		return;
 	}
@@ -775,15 +775,15 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 		return;
 	}
 
-	//�t�H���_������TreeView�A�C�e�����擾
+	//フォルダ名からTreeViewアイテムを取得
 	if((cItem = TreeView_CheckName(GetDlgItem(hWnd, WWWC_TREE), hItem, fName)) == NULL){
-		//�T�u�t�H���_���܂߂ăp�X����������ꍇ�̓G���[
+		//サブフォルダを含めてパスが長すぎる場合はエラー
 		TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, buf, CuDir);
 		if(lstrlen(buf) + 1 + lstrlen(fName) + GetDirChildPathLength(Path) > MAX_TREEPATH){
 			MessageBox(hWnd, EMSG_PATHLENGTH, EMSG_FOLDERCOPY_TITLE, MB_ICONSTOP);
 			return;
 		}
-		//�ǉ���̃t�H���_���܂ރp�X�̏ꍇ�̓G���[
+		//追加先のフォルダを含むパスの場合はエラー
 		TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, buf, CuDir);
 		if(lstrcmpni(Path, buf, lstrlen(Path)) == 0){
 			char Msg[BUFSIZE * 2];
@@ -793,17 +793,17 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 			return;
 		}
 
-		//�t�H���_�̒ǉ�
+		//フォルダの追加
 		cItem = TreeView_AllocItem(GetDlgItem(hWnd, WWWC_TREE), hItem,
 			(HTREEITEM)TVI_SORT, fName, ICON_DIR_CLOSE, ICON_DIR_OPEN);
 		if(SucceedFromParent == 1){
-			//�e���̌p��
+			//親情報の継承
 			CopyAutoTime(hWnd, cItem, (long)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), hItem));
 		}
 
 		TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), cItem, buf, CuDir);
 		if(GetDirSerch(buf) == FALSE){
-			//���t�H���_�쐬
+			//実フォルダ作成
 			CreateDirectory(buf, NULL);
 		}
 	}
@@ -828,7 +828,7 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 		wsprintf(buf, "%s\\%s", Path, FindData.cFileName);
 
 		if((FindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0){
-			//�t�H���_����DLL�͓ǂݍ��܂Ȃ�
+			//フォルダ内のDLLは読み込まない
 			if(str_match("*.dll", buf) == FALSE){
 				DragDrop_GetDropItemFiles(hWnd, buf, cItem);
 			}
@@ -838,7 +838,7 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 		if(lstrcmp(FindData.cFileName, ".") == 0 || lstrcmp(FindData.cFileName, "..") == 0){
 			continue;
 		}
-		//�ċA
+		//再帰
 		DragDrop_GetDropTree(hWnd, buf, cItem);
 	} while(FindNextFile(hFindFile, &FindData) == TRUE);
 
@@ -850,7 +850,7 @@ void DragDrop_GetDropTree(HWND hWnd, char *Path, HTREEITEM hItem)
 
 	DragDrop_GetDropFiles
 
-	�h���b�v�t�@�C�����A�C�e���̍쐬
+	ドロップファイルよりアイテムの作成
 
 ******************************************************************************/
 
@@ -888,7 +888,7 @@ void DragDrop_GetDropFiles(HWND hWnd, HDROP hDrop, HTREEITEM hItem)
 	}
 
 	ListView_RefreshFolder(hWnd);
-	//�ǉ��A�C�e���̑I��
+	//追加アイテムの選択
 	if(hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
 		if(ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED) != -1){
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST),
@@ -909,7 +909,7 @@ void DragDrop_GetDropFiles(HWND hWnd, HDROP hDrop, HTREEITEM hItem)
 
 	DragDrop_NotifyProc
 
-	�h���b�O���b�Z�[�W
+	ドラッグメッセージ
 
 ******************************************************************************/
 
@@ -965,7 +965,7 @@ long DragDrop_NotifyProc(HWND hWnd, WPARAM wParam, LPARAM lParam)
 			if(tmp == -1 || (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), tmp) != NULL){
 				break;
 			}
-			//����t�H���_�̏ꍇ�͋֎~�J�[�\���ɂ���
+			//同一フォルダの場合は禁止カーソルにする
 			if(DragItemIndex != -1){
 				if(ListView_GetItemState(GetDlgItem(hWnd, WWWC_LIST), tmp, LVIS_SELECTED) == LVIS_SELECTED){
 					pdtn->dwEffect = DROPEFFECT_NONE;
@@ -1031,7 +1031,7 @@ long DragDrop_NotifyProc(HWND hWnd, WPARAM wParam, LPARAM lParam)
 					DnDItem = TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE));
 				}
 				_SetForegroundWindow(hWnd);
-				//�h���b�v�f�[�^�� OLE �� (ReleaseStgMedium) �ŉ�������
+				//ドロップデータは OLE 側 (ReleaseStgMedium) で解放される
 				DragDrop_GetDropFiles(hWnd, pdtn->hMem, DnDItem);
 				break;
 			}

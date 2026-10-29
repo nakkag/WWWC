@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -26,8 +26,8 @@
 	Define
 **************************************************************************/
 
-#define PART_CNT				3		//ƒp[ƒc”
-#define PART_MAXSIZE			-1		//ƒp[ƒc‚ÌƒTƒCƒY
+#define PART_CNT				3		//ãƒ‘ãƒ¼ãƒ„æ•°
+#define PART_MAXSIZE			-1		//ãƒ‘ãƒ¼ãƒ„ã®ã‚µã‚¤ã‚º
 
 #define SBT_TOOLTIPS			0x0800
 
@@ -39,10 +39,10 @@
 char *ToolTipString = NULL;
 
 
-//ŠO•”QÆ
+//å¤–éƒ¨å‚ç…§
 extern HINSTANCE g_hinst;
-extern int gCheckFlag;		//ƒ`ƒFƒbƒNƒtƒ‰ƒO
-extern int ViewSb;			//StatusBar•\¦ƒIƒvƒVƒ‡ƒ“
+extern int gCheckFlag;		//ãƒã‚§ãƒƒã‚¯ãƒ•ãƒ©ã‚°
+extern int ViewSb;			//StatusBarè¡¨ç¤ºã‚ªãƒ—ã‚·ãƒ§ãƒ³
 extern int PartsSize1;
 extern int PartsSize2;
 extern int PartInfo1;
@@ -54,7 +54,7 @@ extern int PartInfo3;
 
 	CreateStatusBar
 
-	StatusBar‚Ìì¬
+	StatusBarã®ä½œæˆ
 
 ******************************************************************************/
 
@@ -67,7 +67,7 @@ HWND CreateStatusBar(HWND hWnd)
 	if(sbWnd == NULL){
 		return NULL;
 	}
-	//StatusBar‚ğ•\¦‚·‚éİ’è‚Ìê‡
+	//StatusBarã‚’è¡¨ç¤ºã™ã‚‹è¨­å®šã®å ´åˆ
 	if(ViewSb == 1){
 		ShowWindow(sbWnd, SW_SHOW);
 	}
@@ -79,7 +79,7 @@ HWND CreateStatusBar(HWND hWnd)
 
 	SBSetParts
 
-	ƒp[ƒc‚Ìİ’è
+	ãƒ‘ãƒ¼ãƒ„ã®è¨­å®š
 
 ******************************************************************************/
 
@@ -88,7 +88,7 @@ void SBSetParts(HWND hWnd)
 	int Width[PART_CNT];
 	RECT WindowRect;
 
-	//ƒEƒBƒ“ƒhƒEƒTƒCƒY‚©‚çƒp[ƒc‚ÌƒTƒCƒY‚ğŒvZ
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã‹ã‚‰ãƒ‘ãƒ¼ãƒ„ã®ã‚µã‚¤ã‚ºã‚’è¨ˆç®—
 	GetWindowRect(hWnd, &WindowRect);
 	*(Width + 2) = PART_MAXSIZE;
 	*(Width + 1) = WindowRect.right - WindowRect.left - PartsSize2;
@@ -103,7 +103,7 @@ void SBSetParts(HWND hWnd)
 
 	SetSbText
 
-	ƒeƒLƒXƒg‚Ìİ’è
+	ãƒ†ã‚­ã‚¹ãƒˆã®è¨­å®š
 
 ******************************************************************************/
 
@@ -119,13 +119,13 @@ void SetSbText(HWND hWnd)
 
 	SelectItem = ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST));
 
-	//ListViewƒAƒCƒeƒ€‚ª•¡”‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡
+	//ListViewã‚¢ã‚¤ãƒ†ãƒ ãŒè¤‡æ•°é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆ
 	if(gCheckFlag == 0 && SelectItem > 1){
 		wsprintf(buf, ITEMSELECTMSG, SelectItem);
 		SendDlgItemMessage(hWnd, WWWC_SB, SB_SETTEXT, (WPARAM)0 | 0, (LPARAM)buf);
 		return;
 	}
-	//ListViewƒAƒCƒeƒ€‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ê‡
+	//ListViewã‚¢ã‚¤ãƒ†ãƒ ãŒé¸æŠã•ã‚Œã¦ã„ãªã„å ´åˆ
 	if(gCheckFlag == 0 && SelectItem == 0){
 		Cnt = ListView_GetItemCount(GetDlgItem(hWnd, WWWC_LIST));
 		UpCnt = Item_UpCount(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)));
@@ -145,7 +145,7 @@ void SetSbText(HWND hWnd)
 		return;
 	}
 	tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), SelectItem);
-	//ƒtƒHƒ‹ƒ_‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡
+	//ãƒ•ã‚©ãƒ«ãƒ€ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆ
 	if(tpItemInfo == NULL){
 		if(gCheckFlag == 0){
 			SendDlgItemMessage(hWnd, WWWC_SB, SB_SETTEXT,
@@ -154,7 +154,7 @@ void SetSbText(HWND hWnd)
 		return;
 	}
 
-	//ƒAƒCƒeƒ€‚Ìî•ñ‚ğİ’è
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®æƒ…å ±ã‚’è¨­å®š
 	if(gCheckFlag == 0){
 		SendDlgItemMessage(hWnd, WWWC_SB, SB_SETTEXT,
 			(WPARAM)0 | 0, (LPARAM)GetIndexToString(tpItemInfo, PartInfo1));
@@ -170,7 +170,7 @@ void SetSbText(HWND hWnd)
 
 	StatusBar_NotifyProc
 
-	ƒXƒe[ƒ^ƒXƒo[‚Ìƒc[ƒ‹ƒ`ƒbƒv‚Ìİ’è
+	ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã®ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã®è¨­å®š
 
 ******************************************************************************/
 

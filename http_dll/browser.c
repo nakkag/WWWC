@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC (wwwc.dll)
 
@@ -34,16 +34,16 @@
 	Define
 **************************************************************************/
 
-#define CLASS_CHROMIUM			"Chrome_WidgetWin_1"			/* Chrome, Edge ‚È‚Ç */
+#define CLASS_CHROMIUM			"Chrome_WidgetWin_1"			/* Chrome, Edge ãªã© */
 #define CLASS_FIREFOX			"MozillaWindowClass"
-#define CLASS_CHROMIUM_RENDER	"Chrome_RenderWidgetHostHWND"	/* ƒy[ƒW‚ğ•\¦‚·‚éƒEƒBƒ“ƒhƒE */
-#define CLASS_OMNIBOX			L"OmniboxViewViews"				/* Chromium ‚ÌƒAƒhƒŒƒXƒo[ */
-#define AID_FIREFOX_URLBAR		L"urlbar-input"					/* Firefox ‚ÌƒAƒhƒŒƒXƒo[ */
+#define CLASS_CHROMIUM_RENDER	"Chrome_RenderWidgetHostHWND"	/* ãƒšãƒ¼ã‚¸ã‚’è¡¨ç¤ºã™ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
+#define CLASS_OMNIBOX			L"OmniboxViewViews"				/* Chromium ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒãƒ¼ */
+#define AID_FIREFOX_URLBAR		L"urlbar-input"					/* Firefox ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒãƒ¼ */
 
 #define BROWSER_MAX_WINDOWS		64
 #define BROWSER_URL_MAX			4096
-#define BROWSER_TITLE_MAX		512								/* ƒ^ƒCƒgƒ‹‚ÌÅ‘å•¶š” (ƒƒCƒh•¶š) */
-#define BROWSER_DOC_WAIT		1500							/* ƒy[ƒW‚Ìî•ñ‚ªæ“¾‚Å‚«‚é‚Ü‚Å‘Ò‚ÂŠÔ */
+#define BROWSER_TITLE_MAX		512								/* ã‚¿ã‚¤ãƒˆãƒ«ã®æœ€å¤§æ–‡å­—æ•° (ãƒ¯ã‚¤ãƒ‰æ–‡å­—) */
+#define BROWSER_DOC_WAIT		1500							/* ãƒšãƒ¼ã‚¸ã®æƒ…å ±ãŒå–å¾—ã§ãã‚‹ã¾ã§å¾…ã¤æ™‚é–“ */
 #define BROWSER_DOC_INTERVAL	250
 
 typedef struct _WINLIST {
@@ -57,7 +57,7 @@ typedef struct _WINLIST {
 	Helpers
 **************************************************************************/
 
-/* ƒuƒ‰ƒEƒU‚ÌƒEƒBƒ“ƒhƒE‚ğd‚È‚è‡‚É—ñ‹“‚·‚é */
+/* ãƒ–ãƒ©ã‚¦ã‚¶ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é‡ãªã‚Šé †ã«åˆ—æŒ™ã™ã‚‹ */
 static BOOL CALLBACK EnumBrowserProc(HWND hWnd, LPARAM lParam)
 {
 	WINLIST *wl = (WINLIST *)lParam;
@@ -76,7 +76,7 @@ static BOOL CALLBACK EnumBrowserProc(HWND hWnd, LPARAM lParam)
 	return TRUE;
 }
 
-/* •¶š—ñ‚ÌƒvƒƒpƒeƒB (–³‚¢ê‡‚Í NULL) */
+/* æ–‡å­—åˆ—ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ (ç„¡ã„å ´åˆã¯ NULL) */
 static BSTR GetStringProperty(IUIAutomationElement *e, PROPERTYID id)
 {
 	VARIANT v;
@@ -90,7 +90,7 @@ static BSTR GetStringProperty(IUIAutomationElement *e, PROPERTYID id)
 	return ret;
 }
 
-/* ğŒ‚Éˆê’v‚·‚éÅ‰‚Ìq‘· */
+/* æ¡ä»¶ã«ä¸€è‡´ã™ã‚‹æœ€åˆã®å­å­« */
 static IUIAutomationElement *FindFirst(IUIAutomation *uia, IUIAutomationElement *root, IUIAutomationCondition *cond)
 {
 	IUIAutomationElement *e = NULL;
@@ -144,7 +144,7 @@ static void ReleaseCondition(IUIAutomationCondition *cond)
 	}
 }
 
-/* http, https ‚Ì URL ‚ğASCII‚Ì•¶š—ñ‚É‚·‚é (8ƒrƒbƒg•¶š‚Í UTF-8 ‚Å % ƒGƒ“ƒR[ƒh) */
+/* http, https ã® URL ã‚’ASCIIã®æ–‡å­—åˆ—ã«ã™ã‚‹ (8ãƒ“ãƒƒãƒˆæ–‡å­—ã¯ UTF-8 ã§ % ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰) */
 static char *ToUrl(const WCHAR *w)
 {
 	char *u, *ret, *r;
@@ -167,7 +167,7 @@ static char *ToUrl(const WCHAR *w)
 	if(ret != NULL){
 		for(p = (const unsigned char *)u, r = ret; *p != '\0'; p++){
 			if(*p < 0x20 || *p == 0x7F){
-				//§Œä•¶š‚ğŠÜ‚Ş‚à‚Ì‚Íg—p‚µ‚È‚¢
+				//åˆ¶å¾¡æ–‡å­—ã‚’å«ã‚€ã‚‚ã®ã¯ä½¿ç”¨ã—ãªã„
 				HeapFree(GetProcessHeap(), 0, ret);
 				ret = NULL;
 				break;
@@ -187,7 +187,7 @@ static char *ToUrl(const WCHAR *w)
 	return ret;
 }
 
-/* ƒ^ƒCƒgƒ‹‚ğ ANSI ‚Ì•¶š—ñ‚É‚·‚é (§Œä•¶š‚Í‹ó”’‚É‚·‚é) */
+/* ã‚¿ã‚¤ãƒˆãƒ«ã‚’ ANSI ã®æ–‡å­—åˆ—ã«ã™ã‚‹ (åˆ¶å¾¡æ–‡å­—ã¯ç©ºç™½ã«ã™ã‚‹) */
 static char *ToTitle(const WCHAR *w)
 {
 	WCHAR *tmp;
@@ -197,7 +197,7 @@ static char *ToTitle(const WCHAR *w)
 	if(w == NULL){
 		return NULL;
 	}
-	//‘OŒã‚Ì‹ó”’‚ğœ‚¢‚ÄÅ‘å•¶š”‚Ü‚Å‚É‚·‚é
+	//å‰å¾Œã®ç©ºç™½ã‚’é™¤ã„ã¦æœ€å¤§æ–‡å­—æ•°ã¾ã§ã«ã™ã‚‹
 	for(; *w == L' ' || *w == L'\t'; w++);
 	wl = lstrlenW(w);
 	for(; wl > 0 && (w[wl - 1] == L' ' || w[wl - 1] == L'\t'); wl--);
@@ -229,7 +229,7 @@ static char *ToTitle(const WCHAR *w)
 	return ret;
 }
 
-/* ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚©‚çƒuƒ‰ƒEƒU–¼‚ğœ‚­ (ÅŒã‚Ì " - " ‚Ü‚½‚Í‘SŠpƒ_ƒbƒVƒ… (U+2014) ˆÈ~) */
+/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«ã‹ã‚‰ãƒ–ãƒ©ã‚¦ã‚¶åã‚’é™¤ã (æœ€å¾Œã® " - " ã¾ãŸã¯å…¨è§’ãƒ€ãƒƒã‚·ãƒ¥ (U+2014) ä»¥é™) */
 static WCHAR *TitleFromWindow(HWND hWnd)
 {
 	WCHAR *buf, *p, *last = NULL;
@@ -255,7 +255,7 @@ static WCHAR *TitleFromWindow(HWND hWnd)
 	return buf;
 }
 
-/* ‹æØ‚è (" - ") ‚ÌˆÊ’u‚ğŒã‚ë‚©‚çŒŸõ */
+/* åŒºåˆ‡ã‚Š (" - ") ã®ä½ç½®ã‚’å¾Œã‚ã‹ã‚‰æ¤œç´¢ */
 static WCHAR *FindLastSeparator(WCHAR *s, WCHAR *end)
 {
 	WCHAR *p;
@@ -268,7 +268,7 @@ static WCHAR *FindLastSeparator(WCHAR *s, WCHAR *end)
 	return NULL;
 }
 
-/* ƒ^ƒu–¼‚Ì––”ö‚Ìƒƒ‚ƒŠg—p—Ê‚Ì•\¦ (" - –¼‘O - 23.0 MB") ‚ğœ‚­ */
+/* ã‚¿ãƒ–åã®æœ«å°¾ã®ãƒ¡ãƒ¢ãƒªä½¿ç”¨é‡ã®è¡¨ç¤º (" - åå‰ - 23.0 MB") ã‚’é™¤ã */
 static void StripTabSuffix(WCHAR *s)
 {
 	WCHAR *sep, *p;
@@ -295,7 +295,7 @@ static void StripTabSuffix(WCHAR *s)
 	}
 }
 
-/* ‘I‘ğ‚µ‚Ä‚¢‚éƒ^ƒu‚Ì–¼‘O */
+/* é¸æŠã—ã¦ã„ã‚‹ã‚¿ãƒ–ã®åå‰ */
 static WCHAR *SelectedTabTitle(IUIAutomation *uia, IUIAutomationElement *root)
 {
 	IUIAutomationCondition *c1, *c2 = NULL, *cond = NULL;
@@ -328,7 +328,7 @@ static WCHAR *SelectedTabTitle(IUIAutomation *uia, IUIAutomationElement *root)
 	return ret;
 }
 
-/* Àsƒtƒ@ƒCƒ‹–¼‚©‚çƒuƒ‰ƒEƒU–¼‚ğæ“¾ */
+/* å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ãƒ–ãƒ©ã‚¦ã‚¶åã‚’å–å¾— */
 static void GetBrowserName(HWND hWnd, char *ret, int size)
 {
 	static const struct { const WCHAR *exe; const char *name; } names[] = {
@@ -366,7 +366,7 @@ static void GetBrowserName(HWND hWnd, char *ret, int size)
 	CloseHandle(hProcess);
 }
 
-/* Chromium ‚Ìƒy[ƒW‚Ìî•ñ‚ğ—LŒø‚É‚·‚é (x‰‡‹Zp‚©‚ç‚Ì–â‚¢‡‚í‚¹‚Å—LŒø‚É‚È‚é) */
+/* Chromium ã®ãƒšãƒ¼ã‚¸ã®æƒ…å ±ã‚’æœ‰åŠ¹ã«ã™ã‚‹ (æ”¯æ´æŠ€è¡“ã‹ã‚‰ã®å•ã„åˆã‚ã›ã§æœ‰åŠ¹ã«ãªã‚‹) */
 static void WakeAccessibility(HWND hWnd)
 {
 	IAccessible *acc;
@@ -386,7 +386,7 @@ static void WakeAccessibility(HWND hWnd)
 
 	GetWebDocument
 
-	URL ‚ª http, https ‚ÌÅ‰‚Ì•¶‘‚©‚ç URL ‚Æƒ^ƒCƒgƒ‹‚ğæ“¾‚·‚é
+	URL ãŒ http, https ã®æœ€åˆã®æ–‡æ›¸ã‹ã‚‰ URL ã¨ã‚¿ã‚¤ãƒˆãƒ«ã‚’å–å¾—ã™ã‚‹
 
 ******************************************************************************/
 
@@ -425,7 +425,7 @@ static BOOL GetWebDocument(IUIAutomation *uia, IUIAutomationElement *root, IUIAu
 
 	GetWindowPage
 
-	ƒuƒ‰ƒEƒU‚ÌƒEƒBƒ“ƒhƒE‚Å•\¦‚µ‚Ä‚¢‚éƒy[ƒW‚ğæ“¾‚·‚é
+	ãƒ–ãƒ©ã‚¦ã‚¶ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã§è¡¨ç¤ºã—ã¦ã„ã‚‹ãƒšãƒ¼ã‚¸ã‚’å–å¾—ã™ã‚‹
 
 ******************************************************************************/
 
@@ -442,7 +442,7 @@ static BOOL GetWindowPage(IUIAutomation *uia, HWND hWnd, BROWSER_PAGE *page)
 	if(FAILED(IUIAutomation_ElementFromHandle(uia, hWnd, &root)) || root == NULL){
 		return FALSE;
 	}
-	//ƒAƒhƒŒƒXƒo[‚ª‚ ‚éƒEƒBƒ“ƒhƒE‚Ì‚İ (ƒ_ƒCƒAƒƒO‚âƒuƒ‰ƒEƒUˆÈŠO‚ÌƒAƒvƒŠ‚ğœ‚­)
+	//ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒãƒ¼ãŒã‚ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã¿ (ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚„ãƒ–ãƒ©ã‚¦ã‚¶ä»¥å¤–ã®ã‚¢ãƒ—ãƒªã‚’é™¤ã)
 	c1 = StringCondition(uia, UIA_ClassNamePropertyId, CLASS_OMNIBOX);
 	c2 = StringCondition(uia, UIA_AutomationIdPropertyId, AID_FIREFOX_URLBAR);
 	if(c1 != NULL && c2 != NULL){
@@ -457,8 +457,8 @@ static BOOL GetWindowPage(IUIAutomation *uia, HWND hWnd, BROWSER_PAGE *page)
 		return FALSE;
 	}
 
-	//ƒy[ƒW‚Ì•¶‘‚©‚ç URL ‚Æƒ^ƒCƒgƒ‹‚ğæ“¾‚·‚é
-	//(ƒuƒ‰ƒEƒU“à•”‚Ì‰æ–Ê (“¯Šú‚ÌˆÄ“à‚È‚Ç) ‚à•¶‘‚É‚È‚é‚½‚ß URL ‚ª http, https ‚Ì‚à‚Ì‚ğg—p‚·‚é)
+	//ãƒšãƒ¼ã‚¸ã®æ–‡æ›¸ã‹ã‚‰ URL ã¨ã‚¿ã‚¤ãƒˆãƒ«ã‚’å–å¾—ã™ã‚‹
+	//(ãƒ–ãƒ©ã‚¦ã‚¶å†…éƒ¨ã®ç”»é¢ (åŒæœŸã®æ¡ˆå†…ãªã©) ã‚‚æ–‡æ›¸ã«ãªã‚‹ãŸã‚ URL ãŒ http, https ã®ã‚‚ã®ã‚’ä½¿ç”¨ã™ã‚‹)
 	cdoc = TypeCondition(uia, UIA_DocumentControlTypeId);
 	if(cdoc != NULL){
 		if(GetWebDocument(uia, root, cdoc, page) == FALSE){
@@ -473,11 +473,11 @@ static BOOL GetWindowPage(IUIAutomation *uia, HWND hWnd, BROWSER_PAGE *page)
 		ReleaseCondition(cdoc);
 	}
 
-	//æ“¾‚Å‚«‚È‚¢ê‡‚ÍƒAƒhƒŒƒXƒo[‚ÆƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚ğg—p‚·‚é
+	//å–å¾—ã§ããªã„å ´åˆã¯ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒãƒ¼ã¨ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’ä½¿ç”¨ã™ã‚‹
 	if(page->Url == NULL && (value = GetStringProperty(bar, UIA_ValueValuePropertyId)) != NULL){
 		page->Url = ToUrl(value);
 		if(page->Url == NULL){
-			//ƒXƒL[ƒ€‚ğÈ—ª‚µ‚Ä•\¦‚³‚ê‚Ä‚¢‚éê‡ (http ‚©‚ç https ‚Ö‚ÍˆÚ“®‚³‚ê‚é‚½‚ß http ‚Æ‚·‚é)
+			//ã‚¹ã‚­ãƒ¼ãƒ ã‚’çœç•¥ã—ã¦è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹å ´åˆ (http ã‹ã‚‰ https ã¸ã¯ç§»å‹•ã•ã‚Œã‚‹ãŸã‚ http ã¨ã™ã‚‹)
 			BOOL host = (value[0] != L'\0') ? TRUE : FALSE;
 			for(wt = value; *wt != L'\0' && *wt != L'/'; wt++){
 				if(*wt == L' ' || (*wt == L':' && !(*(wt + 1) >= L'0' && *(wt + 1) <= L'9'))){
@@ -493,7 +493,7 @@ static BOOL GetWindowPage(IUIAutomation *uia, HWND hWnd, BROWSER_PAGE *page)
 			}
 		}
 	}
-	//ƒ^ƒCƒgƒ‹‚Í‘I‘ğ‚µ‚Ä‚¢‚éƒ^ƒu‚Ì–¼‘OA–³‚¢ê‡‚ÍƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚ğg—p‚·‚é
+	//ã‚¿ã‚¤ãƒˆãƒ«ã¯é¸æŠã—ã¦ã„ã‚‹ã‚¿ãƒ–ã®åå‰ã€ç„¡ã„å ´åˆã¯ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’ä½¿ç”¨ã™ã‚‹
 	if(page->Url != NULL && page->Title == NULL && (wt = SelectedTabTitle(uia, root)) != NULL){
 		page->Title = ToTitle(wt);
 		HeapFree(GetProcessHeap(), 0, wt);
@@ -562,8 +562,8 @@ void Browser_FreePages(BROWSER_PAGE *pages, int cnt)
 
 	Browser_GetPages
 
-	ƒuƒ‰ƒEƒU‚ÌƒEƒBƒ“ƒhƒE‚Å•\¦‚µ‚Ä‚¢‚éƒy[ƒW‚ğæ“¾‚·‚é
-	(UI Automation ‚ğg—pAFirst ‚ª TRUE ‚Ìê‡‚ÍÅŒã‚ÉƒAƒNƒeƒBƒu‚¾‚Á‚½ƒEƒBƒ“ƒhƒE‚Ì‚İ)
+	ãƒ–ãƒ©ã‚¦ã‚¶ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã§è¡¨ç¤ºã—ã¦ã„ã‚‹ãƒšãƒ¼ã‚¸ã‚’å–å¾—ã™ã‚‹
+	(UI Automation ã‚’ä½¿ç”¨ã€First ãŒ TRUE ã®å ´åˆã¯æœ€å¾Œã«ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã ã£ãŸã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã¿)
 
 ******************************************************************************/
 
@@ -588,7 +588,7 @@ int Browser_GetPages(BROWSER_PAGE **ret, BOOL First)
 	}
 	hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 	if(SUCCEEDED(CoCreateInstance(&CLSID_CUIAutomation, NULL, CLSCTX_INPROC_SERVER, &IID_IUIAutomation, (void **)&uia)) && uia != NULL){
-		//‰“š‚µ‚È‚¢ƒuƒ‰ƒEƒU‚Å‘Ò‚¿‘±‚¯‚È‚¢‚æ‚¤‚É‚·‚é
+		//å¿œç­”ã—ãªã„ãƒ–ãƒ©ã‚¦ã‚¶ã§å¾…ã¡ç¶šã‘ãªã„ã‚ˆã†ã«ã™ã‚‹
 		if(SUCCEEDED(IUIAutomation_QueryInterface(uia, &IID_IUIAutomation2, (void **)&uia2)) && uia2 != NULL){
 			IUIAutomation2_put_ConnectionTimeout(uia2, 2000);
 			IUIAutomation2_put_TransactionTimeout(uia2, 5000);

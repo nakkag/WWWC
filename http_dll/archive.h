@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
 
 	WWWC (wwwc.dll)
 
@@ -17,13 +17,13 @@
 	Define
 **************************************************************************/
 
-#define ARCHIVE_ACTION				"openarchive"			/* �A�[�J�C�u���J�����j���[�̃A�N�V���� */
-#define ARCHIVE_RES_PREFIX			"res/"				/* �y�[�W���猩�����\�[�X�̏ꏊ */
-#define ARCHIVE_URL_MAX				4096				/* ����URL�̍ő咷 */
-#define ARCHIVE_GEN_MAX				99					/* �ۑ����鐢�㐔�̏�� */
+#define ARCHIVE_ACTION				"openarchive"			/* アーカイブを開くメニューのアクション */
+#define ARCHIVE_RES_PREFIX			"res/"				/* ページから見たリソースの場所 */
+#define ARCHIVE_URL_MAX				4096				/* 扱うURLの最大長 */
+#define ARCHIVE_GEN_MAX				99					/* 保存する世代数の上限 */
 
-/* ���\�[�X�̎�� */
-#define RES_LINK					0					/* ���URL�ɂ���̂� */
+/* リソースの種類 */
+#define RES_LINK					0					/* 絶対URLにするのみ */
 #define RES_IMAGE					1
 #define RES_CSS						2
 #define RES_JS						3
@@ -42,7 +42,7 @@ typedef struct _ARCHIVE_BUF {
 	BOOL err;
 } ARCHIVE_BUF;
 
-/* ���URL�Ǝ�ނ���A�[�J�C�u�����t�@�C������Ԃ� (�A�[�J�C�u���Ȃ��ꍇ�� NULL) */
+/* 絶対URLと種類からアーカイブしたファイル名を返す (アーカイブしない場合は NULL) */
 typedef const char *(*ARCHIVE_RESOLVE)(void *ctx, const char *url, int type);
 
 

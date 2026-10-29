@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -30,8 +30,8 @@
 	Global Variables
 **************************************************************************/
 
-//ŠO•”QÆ
-extern HINSTANCE g_hinst;				//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
+//å¤–éƒ¨å‚ç…§
+extern HINSTANCE g_hinst;				//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
 
 typedef struct _ICON_INFO {
 	char *path;
@@ -48,7 +48,7 @@ typedef struct _ICON_INFO {
 
 	SetListIcon
 
-	ƒŠƒXƒgƒrƒ…[‚ÉƒAƒCƒRƒ“ˆê——‚ğİ’è
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ã‚³ãƒ³ä¸€è¦§ã‚’è¨­å®š
 
 ******************************************************************************/
 
@@ -63,7 +63,7 @@ static int SetListIcon(HWND hListView, char *path, int index)
 	int i, j;
 
 	SendMessage(hListView, WM_SETREDRAW, (WPARAM)FALSE, 0);
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒNƒŠƒA
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¯ãƒªã‚¢
 	ListView_DeleteAllItems(hListView);
 
 	if(path == NULL){
@@ -71,7 +71,7 @@ static int SetListIcon(HWND hListView, char *path, int index)
 		UpdateWindow(hListView);
 		return 0;
 	}
-	//ƒAƒCƒRƒ“”æ“¾
+	//ã‚¢ã‚¤ã‚³ãƒ³æ•°å–å¾—
 	icon_cnt = ExtractIconEx(path, -1, NULL, NULL, 1);
 	if(icon_cnt <= 0){
 		SendMessage(hListView, WM_SETREDRAW, (WPARAM)TRUE, 0);
@@ -79,7 +79,7 @@ static int SetListIcon(HWND hListView, char *path, int index)
 		return 0;
 	}
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚Ìì¬Aİ’è
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®ä½œæˆã€è¨­å®š
 	IconList = ListView_GetImageList(hListView, LVSIL_NORMAL);
 	if(IconList == NULL){
 		IconList = ImageList_Create(32, 32, ILC_COLOR16 | ILC_MASK, 0, 0);
@@ -90,15 +90,15 @@ static int SetListIcon(HWND hListView, char *path, int index)
 	}
 
 	for(i = 0; i < icon_cnt; i++){
-		//ƒAƒCƒRƒ“‚Ì’Šo
+		//ã‚¢ã‚¤ã‚³ãƒ³ã®æŠ½å‡º
 		ExtractIconEx(path, i, &hIcon, &hsIcon, 1);
 
 		if(hIcon != NULL){
-			//ƒCƒ[ƒWƒŠƒXƒg‚É’Ç‰Á
+			//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«è¿½åŠ 
 			ret = ImageList_AddIcon(IconList, hIcon);
 			DestroyIcon(hIcon);
 
-			//ƒŠƒXƒgƒrƒ…[‚ÉƒAƒCƒeƒ€‚ğ’Ç‰Á
+			//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ 
 			wsprintf(buf, "%d", i);
 			j = ListView_InsertItemEx(hListView, buf, ret, ret, -1);
 			if(index == ret){
@@ -120,7 +120,7 @@ static int SetListIcon(HWND hListView, char *path, int index)
 
 	SelectIconProc
 
-	ƒAƒCƒRƒ“‘I‘ğƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	ã‚¢ã‚¤ã‚³ãƒ³é¸æŠã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -161,7 +161,7 @@ static BOOL CALLBACK SelectIconProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		{
 		case IDC_EDIT_FILE:
 			if(HIWORD(wParam) == EN_KILLFOCUS && SendDlgItemMessage(hDlg, IDC_EDIT_FILE, EM_GETMODIFY, 0, 0) == TRUE){
-				//•ÏXƒAƒCƒRƒ“ˆê——‚ğæ“¾‚µ‚È‚¨‚·
+				//å¤‰æ›´æ™‚ã‚¢ã‚¤ã‚³ãƒ³ä¸€è¦§ã‚’å–å¾—ã—ãªãŠã™
 				SendDlgItemMessage(hDlg, IDC_EDIT_FILE, WM_GETTEXT, BUFSIZE - 1, (LPARAM)buf);
 				SetListIcon(GetDlgItem(hDlg, IDC_LIST_ICON), buf, -1);
 				SendMessage(hDlg, WM_LV_EVENT, LVN_ITEMCHANGED, 0);
@@ -170,7 +170,7 @@ static BOOL CALLBACK SelectIconProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			break;
 
 		case IDC_BUTTON_BROWS:
-			//ƒAƒCƒRƒ“ƒtƒ@ƒCƒ‹‘I‘ğ
+			//ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠ
 			if(FileSelect(hDlg, "", FILEFILTER_ICON, NULL, buf, NULL, 1) == -1){
 				break;
 			}
@@ -208,7 +208,7 @@ static BOOL CALLBACK SelectIconProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 
 	SelectIcon
 
-	ƒAƒCƒRƒ“‘I‘ğƒEƒBƒ“ƒhƒE‚Ì•\¦
+	ã‚¢ã‚¤ã‚³ãƒ³é¸æŠã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤º
 
 ******************************************************************************/
 

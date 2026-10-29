@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC (dll)
 
@@ -18,87 +18,87 @@
 	Define
 **************************************************************************/
 
-/* ƒEƒBƒ“ƒhƒE“à‚ÌƒRƒ“ƒgƒ[ƒ‹ */
+/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å†…ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ« */
 #define WWWC_TB						102					/* ToolBar */
 #define WWWC_SB						103					/* StatusBar */
 #define WWWC_LIST					1002				/* ListView */
 #define WWWC_TREE					1114				/* TreeView */
 
-/* ƒ\ƒPƒbƒgƒƒbƒZ[ƒW */
-#define WM_WSOCK_GETHOST			(WM_USER + 1)		/* ƒzƒXƒgî•ñ‚ðŽæ“¾‚·‚éƒƒbƒZ[ƒW */
-#define WM_WSOCK_SELECT				(WM_USER + 2)		/* ”ñ“¯Šúselect‚ÌƒƒbƒZ[ƒW */
+/* ã‚½ã‚±ãƒƒãƒˆãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+#define WM_WSOCK_GETHOST			(WM_USER + 1)		/* ãƒ›ã‚¹ãƒˆæƒ…å ±ã‚’å–å¾—ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+#define WM_WSOCK_SELECT				(WM_USER + 2)		/* éžåŒæœŸselectã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
 
-/* ƒ`ƒFƒbƒNƒƒbƒZ[ƒW */
-#define WM_CHECK_RESULT				(WM_USER + 3)		/* ƒAƒCƒeƒ€‚Ìƒ`ƒFƒbƒNŒ‹‰Ê‚ð’m‚ç‚¹‚éƒƒbƒZ[ƒW */
-#define WM_ITEMCHECK				(WM_USER + 4)		/* ƒAƒCƒeƒ€‚Ìƒ`ƒFƒbƒNŠJŽn—v‹ */
-#define WM_NEXTCHECK				(WM_USER + 9)		/* ŽŸ‚Ìƒ`ƒFƒbƒN */
-#define WM_CHECK_END				(WM_USER + 60)		/* ƒAƒCƒeƒ€‚Ìƒ`ƒFƒbƒNI—¹‚ð’m‚ç‚¹‚éƒƒbƒZ[ƒW */
+/* ãƒã‚§ãƒƒã‚¯ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+#define WM_CHECK_RESULT				(WM_USER + 3)		/* ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒã‚§ãƒƒã‚¯çµæžœã‚’çŸ¥ã‚‰ã›ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+#define WM_ITEMCHECK				(WM_USER + 4)		/* ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒã‚§ãƒƒã‚¯é–‹å§‹è¦æ±‚ */
+#define WM_NEXTCHECK				(WM_USER + 9)		/* æ¬¡ã®ãƒã‚§ãƒƒã‚¯ */
+#define WM_CHECK_END				(WM_USER + 60)		/* ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒã‚§ãƒƒã‚¯çµ‚äº†ã‚’çŸ¥ã‚‰ã›ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
 
-/* ƒf[ƒ^—v‹ƒƒbƒZ[ƒW */
-#define WM_GETVERSION				(WM_USER + 5)		/* WWWC‚Ìƒo[ƒWƒ‡ƒ“‚ðŽæ“¾ */
-#define WM_GETCHECKLIST				(WM_USER + 6)		/* ƒ`ƒFƒbƒN’†‚ÌƒAƒCƒeƒ€ƒŠƒXƒg‚ðŽæ“¾ */
-#define WM_GETCHECKLISTCNT			(WM_USER + 7)		/* ƒ`ƒFƒbƒN’†‚ÌƒAƒCƒeƒ€ƒŠƒXƒg‚Ì”‚ðŽæ“¾ */
-#define WM_SETITEMLIST				(WM_USER + 8)		/* ƒAƒCƒeƒ€‚Ì’Ç‰Á */
-#define WM_GETMAINWINDOW			(WM_USER + 10)		/* ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾ */
-#define WM_GETMAINITEM				(WM_USER + 11)		/* ƒAƒCƒeƒ€‚ÌŽÀ‘Ì‚ðŽæ“¾ */
-#define WM_ITEMEXEC					(WM_USER + 12)		/* ƒAƒCƒeƒ€‚ðŽÀs */
-#define WM_ITEMINIT					(WM_USER + 13)		/* ƒAƒCƒeƒ€‚ð‰Šú‰» */
-#define WM_GETUPWINDOW				(WM_USER + 14)		/* XVƒƒbƒZ[ƒW‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾ */
-#define WM_GETFINDWINDOW			(WM_USER + 15)		/* ŒŸõƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾ */
+/* ãƒ‡ãƒ¼ã‚¿è¦æ±‚ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+#define WM_GETVERSION				(WM_USER + 5)		/* WWWCã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’å–å¾— */
+#define WM_GETCHECKLIST				(WM_USER + 6)		/* ãƒã‚§ãƒƒã‚¯ä¸­ã®ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã‚’å–å¾— */
+#define WM_GETCHECKLISTCNT			(WM_USER + 7)		/* ãƒã‚§ãƒƒã‚¯ä¸­ã®ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®æ•°ã‚’å–å¾— */
+#define WM_SETITEMLIST				(WM_USER + 8)		/* ã‚¢ã‚¤ãƒ†ãƒ ã®è¿½åŠ  */
+#define WM_GETMAINWINDOW			(WM_USER + 10)		/* ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾— */
+#define WM_GETMAINITEM				(WM_USER + 11)		/* ã‚¢ã‚¤ãƒ†ãƒ ã®å®Ÿä½“ã‚’å–å¾— */
+#define WM_ITEMEXEC					(WM_USER + 12)		/* ã‚¢ã‚¤ãƒ†ãƒ ã‚’å®Ÿè¡Œ */
+#define WM_ITEMINIT					(WM_USER + 13)		/* ã‚¢ã‚¤ãƒ†ãƒ ã‚’åˆæœŸåŒ– */
+#define WM_GETUPWINDOW				(WM_USER + 14)		/* æ›´æ–°ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾— */
+#define WM_GETFINDWINDOW			(WM_USER + 15)		/* æ¤œç´¢ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾— */
 
-/* INIƒtƒ@ƒCƒ‹ˆ—ƒƒbƒZ[ƒW */
-#define WM_WWWC_GETINI				(WM_USER + 20)		/* INIƒtƒ@ƒCƒ‹‚©‚çÝ’è‚ð“Ç‚Ý’¼‚· */
-#define WM_WWWC_PUTINI				(WM_USER + 21)		/* INIƒtƒ@ƒCƒ‹‚ÉÝ’è‚ð‘‚«ž‚Þ */
-#define WM_WWWC_GETINIPATH			(WM_USER + 22)		/* INIƒtƒ@ƒCƒ‹‚Ì•Û‘¶æ‚ÌƒpƒX‚ðŽæ“¾ */
+/* INIãƒ•ã‚¡ã‚¤ãƒ«å‡¦ç†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+#define WM_WWWC_GETINI				(WM_USER + 20)		/* INIãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰è¨­å®šã‚’èª­ã¿ç›´ã™ */
+#define WM_WWWC_PUTINI				(WM_USER + 21)		/* INIãƒ•ã‚¡ã‚¤ãƒ«ã«è¨­å®šã‚’æ›¸ãè¾¼ã‚€ */
+#define WM_WWWC_GETINIPATH			(WM_USER + 22)		/* INIãƒ•ã‚¡ã‚¤ãƒ«ã®ä¿å­˜å…ˆã®ãƒ‘ã‚¹ã‚’å–å¾— */
 
-/* ƒtƒHƒ‹ƒ_‘€ìƒƒbƒZ[ƒW */
-#define WM_FOLDER_SAVE				(WM_USER + 31)		/* ŠJ‚¢‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ì“à—e‚ð•Û‘¶ */
-#define WM_FOLDER_LOAD				(WM_USER + 32)		/* ŠJ‚¢‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ì“à—e‚ð“Ç‚Ý’¼‚· */
-#define WM_FOLDER_GETPATH			(WM_USER + 33)		/* ƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ðŽæ“¾ */
-#define WM_FOLDER_GETWWWCPATH		(WM_USER + 34)		/* ƒtƒHƒ‹ƒ_‚ÌWWWC“à‚Å‚ÌƒpƒX‚ðŽæ“¾ */
-#define WM_FOLDER_SELECT			(WM_USER + 35)		/* ƒtƒHƒ‹ƒ_‚ð‘I‘ð‚µ‚Ä‚»‚ÌƒpƒX‚ðŽæ“¾ */
+/* ãƒ•ã‚©ãƒ«ãƒ€æ“ä½œãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+#define WM_FOLDER_SAVE				(WM_USER + 31)		/* é–‹ã„ã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã‚’ä¿å­˜ */
+#define WM_FOLDER_LOAD				(WM_USER + 32)		/* é–‹ã„ã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã‚’èª­ã¿ç›´ã™ */
+#define WM_FOLDER_GETPATH			(WM_USER + 33)		/* ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’å–å¾— */
+#define WM_FOLDER_GETWWWCPATH		(WM_USER + 34)		/* ãƒ•ã‚©ãƒ«ãƒ€ã®WWWCå†…ã§ã®ãƒ‘ã‚¹ã‚’å–å¾— */
+#define WM_FOLDER_SELECT			(WM_USER + 35)		/* ãƒ•ã‚©ãƒ«ãƒ€ã‚’é¸æŠžã—ã¦ãã®ãƒ‘ã‚¹ã‚’å–å¾— */
 #define WM_FOLDER_REFRESH			(WM_USER + 36)
 
-#define WM_DOEVENTS					(WM_USER + 50)		/* –{‘Ì‚ÉƒCƒxƒ“ƒg‚ðˆ—‚³‚¹‚é */
+#define WM_DOEVENTS					(WM_USER + 50)		/* æœ¬ä½“ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’å‡¦ç†ã•ã›ã‚‹ */
 
 
-/* ƒAƒCƒeƒ€‚Ìó‘Ô */
-#define ST_DEFAULT					0					/* ’Êí */
+/* ã‚¢ã‚¤ãƒ†ãƒ ã®çŠ¶æ…‹ */
+#define ST_DEFAULT					0					/* é€šå¸¸ */
 #define ST_UP						1					/* UP */
-#define ST_ERROR					2					/* ƒGƒ‰[ */
-#define ST_TIMEOUT					4					/* ƒ^ƒCƒ€ƒAƒEƒg */
+#define ST_ERROR					2					/* ã‚¨ãƒ©ãƒ¼ */
+#define ST_TIMEOUT					4					/* ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ */
 
-/* ƒAƒCƒRƒ“‚Ìó‘Ô */
-#define ICON_ST_NOCHECK				1					/* ƒ`ƒFƒbƒN‘Ò‹@ */
-#define ICON_ST_CHECK				2					/* ƒ`ƒFƒbƒN’† */
+/* ã‚¢ã‚¤ã‚³ãƒ³ã®çŠ¶æ…‹ */
+#define ICON_ST_NOCHECK				1					/* ãƒã‚§ãƒƒã‚¯å¾…æ©Ÿ */
+#define ICON_ST_CHECK				2					/* ãƒã‚§ãƒƒã‚¯ä¸­ */
 
-/* –ß‚è’l */
-#define CHECK_ERROR					-1					/* ƒGƒ‰[ */
-#define CHECK_SUCCEED				0					/* ˆ—Š®—¹ */
-#define CHECK_NO					1					/* ‘Ò‹@ */
-#define CHECK_END					2					/* ƒ`ƒFƒbƒNI—¹ */
+/* æˆ»ã‚Šå€¤ */
+#define CHECK_ERROR					-1					/* ã‚¨ãƒ©ãƒ¼ */
+#define CHECK_SUCCEED				0					/* å‡¦ç†å®Œäº† */
+#define CHECK_NO					1					/* å¾…æ©Ÿ */
+#define CHECK_END					2					/* ãƒã‚§ãƒƒã‚¯çµ‚äº† */
 
-/* ƒhƒƒbƒvƒtƒ@ƒCƒ‹‚Ì–ß‚è’l */
-#define DROPFILE_NONE				0					/* –¢ˆ— */
-#define DROPFILE_NEWITEM			1					/* ƒAƒCƒeƒ€ì¬ */
+/* ãƒ‰ãƒ­ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã®æˆ»ã‚Šå€¤ */
+#define DROPFILE_NONE				0					/* æœªå‡¦ç† */
+#define DROPFILE_NEWITEM			1					/* ã‚¢ã‚¤ãƒ†ãƒ ä½œæˆ */
 
-/* ƒc[ƒ‹ŽÀsƒtƒ‰ƒO */
-#define TOOL_EXEC_PORP				0					/* ƒvƒƒpƒeƒB */
-#define TOOL_EXEC_ITEMMENU			1					/* ƒAƒCƒeƒ€ƒƒjƒ…[ */
-#define TOOL_EXEC_WINDOWMENU		2					/* ƒEƒBƒ“ƒhƒEƒƒjƒ…[ */
-#define TOOL_EXEC_START				4					/* ‹N“®Žž */
-#define TOOL_EXEC_END				8					/* I—¹Žž */
-#define TOOL_EXEC_CHECKSTART		16					/* ƒ`ƒFƒbƒNŠJŽnŽž */
-#define TOOL_EXEC_CHECKEND			32					/* ƒ`ƒFƒbƒNI—¹Žž */
-#define TOOL_EXEC_CHECKENDUP		64					/* ƒ`ƒFƒbƒNI—¹Žž‚ÅXV‚ ‚è‚Ì‚Æ‚« */
-#define TOOL_EXEC_CHECKENDNOUP		128					/* ƒ`ƒFƒbƒNI—¹Žž‚ÅXV‚È‚µ‚Ì‚Æ‚« */
-#define TOOL_EXEC_SYNC				256					/* ƒc[ƒ‹‚ªI—¹‚·‚é‚Ü‚Å‘Ò‹@ (DLL‚Ìê‡‚Í–³Œø) */
-#define TOOL_EXEC_INITITEM			512					/* ŽÀsŒã‚ÉƒAƒCƒeƒ€‚ð‰Šú‰» */
-#define TOOL_EXEC_MENUDEFAULT		1024				/* ƒfƒtƒHƒ‹ƒg€–Ú */
-#define TOOL_EXEC_NOTCHECK			2048				/* ƒ`ƒFƒbƒN’†‚ÍŽÀs‚µ‚È‚¢ */
-#define TOOL_EXEC_SAVEFOLDER		4096				/* ŽÀs‘O‚ÉƒtƒHƒ‹ƒ_‚Ì“à—e‚ð•Û‘¶‚µ‚ÄŽÀsŒã‚É“Ç‚Ý’¼‚· */
+/* ãƒ„ãƒ¼ãƒ«å®Ÿè¡Œãƒ•ãƒ©ã‚° */
+#define TOOL_EXEC_PORP				0					/* ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ */
+#define TOOL_EXEC_ITEMMENU			1					/* ã‚¢ã‚¤ãƒ†ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ */
+#define TOOL_EXEC_WINDOWMENU		2					/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒ‹ãƒ¥ãƒ¼ */
+#define TOOL_EXEC_START				4					/* èµ·å‹•æ™‚ */
+#define TOOL_EXEC_END				8					/* çµ‚äº†æ™‚ */
+#define TOOL_EXEC_CHECKSTART		16					/* ãƒã‚§ãƒƒã‚¯é–‹å§‹æ™‚ */
+#define TOOL_EXEC_CHECKEND			32					/* ãƒã‚§ãƒƒã‚¯çµ‚äº†æ™‚ */
+#define TOOL_EXEC_CHECKENDUP		64					/* ãƒã‚§ãƒƒã‚¯çµ‚äº†æ™‚ã§æ›´æ–°ã‚ã‚Šã®ã¨ã */
+#define TOOL_EXEC_CHECKENDNOUP		128					/* ãƒã‚§ãƒƒã‚¯çµ‚äº†æ™‚ã§æ›´æ–°ãªã—ã®ã¨ã */
+#define TOOL_EXEC_SYNC				256					/* ãƒ„ãƒ¼ãƒ«ãŒçµ‚äº†ã™ã‚‹ã¾ã§å¾…æ©Ÿ (DLLã®å ´åˆã¯ç„¡åŠ¹) */
+#define TOOL_EXEC_INITITEM			512					/* å®Ÿè¡Œå¾Œã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’åˆæœŸåŒ– */
+#define TOOL_EXEC_MENUDEFAULT		1024				/* ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆé …ç›® */
+#define TOOL_EXEC_NOTCHECK			2048				/* ãƒã‚§ãƒƒã‚¯ä¸­ã¯å®Ÿè¡Œã—ãªã„ */
+#define TOOL_EXEC_SAVEFOLDER		4096				/* å®Ÿè¡Œå‰ã«ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã‚’ä¿å­˜ã—ã¦å®Ÿè¡Œå¾Œã«èª­ã¿ç›´ã™ */
 
-/* ƒc[ƒ‹”ñ•\Ž¦ƒtƒ‰ƒO */
+/* ãƒ„ãƒ¼ãƒ«éžè¡¨ç¤ºãƒ•ãƒ©ã‚° */
 #define TOOL_HIDE_ITEMMENU			1
 #define TOOL_HIDE_WINDOWMENU		2
 #define TOOL_HIDE_START				4
@@ -112,108 +112,108 @@
 #define TOOL_HIDE_MENUDEFAULT		1024
 #define TOOL_HIDE_NOTCHECK			2048
 #define TOOL_HIDE_SAVEFOLDER		4096
-#define TOOL_HIDE_HOTKEY			8192				/* ƒzƒbƒgƒL[ */
-#define TOOL_HIDE_MENUINDEX			16384				/* ƒƒjƒ…[Index */
-#define TOOL_HIDE_PROTOCOL			32768				/* ƒvƒƒgƒRƒ‹‘I‘ð */
+#define TOOL_HIDE_HOTKEY			8192				/* ãƒ›ãƒƒãƒˆã‚­ãƒ¼ */
+#define TOOL_HIDE_MENUINDEX			16384				/* ãƒ¡ãƒ‹ãƒ¥ãƒ¼Index */
+#define TOOL_HIDE_PROTOCOL			32768				/* ãƒ—ãƒ­ãƒˆã‚³ãƒ«é¸æŠž */
 
-/* ƒ`ƒFƒbƒN‚ÌŽí—Þ */
-#define CHECKTYPE_ITEM				1					/* ƒAƒCƒeƒ€‚ðƒ`ƒFƒbƒN */
-#define CHECKTYPE_ALL				2					/* ‘S‚Ä‚ÌƒAƒCƒeƒ€‚ðƒ`ƒFƒbƒN */
-#define CHECKTYPE_TREE				4					/* ŠK‘wƒ`ƒFƒbƒN */
-#define CHECKTYPE_ERROR				8					/* ƒGƒ‰[ƒAƒCƒeƒ€‚ðƒ`ƒFƒbƒN */
-#define CHECKTYPE_AUTO				16					/* Ž©“®ƒ`ƒFƒbƒN */
+/* ãƒã‚§ãƒƒã‚¯ã®ç¨®é¡ž */
+#define CHECKTYPE_ITEM				1					/* ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒã‚§ãƒƒã‚¯ */
+#define CHECKTYPE_ALL				2					/* å…¨ã¦ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒã‚§ãƒƒã‚¯ */
+#define CHECKTYPE_TREE				4					/* éšŽå±¤ãƒã‚§ãƒƒã‚¯ */
+#define CHECKTYPE_ERROR				8					/* ã‚¨ãƒ©ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒã‚§ãƒƒã‚¯ */
+#define CHECKTYPE_AUTO				16					/* è‡ªå‹•ãƒã‚§ãƒƒã‚¯ */
 
 
 /**************************************************************************
 	Struct
 **************************************************************************/
 
-/* ƒAƒCƒeƒ€î•ñ */
+/* ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ± */
 struct TPITEM{
-	long iSize;						/* \‘¢‘Ì‚ÌƒTƒCƒY */
+	long iSize;						/* æ§‹é€ ä½“ã®ã‚µã‚¤ã‚º */
 
-	long hItem;						/* ƒAƒCƒeƒ€‚ªŠi”[‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ìƒnƒ“ƒhƒ‹ (HTREEITEM) */
+	long hItem;						/* ã‚¢ã‚¤ãƒ†ãƒ ãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒãƒ³ãƒ‰ãƒ« (HTREEITEM) */
 
-	char *Title;					/* ƒ^ƒCƒgƒ‹ */
-	char *CheckURL;					/* ƒ`ƒFƒbƒN‚ðs‚¤URL */
-	char *Size;						/* ƒTƒCƒY */
-	char *Date;						/* XV“úŽž */
-	int Status;						/* ƒAƒCƒeƒ€‚Ìó‘Ô (ST_) */
+	char *Title;					/* ã‚¿ã‚¤ãƒˆãƒ« */
+	char *CheckURL;					/* ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†URL */
+	char *Size;						/* ã‚µã‚¤ã‚º */
+	char *Date;						/* æ›´æ–°æ—¥æ™‚ */
+	int Status;						/* ã‚¢ã‚¤ãƒ†ãƒ ã®çŠ¶æ…‹ (ST_) */
 
-	char *CheckDate;				/* ƒ`ƒFƒbƒN‚µ‚½“úŽž */
-	char *OldSize;					/* ‹ŒXV“ú */
-	char *OldDate;					/* ‹ŒƒTƒCƒY */
+	char *CheckDate;				/* ãƒã‚§ãƒƒã‚¯ã—ãŸæ—¥æ™‚ */
+	char *OldSize;					/* æ—§æ›´æ–°æ—¥ */
+	char *OldDate;					/* æ—§ã‚µã‚¤ã‚º */
 
-	char *ViewURL;					/* •\Ž¦‚·‚éURL */
-	char *Option1;					/* ƒIƒvƒVƒ‡ƒ“ 1 */
-	char *Option2;					/* ƒIƒvƒVƒ‡ƒ“ 2 */
-	char *Comment;					/* ƒRƒƒ“ƒg */
+	char *ViewURL;					/* è¡¨ç¤ºã™ã‚‹URL */
+	char *Option1;					/* ã‚ªãƒ—ã‚·ãƒ§ãƒ³ 1 */
+	char *Option2;					/* ã‚ªãƒ—ã‚·ãƒ§ãƒ³ 2 */
+	char *Comment;					/* ã‚³ãƒ¡ãƒ³ãƒˆ */
 
-	int CheckSt;					/* ƒ`ƒFƒbƒNƒtƒ‰ƒO */
+	int CheckSt;					/* ãƒã‚§ãƒƒã‚¯ãƒ•ãƒ©ã‚° */
 
-	char *ErrStatus;				/* ƒGƒ‰[ó‘Ô */
-	char *DLLData1;					/* DLL—pƒf[ƒ^ 1 */
-	char *DLLData2;					/* DLL—pƒf[ƒ^ 2 */
+	char *ErrStatus;				/* ã‚¨ãƒ©ãƒ¼çŠ¶æ…‹ */
+	char *DLLData1;					/* DLLç”¨ãƒ‡ãƒ¼ã‚¿ 1 */
+	char *DLLData2;					/* DLLç”¨ãƒ‡ãƒ¼ã‚¿ 2 */
 
-/* ˆÈ‰º•Û‘¶‚³‚ê‚È‚¢î•ñ */
-	int IconStatus;					/* ƒAƒCƒRƒ“‚Ìó‘Ô (ICON_ST_) */
+/* ä»¥ä¸‹ä¿å­˜ã•ã‚Œãªã„æƒ…å ± */
+	int IconStatus;					/* ã‚¢ã‚¤ã‚³ãƒ³ã®çŠ¶æ…‹ (ICON_ST_) */
 
-	int Soc1;						/* ƒ\ƒPƒbƒg1 */
-	int Soc2;						/* ƒ\ƒPƒbƒg2 */
-	HANDLE hGetHost1;				/* ƒzƒXƒgî•ñ‚Ìƒnƒ“ƒhƒ‹1 */
-	HANDLE hGetHost2;				/* ƒzƒXƒgî•ñ‚Ìƒnƒ“ƒhƒ‹1 */
-	long Param1;					/* DLL—plong’l1 */
-	long Param2;					/* DLL—plong’l2 */
-	long Param3;					/* DLL—plong’l3 */
-	long Param4;					/* DLL—plong’l4 */
-	int user1;						/* DLL—pint’l1 */
-	int user2;						/* DLL—pint’l2 */
+	int Soc1;						/* ã‚½ã‚±ãƒƒãƒˆ1 */
+	int Soc2;						/* ã‚½ã‚±ãƒƒãƒˆ2 */
+	HANDLE hGetHost1;				/* ãƒ›ã‚¹ãƒˆæƒ…å ±ã®ãƒãƒ³ãƒ‰ãƒ«1 */
+	HANDLE hGetHost2;				/* ãƒ›ã‚¹ãƒˆæƒ…å ±ã®ãƒãƒ³ãƒ‰ãƒ«1 */
+	long Param1;					/* DLLç”¨longå€¤1 */
+	long Param2;					/* DLLç”¨longå€¤2 */
+	long Param3;					/* DLLç”¨longå€¤3 */
+	long Param4;					/* DLLç”¨longå€¤4 */
+	int user1;						/* DLLç”¨intå€¤1 */
+	int user2;						/* DLLç”¨intå€¤2 */
 
-	BOOL RefreshFlag;				/* Ä•`‰æƒtƒ‰ƒO */
+	BOOL RefreshFlag;				/* å†æç”»ãƒ•ãƒ©ã‚° */
 };
 
 
-/* ƒvƒƒgƒRƒ‹Ý’è */
+/* ãƒ—ãƒ­ãƒˆã‚³ãƒ«è¨­å®š */
 struct TPPROTOCOLSET{
-	long iSize;						/* \‘¢‘Ì‚ÌƒTƒCƒY */
+	long iSize;						/* æ§‹é€ ä½“ã®ã‚µã‚¤ã‚º */
 
-	char Title[256];				/* ƒ^ƒCƒgƒ‹ */
-	char FuncHeader[256];			/* ŠÖ”–¼‚Ìæ“ª‚É•t‚¯‚é•¶Žš */
-	char IconFile[256];				/* ƒAƒCƒRƒ“ƒtƒ@ƒCƒ‹–¼ */
-	int IconIndex;					/* ƒAƒCƒRƒ“ƒCƒ“ƒfƒbƒNƒX */
-	char UpIconFile[256];			/* UPƒAƒCƒRƒ“ƒtƒ@ƒCƒ‹–¼ */
-	int UpIconIndex;				/* UPƒAƒCƒRƒ“ƒCƒ“ƒfƒbƒNƒX */
+	char Title[256];				/* ã‚¿ã‚¤ãƒˆãƒ« */
+	char FuncHeader[256];			/* é–¢æ•°åã®å…ˆé ­ã«ä»˜ã‘ã‚‹æ–‡å­— */
+	char IconFile[256];				/* ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«å */
+	int IconIndex;					/* ã‚¢ã‚¤ã‚³ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ */
+	char UpIconFile[256];			/* UPã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«å */
+	int UpIconIndex;				/* UPã‚¢ã‚¤ã‚³ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ */
 };
 
-/* ƒvƒƒgƒRƒ‹ƒƒjƒ…[ */
+/* ãƒ—ãƒ­ãƒˆã‚³ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ */
 struct TPPROTOCOLMENU{
-	char Name[256];					/* ƒƒjƒ…[–¼ */
-	char Action[256];				/* ŽÀsŽž‚ÌƒAƒNƒVƒ‡ƒ“ */
-	BOOL Default;					/* ƒfƒtƒHƒ‹ƒgƒtƒ‰ƒO */
-	int Flag;						/* “®ìƒtƒ‰ƒO */
+	char Name[256];					/* ãƒ¡ãƒ‹ãƒ¥ãƒ¼å */
+	char Action[256];				/* å®Ÿè¡Œæ™‚ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ */
+	BOOL Default;					/* ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ•ãƒ©ã‚° */
+	int Flag;						/* å‹•ä½œãƒ•ãƒ©ã‚° */
 };
 
-/* ƒvƒƒgƒRƒ‹î•ñ */
+/* ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ± */
 struct TPPROTOCOLINFO{
-	long iSize;						/* \‘¢‘Ì‚ÌƒTƒCƒY */
+	long iSize;						/* æ§‹é€ ä½“ã®ã‚µã‚¤ã‚º */
 
-	char Scheme[256];				/* ‘Î‰ž‚·‚éƒXƒL[ƒ} (—á: "http://\thttps://") */
-	char NewMenu[256];				/* V‹Kì¬ƒƒjƒ…[–¼ */
-	char FileType[256];				/* D&D‚Åˆ—‰Â”\‚Èƒtƒ@ƒCƒ‹‚ÌŠg’£Žq (—á: "txt\tdoc\tdat") */
-	struct TPPROTOCOLMENU *tpMenu;	/* ƒAƒCƒeƒ€ƒƒjƒ…[‚É’Ç‰Á‚·‚é€–Ú */
-	int tpMenuCnt;					/* ƒAƒCƒeƒ€ƒƒjƒ…[‚É’Ç‰Á‚·‚é€–Ú‚Ì” */
+	char Scheme[256];				/* å¯¾å¿œã™ã‚‹ã‚¹ã‚­ãƒ¼ãƒž (ä¾‹: "http://\thttps://") */
+	char NewMenu[256];				/* æ–°è¦ä½œæˆãƒ¡ãƒ‹ãƒ¥ãƒ¼å */
+	char FileType[256];				/* D&Dã§å‡¦ç†å¯èƒ½ãªãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ (ä¾‹: "txt\tdoc\tdat") */
+	struct TPPROTOCOLMENU *tpMenu;	/* ã‚¢ã‚¤ãƒ†ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¿½åŠ ã™ã‚‹é …ç›® */
+	int tpMenuCnt;					/* ã‚¢ã‚¤ãƒ†ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¿½åŠ ã™ã‚‹é …ç›®ã®æ•° */
 };
 
 
-/* ƒc[ƒ‹Ý’è */
+/* ãƒ„ãƒ¼ãƒ«è¨­å®š */
 struct TP_TOOLS{
-	long iSize;						/* \‘¢‘Ì‚ÌƒTƒCƒY */
+	long iSize;						/* æ§‹é€ ä½“ã®ã‚µã‚¤ã‚º */
 
-	char title[256];				/* ƒ^ƒCƒgƒ‹ */
-	char func[256];					/* ŠÖ”–¼ */
-	char Protocol[256];				/* ‘Î‰ž‚·‚éƒvƒƒgƒRƒ‹ (—á: http,ftp) */
-	int MenuIndex;					/* ƒƒjƒ…[ˆÊ’u */
-	int Action;						/* ŽÀsƒtƒ‰ƒO */
+	char title[256];				/* ã‚¿ã‚¤ãƒˆãƒ« */
+	char func[256];					/* é–¢æ•°å */
+	char Protocol[256];				/* å¯¾å¿œã™ã‚‹ãƒ—ãƒ­ãƒˆã‚³ãƒ« (ä¾‹: http,ftp) */
+	int MenuIndex;					/* ãƒ¡ãƒ‹ãƒ¥ãƒ¼ä½ç½® */
+	int Action;						/* å®Ÿè¡Œãƒ•ãƒ©ã‚° */
 };
 
 #endif

@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC (wwwc.dll)
 
@@ -29,7 +29,7 @@
 	Define
 **************************************************************************/
 
-#define BUF_LIMIT			(256 * 1024 * 1024)	/* ‘‚«Š·‚¦Œ‹‰Ê‚ÌÅ‘å */
+#define BUF_LIMIT			(256 * 1024 * 1024)	/* æ›¸ãæ›ãˆçµæœã®æœ€å¤§ */
 #define MAX_ATTR			64
 
 #define IS_SPACE(c)			((c) == ' ' || (c) == '\t' || (c) == '\r' || (c) == '\n' || (c) == '\f')
@@ -46,10 +46,10 @@
 typedef struct _ATTR {
 	const char *name;
 	long nlen;
-	const char *val;					/* ˆø—p•„‚ğœ‚¢‚½’l (–³‚¢ê‡‚Í NULL) */
+	const char *val;					/* å¼•ç”¨ç¬¦ã‚’é™¤ã„ãŸå€¤ (ç„¡ã„å ´åˆã¯ NULL) */
 	long vlen;
-	const char *start;					/* ‘®«‚Ìæ“ª */
-	const char *end;					/* ‘®«‚ÌI‚í‚è‚ÌŸ */
+	const char *start;					/* å±æ€§ã®å…ˆé ­ */
+	const char *end;					/* å±æ€§ã®çµ‚ã‚ã‚Šã®æ¬¡ */
 } ATTR;
 
 
@@ -109,7 +109,7 @@ void Buf_Free(ARCHIVE_BUF *b)
 	ZeroMemory(b, sizeof(ARCHIVE_BUF));
 }
 
-/* Œ‹‰Ê‚ğæ‚èo‚· (ƒGƒ‰[‚Ìê‡‚Í NULL) */
+/* çµæœã‚’å–ã‚Šå‡ºã™ (ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯ NULL) */
 static char *Buf_Detach(ARCHIVE_BUF *b, long *outlen)
 {
 	char *p;
@@ -140,7 +140,7 @@ void Archive_Free(void *p)
 	String helpers
 **************************************************************************/
 
-/* ‘å•¶š¬•¶š‚ğ‹æ•Ê‚¹‚¸‚Éæ“ª‚ªˆê’v‚·‚é‚© (”ÍˆÍ“à) */
+/* å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã›ãšã«å…ˆé ­ãŒä¸€è‡´ã™ã‚‹ã‹ (ç¯„å›²å†…) */
 static BOOL StartsWithI(const char *p, const char *end, const char *s)
 {
 	for(; *s != '\0'; p++, s++){
@@ -156,7 +156,7 @@ static BOOL EqualI(const char *p, long n, const char *s)
 	return (lstrlen(s) == n && StartsWithI(p, p + n, s) == TRUE) ? TRUE : FALSE;
 }
 
-/* ”ÍˆÍ“à‚Å‘å•¶š¬•¶š‚ğ‹æ•Ê‚¹‚¸‚ÉŒŸõ */
+/* ç¯„å›²å†…ã§å¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã›ãšã«æ¤œç´¢ */
 static const char *FindI(const char *p, const char *end, const char *s)
 {
 	for(; p < end; p++){
@@ -167,7 +167,7 @@ static const char *FindI(const char *p, const char *end, const char *s)
 	return NULL;
 }
 
-/* ‹ó”’‹æØ‚è‚Ìƒg[ƒNƒ“‚ÉŠÜ‚Ü‚ê‚é‚© (rel ‘®«—p) */
+/* ç©ºç™½åŒºåˆ‡ã‚Šã®ãƒˆãƒ¼ã‚¯ãƒ³ã«å«ã¾ã‚Œã‚‹ã‹ (rel å±æ€§ç”¨) */
 static BOOL HasToken(const char *p, long n, const char *token)
 {
 	const char *end = p + n;
@@ -183,7 +183,7 @@ static BOOL HasToken(const char *p, long n, const char *token)
 	return FALSE;
 }
 
-/* HTML‚Ì•¶šQÆ‚ğ“WŠJ‚·‚é (ASCII ‚Ì”ÍˆÍ‚Ì‚İ) */
+/* HTMLã®æ–‡å­—å‚ç…§ã‚’å±•é–‹ã™ã‚‹ (ASCII ã®ç¯„å›²ã®ã¿) */
 static void DecodeEntities(const char *s, long n, char *ret, long size)
 {
 	const char *end = s + n;
@@ -233,7 +233,7 @@ static void DecodeEntities(const char *s, long n, char *ret, long size)
 	*r = '\0';
 }
 
-/* ‘®«’l‚Æ‚µ‚Äo—Í */
+/* å±æ€§å€¤ã¨ã—ã¦å‡ºåŠ› */
 static void AddAttrValue(ARCHIVE_BUF *b, const char *s)
 {
 	for(; *s != '\0'; s++){
@@ -248,7 +248,7 @@ static void AddAttrValue(ARCHIVE_BUF *b, const char *s)
 	}
 }
 
-/* http, https ‚Ì URL ‚© */
+/* http, https ã® URL ã‹ */
 static BOOL IsHttpUrl(const char *url)
 {
 	return (StartsWithI(url, url + lstrlen(url), "http://") == TRUE ||
@@ -260,7 +260,7 @@ static BOOL IsHttpUrl(const char *url)
 
 	Archive_ResolveUrl
 
-	Šî€‚ÌURL‚©‚ç‘Š‘ÎURL‚ğ‰ğŒˆ‚·‚é (http, https ˆÈŠO‚Í FALSE)
+	åŸºæº–ã®URLã‹ã‚‰ç›¸å¯¾URLã‚’è§£æ±ºã™ã‚‹ (http, https ä»¥å¤–ã¯ FALSE)
 
 ******************************************************************************/
 
@@ -275,13 +275,13 @@ BOOL Archive_ResolveUrl(const char *base, const char *rel, char *ret, int size)
 		return FALSE;
 	}
 	*ret = '\0';
-	//‘OŒã‚Ì‹ó”’‚ğœ‚­
+	//å‰å¾Œã®ç©ºç™½ã‚’é™¤ã
 	for(p = rel; IS_SPACE(*p); p++);
 	for(end = p + lstrlen(p); end > p && IS_SPACE(*(end - 1)); end--);
 	if(p >= end || *p == '#'){
 		return FALSE;
 	}
-	//ƒXƒL[ƒ€‚ª‚ ‚éê‡‚Í http, https ‚Ì‚İ
+	//ã‚¹ã‚­ãƒ¼ãƒ ãŒã‚ã‚‹å ´åˆã¯ http, https ã®ã¿
 	for(t = (char *)p; t < end && (IS_ALPHA(*t) || IS_DIGIT(*t) || *t == '+' || *t == '-' || *t == '.'); t++);
 	if(t > p && t < end && *t == ':' && StartsWithI(p, end, "http:") == FALSE && StartsWithI(p, end, "https:") == FALSE){
 		return FALSE;
@@ -289,7 +289,7 @@ BOOL Archive_ResolveUrl(const char *base, const char *rel, char *ret, int size)
 	if(end - p > ARCHIVE_URL_MAX){
 		return FALSE;
 	}
-	//‰üs“™‚ğœ‚«A‹ó”’‚Æ8ƒrƒbƒg•¶š‚Í % ƒGƒ“ƒR[ƒh‚·‚é
+	//æ”¹è¡Œç­‰ã‚’é™¤ãã€ç©ºç™½ã¨8ãƒ“ãƒƒãƒˆæ–‡å­—ã¯ % ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã™ã‚‹
 	tmp = (char *)HeapAlloc(GetProcessHeap(), 0, (end - p) * 3 + 1);
 	if(tmp == NULL){
 		return FALSE;
@@ -321,7 +321,7 @@ BOOL Archive_ResolveUrl(const char *base, const char *rel, char *ret, int size)
 	CSS
 **************************************************************************/
 
-/* url() ‚Ü‚½‚Í @import ‚Ì’l‚ğo—Í */
+/* url() ã¾ãŸã¯ @import ã®å€¤ã‚’å‡ºåŠ› */
 static void CssEmitUrl(ARCHIVE_BUF *b, const char *base, const char *prefix, const char *val, long vlen,
 					   int type, BOOL isfunc, ARCHIVE_RESOLVE cb, void *ctx, const char *orig, long olen)
 {
@@ -340,7 +340,7 @@ static void CssEmitUrl(ARCHIVE_BUF *b, const char *base, const char *prefix, con
 	}
 	CopyMemory(raw, val, vlen);
 	raw[vlen] = '\0';
-	//ƒGƒXƒP[ƒv‚ğŠÜ‚Ş‚à‚Ì‚â data: ‚È‚Ç‚Í‚»‚Ì‚Ü‚Ü
+	//ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚’å«ã‚€ã‚‚ã®ã‚„ data: ãªã©ã¯ãã®ã¾ã¾
 	for(i = 0; i < vlen && raw[i] != '\\'; i++);
 	if(i < vlen || Archive_ResolveUrl(base, raw, abs, ARCHIVE_URL_MAX + 1) == FALSE){
 		Buf_Add(b, orig, olen);
@@ -376,7 +376,7 @@ static void CssEmitUrl(ARCHIVE_BUF *b, const char *base, const char *prefix, con
 
 	Archive_RewriteCss
 
-	CSS“à‚ÌURL‚ğƒA[ƒJƒCƒu‚Ìƒtƒ@ƒCƒ‹–¼ (prefix + –¼‘O) ‚Ü‚½‚Íâ‘ÎURL‚É‘‚«Š·‚¦‚é
+	CSSå†…ã®URLã‚’ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã®ãƒ•ã‚¡ã‚¤ãƒ«å (prefix + åå‰) ã¾ãŸã¯çµ¶å¯¾URLã«æ›¸ãæ›ãˆã‚‹
 
 ******************************************************************************/
 
@@ -395,7 +395,7 @@ char *Archive_RewriteCss(const char *css, long len, const char *base, const char
 	ZeroMemory(&b, sizeof(ARCHIVE_BUF));
 	Buf_Reserve(&b, len + len / 4);
 	while(p < end && b.err == FALSE){
-		//ƒRƒƒ“ƒg
+		//ã‚³ãƒ¡ãƒ³ãƒˆ
 		if(*p == '/' && p + 1 < end && *(p + 1) == '*'){
 			q = p + 2;
 			for(; q + 1 < end && !(*q == '*' && *(q + 1) == '/'); q++);
@@ -404,7 +404,7 @@ char *Archive_RewriteCss(const char *css, long len, const char *base, const char
 			p = q;
 			continue;
 		}
-		//•¶š—ñ
+		//æ–‡å­—åˆ—
 		if(*p == '"' || *p == '\''){
 			quote = *p;
 			for(q = p + 1; q < end && *q != quote && *q != '\n'; q++){
@@ -503,13 +503,13 @@ char *Archive_RewriteCss(const char *css, long len, const char *base, const char
 	HTML
 **************************************************************************/
 
-/* ƒ^ƒO–¼‚Ì•¶š */
+/* ã‚¿ã‚°åã®æ–‡å­— */
 static BOOL IsTagNameChar(char c)
 {
 	return (IS_ALPHA(c) || IS_DIGIT(c) || c == '-' || c == '_' || c == ':' || c == '.') ? TRUE : FALSE;
 }
 
-/* ƒ^ƒO‚Ì‰ğÍ (¬Œ÷‚µ‚½ê‡‚Íƒ^ƒO‚ÌI‚í‚è‚ÌŸ‚ğ•Ô‚·) */
+/* ã‚¿ã‚°ã®è§£æ (æˆåŠŸã—ãŸå ´åˆã¯ã‚¿ã‚°ã®çµ‚ã‚ã‚Šã®æ¬¡ã‚’è¿”ã™) */
 static const char *ParseTag(const char *p, const char *end, const char **name, long *nlen, ATTR *attr, int *cnt, BOOL *over)
 {
 	const char *q = p + 1;
@@ -570,7 +570,7 @@ static const char *ParseTag(const char *p, const char *end, const char **name, l
 	return NULL;
 }
 
-/* ‘®«‚Ì’l (•¶šQÆ‚ğ“WŠJ) */
+/* å±æ€§ã®å€¤ (æ–‡å­—å‚ç…§ã‚’å±•é–‹) */
 static char *AttrValue(ATTR *a)
 {
 	char *ret;
@@ -597,7 +597,7 @@ static ATTR *FindAttr(ATTR *attr, int cnt, const char *name)
 	return NULL;
 }
 
-/* ‘®«‚Ìˆ—•û–@ */
+/* å±æ€§ã®å‡¦ç†æ–¹æ³• */
 static int AttrAction(const char *tag, long tlen, ATTR *attr, int cnt, ATTR *a, int *type, BOOL js)
 {
 	ATTR *rel;
@@ -606,11 +606,11 @@ static int AttrAction(const char *tag, long tlen, ATTR *attr, int cnt, ATTR *a, 
 
 	*type = RES_LINK;
 	if(js == FALSE){
-		//ƒCƒxƒ“ƒgƒnƒ“ƒhƒ‰‚Ì‘®«‚Ííœ‚·‚é
+		//ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ©ã®å±æ€§ã¯å‰Šé™¤ã™ã‚‹
 		if(a->nlen > 2 && TO_LOWER(a->name[0]) == 'o' && TO_LOWER(a->name[1]) == 'n'){
 			return A_DELETE;
 		}
-		//iframe ‚Ì sandbox ‘®«‚Í•t‚¯’¼‚·
+		//iframe ã® sandbox å±æ€§ã¯ä»˜ã‘ç›´ã™
 		if(EqualI(tag, tlen, "iframe") == TRUE && EqualI(a->name, a->nlen, "sandbox") == TRUE){
 			return A_DELETE;
 		}
@@ -670,7 +670,7 @@ static int AttrAction(const char *tag, long tlen, ATTR *attr, int cnt, ATTR *a, 
 	return A_NONE;
 }
 
-/* â‘ÎURL‚É‚Å‚«‚È‚¢URL‚ğ‚»‚Ì‚Ü‚Üc‚¹‚é‚© (JavaScript ‚ğ•Û‘¶‚µ‚È‚¢ê‡) */
+/* çµ¶å¯¾URLã«ã§ããªã„URLã‚’ãã®ã¾ã¾æ®‹ã›ã‚‹ã‹ (JavaScript ã‚’ä¿å­˜ã—ãªã„å ´åˆ) */
 static BOOL KeepRawUrl(const char *v)
 {
 	static const char *scheme[] = { "mailto:", "tel:", "ftp:", "data:" };
@@ -690,11 +690,11 @@ static BOOL KeepRawUrl(const char *v)
 			return TRUE;
 		}
 	}
-	//javascript: ‚È‚Ç
+	//javascript: ãªã©
 	return FALSE;
 }
 
-/* ‘®«‚ğ‘‚«Š·‚¦‚Äo—Í */
+/* å±æ€§ã‚’æ›¸ãæ›ãˆã¦å‡ºåŠ› */
 static void EmitAttr(ARCHIVE_BUF *b, ATTR *a, int action, int type, const char *base, ARCHIVE_RESOLVE cb, void *ctx, BOOL js)
 {
 	char *v, *abs, *css;
@@ -754,7 +754,7 @@ static void EmitAttr(ARCHIVE_BUF *b, ATTR *a, int action, int type, const char *
 	Buf_Add(b, a->start, (long)(a->end - a->start));
 }
 
-/* <base href> ‚ğæ“¾‚·‚é */
+/* <base href> ã‚’å–å¾—ã™ã‚‹ */
 static void GetBaseHref(const char *html, const char *end, const char *url, char *ret, int size)
 {
 	const char *p, *q, *name;
@@ -783,14 +783,14 @@ static void GetBaseHref(const char *html, const char *end, const char *url, char
 	}
 }
 
-/* æ“ª‚É‘}“ü‚·‚é•¶š—ñ */
+/* å…ˆé ­ã«æŒ¿å…¥ã™ã‚‹æ–‡å­—åˆ— */
 static void MakeHead(ARCHIVE_BUF *h, const char *url, const char *charset, BOOL js)
 {
 	char buf[64];
 	const char *p;
 	BOOL valid = TRUE;
 
-	//•¶šƒR[ƒh (HTTPƒwƒbƒ_‚Åw’è‚³‚ê‚½‚à‚Ì)
+	//æ–‡å­—ã‚³ãƒ¼ãƒ‰ (HTTPãƒ˜ãƒƒãƒ€ã§æŒ‡å®šã•ã‚ŒãŸã‚‚ã®)
 	if(charset != NULL && *charset != '\0' && lstrlen(charset) < 40){
 		for(p = charset; *p != '\0'; p++){
 			if(!(IS_ALPHA(*p) || IS_DIGIT(*p) || *p == '-' || *p == '_' || *p == '.' || *p == ':')){
@@ -803,11 +803,11 @@ static void MakeHead(ARCHIVE_BUF *h, const char *url, const char *charset, BOOL 
 			Buf_Str(h, "\">\r\n");
 		}
 	}
-	//ƒXƒNƒŠƒvƒg‚Æƒvƒ‰ƒOƒCƒ“‚Ì§ŒÀ
+	//ã‚¹ã‚¯ãƒªãƒ—ãƒˆã¨ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®åˆ¶é™
 	Buf_Str(h, "<meta http-equiv=\"Content-Security-Policy\" content=\"");
 	Buf_Str(h, (js == TRUE) ? "object-src 'none'" : "script-src 'none'; object-src 'none'");
 	Buf_Str(h, "\">\r\n");
-	//æ“¾Œ³ (Mark of the Web)
+	//å–å¾—å…ƒ (Mark of the Web)
 	if(url != NULL && lstrlen(url) < 10000 && FindI(url, url + lstrlen(url), "--") == NULL &&
 		FindI(url, url + lstrlen(url), ">") == NULL){
 		wsprintf(buf, "<!-- saved from url=(%04d)", lstrlen(url));
@@ -817,7 +817,7 @@ static void MakeHead(ARCHIVE_BUF *h, const char *url, const char *charset, BOOL 
 	}
 }
 
-/* ¶ƒeƒLƒXƒg—v‘f‚ÌI‚í‚è‚ğŒŸõ */
+/* ç”Ÿãƒ†ã‚­ã‚¹ãƒˆè¦ç´ ã®çµ‚ã‚ã‚Šã‚’æ¤œç´¢ */
 static const char *FindEndTag(const char *p, const char *end, const char *tag)
 {
 	const char *q;
@@ -836,7 +836,7 @@ static const char *FindEndTag(const char *p, const char *end, const char *tag)
 
 	Archive_RewriteHtml
 
-	HTML“à‚ÌURL‚ğƒA[ƒJƒCƒu‚Ìƒtƒ@ƒCƒ‹–¼‚Ü‚½‚Íâ‘ÎURL‚É‘‚«Š·‚¦‚é
+	HTMLå†…ã®URLã‚’ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã®ãƒ•ã‚¡ã‚¤ãƒ«åã¾ãŸã¯çµ¶å¯¾URLã«æ›¸ãæ›ãˆã‚‹
 
 ******************************************************************************/
 
@@ -863,7 +863,7 @@ char *Archive_RewriteHtml(const char *html, long len, const char *url, const cha
 	ZeroMemory(&h, sizeof(ARCHIVE_BUF));
 	Buf_Reserve(&b, len + len / 4 + 1024);
 	while(p < end && b.err == FALSE){
-		//ISO-2022-JP ‚Ì2ƒoƒCƒgƒ‚[ƒh‚Å‚Íƒ^ƒO‚Æ‚µ‚Äˆµ‚í‚È‚¢
+		//ISO-2022-JP ã®2ãƒã‚¤ãƒˆãƒ¢ãƒ¼ãƒ‰ã§ã¯ã‚¿ã‚°ã¨ã—ã¦æ‰±ã‚ãªã„
 		if(*p == 0x1B && p + 2 < end){
 			if(*(p + 1) == '$' && (*(p + 2) == 'B' || *(p + 2) == '@')){
 				jis = TRUE;
@@ -883,7 +883,7 @@ char *Archive_RewriteHtml(const char *html, long len, const char *url, const cha
 			p = q;
 			continue;
 		}
-		//ƒRƒƒ“ƒg
+		//ã‚³ãƒ¡ãƒ³ãƒˆ
 		if(StartsWithI(p, end, "<!--") == TRUE){
 			q = FindI(p + 4, end, "-->");
 			q = (q != NULL) ? q + 3 : end;
@@ -891,7 +891,7 @@ char *Archive_RewriteHtml(const char *html, long len, const char *url, const cha
 			p = q;
 			continue;
 		}
-		//DOCTYPE “™
+		//DOCTYPE ç­‰
 		if(p + 1 < end && (*(p + 1) == '!' || *(p + 1) == '?')){
 			for(q = p; q < end && *q != '>'; q++);
 			q = (q < end) ? q + 1 : end;
@@ -916,16 +916,16 @@ char *Archive_RewriteHtml(const char *html, long len, const char *url, const cha
 			continue;
 		}
 
-		//‘}“üˆÊ’u
+		//æŒ¿å…¥ä½ç½®
 		if(insertAt < 0){
 			if(EqualI(name, nlen, "html") == TRUE){
-				//html ‚ÌŒã‚É head ‚ª–³‚¢ê‡‚Ég—p
+				//html ã®å¾Œã« head ãŒç„¡ã„å ´åˆã«ä½¿ç”¨
 			}else if(EqualI(name, nlen, "head") != TRUE){
 				insertAt = (htmlPos >= 0) ? htmlPos : b.len;
 			}
 		}
 
-		//JavaScript ‚ğ•Û‘¶‚µ‚È‚¢ê‡‚Í script —v‘f‚ğíœ‚·‚é
+		//JavaScript ã‚’ä¿å­˜ã—ãªã„å ´åˆã¯ script è¦ç´ ã‚’å‰Šé™¤ã™ã‚‹
 		if(js == FALSE && EqualI(name, nlen, "script") == TRUE){
 			if(*(te - 2) == '/'){
 				//<script ... />
@@ -938,7 +938,7 @@ char *Archive_RewriteHtml(const char *html, long len, const char *url, const cha
 			continue;
 		}
 
-		//‘®«‚ğ‘‚«Š·‚¦‚Äƒ^ƒO‚ğo—Í
+		//å±æ€§ã‚’æ›¸ãæ›ãˆã¦ã‚¿ã‚°ã‚’å‡ºåŠ›
 		seg = p;
 		for(i = 0; i < cnt; i++){
 			action = AttrAction(name, nlen, attr, cnt, &attr[i], &type, js);
@@ -952,7 +952,7 @@ char *Archive_RewriteHtml(const char *html, long len, const char *url, const cha
 		if(js == TRUE){
 			Buf_Add(&b, seg, (long)(te - seg));
 		}else{
-			//‘®«‚ª‘½‚·‚¬‚éê‡‚Íˆ—‚µ‚Ä‚¢‚È‚¢‘®«‚ğíœ‚µAiframe ‚Å‚ÍƒXƒNƒŠƒvƒg‚ğ‹Ö~‚·‚é
+			//å±æ€§ãŒå¤šã™ãã‚‹å ´åˆã¯å‡¦ç†ã—ã¦ã„ãªã„å±æ€§ã‚’å‰Šé™¤ã—ã€iframe ã§ã¯ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ç¦æ­¢ã™ã‚‹
 			tail = (over == TRUE) ? attr[cnt - 1].end : te - 1;
 			if(tail > seg){
 				Buf_Add(&b, seg, (long)(tail - seg));
@@ -972,7 +972,7 @@ char *Archive_RewriteHtml(const char *html, long len, const char *url, const cha
 		}
 		p = te;
 
-		//¶ƒeƒLƒXƒg‚Ì—v‘f
+		//ç”Ÿãƒ†ã‚­ã‚¹ãƒˆã®è¦ç´ 
 		if(EqualI(name, nlen, "style") == TRUE){
 			q = FindEndTag(p, end, "style");
 			css = Archive_RewriteCss(p, (long)(q - p), base, ARCHIVE_RES_PREFIX, cb, ctx, &clen);
@@ -998,7 +998,7 @@ char *Archive_RewriteHtml(const char *html, long len, const char *url, const cha
 		return NULL;
 	}
 
-	//æ“ª‚É‘}“ü
+	//å…ˆé ­ã«æŒ¿å…¥
 	if(insertAt < 0){
 		insertAt = (htmlPos >= 0) ? htmlPos : ((doctypeEnd >= 0) ? doctypeEnd : 0);
 	}

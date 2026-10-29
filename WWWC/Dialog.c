@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
 
 	WWWC
 
@@ -26,17 +26,17 @@
 	Define
 **************************************************************************/
 
-#define TITLESIZE_X			333		//�^�C�g���E�B���h�E�̃T�C�Y
+#define TITLESIZE_X			333		//タイトルウィンドウのサイズ
 #define TITLESIZE_Y			282
 
-#define CPTEXT_X			77		//Copyright�̃e�L�X�g�ʒu
+#define CPTEXT_X			77		//Copyrightのテキスト位置
 #define CPTEXT_Y			3
 #define CPTEXT_X2			(CPTEXT_X + 250)
 #define CPTEXT_Y2			(CPTEXT_Y + 30)
 #define CPTEXT_FONT			"Times New Roman"
 #define CPTEXT_FONTSIZE		9
 
-#define UMI_X				0		//�^�C�g���E�B���h�E�ɕ\������r�b�g�}�b�v�̈ʒu
+#define UMI_X				0		//タイトルウィンドウに表示するビットマップの位置
 #define UMI_Y				0
 #define SIGN_X				295
 #define SIGN_Y				36
@@ -48,10 +48,10 @@
 	Global Variables
 **************************************************************************/
 
-//�O���Q��
+//外部参照
 extern HINSTANCE g_hinst;
-extern int gCheckFlag;			//�`�F�b�N�t���O
-extern char AniIcon[];			//�A�j���[�V����bitmap
+extern int gCheckFlag;			//チェックフラグ
+extern char AniIcon[];			//アニメーションbitmap
 
 
 /**************************************************************************
@@ -68,7 +68,7 @@ static BOOL CALLBACK TitleProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 	SetPalette
 
-	�p���b�g�̍쐬
+	パレットの作成
 
 ******************************************************************************/
 
@@ -94,7 +94,7 @@ static HPALETTE SetPalette(HWND hWnd, LPBITMAPINFOHEADER lpBi)
 
 	lpRGB = (LPRGBQUAD)((LPSTR)lpBi + lpBi->biSize);
 
-	//�p���b�g�̃R�s�[
+	//パレットのコピー
 	for (i = 0;i < dwClrUsed;i++, lpRGB++) {
 		(lpPal->palPalEntry + i)->peRed = lpRGB->rgbRed;
 		(lpPal->palPalEntry + i)->peGreen = lpRGB->rgbGreen;
@@ -103,7 +103,7 @@ static HPALETTE SetPalette(HWND hWnd, LPBITMAPINFOHEADER lpBi)
 	}
 	GlobalUnlock(hPal);
 
-	//�p���b�g�̍쐬
+	//パレットの作成
 	hPalette = CreatePalette(lpPal);
 
 	GlobalFree(hPal);
@@ -115,7 +115,7 @@ static HPALETTE SetPalette(HWND hWnd, LPBITMAPINFOHEADER lpBi)
 
 	ShowStretchDIB
 
-	DIB�̕`��
+	DIBの描画
 
 ******************************************************************************/
 
@@ -129,7 +129,7 @@ static void ShowStretchDIB(HDC hdc, char *mDIB, int x, int y, int x2, int y2, in
 	pbi = (BITMAPINFO *)mDIB;
 	pbih = (PBITMAPINFOHEADER)pbi;
 
-	//�r�b�g�}�b�v�r�b�g�̈ʒu���擾
+	//ビットマップビットの位置を取得
 	if((cClrBits = pbih->biClrUsed) == 0){
 		cClrBits = pbih->biPlanes * pbih->biBitCount;
 		if (cClrBits == 1){
@@ -148,9 +148,9 @@ static void ShowStretchDIB(HDC hdc, char *mDIB, int x, int y, int x2, int y2, in
 	}
 	lpBits = (char *)mDIB + sizeof(BITMAPINFOHEADER) + cClrBits * sizeof(RGBQUAD);
 
-	//�`�惂�[�h�̐ݒ�
+	//描画モードの設定
 	SetStretchBltMode(hdc, COLORONCOLOR);
-	//DIB�̕`��
+	//DIBの描画
 	StretchDIBits(hdc, x, y, x2, y2, xx, yy,
 		pbih->biWidth, pbih->biHeight, lpBits, pbi, DIB_RGB_COLORS, SRCCOPY);
 }
@@ -160,7 +160,7 @@ static void ShowStretchDIB(HDC hdc, char *mDIB, int x, int y, int x2, int y2, in
 
 	TitleProc
 
-	�^�C�g���E�B���h�E�̃v���V�[�W��
+	タイトルウィンドウのプロシージャ
 
 ******************************************************************************/
 
@@ -182,12 +182,12 @@ static BOOL CALLBACK TitleProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
-		//�w�i�F
+		//背景色
 		hBrush = CreateSolidBrush(RGB(255,255,255));
-		//�t�H���g
+		//フォント
 		hFont = CreateListFont(CPTEXT_FONT, CPTEXT_FONTSIZE, DEFAULT_CHARSET);
 
-		//���\�[�X����DIB���擾
+		//リソースからDIBを取得
 		hRsrc = FindResource(g_hinst, MAKEINTRESOURCE(IDB_BITMAP_UMI), RT_BITMAP);
 		hMem = LoadResource(g_hinst, hRsrc);
 		mDIB_umi = (char *)LockResource(hMem);
@@ -200,11 +200,11 @@ static BOOL CALLBACK TitleProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		hMem = LoadResource(g_hinst, hRsrc);
 		mDIB_sign = (char *)LockResource(hMem);
 
-		//DIB����p���b�g���쐬
+		//DIBからパレットを作成
 		pbi = (PBITMAPINFO)mDIB_umi;
 		hPalette = SetPalette(hDlg, (PBITMAPINFOHEADER)pbi);
 
-		GetWindowRect(GetDesktopWindow(), (LPRECT)&DesktopRect);	//�f�X�N�g�b�v�̃T�C�Y
+		GetWindowRect(GetDesktopWindow(), (LPRECT)&DesktopRect);	//デスクトップのサイズ
 		SetWindowPos(hDlg, HWND_TOP,
 			(DesktopRect.right / 2) - (TITLESIZE_X / 2),
 			(DesktopRect.bottom / 2) - (TITLESIZE_Y / 2),
@@ -217,7 +217,7 @@ static BOOL CALLBACK TitleProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 	case WM_CLOSE:
 		if(hPalette != NULL){
-			//�p���b�g��j��
+			//パレットを破棄
 			DeleteObject(hPalette);
 			hPalette = NULL;
 		}
@@ -234,7 +234,7 @@ static BOOL CALLBACK TitleProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 	case WM_PALETTECHANGED:
 	case WM_QUERYNEWPALETTE:
-		//�ĕ`��
+		//再描画
 		InvalidateRect(hDlg, NULL, FALSE);
 		UpdateWindow(hDlg);
 		break;
@@ -249,11 +249,11 @@ static BOOL CALLBACK TitleProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 		GetClientRect(hDlg, &DrawRect);
 
-		//DIB��`��
+		//DIBを描画
 		ShowStretchDIB(hdc, mDIB_umi, UMI_X, UMI_Y, ((PBITMAPINFOHEADER)mDIB_umi)->biWidth,
 			((PBITMAPINFOHEADER)mDIB_umi)->biHeight, 0, 0);
 
-		//Copyright�̕`��
+		//Copyrightの描画
 		SetTextColor(hdc, RGB(0, 0, 0));
 		SetBkMode(hdc, TRANSPARENT);
 		SetRect(&text_rect, CPTEXT_X, CPTEXT_Y, CPTEXT_X2, CPTEXT_Y2);
@@ -267,7 +267,7 @@ static BOOL CALLBACK TitleProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		ShowStretchDIB(hdc, mDIB_txt, TXT_X, TXT_Y, ((PBITMAPINFOHEADER)mDIB_txt)->biWidth,
 			((PBITMAPINFOHEADER)mDIB_txt)->biHeight, 0, 0);
 
-		//�ȑO�̃p���b�g�ɖ߂�
+		//以前のパレットに戻す
 		if(hTmpPalette != NULL){
 			SelectPalette(hdc, hTmpPalette, FALSE);
 		}
@@ -275,7 +275,7 @@ static BOOL CALLBACK TitleProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		EndPaint(hDlg, &ps);
 		break;
 
-	//�w�i��ݒ�
+	//背景を設定
 	case WM_CTLCOLORDLG:
 		return (int)hBrush;
 
@@ -299,13 +299,13 @@ static BOOL CALLBACK TitleProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 	CreateTitleWindow
 
-	�^�C�g���E�B���h�E�̍쐬
+	タイトルウィンドウの作成
 
 ******************************************************************************/
 
 HWND CreateTitleWindow(HWND hWnd)
 {
-	//�^�C�g���E�B���h�E��\������
+	//タイトルウィンドウを表示する
 	return CreateDialogParam(g_hinst,MAKEINTRESOURCE(IDD_DIALOG_TITLE),
 		hWnd, TitleProc, 0);
 }
@@ -315,7 +315,7 @@ HWND CreateTitleWindow(HWND hWnd)
 
 	CloseTitleWindow
 
-	�^�C�g���E�B���h�E�����
+	タイトルウィンドウを閉じる
 
 ******************************************************************************/
 
@@ -324,7 +324,7 @@ void CloseTitleWindow(HWND tWnd)
 	if(tWnd != NULL){
 		InvalidateRect(tWnd, NULL, FALSE);
 		UpdateWindow(tWnd);
-		//�^�C�g���E�B���h�E�����
+		//タイトルウィンドウを閉じる
 		SendMessage(tWnd, WM_CLOSE, 0, 0);
 		tWnd = NULL;
 	}
@@ -335,7 +335,7 @@ void CloseTitleWindow(HWND tWnd)
 
 	AniProc
 
-	�A�j���[�V�����E�B���h�E�̃v���V�[�W��
+	アニメーションウィンドウのプロシージャ
 
 ******************************************************************************/
 
@@ -354,24 +354,24 @@ BOOL CALLBACK AniProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_INITDIALOG:
 		Step = 0;
 		hBmp = NULL;
-		//�\������r�b�g�}�b�v���w�肳��Ă���ꍇ
+		//表示するビットマップが指定されている場合
 		if(*AniIcon != '\0'){
 			hBmp = LoadImage(NULL, AniIcon, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 		}
 		if(hBmp == NULL){
-			//���\�[�X���r�b�g�}�b�v��ǂݍ���
+			//リソースよりビットマップを読み込む
 			hBmp = LoadBitmap(g_hinst, MAKEINTRESOURCE(IDB_BITMAP_ANI));
 		}
 		break;
 
 	case WM_CLOSE:
-		//�r�b�g�}�b�v��j��
+		//ビットマップを破棄
 		DeleteObject(hBmp);
 		DestroyWindow(hDlg);
 		break;
 
 	case WM_LBUTTONDBLCLK:
-		//�z�[���y�[�W
+		//ホームページ
 		ExecItemFile(hDlg, APP_URL, "", NULL, 0);
 		break;
 
@@ -387,7 +387,7 @@ BOOL CALLBACK AniProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				KillTimer(hDlg, TIMER_ANI);
 				Step = 0;
 			}else{
-				//�`�F�b�N���̏ꍇ�Ƀr�b�g�}�b�v�����ɂ��炵�Ă���
+				//チェック中の場合にビットマップを横にずらしていく
 				Step++;
 
 				GetObject(hBmp, sizeof(BITMAP), &bmp);
@@ -404,7 +404,7 @@ BOOL CALLBACK AniProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_PAINT:
 		hdc = BeginPaint(hDlg, &ps);
 
-		//�w��ʒu�̃r�b�g�}�b�v��`��
+		//指定位置のビットマップを描画
 		mdc = CreateCompatibleDC(hdc);
 		hRetBmp = SelectObject(mdc, hBmp);
 		BitBlt(hdc,

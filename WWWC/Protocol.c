@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -38,9 +38,9 @@ HWND ProtocolWnd;
 struct TP_PROTOCOL *tpProtocol;
 int ProtocolCnt = 0;
 
-//ŠO•”ŽQÆ
-extern HINSTANCE g_hinst;				//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
-extern HWND WWWCWnd;					//–{‘Ì
+//å¤–éƒ¨å‚ç…§
+extern HINSTANCE g_hinst;				//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
+extern HWND WWWCWnd;					//æœ¬ä½“
 extern int gCheckFlag;
 
 extern int LvLIconSize;
@@ -51,7 +51,7 @@ extern int LvSIconSize;
 
 	GetProtocolIndex
 
-	URL‚©‚çƒvƒƒgƒRƒ‹î•ñ‚ÌƒCƒ“ƒfƒbƒNƒX‚ðŽæ“¾
+	URLã‹ã‚‰ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -92,7 +92,7 @@ int GetProtocolIndex(char *URL)
 
 	FreeProtocol
 
-	ƒvƒƒgƒRƒ‹î•ñ‚ð‰ð•ú
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±ã‚’è§£æ”¾
 
 ******************************************************************************/
 
@@ -100,7 +100,7 @@ void FreeProtocol(void)
 {
 	int i;
 
-	//ƒvƒƒgƒRƒ‹î•ñ‚ð‰ð•ú
+	//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±ã‚’è§£æ”¾
 	for(i = 0;i < ProtocolCnt;i++){
 		if(tpProtocol[i].lib != NULL){
 			FreeLibrary(tpProtocol[i].lib);
@@ -123,7 +123,7 @@ void FreeProtocol(void)
 
 	SetProtocolInfo
 
-	ƒvƒƒgƒRƒ‹î•ñ‚ÌÝ’è
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±ã®è¨­å®š
 
 ******************************************************************************/
 
@@ -163,7 +163,7 @@ void SetProtocolInfo(void)
 
 	EndProtocolNotify
 
-	ƒvƒƒgƒRƒ‹–ˆ‚ÉI—¹’Ê’m‚ðs‚¤
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯Žã«çµ‚äº†é€šçŸ¥ã‚’è¡Œã†
 
 ******************************************************************************/
 
@@ -191,7 +191,7 @@ void EndProtocolNotify(void)
 
 	SetProtocolImage
 
-	ƒvƒƒgƒRƒ‹–ˆ‚ÌƒAƒCƒRƒ“‚ðÝ’è‚·‚é
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯Žã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -202,12 +202,12 @@ void SetProtocolImage(HWND hWnd)
 	int i;
 	char IconPath[BUFSIZE];
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚ÌŽæ“¾
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®å–å¾—
 	IconList_NORMAL = ListView_GetImageList(GetDlgItem(hWnd, WWWC_LIST), LVSIL_NORMAL);
 	IconList_SMALL = ListView_GetImageList(GetDlgItem(hWnd, WWWC_LIST), LVSIL_SMALL);
 
 	for(i = 0;i < ProtocolCnt;i++){
-		//ƒAƒCƒRƒ“‚ÌŽæ“¾
+		//ã‚¢ã‚¤ã‚³ãƒ³ã®å–å¾—
 		lstrcpy(IconPath, tpProtocol[i].IconFile);
 		if(*IconPath == '\0'){
 			lstrcpy(IconPath, tpProtocol[i].DLL);
@@ -232,13 +232,13 @@ void SetProtocolImage(HWND hWnd)
 		if(hSIcon == NULL){
 			hSIcon = (HICON)LoadImage(g_hinst, MAKEINTRESOURCE(IDI_ICON_NO), IMAGE_ICON, LvSIconSize, LvSIconSize, 0);
 		}
-		//ƒvƒƒgƒRƒ‹‚ÌƒAƒCƒRƒ“‚ÌˆÊ’u‚ðÝ’è
+		//ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã®ã‚¢ã‚¤ã‚³ãƒ³ã®ä½ç½®ã‚’è¨­å®š
 		tpProtocol[i].Icon = ImageList_GetImageCount(IconList_NORMAL);
-		//•W€ƒAƒCƒRƒ“
+		//æ¨™æº–ã‚¢ã‚¤ã‚³ãƒ³
 		ImageList_AddIcon(IconList_NORMAL, hLIcon);
 		ImageList_AddIcon(IconList_SMALL, hSIcon);
 
-		//ƒ`ƒFƒbƒN‘Ò‚¿ƒAƒCƒRƒ“
+		//ãƒã‚§ãƒƒã‚¯å¾…ã¡ã‚¢ã‚¤ã‚³ãƒ³
 		TmpIconList = ImageList_Merge(IconList_NORMAL, tpProtocol[i].Icon, IconList_NORMAL, ICON_WAIT, 0, 0);
 		TmpIcon = ImageList_GetIcon(TmpIconList, 0, ILD_NORMAL);
 		ImageList_AddIcon(IconList_NORMAL, TmpIcon);
@@ -251,7 +251,7 @@ void SetProtocolImage(HWND hWnd)
 		DestroyIcon(TmpIcon);
 		ImageList_Destroy((void *)TmpIconList);
 
-		//ƒ`ƒFƒbƒN’†ƒAƒCƒRƒ“
+		//ãƒã‚§ãƒƒã‚¯ä¸­ã‚¢ã‚¤ã‚³ãƒ³
 		TmpIconList = ImageList_Merge(IconList_NORMAL, tpProtocol[i].Icon, IconList_NORMAL, ICON_CHECK, 0, 0);
 		TmpIcon = ImageList_GetIcon(TmpIconList, 0, ILD_NORMAL);
 		ImageList_AddIcon(IconList_NORMAL, TmpIcon);
@@ -264,11 +264,11 @@ void SetProtocolImage(HWND hWnd)
 		DestroyIcon(TmpIcon);
 		ImageList_Destroy((void *)TmpIconList);
 
-		//ƒAƒCƒRƒ“‚Ì”jŠü
+		//ã‚¢ã‚¤ã‚³ãƒ³ã®ç ´æ£„
 		DestroyIcon(hLIcon);
 		DestroyIcon(hSIcon);
 
-		//UPƒAƒCƒRƒ“‚ÌŽæ“¾
+		//UPã‚¢ã‚¤ã‚³ãƒ³ã®å–å¾—
 		if(tpProtocol[i].UpIconIndex == -1){
 			ImageList_AddIcon(IconList_NORMAL, ImageList_GetIcon(IconList_NORMAL, ICON_UP, ILD_NORMAL));
 			ImageList_AddIcon(IconList_SMALL, ImageList_GetIcon(IconList_SMALL, ICON_UP, ILD_NORMAL));
@@ -310,7 +310,7 @@ void SetProtocolImage(HWND hWnd)
 
 	SetProtocolListIcon
 
-	ƒvƒƒgƒRƒ‹Ý’è‰æ–Ê‚ÌƒAƒCƒRƒ“‚ðÝ’è‚·‚é
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«è¨­å®šç”»é¢ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -365,7 +365,7 @@ static void SetProtocolListIcon(HWND hListView)
 
 	ListView_AddProtocol
 
-	ƒvƒƒgƒRƒ‹Ý’è‰æ–Ê‚ÉƒvƒƒgƒRƒ‹‚ð’Ç‰Á‚·‚é
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«è¨­å®šç”»é¢ã«ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã‚’è¿½åŠ ã™ã‚‹
 
 ******************************************************************************/
 
@@ -403,7 +403,7 @@ static void ListView_AddProtocol(HWND hListView, struct TP_PROTOCOL *tpProtocolI
 
 	SetProtocolListProc
 
-	DLL“à‚ÌƒvƒƒgƒRƒ‹ˆê——‚ð•\Ž¦‚·‚éƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	DLLå†…ã®ãƒ—ãƒ­ãƒˆã‚³ãƒ«ä¸€è¦§ã‚’è¡¨ç¤ºã™ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -434,7 +434,7 @@ static BOOL CALLBACK SetProtocolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 			break;
 		}
 
-		//ƒvƒƒgƒRƒ‹î•ñŽæ“¾ŠÖ”‚ÌƒAƒhƒŒƒX‚ðŽæ“¾
+		//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±å–å¾—é–¢æ•°ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—
 		Func_GetProtocolList = GetProcAddress((HMODULE)hLib, "GetProtocolList");
 		if(Func_GetProtocolList == NULL){
 			ErrMsg(hDlg, GetLastError(), NULL);
@@ -443,7 +443,7 @@ static BOOL CALLBACK SetProtocolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 			break;
 		}
 
-		//ƒvƒƒgƒRƒ‹î•ñ‚ðŽæ“¾
+		//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±ã‚’å–å¾—
 		while(1){
 			ZeroMemory(&tpProtocolSet, sizeof(struct TPPROTOCOLSET));
 			tpProtocolSet.iSize = sizeof(struct TPPROTOCOLSET);
@@ -462,7 +462,7 @@ static BOOL CALLBACK SetProtocolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 
 	case WM_COMMAND:
 		if(HIWORD(wParam) == LBN_DBLCLK){
-			//ƒŠƒXƒg‚Å€–Ú‚ªƒ_ƒuƒ‹ƒNƒŠƒbƒN‚³‚ê‚½ê‡
+			//ãƒªã‚¹ãƒˆã§é …ç›®ãŒãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸå ´åˆ
 			if((HWND)lParam == GetDlgItem(hDlg, IDC_LIST_DLLENTRY)){
 				SendMessage(hDlg, WM_COMMAND, IDOK, 0);
 			}
@@ -484,7 +484,7 @@ static BOOL CALLBACK SetProtocolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 				break;
 			}
 
-			//ƒvƒƒgƒRƒ‹î•ñŽæ“¾ŠÖ”‚ÌƒAƒhƒŒƒX‚ðŽæ“¾
+			//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±å–å¾—é–¢æ•°ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—
 			Func_GetProtocolList = GetProcAddress((HMODULE)hLib, "GetProtocolList");
 			if(Func_GetProtocolList == NULL){
 				ErrMsg(hDlg, GetLastError(), NULL);
@@ -493,7 +493,7 @@ static BOOL CALLBACK SetProtocolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 				break;
 			}
 
-			//eƒEƒBƒ“ƒhƒE(ƒvƒƒpƒeƒBƒV[ƒg“à)‚ÌListView‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾
+			//è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦(ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒ¼ãƒˆå†…)ã®ListViewã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 			ParamLvWnd = GetDlgItem(PropSheet_GetCurrentPageHwnd(GetParent(hDlg)), IDC_LIST_PROTOCOL);
 
 			for(i = 0;i < SendDlgItemMessage(hDlg, IDC_LIST_DLLENTRY, LB_GETCOUNT, 0, 0);i++){
@@ -504,7 +504,7 @@ static BOOL CALLBACK SetProtocolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 				tpProtocolSet.iSize = sizeof(struct TPPROTOCOLSET);
 				tpProtocolSet.UpIconIndex = -1;
 
-				//ƒvƒƒgƒRƒ‹î•ñ‚ðŽæ“¾
+				//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±ã‚’å–å¾—
 				ret = Func_GetProtocolList(i, &tpProtocolSet);
 				if(ret <= -1){
 					break;
@@ -516,7 +516,7 @@ static BOOL CALLBACK SetProtocolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 				lstrcpy(tpProtocolInfo.UpIconFile, tpProtocolSet.UpIconFile);
 				tpProtocolInfo.UpIconIndex = tpProtocolSet.UpIconIndex;
 
-				//ƒvƒƒgƒRƒ‹î•ñ‚ðƒŠƒXƒgƒrƒ…[‚É’Ç‰Á
+				//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±ã‚’ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¿½åŠ 
 				ListView_AddProtocol(ParamLvWnd, &tpProtocolInfo);
 			}
 			FreeLibrary(hLib);
@@ -540,7 +540,7 @@ static BOOL CALLBACK SetProtocolListProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 
 	SetProtocolEditProc
 
-	ƒvƒƒgƒRƒ‹î•ñÝ’è‰æ–Ê‚ÌƒvƒƒV[ƒWƒƒ
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±è¨­å®šç”»é¢ã®ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -553,11 +553,11 @@ static BOOL CALLBACK SetProtocolEditProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
-		//ƒXƒsƒ“ƒRƒ“ƒgƒ[ƒ‹‚ÌÝ’è
+		//ã‚¹ãƒ”ãƒ³ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®è¨­å®š
 		SendDlgItemMessage(hDlg, IDC_SPIN_ICONINDEX, UDM_SETRANGE, 0, (LPARAM)MAKELONG((short)100, (short)0));
 		SendDlgItemMessage(hDlg, IDC_SPIN_UPICONINDEX, UDM_SETRANGE, 0, (LPARAM)MAKELONG((short)100, (short)-1));
 
-		//eƒEƒBƒ“ƒhƒE‚ÌŽæ“¾
+		//è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å–å¾—
 		pWnd = PropSheet_GetCurrentPageHwnd(GetParent(hDlg));
 
 		if((i = ListView_GetNextItem(GetDlgItem(pWnd, IDC_LIST_PROTOCOL), -1, LVNI_SELECTED)) == -1){
@@ -634,7 +634,7 @@ static BOOL CALLBACK SetProtocolEditProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 			EndDialog(hDlg, FALSE);
 			break;
 
-		//DLLƒtƒ@ƒCƒ‹‘I‘ð
+		//DLLãƒ•ã‚¡ã‚¤ãƒ«é¸æŠž
 		case IDC_BUTTON_DLLSELECT:
 			SetFocus(GetDlgItem(hDlg, IDC_EDIT_DLL));
 			if(FileSelect(hDlg, "", PROTOCOL_FILEFILTER, NULL, buf, NULL, 1) == -1){
@@ -643,9 +643,9 @@ static BOOL CALLBACK SetProtocolEditProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 			SendDlgItemMessage(hDlg, IDC_EDIT_DLL, WM_SETTEXT, 0, (LPARAM)buf);
 			break;
 
-		//ƒAƒCƒRƒ“‘I‘ð
+		//ã‚¢ã‚¤ã‚³ãƒ³é¸æŠž
 		case IDC_BUTTON_ICONSELECT:
-			//ƒAƒCƒRƒ“ƒtƒ@ƒCƒ‹–¼‚ÆƒCƒ“ƒfƒbƒNƒX‚ðƒ_ƒCƒAƒƒO‚©‚çŽæ“¾
+			//ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«åã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‹ã‚‰å–å¾—
 			*buf = '\0';
 			SendDlgItemMessage(hDlg, IDC_EDIT_ICONINDEX, WM_GETTEXT, BUFSIZE - 1, (LPARAM)buf);
 			i = atoi(buf);
@@ -656,20 +656,20 @@ static BOOL CALLBACK SetProtocolEditProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 			}
 
 			SetFocus(GetDlgItem(hDlg, IDC_EDIT_ICONFILE));
-			//ƒAƒCƒRƒ“‘I‘ðƒ_ƒCƒAƒƒO‚ð•\Ž¦
+			//ã‚¢ã‚¤ã‚³ãƒ³é¸æŠžãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤º
 			if((i = SelectIcon(hDlg, buf, i)) == -1){
 				break;
 			}
 
-			//ƒAƒCƒRƒ“ƒtƒ@ƒCƒ‹–¼‚ÆƒCƒ“ƒfƒbƒNƒX‚ðƒ_ƒCƒAƒƒO‚ÉÝ’è
+			//ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«åã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã«è¨­å®š
 			SendDlgItemMessage(hDlg, IDC_EDIT_ICONFILE, WM_SETTEXT, 0, (LPARAM)buf);
 			wsprintf(buf, "%d", i);
 			SendDlgItemMessage(hDlg, IDC_EDIT_ICONINDEX, WM_SETTEXT, 0, (LPARAM)buf);
 			break;
 
-		//UPƒAƒCƒRƒ“‘I‘ð
+		//UPã‚¢ã‚¤ã‚³ãƒ³é¸æŠž
 		case IDC_BUTTON_UPICONSELECT:
-			//ƒAƒCƒRƒ“ƒtƒ@ƒCƒ‹–¼‚ÆƒCƒ“ƒfƒbƒNƒX‚ðƒ_ƒCƒAƒƒO‚©‚çŽæ“¾
+			//ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«åã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‹ã‚‰å–å¾—
 			*buf = '\0';
 			SendDlgItemMessage(hDlg, IDC_EDIT_UPICONINDEX, WM_GETTEXT, BUFSIZE - 1, (LPARAM)buf);
 			i = atoi(buf);
@@ -680,12 +680,12 @@ static BOOL CALLBACK SetProtocolEditProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 			}
 
 			SetFocus(GetDlgItem(hDlg, IDC_EDIT_UPICONFILE));
-			//ƒAƒCƒRƒ“‘I‘ðƒ_ƒCƒAƒƒO‚ð•\Ž¦
+			//ã‚¢ã‚¤ã‚³ãƒ³é¸æŠžãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤º
 			if((i = SelectIcon(hDlg, buf, i)) == -1){
 				break;
 			}
 
-			//ƒAƒCƒRƒ“ƒtƒ@ƒCƒ‹–¼‚ÆƒCƒ“ƒfƒbƒNƒX‚ðƒ_ƒCƒAƒƒO‚ÉÝ’è
+			//ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«åã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã«è¨­å®š
 			SendDlgItemMessage(hDlg, IDC_EDIT_UPICONFILE, WM_SETTEXT, 0, (LPARAM)buf);
 			wsprintf(buf, "%d", i);
 			SendDlgItemMessage(hDlg, IDC_EDIT_UPICONINDEX, WM_SETTEXT, 0, (LPARAM)buf);
@@ -704,7 +704,7 @@ static BOOL CALLBACK SetProtocolEditProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 
 	SetProtocolProc
 
-	ƒvƒƒgƒRƒ‹î•ñ‰æ–Ê‚ÌƒvƒƒV[ƒWƒƒ
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±ç”»é¢ã®ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -732,7 +732,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		hThemeUp = open_theme(GetDlgItem(hDlg, IDC_BUTTON_UP), L"SCROLLBAR");
 		hThemeDown = open_theme(GetDlgItem(hDlg, IDC_BUTTON_DOWN), L"SCROLLBAR");
 #endif	//OP_XP_STYLE
-		//ƒŠƒXƒgƒrƒ…[‚ÌƒJƒ‰ƒ€‚ÌÝ’è
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ©ãƒ ã®è¨­å®š
 		i = 0;
 		lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
 
@@ -784,7 +784,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		lvc.iSubItem = i;
 		ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), i, &lvc);
 
-		//ƒŠƒXƒgƒrƒ…[‚ÌƒXƒ^ƒCƒ‹‚ÌÝ’è
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¹ã‚¿ã‚¤ãƒ«ã®è¨­å®š
 		SetWindowLong(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), GWL_STYLE,
 			GetWindowLong(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), GWL_STYLE) | LVS_SHOWSELALWAYS);
 		SendDlgItemMessage(hDlg, IDC_LIST_PROTOCOL, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
@@ -796,7 +796,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		ListView_SetImageList(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), IconList, LVSIL_SMALL);
 
 		ListView_SetRedraw(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), LDF_NODRAW);
-		//ƒvƒƒgƒRƒ‹î•ñ‚ðƒŠƒXƒgƒrƒ…[‚É’Ç‰Á
+		//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±ã‚’ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«è¿½åŠ 
 		if(ProtocolCnt != 0){
 			ListView_SetItemCount(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), ProtocolCnt);
 			for(i = 0;i < ProtocolCnt;i++){
@@ -818,7 +818,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		break;
 
 	case WM_DRAWITEM:
-		//•`‰æ‚·‚éƒtƒŒ[ƒ€ƒRƒ“ƒgƒ[ƒ‹ƒXƒ^ƒCƒ‹‚ðÝ’è
+		//æç”»ã™ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
 		switch((UINT)wParam)
 		{
 		case IDC_BUTTON_UP:
@@ -832,7 +832,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		default:
 			return FALSE;
 		}
-		//ƒ{ƒ^ƒ“‚Ì•`‰æ
+		//ãƒœã‚¿ãƒ³ã®æç”»
 #ifdef OP_XP_STYLE
 		if(hThemeUp != 0 && hThemeDown != 0){
 			draw_theme_scroll((LPDRAWITEMSTRUCT)lParam, i, (i == DFCS_SCROLLUP) ? hThemeUp : hThemeDown);
@@ -846,7 +846,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 #ifdef OP_XP_STYLE
 	case WM_THEMECHANGED:
-		//ƒe[ƒ}‚Ì•ÏX
+		//ãƒ†ãƒ¼ãƒžã®å¤‰æ›´
 		if(hThemeUp != 0 && hThemeDown != 0){
 			close_theme(hThemeUp);
 			close_theme(hThemeDown);
@@ -883,7 +883,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 	case WM_COMMAND:
 		switch(wParam)
 		{
-		//ƒAƒCƒeƒ€‚ðã‚ÉˆÚ“®
+		//ã‚¢ã‚¤ãƒ†ãƒ ã‚’ä¸Šã«ç§»å‹•
 		case IDC_BUTTON_UP:
 			if((SelectItem = ListView_GetNextItem(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), -1, LVNI_SELECTED)) == -1){
 				break;
@@ -895,7 +895,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			SetFocus(GetDlgItem(hDlg, IDC_BUTTON_UP));
 			break;
 
-		//ƒAƒCƒeƒ€‚ð‰º‚ÉˆÚ“®
+		//ã‚¢ã‚¤ãƒ†ãƒ ã‚’ä¸‹ã«ç§»å‹•
 		case IDC_BUTTON_DOWN:
 			if((SelectItem = ListView_GetNextItem(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), -1, LVNI_SELECTED)) == -1){
 				break;
@@ -921,7 +921,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			if(tpProtocol == NULL){
 				abort();
 			}
-			//ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒeƒ€‚ðƒvƒƒgƒRƒ‹î•ñ‚ÉÝ’è‚·‚é
+			//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±ã«è¨­å®šã™ã‚‹
 			for(i = 0;i < ProtocolCnt;i++){
 				ZeroMemory(&tpProtocol[i], sizeof(struct TP_PROTOCOL));
 				ListView_GetItemText(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), i, 0, tpProtocol[i].title, BUFSIZE - 1);
@@ -936,7 +936,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 				tpProtocol[i].Icon = 0;
 			}
 
-			//ƒCƒ[ƒWƒŠƒXƒg‚ÌXV
+			//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®æ›´æ–°
 			ListView_SetItemImage(GetDlgItem(WWWCWnd, WWWC_LIST), LvLIconSize, LVSIL_NORMAL);
 			ListView_SetItemImage(GetDlgItem(WWWCWnd, WWWC_LIST), LvSIconSize, LVSIL_SMALL);
 			SetProtocolImage(WWWCWnd);
@@ -948,13 +948,13 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			ProtocolWnd = NULL;
 			break;
 
-		//’Ç‰Á
+		//è¿½åŠ 
 		case IDC_BUTTON_ADD:
 			DialogBox(g_hinst, MAKEINTRESOURCE(IDD_DIALOG_DLLLIST), hDlg, SetProtocolListProc);
 			SetProtocolListIcon(GetDlgItem(hDlg, IDC_LIST_PROTOCOL));
 			break;
 
-		//•ÒW
+		//ç·¨é›†
 		case IDC_BUTTON_PEDIT:
 			if((SelectItem = ListView_GetNextItem(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), -1, LVNI_SELECTED)) == -1){
 				break;
@@ -963,7 +963,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			SetProtocolListIcon(GetDlgItem(hDlg, IDC_LIST_PROTOCOL));
 			break;
 
-		//íœ
+		//å‰Šé™¤
 		case IDC_BUTTON_DELETE:
 			if((SelectItem = ListView_GetNextItem(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), -1, LVNI_SELECTED)) == -1){
 				break;
@@ -976,7 +976,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 				LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
 			break;
 
-		//ƒvƒƒpƒeƒB
+		//ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 		case IDC_BUTTON_EDIT:
 			if((SelectItem = ListView_GetNextItem(GetDlgItem(hDlg, IDC_LIST_PROTOCOL), -1, LVNI_SELECTED)) == -1){
 				break;
@@ -1006,7 +1006,7 @@ BOOL CALLBACK SetProtocolProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 		break;
 
-	//DLL‚©‚ç‚ÌƒƒbƒZ[ƒW‚ð–{‘Ì‚É“]‘—
+	//DLLã‹ã‚‰ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æœ¬ä½“ã«è»¢é€
 	case WM_GETVERSION:
 	case WM_GETMAINWINDOW:
 	case WM_GETUPWINDOW:

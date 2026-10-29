@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -56,9 +56,9 @@ struct TPFINDINFO {
 static struct TPFINDINFO tpFindInfo;
 
 
-//ŠO•”QÆ
-extern HINSTANCE g_hinst;				//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
-extern HWND WWWCWnd;					//–{‘Ì
+//å¤–éƒ¨å‚ç…§
+extern HINSTANCE g_hinst;				//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
+extern HWND WWWCWnd;					//æœ¬ä½“
 extern HWND FindWnd;
 extern HTREEITEM RootItem;
 extern HTREEITEM DgdpItem;
@@ -109,7 +109,7 @@ static BOOL ListView_FindGetDispItem(HWND hWnd, LV_ITEM *lvItem);
 
 	AddFindItem
 
-	ŒŸõŒ‹‰ÊƒŠƒXƒg‚ÉƒAƒCƒeƒ€‚ğ’Ç‰Á
+	æ¤œç´¢çµæœãƒªã‚¹ãƒˆã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ 
 
 ******************************************************************************/
 
@@ -126,7 +126,7 @@ static BOOL AddFindItem(struct TPITEM *NewItemInfo)
 	if(FindItemList != NULL){
 		CopyMemory(tpItemInfo, FindItemList, sizeof(struct TPITEM *) * FindItemListCnt);
 	}
-	//ƒRƒs[‚Ìì¬
+	//ã‚³ãƒ”ãƒ¼ã®ä½œæˆ
 	*(tpItemInfo + FindItemListCnt) = Item_Copy(NewItemInfo);
 
 	if(FindItemList != NULL){
@@ -142,7 +142,7 @@ static BOOL AddFindItem(struct TPITEM *NewItemInfo)
 
 	FreeFindItemList
 
-	ŒŸõŒ‹‰ÊƒŠƒXƒg‚Ì‰ğ•ú
+	æ¤œç´¢çµæœãƒªã‚¹ãƒˆã®è§£æ”¾
 
 ******************************************************************************/
 
@@ -151,7 +151,7 @@ static void FreeFindItemList(void)
 	if(FindItemList == NULL){
 		return;
 	}
-	//UPƒAƒCƒeƒ€‚Ìƒƒ‚ƒŠ‚ğ‰ğ•ú
+	//UPã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ¡ãƒ¢ãƒªã‚’è§£æ”¾
 	FreeItemList(FindItemList, FindItemListCnt, FALSE);
 	GlobalFree(FindItemList);
 	FindItemList = NULL;
@@ -163,7 +163,7 @@ static void FreeFindItemList(void)
 
 	FindItem
 
-	ƒtƒHƒ‹ƒ_“à‚ÌƒAƒCƒeƒ€‚ğŒŸõ
+	ãƒ•ã‚©ãƒ«ãƒ€å†…ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¤œç´¢
 
 ******************************************************************************/
 
@@ -187,12 +187,12 @@ static void CALLBACK FindItem(HWND hWnd, HTREEITEM hItem, long Param)
 		return;
 	}
 
-	//ƒAƒCƒeƒ€‚ÌŒŸõ
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®æ¤œç´¢
 	for(i = 0;i < tpTreeInfo->ItemListCnt;i++){
 		if((*(tpTreeInfo->ItemList + i)) == NULL){
 			continue;
 		}
-		//€–Ú
+		//é …ç›®
 		AddFlag = FALSE;
 		if((FindInfo->ItemFlag & 1) &&
 			str_match(FindInfo->FindString, (*(tpTreeInfo->ItemList + i))->Title) == TRUE){
@@ -215,7 +215,7 @@ static void CALLBACK FindItem(HWND hWnd, HTREEITEM hItem, long Param)
 			AddFlag = TRUE;
 		}
 
-		//ƒAƒCƒRƒ“
+		//ã‚¢ã‚¤ã‚³ãƒ³
 		if(AddFlag == TRUE){
 			AddFlag = FALSE;
 			if((*(tpTreeInfo->ItemList + i))->Status & ST_ERROR){
@@ -240,7 +240,7 @@ static void CALLBACK FindItem(HWND hWnd, HTREEITEM hItem, long Param)
 		}
 
 		if(AddFlag == TRUE){
-			//ŒŸõŒ‹‰ÊƒŠƒXƒg‚ÉƒAƒCƒeƒ€‚ğ’Ç‰Á
+			//æ¤œç´¢çµæœãƒªã‚¹ãƒˆã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ 
 			AddFindItem(*(tpTreeInfo->ItemList + i));
 		}
 	}
@@ -252,7 +252,7 @@ static void CALLBACK FindItem(HWND hWnd, HTREEITEM hItem, long Param)
 
 	FindStart
 
-	ŒŸõ‚ğŠJn
+	æ¤œç´¢ã‚’é–‹å§‹
 
 ******************************************************************************/
 
@@ -272,17 +272,17 @@ static void FindStart(HWND hDlg)
 	SendMessage((HWND)TabCtrl_GetlParam(GetDlgItem(hDlg, IDC_TAB), 1), WM_SETFINDINFO, 0, (LPARAM)&tpFindInfo);
 
 	if(tpFindInfo.FindSub == TRUE){
-		//Ä‹A‚µ‚ÄŒŸõ
+		//å†å¸°ã—ã¦æ¤œç´¢
 		CallTreeItem(WWWCWnd, tpFindInfo.hItem, (FARPROC)FindItem, (long)&tpFindInfo);
 	}else{
-		//w’è‚ÌƒtƒHƒ‹ƒ_‚Ì‚İŒŸõ
+		//æŒ‡å®šã®ãƒ•ã‚©ãƒ«ãƒ€ã®ã¿æ¤œç´¢
 		FindItem(WWWCWnd, tpFindInfo.hItem, (long)&tpFindInfo);
 	}
 
 	if(FindItemList != NULL){
 		ListView_SetItemCount(GetDlgItem(hDlg, WWWC_LIST), FindItemListCnt);
 
-		//ƒŠƒXƒgƒrƒ…[‚ÉƒAƒCƒeƒ€‚ğ’Ç‰ÁiƒR[ƒ‹ƒoƒbƒNƒAƒCƒeƒ€j
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ ï¼ˆã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚¢ã‚¤ãƒ†ãƒ ï¼‰
 		for(i = 0;i < FindItemListCnt;i++){
 			if((*(FindItemList + i)) == NULL){
 				continue;
@@ -303,7 +303,7 @@ static void FindStart(HWND hDlg)
 		ListView_SetItemState(GetDlgItem(hDlg, WWWC_LIST), 0, LVIS_FOCUSED, LVIS_FOCUSED);
 	}
 
-	wsprintf(buf, "ŒŸõ - %d Œ", FindItemListCnt);
+	wsprintf(buf, "æ¤œç´¢ - %d ä»¶", FindItemListCnt);
 	SetWindowText(hDlg, buf);
 }
 
@@ -312,7 +312,7 @@ static void FindStart(HWND hDlg)
 
 	TabCtrl_GetlParam
 
-	ƒ^ƒuƒRƒ“ƒgƒ[ƒ‹‚ÌlParam‚ğæ“¾
+	ã‚¿ãƒ–ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®lParamã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -331,7 +331,7 @@ static LPARAM TabCtrl_GetlParam(HWND hTabCtrl, int iItem)
 
 	TabCtrl_SetlParam
 
-	ƒ^ƒuƒRƒ“ƒgƒ[ƒ‹‚ÉlParam‚ğİ’è
+	ã‚¿ãƒ–ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã«lParamã‚’è¨­å®š
 
 ******************************************************************************/
 
@@ -349,7 +349,7 @@ static void TabCtrl_SetlParam(HWND hTabCtrl, int iItem, LPARAM lParam)
 
 	InitializeFindWindow
 
-	ŒŸõƒEƒBƒ“ƒhƒE‚Ì‰Šú‰»
+	æ¤œç´¢ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -362,26 +362,26 @@ static void InitializeFindWindow(HWND hDlg)
 	HICON hIconS;
 	HWND tDlg;
 
-	//ƒ^ƒu‚Ìİ’è
+	//ã‚¿ãƒ–ã®è¨­å®š
 	tcItem.mask = TCIF_TEXT | TCIF_PARAM;
-	tcItem.pszText = "ŒŸõ•¶š—ñ‚ÆêŠ";
+	tcItem.pszText = "æ¤œç´¢æ–‡å­—åˆ—ã¨å ´æ‰€";
 	tcItem.cchTextMax = BUFSIZE - 1;
 	tcItem.lParam = 0;
 	TabCtrl_InsertItem(GetDlgItem(hDlg, IDC_TAB), 0, &tcItem);
 
-	tcItem.pszText = "ŒŸõ€–Ú";
+	tcItem.pszText = "æ¤œç´¢é …ç›®";
 	tcItem.cchTextMax = BUFSIZE - 1;
 	tcItem.lParam = 0;
 	TabCtrl_InsertItem(GetDlgItem(hDlg, IDC_TAB), 1, &tcItem);
 
-	//ƒ^ƒu“à‚É•\¦‚·‚éƒ_ƒCƒAƒƒO‚Ìì¬
+	//ã‚¿ãƒ–å†…ã«è¡¨ç¤ºã™ã‚‹ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ä½œæˆ
 	tDlg = CreateDialogParam(g_hinst, MAKEINTRESOURCE(IDD_DIALOG_FINDNAME), hDlg, FindNameProc, (LPARAM)&tpFindInfo);
 	TabCtrl_SetlParam(GetDlgItem(hDlg, IDC_TAB), 0, (LPARAM)tDlg);
 
 	tDlg = CreateDialogParam(g_hinst, MAKEINTRESOURCE(IDD_DIALOG_FINDITEM), hDlg, FindItemProc, (LPARAM)&tpFindInfo);
 	TabCtrl_SetlParam(GetDlgItem(hDlg, IDC_TAB), 1, (LPARAM)tDlg);
 
-	//‰Šúƒ^ƒu‚Ì•\¦
+	//åˆæœŸã‚¿ãƒ–ã®è¡¨ç¤º
 	CForm.hwndFrom = GetDlgItem(hDlg, IDC_TAB);
 	CForm.code = TCN_SELCHANGE;
 	Tab_NotifyProc(hDlg, (LPARAM)&CForm, 0);
@@ -401,13 +401,13 @@ static void InitializeFindWindow(HWND hDlg)
 	SendMessage(hDlg, WM_SETICON, (WPARAM)TRUE, (LPARAM)hIcon);
 	SendMessage(hDlg, WM_SETICON, (WPARAM)FALSE, (LPARAM)hIconS);
 
-	//ƒŠƒXƒgƒrƒ…[‚ğ‰Šú‰»
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‚’åˆæœŸåŒ–
 	SetWindowLong(GetDlgItem(hDlg, WWWC_LIST), GWL_STYLE,
 		GetWindowLong(GetDlgItem(hDlg, WWWC_LIST), GWL_STYLE) | LVS_SHOWSELALWAYS);
-	//ƒŠƒXƒgƒrƒ…[‚ÌŠg’£ƒXƒ^ƒCƒ‹‚ğİ’è
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®æ‹¡å¼µã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
 	SendDlgItemMessage(hDlg, WWWC_LIST, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
 		LvFindExStyle | SendDlgItemMessage(hDlg, WWWC_LIST, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0));
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒtƒHƒ“ƒgİ’è
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒ•ã‚©ãƒ³ãƒˆè¨­å®š
 	if(ListFont != NULL){
 		SendMessage(GetDlgItem(hDlg, WWWC_LIST), WM_SETFONT, (WPARAM)ListFont, MAKELPARAM(TRUE, 0));
 	}
@@ -419,7 +419,7 @@ static void InitializeFindWindow(HWND hDlg)
 	ListView_SetImageList(GetDlgItem(hDlg, WWWC_LIST),
 		ListView_GetImageList(GetDlgItem(WWWCWnd, WWWC_LIST), LVSIL_SMALL), LVSIL_SMALL);
 
-	//ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒYİ’è
+	//ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºè¨­å®š
 	if(FindWinRight == 0 || FindWinBottom == 0){
 		GetWindowRect(hDlg, (LPRECT)&WindowRect);
 		FindWinRight = WindowRect.right - WindowRect.left;
@@ -435,7 +435,7 @@ static void InitializeFindWindow(HWND hDlg)
 
 	SizeFindWindow
 
-	ŒŸõƒEƒBƒ“ƒhƒE“àƒRƒ“ƒgƒ[ƒ‹‚ÌƒTƒCƒYİ’è
+	æ¤œç´¢ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å†…ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ã‚µã‚¤ã‚ºè¨­å®š
 
 ******************************************************************************/
 
@@ -448,7 +448,7 @@ static void SizeFindWindow(HWND hDlg)
 	GetWindowRect(GetDlgItem(hDlg, IDC_TAB), (LPRECT)&tabRect);
 	GetWindowRect(GetDlgItem(hDlg, WWWC_LIST), (LPRECT)&lvRect);
 
-	//ƒ{ƒ^ƒ“
+	//ãƒœã‚¿ãƒ³
 	MoveWindow(GetDlgItem(hDlg, IDOK),
 		WindowRect.right - 120, 30, 108, 23, TRUE);
 	MoveWindow(GetDlgItem(hDlg, IDCANCEL),
@@ -456,15 +456,15 @@ static void SizeFindWindow(HWND hDlg)
 	MoveWindow(GetDlgItem(hDlg, ID_BUTTON_SAVEOPTION),
 		WindowRect.right - 120, 100, 108, 23, TRUE);
 
-	//ƒ^ƒu
+	//ã‚¿ãƒ–
 	MoveWindow(GetDlgItem(hDlg, IDC_TAB), 8, 8,
 		WindowRect.right - 140, tabRect.bottom - tabRect.top, FALSE);
 
-	//ƒŠƒXƒgƒrƒ…[
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼
 	MoveWindow(GetDlgItem(hDlg, WWWC_LIST), 0, tabRect.bottom - tabRect.top + 20,
 		WindowRect.right, WindowRect.bottom - (tabRect.bottom - tabRect.top + 20), TRUE);
 
-	//ƒ^ƒu“à‚Ìƒ_ƒCƒAƒƒO
+	//ã‚¿ãƒ–å†…ã®ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 	tDlg = (HWND)TabCtrl_GetlParam(GetDlgItem(hDlg, IDC_TAB), TabCtrl_GetCurSel(GetDlgItem(hDlg, IDC_TAB)));
 	GetClientRect(GetDlgItem(hDlg, IDC_TAB), &tabRect);
 	TabCtrl_AdjustRect(GetDlgItem(hDlg, IDC_TAB), FALSE, &tabRect);
@@ -479,7 +479,7 @@ static void SizeFindWindow(HWND hDlg)
 
 	CloseFindWindow
 
-	ŒŸõƒEƒBƒ“ƒhƒE‚ÌI—¹ˆ—
+	æ¤œç´¢ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®çµ‚äº†å‡¦ç†
 
 ******************************************************************************/
 
@@ -499,7 +499,7 @@ static void CloseFindWindow(HWND hDlg)
 
 	ListView_DeleteAllItems(GetDlgItem(hDlg, WWWC_LIST));
 
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒJƒ‰ƒ€‚ÌƒTƒCƒY‚ğæ“¾
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ©ãƒ ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
 	for(i = 0;i < LvFindColCnt;i++){
 		LvFindColSize[i] = ListView_GetColumnWidth(GetDlgItem(hDlg, WWWC_LIST), i);
 	}
@@ -514,7 +514,7 @@ static void CloseFindWindow(HWND hDlg)
 
 	FindNameProc
 
-	ŒŸõ•¶š—ñ‚Ìİ’èƒ^ƒu
+	æ¤œç´¢æ–‡å­—åˆ—ã®è¨­å®šã‚¿ãƒ–
 
 ******************************************************************************/
 
@@ -560,13 +560,13 @@ static BOOL CALLBACK FindNameProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 
 		GetClientRect(hDlg, (LPRECT)&WindowRect);
 
-		//“ü—Íˆæ
+		//å…¥åŠ›åŸŸ
 		SetWindowPos(GetDlgItem(hDlg, IDC_COMBO_FINDSTRING), 0,
 			0, 0, WindowRect.right - 20, Size, SWP_NOMOVE | SWP_NOZORDER);
 		SetWindowPos(GetDlgItem(hDlg, IDC_EDIT_FINDLOCATE), 0,
 			0, 0, WindowRect.right - 20 - 60, Size, SWP_NOMOVE | SWP_NOZORDER);
 
-		//QÆƒ{ƒ^ƒ“
+		//å‚ç…§ãƒœã‚¿ãƒ³
 		SetWindowPos(GetDlgItem(hDlg, IDC_BUTTON_SELECT), 0,
 			WindowRect.right - 10 - 60, Pos - 1, 60, Size + 2, SWP_NOZORDER);
 		break;
@@ -584,7 +584,7 @@ static BOOL CALLBACK FindNameProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 
 	case WM_SETFINDINFO:
 		FindInfo = (struct TPFINDINFO *)lParam;
-		//ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ìİ’è
+		//ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®è¨­å®š
 		hCombo = GetDlgItem(hDlg, IDC_COMBO_FINDSTRING);
 		if(SendMessage(hCombo, CB_GETDROPPEDSTATE, 0, 0) == TRUE){
 			if((i = SendMessage(hCombo, CB_GETCURSEL, 0, 0)) > -1){
@@ -600,10 +600,10 @@ static BOOL CALLBACK FindNameProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 			SendMessage(hCombo, CB_INSERTSTRING, 0, (LPARAM)buf);
 			SendMessage(hCombo, CB_SETCURSEL, 0, 0);
 		}
-		//ŒŸõ•¶š—ñ
+		//æ¤œç´¢æ–‡å­—åˆ—
 		wsprintf(FindInfo->FindString, "*%s*", buf);
 
-		//ƒpƒX
+		//ãƒ‘ã‚¹
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_FINDLOCATE), WM_GETTEXT, BUFSIZE - 1, (LPARAM)buf);
 		FindInfo->hItem = TreeView_FindItemPath(GetDlgItem(WWWCWnd, WWWC_TREE), RootItem, buf);
 		if(FindInfo->hItem == NULL){
@@ -617,7 +617,7 @@ static BOOL CALLBACK FindNameProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 		switch(LOWORD(wParam))
 		{
 		case IDC_BUTTON_SELECT:
-			//ƒpƒX‚Ì‘I‘ğ
+			//ãƒ‘ã‚¹ã®é¸æŠ
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_FINDLOCATE), WM_GETTEXT, BUFSIZE - 1, (LPARAM)buf);
 			if(SelectFolder(hDlg, buf) == TRUE){
 				SendMessage(GetDlgItem(hDlg, IDC_EDIT_FINDLOCATE), WM_SETTEXT, 0, (LPARAM)buf);
@@ -637,7 +637,7 @@ static BOOL CALLBACK FindNameProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 
 	FindItemProc
 
-	ŒŸõ€–Ú‚Ìİ’èƒ^ƒu
+	æ¤œç´¢é …ç›®ã®è¨­å®šã‚¿ãƒ–
 
 ******************************************************************************/
 
@@ -718,7 +718,7 @@ static BOOL CALLBACK FindItemProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 
 	Tab_NotifyProc
 
-	ƒ^ƒuƒRƒ“ƒgƒ[ƒ‹ƒƒbƒZ[ƒW
+	ã‚¿ãƒ–ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
 ******************************************************************************/
 
@@ -754,7 +754,7 @@ static LRESULT Tab_NotifyProc(HWND hWnd, LPARAM lParam, WPARAM wParam)
 
 	FindListViewHeaderNotifyProc
 
-	ƒŠƒXƒgƒrƒ…[‚Ìƒwƒbƒ_ƒƒbƒZ[ƒW
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒ˜ãƒƒãƒ€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
 ******************************************************************************/
 
@@ -765,16 +765,16 @@ static LRESULT FindListViewHeaderNotifyProc(HWND hWnd, LPARAM lParam, struct TPL
 
 	switch(phd->hdr.code)
 	{
-	case HDN_ITEMCLICK:			//ƒwƒbƒ_‚ªƒNƒŠƒbƒN‚³‚ê‚½‚Ì‚Åƒ\[ƒg‚ğs‚¤
+	case HDN_ITEMCLICK:			//ãƒ˜ãƒƒãƒ€ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã®ã§ã‚½ãƒ¼ãƒˆã‚’è¡Œã†
 		WaitCursor(TRUE);
 
-		//ƒ\[ƒg
+		//ã‚½ãƒ¼ãƒˆ
 		LvFindSortFlag = (ABS(LvFindSortFlag) == (phd->iItem + 1))
 			? (LvFindSortFlag * -1) : (phd->iItem + 1);
 		SortColInfo = ColInfo;
 		ListView_SortItems(GetDlgItem(hWnd, WWWC_LIST), CompareFunc, LvFindSortFlag);
 
-		//ƒAƒCƒeƒ€î•ñ‚ÌÄİ’è
+		//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®å†è¨­å®š
 		GlobalFree(FindItemList);
 		FindItemListCnt = 0;
 		FindItemList = ListView_SetListToMem(hWnd, &FindItemListCnt);
@@ -790,7 +790,7 @@ static LRESULT FindListViewHeaderNotifyProc(HWND hWnd, LPARAM lParam, struct TPL
 
 	ListView_FindGetDispItem
 
-	ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒeƒ€•\¦—v‹
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ è¡¨ç¤ºè¦æ±‚
 
 ******************************************************************************/
 
@@ -806,10 +806,10 @@ static BOOL ListView_FindGetDispItem(HWND hWnd, LV_ITEM *lvItem)
 		return FALSE;
 	}
 
-	//ƒeƒLƒXƒgİ’è
+	//ãƒ†ã‚­ã‚¹ãƒˆè¨­å®š
 	if(lvItem->mask & LVIF_TEXT){
 		if((FindColumnInfo + lvItem->iSubItem)->p == 0){
-			//ƒAƒCƒeƒ€‚ªŠi”[‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚ÌƒpƒX
+			//ã‚¢ã‚¤ãƒ†ãƒ ãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹
 			if(IsTreeItem(WWWCWnd, tpItemInfo->hItem) == TRUE){
 				TreeView_GetItemInfo(GetDlgItem(WWWCWnd, WWWC_TREE), RootItem, tmp1);
 				wsprintf(tmp2, "\\\\%s", tmp1);
@@ -817,7 +817,7 @@ static BOOL ListView_FindGetDispItem(HWND hWnd, LV_ITEM *lvItem)
 			}
 
 		}else if((char *)*((long *)((long)tpItemInfo + (FindColumnInfo + lvItem->iSubItem)->p)) != NULL){
-			//ƒAƒCƒeƒ€î•ñ‚ÆƒJƒ‰ƒ€î•ñ‚©‚çƒeƒLƒXƒg‚ğİ’è
+			//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã¨ã‚«ãƒ©ãƒ æƒ…å ±ã‹ã‚‰ãƒ†ã‚­ã‚¹ãƒˆã‚’è¨­å®š
 			lstrcpyn(lvItem->pszText,
 				(char *)*((long *)((long)tpItemInfo + (FindColumnInfo + lvItem->iSubItem)->p)), BUFSIZE - 1);
 
@@ -830,7 +830,7 @@ static BOOL ListView_FindGetDispItem(HWND hWnd, LV_ITEM *lvItem)
 		return FALSE;
 	}
 
-	//ƒAƒCƒRƒ“î•ñİ’è
+	//ã‚¢ã‚¤ã‚³ãƒ³æƒ…å ±è¨­å®š
 	i = GetProtocolIndex(tpItemInfo->CheckURL);
 	if(tpItemInfo->Status & ST_ERROR){
 		lvItem->iImage = ICON_ERR;
@@ -852,7 +852,7 @@ static BOOL ListView_FindGetDispItem(HWND hWnd, LV_ITEM *lvItem)
 
 	FindProc
 
-	ŒŸõ‰æ–Ê‚ÌƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	æ¤œç´¢ç”»é¢ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -885,7 +885,7 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	case WM_EXITSIZEMOVE:
 		if(IsWindowVisible(hDlg) != 0 && IsIconic(hDlg) == 0 && IsZoomed(hDlg) == 0){
-			//ƒEƒBƒ“ƒhƒE‚ÌˆÊ’u‚ğ•Û‘¶
+			//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½ç½®ã‚’ä¿å­˜
 			GetWindowRect(hDlg, (LPRECT)&WindowRect);
 			FindWinLeft = WindowRect.left;
 			FindWinTop = WindowRect.top;
@@ -902,7 +902,7 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			SendMessage((HWND)TabCtrl_GetlParam(GetDlgItem(hDlg, IDC_TAB), 0), WM_SETDLGFOCUS, 0, 0);
 			break;
 
-		//Ÿ‚ÌƒAƒCƒeƒ€‚ÉƒtƒH[ƒJƒX‚ğˆÚ“®‚·‚é
+		//æ¬¡ã®ã‚¢ã‚¤ãƒ†ãƒ ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’ç§»å‹•ã™ã‚‹
 		case TIMER_NEXTFOCUS:
 			KillTimer(hDlg, wParam);
 			ListView_SetItemState(GetDlgItem(hDlg, WWWC_LIST),
@@ -939,7 +939,7 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		case ID_KEY_RETURN:
 			if(GetFocus() != GetDlgItem(hDlg, WWWC_LIST)){
-				//ƒtƒH[ƒJƒX‚Ì‚Âƒ{ƒ^ƒ“‚ğ‘I‘ğ
+				//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã®æŒã¤ãƒœã‚¿ãƒ³ã‚’é¸æŠ
 				if(GetDlgCtrlID(GetFocus()) == IDCANCEL ||
 					GetDlgCtrlID(GetFocus()) == ID_BUTTON_SAVEOPTION){
 					SendMessage(hDlg, WM_COMMAND, GetDlgCtrlID(GetFocus()), 0);
@@ -951,7 +951,7 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				}
 				break;
 			}
-			//ƒvƒƒgƒRƒ‹–ˆ‚Ìƒƒjƒ…[‚ğİ’è
+			//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¨­å®š
 			DeleteProtocolMenuItem(GetSubMenu(hPOPUP, MENU_POP_UPITEM));
 			SetProtocolItemMenu(hDlg, GetSubMenu(hPOPUP, MENU_POP_UPITEM), TRUE, TRUE);
 			SetEnableToolItemMenu(GetSubMenu(hPOPUP, MENU_POP_UPITEM));
@@ -978,7 +978,7 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_UPITEM), ID_MENUITEM_COPY, MF_ENABLED);
 			EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_UPITEM), ID_MENUITEM_INITICON_POP, MF_ENABLED);
 			EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_UPITEM), ID_MENUITEM_PROP, MF_ENABLED);
-			//ƒAƒCƒeƒ€ƒƒjƒ…[‚Ì•\¦
+			//ã‚¢ã‚¤ãƒ†ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¡¨ç¤º
 			SetProtocolItemMenu(hDlg, GetSubMenu(hPOPUP, MENU_POP_UPITEM), TRUE, TRUE);
 			SetEnableToolItemMenu(GetSubMenu(hPOPUP, MENU_POP_UPITEM));
 			ShowMenu(hDlg, hPOPUP, MENU_POP_UPITEM);
@@ -989,25 +989,25 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				(TabCtrl_GetCurSel(GetDlgItem(hDlg, IDC_TAB)) == 0) ? 1 : 0);
 			break;
 
-		//ŠJ‚­
+		//é–‹ã
 		case ID_MENU_ACTION_OPEM:
 			Item_Open(hDlg, -1);
 			break;
 
-		//•\¦
+		//è¡¨ç¤º
 		case ID_MENUITEM_UPVIEW:
-			//–{‘Ì‚ÌƒAƒCƒRƒ“‚ğ•\¦
+			//æœ¬ä½“ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤º
 			MainItemSelect(hDlg);
 			break;
 
-		//ƒRƒs[
+		//ã‚³ãƒ”ãƒ¼
 		case ID_MENUITEM_COPY:
 			SetSubItemClipboardData(hDlg);
 			break;
 
-		//‘S‚Ä‘I‘ğ
+		//å…¨ã¦é¸æŠ
 		case ID_MENUITEM_ALLSELECT:
-			//ƒtƒH[ƒJƒX‚Ì‚Âƒ{ƒ^ƒ“‚ğ‘I‘ğ
+			//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã®æŒã¤ãƒœã‚¿ãƒ³ã‚’é¸æŠ
 			GetClassName(GetFocus(), buf, BUFSIZE - 1);
 			if(lstrcmpi(buf, "edit") == 0){
 				SendMessage(GetFocus(), EM_SETSEL, 0, -1);
@@ -1017,13 +1017,13 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 
-		//XVƒAƒCƒeƒ€‚ğ‘I‘ğ
+		//æ›´æ–°ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠ
 		case ID_MENUITEM_UPSELECT:
 			SetFocus(GetDlgItem(hDlg, WWWC_LIST));
 			ListView_UpSelectItem(GetDlgItem(hDlg, WWWC_LIST));
 			break;
 
-		//‘S‚Ä‚ÌƒAƒCƒRƒ“‚ğ‰Šú‰»
+		//å…¨ã¦ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’åˆæœŸåŒ–
 		case ID_MENUITEM_ALLINITICON:
 			WaitCursor(TRUE);
 			for(i = 0;i < ListView_GetItemCount(GetDlgItem(hDlg, WWWC_LIST));i++){
@@ -1033,7 +1033,7 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WaitCursor(FALSE);
 			break;
 
-		//ƒAƒCƒRƒ“‚Ì‰Šú‰»
+		//ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 		case ID_MENUITEM_INITICON:
 		case ID_MENUITEM_INITICON_POP:
 			if(ListView_GetSelectedCount(GetDlgItem(hDlg, WWWC_LIST)) <= 0){
@@ -1048,7 +1048,7 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WaitCursor(FALSE);
 			break;
 
-		//ƒvƒƒpƒeƒB
+		//ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 		case ID_MENUITEM_PROP:
 			MainItemProp(hDlg);
 			break;
@@ -1063,17 +1063,17 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		if(((NMHDR *)lParam)->hwndFrom == GetDlgItem(hDlg, IDC_TAB)){
 			return Tab_NotifyProc(hDlg, lParam, wParam);
 		}
-		//ƒŠƒXƒgƒrƒ…[ƒwƒbƒ_ƒRƒ“ƒgƒ[ƒ‹
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ãƒ˜ãƒƒãƒ€ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«
 		if(((NMHDR *)lParam)->hwndFrom == GetWindow(GetDlgItem(hDlg, WWWC_LIST), GW_CHILD)){
 			return FindListViewHeaderNotifyProc(hDlg, lParam, FindColumnInfo);
 		}
-		//ƒŠƒXƒgƒrƒ…[
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼
 		if(((NMHDR *)lParam)->hwndFrom != GetDlgItem(hDlg, WWWC_LIST)){
 			return FALSE;
 		}
 		return ListView_NotifyProc(hDlg, lParam);
 
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒCƒxƒ“ƒg
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¤ãƒ™ãƒ³ãƒˆ
 	case WM_LV_EVENT:
 		switch(wParam)
 		{
@@ -1113,15 +1113,15 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 
-	//ƒŠƒXƒgƒrƒ…[ƒAƒCƒeƒ€‚Ì‰Šú‰»
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®åˆæœŸåŒ–
 	case WM_LV_INITICON:
 		InitSubIcon(hDlg, wParam);
 		RefreshListView(hDlg);
 		break;
 
-	//ƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚Ìƒf[ƒ^—v‹
+	//ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã®ãƒ‡ãƒ¼ã‚¿è¦æ±‚
 	case WM_DATAOBJECT_GETDATA:
-		//WWWCƒAƒCƒeƒ€ƒtƒH[ƒ}ƒbƒg
+		//WWWCã‚¢ã‚¤ãƒ†ãƒ ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 		if(wParam == WWWC_ClipFormat){
 			*((HGLOBAL *)lParam) = Clipboard_Set_WF_ItemList(hDlg, FLAG_COPY, NULL);
 			WWWCDropFlag = TRUE;
@@ -1131,17 +1131,17 @@ BOOL CALLBACK FindProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		WWWCDropFlag = FALSE;
 		switch(wParam)
 		{
-		case CF_TEXT:	//ƒeƒLƒXƒg
+		case CF_TEXT:	//ãƒ†ã‚­ã‚¹ãƒˆ
 			*((HGLOBAL *)lParam) = Clipboard_Set_TEXT(hDlg, NULL);
 			break;
 
-		case CF_HDROP:	//ƒhƒƒbƒvƒtƒ@ƒCƒ‹
+		case CF_HDROP:	//ãƒ‰ãƒ­ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«
 			*((HGLOBAL *)lParam) = DragDrop_SetDropFileMem(hDlg);
 			break;
 		}
 		break;
 
-	//DLL‚©‚ç‚ÌƒƒbƒZ[ƒW‚ğ–{‘Ì‚É“]‘—
+	//DLLã‹ã‚‰ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æœ¬ä½“ã«è»¢é€
 	case WM_GETVERSION:
 	case WM_GETMAINWINDOW:
 	case WM_GETUPWINDOW:

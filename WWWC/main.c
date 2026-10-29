@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -33,7 +33,7 @@
 #define WWWC_WNDCLASS				"WWWCWindowClass"
 #define MUTEX						"WWWC_Mutex_"
 
-#define WM_TRAY_NOTIFY				(WM_APP + 100)		//ƒ^ƒXƒNƒgƒŒƒC
+#define WM_TRAY_NOTIFY				(WM_APP + 100)		//ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤
 #define ID_MENUITEM_ALLINITICON_NOMSG	(WM_APP + 101)
 #define HKEY_ID						0x1FFF
 
@@ -51,7 +51,7 @@
 	Global Variables
 **************************************************************************/
 
-HINSTANCE g_hinst;					/* ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹ */
+HINSTANCE g_hinst;					/* ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ« */
 HANDLE hAccel;
 HANDLE hFindAccel;
 
@@ -69,8 +69,8 @@ int gCheckFlag = 0;
 UINT WWWC_ClipFormat;
 BOOL WWWCDropFlag;
 
-HWND WWWCWnd = NULL;	//–{‘ÌƒEƒBƒ“ƒhƒE
-HWND FocusWnd = NULL;	//ƒtƒH[ƒJƒX‚ğ‚ÂƒEƒBƒ“ƒhƒE
+HWND WWWCWnd = NULL;	//æœ¬ä½“ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+HWND FocusWnd = NULL;	//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æŒã¤ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
 HWND AniWnd = NULL;
 HWND UpWnd = NULL;
 HWND FindWnd = NULL;
@@ -94,7 +94,7 @@ static BOOL WindowFlag;
 static BOOL AccelFlag;
 static BOOL NoActiveFlag;
 
-//ŠO•”QÆ
+//å¤–éƒ¨å‚ç…§
 extern HWND TbWnd;
 extern struct TPITEM **CheckItemList;
 extern struct TPITEM **UpItemList;
@@ -204,7 +204,7 @@ static BOOL MessageFunc(HWND hWnd, MSG *msg);
 
 	_SetForegroundWindow
 
-	ƒEƒBƒ“ƒhƒE‚ğƒAƒNƒeƒBƒu‚É‚·‚é
+	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
 
 ******************************************************************************/
 
@@ -230,7 +230,7 @@ BOOL _SetForegroundWindow(HWND hWnd)
 
 	ErrMsg
 
-	ƒGƒ‰[”Ô†‚©‚çƒGƒ‰[ƒƒbƒZ[ƒW‚ğì¬
+	ã‚¨ãƒ©ãƒ¼ç•ªå·ã‹ã‚‰ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ä½œæˆ
 
 ******************************************************************************/
 
@@ -240,11 +240,11 @@ void ErrMsg(HWND hWnd, int ErrCode, char *Title)
 
 	p = (Title == NULL) ? "Error" : Title;
 
-	//ƒGƒ‰[ƒR[ƒh‚©‚ç•¶š—ñ‚ğæ“¾
+	//ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‹ã‚‰æ–‡å­—åˆ—ã‚’å–å¾—
 	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 		NULL, ErrCode, 0, (LPTSTR)&ErrStr, BUFSIZE - 1, NULL);
 
-	//ƒGƒ‰[ƒƒbƒZ[ƒW‚ğ•\¦
+	//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
 	MessageBox(hWnd, ErrStr, p, MB_ICONEXCLAMATION);
 	LocalFree(ErrStr);
 }
@@ -254,7 +254,7 @@ void ErrMsg(HWND hWnd, int ErrCode, char *Title)
 
 	DoEvents
 
-	ƒCƒxƒ“ƒg‚Ìˆ—
+	ã‚¤ãƒ™ãƒ³ãƒˆã®å‡¦ç†
 
 ******************************************************************************/
 
@@ -272,14 +272,14 @@ void DoEvents(void)
 
 	WaitCursor
 
-	ƒJ[ƒ\ƒ‹‚ğ»Œv‚É‚·‚é^–ß‚·
+	ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«ã™ã‚‹ï¼æˆ»ã™
 
 ******************************************************************************/
 
 void WaitCursor(BOOL WiatFlag)
 {
-	static HCURSOR Old_Cur;		//Œ³‚ÌƒJ[ƒ\ƒ‹
-	static int Cnt;				//ƒJ[ƒ\ƒ‹•\¦ƒJƒEƒ“ƒg
+	static HCURSOR Old_Cur;		//å…ƒã®ã‚«ãƒ¼ã‚½ãƒ«
+	static int Cnt;				//ã‚«ãƒ¼ã‚½ãƒ«è¡¨ç¤ºã‚«ã‚¦ãƒ³ãƒˆ
 
 	if(WiatFlag == TRUE){
 		if(Cnt > 0){
@@ -288,7 +288,7 @@ void WaitCursor(BOOL WiatFlag)
 		}
 		Cnt = 1;
 
-		//»ŒvƒJ[ƒ\ƒ‹‚É‚·‚é
+		//ç ‚æ™‚è¨ˆã‚«ãƒ¼ã‚½ãƒ«ã«ã™ã‚‹
 		Old_Cur = SetCursor(LoadCursor(NULL, IDC_WAIT));
 	}else{
 		if(Cnt > 1){
@@ -300,7 +300,7 @@ void WaitCursor(BOOL WiatFlag)
 		if(Old_Cur == NULL){
 			SetCursor(LoadCursor(NULL, IDC_ARROW));
 		}
-		//Œ³‚ÌƒJ[ƒ\ƒ‹‚É–ß‚·
+		//å…ƒã®ã‚«ãƒ¼ã‚½ãƒ«ã«æˆ»ã™
 		SetCursor(Old_Cur);
 		Old_Cur = NULL;
 	}
@@ -311,7 +311,7 @@ void WaitCursor(BOOL WiatFlag)
 
 	TrayMessage
 
-	ƒ^ƒXƒNƒgƒŒƒC‚ÌƒAƒCƒRƒ“‚Ìİ’è
+	ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤ã®ã‚¢ã‚¤ã‚³ãƒ³ã®è¨­å®š
 
 ******************************************************************************/
 
@@ -340,7 +340,7 @@ BOOL TrayMessage(HWND hWnd, DWORD dwMessage, UINT uID, HICON hIcon, PSTR pszTip)
 
 	SetTrayInitIcon
 
-	ƒ^ƒXƒNƒgƒŒƒC‚ÌƒAƒCƒRƒ“‚ğ‰Šú‰»‚·‚é
+	ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’åˆæœŸåŒ–ã™ã‚‹
 
 ******************************************************************************/
 
@@ -352,7 +352,7 @@ void SetTrayInitIcon(HWND hWnd)
 		UpIconFlag = FALSE;
 		GetWindowText(hWnd, buf, BUFSIZE - 1);
 		if(TrayMessage(hWnd, NIM_MODIFY, TRAY_ID, TrayIcon_Main, buf) == FALSE){
-			//•ÏX‚Å‚«‚È‚©‚Á‚½ê‡‚Í’Ç‰Á‚ğs‚¤
+			//å¤‰æ›´ã§ããªã‹ã£ãŸå ´åˆã¯è¿½åŠ ã‚’è¡Œã†
 			TrayMessage(hWnd, NIM_ADD, TRAY_ID, TrayIcon_Main, buf);
 		}
 	}
@@ -363,7 +363,7 @@ void SetTrayInitIcon(HWND hWnd)
 
 	SetWinTitle
 
-	ƒEƒBƒ“ƒhƒEƒ^ƒCƒgƒ‹‚ğİ’è‚·‚é
+	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -384,7 +384,7 @@ void SetWinTitle(HWND hWnd)
 
 	SetOption
 
-	ƒIƒvƒVƒ‡ƒ“‰æ–Ê•\¦
+	ã‚ªãƒ—ã‚·ãƒ§ãƒ³ç”»é¢è¡¨ç¤º
 
 ******************************************************************************/
 
@@ -393,12 +393,12 @@ static void SetOption(HWND hWnd)
 	char buf[BUFSIZE];
 	HICON hIcon;
 
-	//ƒIƒvƒVƒ‡ƒ“‰æ–Ê•\¦
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ç”»é¢è¡¨ç¤º
 	if(ViewProperties(hWnd) == 0){
 		return;
 	}
 
-	//İ’è•ÏX
+	//è¨­å®šå¤‰æ›´
 	if(TrayIcon == 0){
 		TrayMessage(hWnd, NIM_DELETE, TRAY_ID, NULL, NULL);
 	}else{
@@ -417,7 +417,7 @@ static void SetOption(HWND hWnd)
 	SetFocus(GetDlgItem(hWnd, WWWC_TREE));
 	SetProtocolMenu(hWnd);
 
-	//INIƒtƒ@ƒCƒ‹‘‚«‚İ
+	//INIãƒ•ã‚¡ã‚¤ãƒ«æ›¸ãè¾¼ã¿
 	SaveIniFile(hWnd);
 }
 
@@ -426,7 +426,7 @@ static void SetOption(HWND hWnd)
 
 	ShowHelp
 
-	ƒwƒ‹ƒv‚Ì•\¦
+	ãƒ˜ãƒ«ãƒ—ã®è¡¨ç¤º
 
 ******************************************************************************/
 
@@ -455,7 +455,7 @@ static void ShowHelp(HWND hWnd)
 
 	WindowRefresh
 
-	ƒEƒBƒ“ƒhƒE‚Ì“à—e‚ğÄ•`‰æ‚·‚é
+	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å†…å®¹ã‚’å†æç”»ã™ã‚‹
 
 ******************************************************************************/
 
@@ -493,7 +493,7 @@ static void WindowRefresh(HWND hWnd)
 
 	FolderRefresh
 
-	ƒtƒHƒ‹ƒ_‚Ì“à—e‚ğ“Ç‚İ’¼‚·
+	ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã‚’èª­ã¿ç›´ã™
 
 ******************************************************************************/
 
@@ -527,7 +527,7 @@ static void FolderRefresh(HWND hWnd)
 
 	SaveIniFile
 
-	iniƒtƒ@ƒCƒ‹‚Ì•Û‘¶
+	iniãƒ•ã‚¡ã‚¤ãƒ«ã®ä¿å­˜
 
 ******************************************************************************/
 
@@ -538,14 +538,14 @@ static void SaveIniFile(HWND hWnd)
 
 	ListView_SetRedraw(GetDlgItem(hWnd, WWWC_LIST), LDF_NODRAW);
 
-	//ƒŠƒXƒgƒrƒ…[‚ÌÚ×•\¦‚ÌƒJƒ‰ƒ€‚Ì•‚ğæ“¾
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®è©³ç´°è¡¨ç¤ºæ™‚ã®ã‚«ãƒ©ãƒ ã®å¹…ã‚’å–å¾—
 	wl = GetWindowLong(GetDlgItem(hWnd, WWWC_LIST), GWL_STYLE);
 	wl ^= ABS(LvStyle);
 	SetWindowLong(GetDlgItem(hWnd, WWWC_LIST), GWL_STYLE, wl | LVS_REPORT);
 	for(ret = 0;ret < LvColCnt;ret++){
 		LvColSize[ret] = ListView_GetColumnWidth(GetDlgItem(hWnd, WWWC_LIST), ret);
 	}
-	//iniƒtƒ@ƒCƒ‹‚Ì‘‚«‚İ
+	//iniãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸ãè¾¼ã¿
 	PutINI();
 	PutAutoTime();
 	PutProtocolInfo();
@@ -560,7 +560,7 @@ static void SaveIniFile(HWND hWnd)
 
 	RefreshIniFile
 
-	Iniƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İ’¼‚µ‚ÄƒEƒBƒ“ƒhƒE‚É”½‰f‚³‚¹‚é
+	Iniãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ç›´ã—ã¦ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«åæ˜ ã•ã›ã‚‹
 
 ******************************************************************************/
 
@@ -600,7 +600,7 @@ static void RefreshIniFile(HWND hWnd)
 
 	ListViewHeaderNotifyProc
 
-	ƒŠƒXƒgƒrƒ…[ƒwƒbƒ_ƒƒbƒZ[ƒW
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ãƒ˜ãƒƒãƒ€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
 ******************************************************************************/
 
@@ -616,14 +616,14 @@ static LRESULT ListViewHeaderNotifyProc(HWND hWnd, LPARAM lParam, struct TPLVCOL
 
 		ListView_SortClear(GetDlgItem(hWnd, WWWC_LIST), LvSortFlag);
 
-		//ƒ\[ƒg‚Ìİ’è
+		//ã‚½ãƒ¼ãƒˆã®è¨­å®š
 		LvSortFlag = (ABS(LvSortFlag) == (phd->iItem + 1)) ? (LvSortFlag * -1) : (phd->iItem + 1);
 		SortColInfo = ColInfo;
-		//ƒ\[ƒg
+		//ã‚½ãƒ¼ãƒˆ
 		ListView_SortItems(GetDlgItem(hWnd, WWWC_LIST), CompareFunc, LvSortFlag);
 		ListView_SortSelect(GetDlgItem(hWnd, WWWC_LIST), LvSortFlag);
 
-		//ƒŠƒXƒgƒrƒ…[ƒAƒCƒeƒ€‚Ì•À‚Ñ‚ğƒƒ‚ƒŠ‚É”½‰f‚·‚é
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®ä¸¦ã³ã‚’ãƒ¡ãƒ¢ãƒªã«åæ˜ ã™ã‚‹
 		tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE),
 			TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)));
 		if(tpTreeInfo != NULL){
@@ -642,7 +642,7 @@ static LRESULT ListViewHeaderNotifyProc(HWND hWnd, LPARAM lParam, struct TPLVCOL
 
 	NotifyProc
 
-	ƒRƒ“ƒgƒ[ƒ‹‚ÌƒCƒxƒ“ƒg‚Ìˆ—
+	ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ã‚¤ãƒ™ãƒ³ãƒˆã®å‡¦ç†
 
 ******************************************************************************/
 
@@ -650,27 +650,27 @@ static LRESULT NotifyProc(HWND hWnd, LPARAM lParam)
 {
 	NMHDR *CForm = (NMHDR *)lParam;
 
-	//ƒŠƒXƒgƒrƒ…[
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼
 	if(CForm->hwndFrom == GetDlgItem(hWnd, WWWC_LIST)){
 		return ListView_NotifyProc(hWnd, lParam);
 	}
 
-	//ƒcƒŠ[ƒrƒ…[
+	//ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼
 	if(CForm->hwndFrom == GetDlgItem(hWnd, WWWC_TREE)){
 		return TreeView_NotifyProc(hWnd, lParam);
 	}
 
-	//ƒŠƒXƒgƒrƒ…[ƒwƒbƒ_
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ãƒ˜ãƒƒãƒ€
 	if(CForm->hwndFrom == GetWindow(GetDlgItem(hWnd, WWWC_LIST), GW_CHILD)){
 		return ListViewHeaderNotifyProc(hWnd, lParam, ColumnInfo);
 	}
 
-	//ƒXƒe[ƒ^ƒXƒo[
+	//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼
 	if(CForm->code == TTN_NEEDTEXT && CForm->idFrom < 3){
 		return StatusBar_NotifyProc(hWnd, lParam);
 	}
 
-	//ƒc[ƒ‹ƒo[
+	//ãƒ„ãƒ¼ãƒ«ãƒãƒ¼
 	if(CForm->hwndFrom == TbWnd || CForm->code == TTN_NEEDTEXT){
 		return ToolBar_NotifyProc(hWnd, lParam);
 	}
@@ -682,7 +682,7 @@ static LRESULT NotifyProc(HWND hWnd, LPARAM lParam)
 
 	CreateControls
 
-	ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ÉƒRƒ“ƒgƒ[ƒ‹‚ğì¬‚·‚é
+	ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚’ä½œæˆã™ã‚‹
 
 ******************************************************************************/
 
@@ -739,7 +739,7 @@ static BOOL CreateControls(HWND hWnd)
 
 	SetControls
 
-	ƒRƒ“ƒgƒ[ƒ‹‚ÌˆÊ’uAƒTƒCƒY‚ğİ’è‚·‚é
+	ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ä½ç½®ã€ã‚µã‚¤ã‚ºã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -753,29 +753,29 @@ static void SetControls(HWND hWnd)
 
 	GetClientRect(hWnd, (LPRECT)&WinRec);
 
-	//ToolBar‚ÌƒTƒCƒY‚Ìæ“¾
+	//ToolBarã®ã‚µã‚¤ã‚ºã®å–å¾—
 	if(IsWindowVisible(TbWnd) != 0){
 		GetWindowRect(TbWnd, (LPRECT)&TBRec);
 		TBSize = (TBRec.bottom - TBRec.top);
 	}
-	//StatusBar‚ÌƒTƒCƒY‚Ìæ“¾
+	//StatusBarã®ã‚µã‚¤ã‚ºã®å–å¾—
 	if(IsWindowVisible(GetDlgItem(hWnd, WWWC_SB)) != 0){
 		GetWindowRect(GetDlgItem(hWnd, WWWC_SB), (LPRECT)&SBRec);
 		SBSize = (SBRec.bottom - SBRec.top);
 	}
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“—pƒ_ƒCƒAƒƒO‚ÌˆÚ“®
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ç§»å‹•
 	MoveWindow(AniWnd, WinRec.right - STEPSIZE - 2, 0, STEPSIZE + 2, STEPSIZE + 2, TRUE);
-	//TreeView‚ÌˆÊ’uAƒTƒCƒY‚Ìİ’è
+	//TreeViewã®ä½ç½®ã€ã‚µã‚¤ã‚ºã®è¨­å®š
 	MoveWindow(GetDlgItem(hWnd, WWWC_TREE), 0, TBSize, SEPSIZE, WinRec.bottom - SBSize - TBSize, TRUE);
 	UpdateWindow(GetDlgItem(hWnd, WWWC_TREE));
-	//ListView‚ÌˆÊ’uAƒTƒCƒY‚Ìİ’è
+	//ListViewã®ä½ç½®ã€ã‚µã‚¤ã‚ºã®è¨­å®š
 	MoveWindow(GetDlgItem(hWnd, WWWC_LIST), SEPSIZE + (FRAME_CNT * 2), TBSize,
 		WinRec.right - SEPSIZE - (FRAME_CNT * 2), WinRec.bottom - SBSize - TBSize, TRUE);
 	UpdateWindow(GetDlgItem(hWnd, WWWC_LIST));
 
 
-	//ƒXƒe[ƒ^ƒXƒo[‚Ìİ’è
+	//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã®è¨­å®š
 	SBSetParts(hWnd);
 
 	if(AniWnd != NULL){
@@ -789,7 +789,7 @@ static void SetControls(HWND hWnd)
 
 	InitWindow
 
-	ƒvƒƒOƒ‰ƒ€‚Ì‰Šú‰»
+	ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -803,16 +803,16 @@ static BOOL InitWindow(HWND hWnd, BOOL StartFlag)
 
 	WaitCursor(TRUE);
 
-	//ƒhƒ‰ƒbƒOƒ^[ƒQƒbƒg‚É“o˜^
+	//ãƒ‰ãƒ©ãƒƒã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ç™»éŒ²
 	cf[0] = WWWC_ClipFormat;
 	cf[1] = CF_HDROP;
 	cf[2] = CF_TEXT;
 	OLE_IDropTarget_RegisterDragDrop(hWnd, WM_DRAGMSG, cf, CLIPFORMAT_CNT);
 
-	//ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚ğİ’è
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®š
 	SetWinTitle(hWnd);
 
-	//ƒtƒHƒ“ƒgì¬
+	//ãƒ•ã‚©ãƒ³ãƒˆä½œæˆ
 	if(*ListFontName != '\0'){
 		if(ListFont != NULL){
 			DeleteObject(ListFont);
@@ -820,7 +820,7 @@ static BOOL InitWindow(HWND hWnd, BOOL StartFlag)
 		ListFont = CreateListFont(ListFontName, ListFontSize, ListFontCharSet);
 	}
 
-	//ƒEƒBƒ“ƒhƒE“à‚ÌƒRƒ“ƒgƒ[ƒ‹‚ğì¬
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å†…ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚’ä½œæˆ
 	if(CreateControls(hWnd) == FALSE){
 		MessageBox(hWnd, EMSG_CREATECONTROL, APP_NAME, MB_OK | MB_ICONERROR);
 		return FALSE;
@@ -830,10 +830,10 @@ static BOOL InitWindow(HWND hWnd, BOOL StartFlag)
 		MessageBox(hWnd, EMSG_CREATEUPMSG, APP_NAME, MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
-	//ƒEƒBƒ“ƒhƒEì¬ƒtƒ‰ƒO
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½œæˆãƒ•ãƒ©ã‚°
 	WindowFlag = TRUE;
 
-	//ƒAƒCƒRƒ“‚ğƒ[ƒh
+	//ã‚¢ã‚¤ã‚³ãƒ³ã‚’ãƒ­ãƒ¼ãƒ‰
 	TrayIcon_Main = LoadImage(g_hinst, MAKEINTRESOURCE(IDI_ICON_MAIN), IMAGE_ICON, SICONSIZE, SICONSIZE, 0);
 	TrayIcon_Chaeck = LoadImage(g_hinst, MAKEINTRESOURCE(IDI_ICON_MAIN_CHECK), IMAGE_ICON, SICONSIZE, SICONSIZE, 0);
 	TrayIcon_Up = LoadImage(g_hinst, MAKEINTRESOURCE(IDI_ICON_UP), IMAGE_ICON, SICONSIZE, SICONSIZE, 0);
@@ -842,32 +842,32 @@ static BOOL InitWindow(HWND hWnd, BOOL StartFlag)
 
 	StCheckIcon = (HICON)LoadImage(g_hinst, MAKEINTRESOURCE(IDI_ICON_CHECK), IMAGE_ICON, SICONSIZE, SICONSIZE, 0);
 
-	//ƒ^ƒXƒNƒgƒŒƒC‚ÉƒAƒCƒRƒ“‚ğ’Ç‰Á
+	//ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤ã«ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¿½åŠ 
 	GetWindowText(hWnd, buf, BUFSIZE - 1);
 	if(TrayIcon == 1){
 		TrayMessage(hWnd, NIM_ADD, TRAY_ID, TrayIcon_Main, buf);
 	}
 
-	//ƒc[ƒ‹‚Ì‰Šú‰»
+	//ãƒ„ãƒ¼ãƒ«ã®åˆæœŸåŒ–
 	GetToolList();
 	SetToolMenu(hWnd);
 	CreateToolAccelerator();
 
-	//ƒvƒƒgƒRƒ‹‚Ìİ’è
+	//ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã®è¨­å®š
 	SetProtocolInfo();
 	SetNewItemMenu(hWnd);
 	SetProtocolMenu(hWnd);
-	//ƒƒjƒ…[‚ÉV‹Kì¬ƒƒjƒ…[‚ğŠÖ˜A•t‚¯‚é
+	//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æ–°è¦ä½œæˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–¢é€£ä»˜ã‘ã‚‹
 	ModifyMenu(GetSubMenu(GetMenu(hWnd), MENU_HWND_FILE), ID_MENUITEM_POP_NEWITEM, MF_POPUP,
 		(UINT)GetSubMenu(hPOPUP, MENU_POP_NEW), MENU_STR_NEWITEM);
 	ModifyMenu(GetSubMenu(hPOPUP, MENU_POP_FOLDER), ID_MENUITEM_POP_NEWITEM, MF_POPUP,
 		(UINT)GetSubMenu(hPOPUP, MENU_POP_NEW), MENU_STR_NEWITEM);
 
-	//©“®ƒ`ƒFƒbƒN—pƒ^ƒCƒ}[‚Ìİ’è
+	//è‡ªå‹•ãƒã‚§ãƒƒã‚¯ç”¨ã‚¿ã‚¤ãƒãƒ¼ã®è¨­å®š
 	GetAutoTime();
 	SetTimer(hWnd, TIMER_AUTOCHECK, 60000, NULL);
 
-	//ƒEƒBƒ“ƒhƒE“à‚ÌƒRƒ“ƒgƒ[ƒ‹‚ğ‰Šú‰»
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å†…ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚’åˆæœŸåŒ–
 	SetControls(hWnd);
 	ListView_StyleChange(hWnd, LvStyle);
 	if(ViewTb == 1){
@@ -881,7 +881,7 @@ static BOOL InitWindow(HWND hWnd, BOOL StartFlag)
 		CheckMenuItem(GetSubMenu(hPOPUP, MENU_POP_FOLDER), ID_MENUITEM_AUTOSORT, MF_CHECKED);
 	}
 
-	//TreeView‚Ì‰Šúó‘Ôİ’è
+	//TreeViewã®åˆæœŸçŠ¶æ…‹è¨­å®š
 	TreeView_Expand(GetDlgItem(hWnd, WWWC_TREE), RootItem, TVE_EXPAND);
 	if(StartExpand != 0){
 		CallTreeItem(hWnd, RootItem, (FARPROC)TreeView_AllExpand, StartExpand);
@@ -889,12 +889,12 @@ static BOOL InitWindow(HWND hWnd, BOOL StartFlag)
 	switch(StartDirOpen)
 	{
 	case 1:
-		//‹N“®•\¦‚·‚éƒtƒHƒ‹ƒ_
+		//èµ·å‹•æ™‚è¡¨ç¤ºã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€
 		p = StartDirPath;
 		break;
 
 	case 2:
-		//‘O‰ñI—¹‚ÉŠJ‚¢‚Ä‚¢‚½ƒtƒHƒ‹ƒ_
+		//å‰å›çµ‚äº†æ™‚ã«é–‹ã„ã¦ã„ãŸãƒ•ã‚©ãƒ«ãƒ€
 		p = LastDirPath;
 		break;
 
@@ -913,14 +913,14 @@ static BOOL InitWindow(HWND hWnd, BOOL StartFlag)
 	}
 	CallTreeItem(hWnd, RootItem, (FARPROC)TreeView_FreeItem, 0);
 
-	//ƒRƒ“ƒgƒ[ƒ‹‚ÌƒtƒH[ƒJƒX‚ğİ’è
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’è¨­å®š
 	FocusWnd = GetDlgItem(hWnd, WWWC_TREE);
 	SetFocus(FocusWnd);
 
-	//ƒEƒBƒ“ƒhƒE‚ğƒNƒŠƒbƒvƒ{[ƒhƒrƒ…[ƒAƒ`ƒF[ƒ“‚É’Ç‰Á
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ“ãƒ¥ãƒ¼ã‚¢ãƒã‚§ãƒ¼ãƒ³ã«è¿½åŠ 
 	Clipboard_SetChain(hWnd);
 
-	//ƒzƒbƒgƒL[‚Ì“o˜^
+	//ãƒ›ãƒƒãƒˆã‚­ãƒ¼ã®ç™»éŒ²
 	if(TrayHotKeyMod != 0 && TrayHotKeyVk != 0 &&
 		RegisterHotKey(hWnd, HKEY_ID, TrayHotKeyMod, TrayHotKeyVk) == FALSE){
 		ErrMsg(hWnd, GetLastError(), NULL);
@@ -928,12 +928,12 @@ static BOOL InitWindow(HWND hWnd, BOOL StartFlag)
 
 	WaitCursor(FALSE);
 
-	//‹N“®‚Å‚Í‚È‚¢ê‡‚ÍŠÖ”‚ğ”²‚¯‚é
+	//èµ·å‹•æ™‚ã§ã¯ãªã„å ´åˆã¯é–¢æ•°ã‚’æŠœã‘ã‚‹
 	if(StartFlag == FALSE){
 		return TRUE;
 	}
 
-	//‹N“®‚ÉÀs‚·‚éƒc[ƒ‹
+	//èµ·å‹•æ™‚ã«å®Ÿè¡Œã™ã‚‹ãƒ„ãƒ¼ãƒ«
 	for(i = 0;i < ToolListCnt;i++){
 		if((ToolList[i].Action & TOOL_EXEC_START) == 0){
 			continue;
@@ -948,11 +948,11 @@ static BOOL InitWindow(HWND hWnd, BOOL StartFlag)
 		}
 	}
 	if(ReloadFlag == TRUE){
-		//ƒtƒHƒ‹ƒ_‚Ì“à—e‚ğ“Ç‚İ’¼‚·
+		//ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã‚’èª­ã¿ç›´ã™
 		SendMessage(hWnd, WM_FOLDER_LOAD, 0, 0);
 	}
 
-	//‹N“®©“®ƒ`ƒFƒbƒN
+	//èµ·å‹•æ™‚è‡ªå‹•ãƒã‚§ãƒƒã‚¯
 	if(StartCheck == 1){
 		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_ALLCHECK, 0);
 	}
@@ -964,7 +964,7 @@ static BOOL InitWindow(HWND hWnd, BOOL StartFlag)
 
 	EndWindow
 
-	ƒvƒƒOƒ‰ƒ€‚ğI—¹ˆ—
+	ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’çµ‚äº†å‡¦ç†
 
 ******************************************************************************/
 
@@ -976,10 +976,10 @@ static BOOL EndWindow(HWND hWnd, int Flag, int EndFlag)
 	int i;
 	BOOL ReloadFlag = FALSE;
 
-	//ƒEƒBƒ“ƒhƒEƒTƒCƒY‚Ì‹­§•Û‘¶
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã®å¼·åˆ¶ä¿å­˜
 	SendMessage(hWnd, WM_EXITSIZEMOVE, 0, 0);
 
-	//ƒ`ƒFƒbƒN’†‚ÌƒAƒCƒeƒ€‚ª‘¶İ‚·‚éê‡‚ÍƒLƒƒƒ“ƒZƒ‹‚ğs‚¤
+	//ãƒã‚§ãƒƒã‚¯ä¸­ã®ã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚’è¡Œã†
 	if(gCheckFlag != 0){
 		if(EndCheckMsg == 1 && EndFlag == 0){
 			if(MessageBox(hWnd, QMSG_END_CHECKCANCEL, QMSG_END_TITLE, MB_ICONEXCLAMATION | MB_YESNO) == IDNO){
@@ -989,12 +989,12 @@ static BOOL EndWindow(HWND hWnd, int Flag, int EndFlag)
 		CallTreeItem(hWnd, RootItem, (FARPROC)TreeCancelItem, 0);
 	}
 
-	//Œ»İŠJ‚¢‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚ğ•Û‘¶
+	//ç¾åœ¨é–‹ã„ã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã‚’ä¿å­˜
 	if(SaveTreeMem(hWnd, GetDlgItem(hWnd, WWWC_TREE), TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))) == FALSE){
 		return FALSE;
 	}
 
-	//I—¹‚ÉÀs‚·‚éƒc[ƒ‹‚ğÀs
+	//çµ‚äº†æ™‚ã«å®Ÿè¡Œã™ã‚‹ãƒ„ãƒ¼ãƒ«ã‚’å®Ÿè¡Œ
 	for(i = 0;i < ToolListCnt;i++){
 		if((ToolList[i].Action & TOOL_EXEC_END) == 0){
 			continue;
@@ -1010,7 +1010,7 @@ static BOOL EndWindow(HWND hWnd, int Flag, int EndFlag)
 		}
 	}
 	if(ReloadFlag == TRUE){
-		//ƒtƒHƒ‹ƒ_‚Ì“à—e‚ğ“Ç‚İ’¼‚·
+		//ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã‚’èª­ã¿ç›´ã™
 		SendMessage(hWnd, WM_FOLDER_LOAD, 0, 0);
 	}
 
@@ -1020,43 +1020,43 @@ static BOOL EndWindow(HWND hWnd, int Flag, int EndFlag)
 	EndProtocolNotify();
 
 	if(StartDirOpen == 2){
-		//Ÿ‰ñ‹N“®‚ÉŠJ‚­ƒtƒHƒ‹ƒ_‚Ìæ“¾
+		//æ¬¡å›èµ·å‹•æ™‚ã«é–‹ããƒ•ã‚©ãƒ«ãƒ€ã®å–å¾—
 		TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), RootItem, RootText);
 		wsprintf(CurPath, "\\\\%s", RootText);
 		TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE),
 			TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), LastDirPath, CurPath);
 	}
 
-	//I—¹‚ÉƒSƒ~” ‚ğ‹ó‚É‚·‚éİ’è‚Ìê‡‚ÍƒSƒ~” ‚ğ‹ó‚É‚·‚é
+	//çµ‚äº†æ™‚ã«ã‚´ãƒŸç®±ã‚’ç©ºã«ã™ã‚‹è¨­å®šã®å ´åˆã¯ã‚´ãƒŸç®±ã‚’ç©ºã«ã™ã‚‹
 	if(EndRecyclerClear == 1){
 		ClearRecycler(hWnd, TRUE);
 	}
 
-	//ƒNƒŠƒbƒvƒ{[ƒh‚ÌŠÄ‹ƒ`ƒF[ƒ“‚©‚çŠO‚·
+	//ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã®ç›£è¦–ãƒã‚§ãƒ¼ãƒ³ã‹ã‚‰å¤–ã™
 	Clipboard_DeleteChain(hWnd);
 	DeleteTmpDropFiles(Clip_DirName);
 
-	//OLEƒhƒƒbƒvƒ^[ƒQƒbƒg‚ğ‰ğœ
+	//OLEãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è§£é™¤
 	OLE_IDropTarget_RevokeDragDrop(hWnd);
 	DeleteTmpDropFiles(DnD_DirName);
 
-	//ŒŸõƒEƒBƒ“ƒhƒE‚ğ”jŠü
+	//æ¤œç´¢ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ç ´æ£„
 	if(FindWnd != NULL){
 		SendMessage(FindWnd, WM_CLOSE, 0, 0);
 	}
-	//XVƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ğ”jŠü
+	//æ›´æ–°ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ç ´æ£„
 	SendMessage(UpWnd, WM_UP_CLOSE, 0, 0);
-	//ƒN[ƒ‹ƒo[“à‚ÌƒAƒCƒRƒ“•\¦ƒEƒBƒhƒE‚ğ•Â‚¶‚é
+	//ã‚¯ãƒ¼ãƒ«ãƒãƒ¼å†…ã®ã‚¢ã‚¤ã‚³ãƒ³è¡¨ç¤ºã‚¦ã‚£ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
 	SendMessage(AniWnd, WM_CLOSE, 0, 0);
 
 	if (save_flag == FALSE) {
-		// iniƒtƒ@ƒCƒ‹‚Éİ’è“à—e‚ğ‘‚«‚Ş
+		// iniãƒ•ã‚¡ã‚¤ãƒ«ã«è¨­å®šå†…å®¹ã‚’æ›¸ãè¾¼ã‚€
 		SaveIniFile(hWnd);
 	}
 
-	//ƒcƒŠ[î•ñ‚ğ‰ğ•ú
+	//ãƒ„ãƒªãƒ¼æƒ…å ±ã‚’è§£æ”¾
 	CallTreeItem(hWnd, RootItem, (FARPROC)TreeView_FreeTreeItem, 0);
-	//ƒJƒ‰ƒ€î•ñ‚ğ‰ğ•ú
+	//ã‚«ãƒ©ãƒ æƒ…å ±ã‚’è§£æ”¾
 	GlobalFree(ColumnInfo);
 	ColumnInfo = NULL;
 	GlobalFree(upColumnInfo);
@@ -1070,29 +1070,29 @@ static BOOL EndWindow(HWND hWnd, int Flag, int EndFlag)
 		UpItemListCnt = 0;
 	}
 
-	//©“®ƒ`ƒFƒbƒNİ’è‚ğ‰ğ•ú
+	//è‡ªå‹•ãƒã‚§ãƒƒã‚¯è¨­å®šã‚’è§£æ”¾
 	if(tpCheckTime != NULL){
 		GlobalFree(tpCheckTime);
 		tpCheckTime = NULL;
 		tpCheckTimeCnt = 0;
 	}
 
-	//Undoƒoƒbƒtƒ@‚Ì‰ğ•ú
+	//Undoãƒãƒƒãƒ•ã‚¡ã®è§£æ”¾
 	FreeUndo();
 
-	//ƒc[ƒ‹ƒ`ƒbƒv—pƒoƒbƒtƒ@‚Ì‰ğ•ú
+	//ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ç”¨ãƒãƒƒãƒ•ã‚¡ã®è§£æ”¾
 	if(ToolTipString != NULL){
 		GlobalFree(ToolTipString);
 		ToolTipString = NULL;
 	}
 
-	//ƒ^ƒXƒNƒgƒŒƒC‚ÌƒAƒCƒRƒ“‚ğÁ‹
+	//ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’æ¶ˆå»
 	if(TrayIcon == 1){
 		TrayMessage(hWnd, NIM_DELETE, TRAY_ID, NULL, NULL);
 	}
 	UnregisterHotKey(hWnd, HKEY_ID);
 
-	//ƒcƒŠ[ƒrƒ…[‚ÆƒŠƒXƒgƒrƒ…[‚ÉŠÖ˜A•t‚¯‚ç‚ê‚½ƒCƒ[ƒWƒŠƒXƒg‚ğ”jŠü
+	//ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã¨ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã‚’ç ´æ£„
 	hImgList = TreeView_SetImageList(GetDlgItem(hWnd, WWWC_TREE), NULL, TVSIL_NORMAL);
 	ImageList_Destroy((void *)hImgList);
 	hImgList = ListView_SetImageList(GetDlgItem(hWnd, WWWC_LIST), NULL, LVSIL_NORMAL);
@@ -1100,7 +1100,7 @@ static BOOL EndWindow(HWND hWnd, int Flag, int EndFlag)
 	hImgList = ListView_SetImageList(GetDlgItem(hWnd, WWWC_LIST), NULL, LVSIL_SMALL);
 	ImageList_Destroy((void *)hImgList);
 
-	//ƒAƒCƒRƒ“‚ğ‰ğ•ú
+	//ã‚¢ã‚¤ã‚³ãƒ³ã‚’è§£æ”¾
 	DestroyIcon(TrayIcon_Main);
 	DestroyIcon(TrayIcon_Chaeck);
 	DestroyIcon(TrayIcon_Up);
@@ -1109,7 +1109,7 @@ static BOOL EndWindow(HWND hWnd, int Flag, int EndFlag)
 	DestroyIcon(StCheckIcon);
 
 	if(Flag == 0){
-		//ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ğ”jŠü
+		//ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ç ´æ£„
 		DestroyWindow(AniWnd);
 		DestroyWindow(TbWnd);
 		DestroyWindow(GetDlgItem(hWnd, WWWC_SB));
@@ -1131,7 +1131,7 @@ static BOOL EndWindow(HWND hWnd, int Flag, int EndFlag)
 
 	MainProc
 
-	ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ÌƒvƒƒV[ƒWƒƒ
+	ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -1148,11 +1148,11 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		{
 			HWND tWnd = NULL;
 
-			//ƒ^ƒCƒgƒ‹ƒEƒBƒ“ƒhƒE•\¦
+			//ã‚¿ã‚¤ãƒˆãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦è¡¨ç¤º
 			if(TitleView == 1){
 				tWnd = CreateTitleWindow(hWnd);
 			}
-			//ƒEƒBƒ“ƒhƒE‚Ì‰Šú‰»
+			//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®åˆæœŸåŒ–
 			SetWindowPos(hWnd, HWND_TOP, WinRect.left, WinRect.top, WinRect.right, WinRect.bottom,
 				SWP_HIDEWINDOW);
 			if(InitWindow(hWnd, TRUE) == FALSE){
@@ -1165,18 +1165,18 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		save_flag = FALSE;
 		break;
 
-	//ƒNƒŠƒbƒvƒ{[ƒhƒrƒ…[ƒAƒ`ƒF[ƒ“‚Ì•ÏX
+	//ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ“ãƒ¥ãƒ¼ã‚¢ãƒã‚§ãƒ¼ãƒ³ã®å¤‰æ›´
 	case WM_CHANGECBCHAIN:
 		Clipboard_ChangeChain(hWnd, uMsg, wParam, lParam);
 		break;
 
-	//ƒNƒŠƒbƒvƒ{[ƒh‚Ì“à—e•ÏX
+	//ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã®å†…å®¹å¤‰æ›´
 	case WM_DRAWCLIPBOARD:
 		Clipboard_Draw(hWnd, uMsg, wParam, lParam);
 		break;
 
 	case WM_COPYDATA:
-		//NUL‚ÅI’[‚³‚ê‚½•¶š—ñ‚Ì‚İó‚¯•t‚¯‚é
+		//NULã§çµ‚ç«¯ã•ã‚ŒãŸæ–‡å­—åˆ—ã®ã¿å—ã‘ä»˜ã‘ã‚‹
 		if(lParam == 0 || ((PCOPYDATASTRUCT)lParam)->lpData == NULL || ((PCOPYDATASTRUCT)lParam)->cbData == 0 ||
 			*((char *)((PCOPYDATASTRUCT)lParam)->lpData + ((PCOPYDATASTRUCT)lParam)->cbData - 1) != '\0'){
 			break;
@@ -1191,7 +1191,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		break;
 
 	case WM_INITMENUPOPUP:
-		//ƒAƒCƒeƒ€‚Ìƒƒjƒ…[‚ğŠJ‚­“_‚Ìó‘Ô‚É‡‚í‚¹‚Ä—LŒøA–³Œø‚ğİ’è‚·‚é
+		//ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ãæ™‚ç‚¹ã®çŠ¶æ…‹ã«åˆã‚ã›ã¦æœ‰åŠ¹ã€ç„¡åŠ¹ã‚’è¨­å®šã™ã‚‹
 		if(HIWORD(lParam) == FALSE && ((HMENU)wParam == GetSubMenu(GetMenu(hWnd), MENU_HWND_FILE) ||
 			(HMENU)wParam == GetSubMenu(hPOPUP, MENU_POP_ITEM))){
 			SetProtocolItemMenuState(hWnd, (HMENU)wParam, FALSE);
@@ -1207,7 +1207,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		SetProtocolMenu(hWnd);
 		break;
 
-	//‹«ŠE‚ÌˆÚ“®
+	//å¢ƒç•Œã®ç§»å‹•
 	case WM_LBUTTONDOWN:
 		if(GetForegroundWindow() != hWnd){
 			break;
@@ -1255,7 +1255,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		SetControls(hWnd);
 		break;
 
-	//ƒEƒBƒ“ƒhƒEƒTƒCƒY‘Ò”ğ
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå¾…é¿
 	case WM_EXITSIZEMOVE:
 		if(IsWindowVisible(hWnd) != 0 && IsIconic(hWnd) == 0 && IsZoomed(hWnd) == 0){
 			GetWindowRect(hWnd, (LPRECT)&WinRect);
@@ -1283,7 +1283,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 	case WM_TIMER:
 		switch(wParam)
 		{
-		//‹«ŠE‚ÌˆÚ“®
+		//å¢ƒç•Œã®ç§»å‹•
 		case TIMER_SEP:
 			if(hWnd != GetForegroundWindow() || GetAsyncKeyState(VK_ESCAPE) < 0 ||
 				GetAsyncKeyState(VK_RBUTTON) < 0)
@@ -1296,7 +1296,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			}
 			break;
 
-		//ƒhƒ‰ƒbƒO‚ÌƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚Ì“WŠJ
+		//ãƒ‰ãƒ©ãƒƒã‚°æ™‚ã®ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®å±•é–‹
 		case TIMER_TREEEXPAND:
 			KillTimer(hWnd, wParam);
 			if(TreeView_GetHiTestItem(GetDlgItem(hWnd, WWWC_TREE)) != NULL){
@@ -1305,17 +1305,17 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			}
 			break;
 
-		//ƒ`ƒFƒbƒN‚Ìƒ^ƒCƒ€ƒAƒEƒg
+		//ãƒã‚§ãƒƒã‚¯æ™‚ã®ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
 		case TIMER_CHECKTIMEOUT:
 			TimeoutItem(hWnd);
 			break;
 
-		//ƒ`ƒFƒbƒN
+		//ãƒã‚§ãƒƒã‚¯
 		case TIMER_CHECK:
 			CheckProc(hWnd);
 			break;
 
-		//©“®ƒ`ƒFƒbƒN
+		//è‡ªå‹•ãƒã‚§ãƒƒã‚¯
 		case TIMER_AUTOCHECK:
 			if(AutoCheck == 0){
 				if(CheckAutoTime(hWnd) == TRUE){
@@ -1331,14 +1331,14 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			}
 			break;
 
-		//ƒXƒe[ƒ^ƒXƒo[‚Ìİ’è
+		//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã®è¨­å®š
 		case TIMER_SBTEXT:
 			KillTimer(hWnd, wParam);
 			SetSbText(hWnd);
 			SetProtocolMenu(hWnd);
 			break;
 
-		//Ÿ‚ÌƒAƒCƒeƒ€‚ÉƒtƒH[ƒJƒX‚ğˆÚ“®‚·‚é
+		//æ¬¡ã®ã‚¢ã‚¤ãƒ†ãƒ ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’ç§»å‹•ã™ã‚‹
 		case TIMER_NEXTFOCUS:
 			KillTimer(hWnd, wParam);
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST),
@@ -1353,12 +1353,12 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 	case WM_COMMAND:
 		switch(LOWORD(wParam))
 		{
-		//====== ƒL[ =========
+		//====== ã‚­ãƒ¼ =========
 		case ID_KEY_RETURN:
 			if(GetFocus() != GetDlgItem(hWnd, WWWC_LIST)){
 				break;
 			}
-			//ƒvƒƒgƒRƒ‹–ˆ‚Ìƒƒjƒ…[‚ğİ’è
+			//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¨­å®š
 			SetProtocolMenu(hWnd);
 			i = GetMenuDefaultItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), 0, 0);
 			if(i == -1){
@@ -1397,7 +1397,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			}
 			break;
 
-		//====== ƒtƒ@ƒCƒ‹ =========
+		//====== ãƒ•ã‚¡ã‚¤ãƒ« =========
 		case ID_MENUITEM_TBNEW:
 			ShowTbMenu(hWnd, GetSubMenu(hPOPUP, MENU_POP_NEW), ID_MENUITEM_TBNEW);
 			break;
@@ -1441,7 +1441,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			SendMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
 
-		//====== •ÒW =========
+		//====== ç·¨é›† =========
 		case ID_MENUITEM_UNDO:
 			ExecUndo(hWnd);
 			break;
@@ -1482,7 +1482,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			FindWnd = CreateDialogParam(g_hinst, MAKEINTRESOURCE(IDD_DIALOG_FIND), NULL, FindProc, (LPARAM)HiTestItem);
 			break;
 
-		//====== ƒAƒCƒeƒ€‚Ì‘I‘ğ =========
+		//====== ã‚¢ã‚¤ãƒ†ãƒ ã®é¸æŠ =========
 		case ID_MENUITEM_ALLSELECT:
 			SetFocus(GetDlgItem(hWnd, WWWC_LIST));
 			ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), -1, LVIS_SELECTED, LVIS_SELECTED);
@@ -1498,7 +1498,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			ListView_UpSelectItem(GetDlgItem(hWnd, WWWC_LIST));
 			break;
 
-		//====== •\¦ =========
+		//====== è¡¨ç¤º =========
 		case ID_MENUITEM_VIEW_TB:
 			if(ViewTb == 1){
 				ViewTb = 0;
@@ -1559,7 +1559,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			ListView_SetStyle(hWnd, LVS_REPORT * -1);
 			break;
 
-		//====== ƒ\[ƒg =========
+		//====== ã‚½ãƒ¼ãƒˆ =========
 		case ID_MENUITEM_SORT_ICON:
 			ListView_MenuSort(hWnd, 100);
 			break;
@@ -1580,7 +1580,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			ListView_MenuSort(hWnd, 3);
 			break;
 
-		//©“®ƒ\[ƒg
+		//è‡ªå‹•ã‚½ãƒ¼ãƒˆ
 		case ID_MENUITEM_AUTOSORT:
 			if(LvAutoSort == 1){
 				LvAutoSort = 0;
@@ -1612,7 +1612,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			}
 			break;
 
-		//====== ˆÚ“® =========
+		//====== ç§»å‹• =========
 		case ID_MENUITEM_PREV_HISTORY:
 			TreeView_PrevHistory(hWnd);
 			break;
@@ -1621,7 +1621,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			TreeView_NextHistory(hWnd);
 			break;
 
-		//====== ÅV•\¦ =========
+		//====== æœ€æ–°è¡¨ç¤º =========
 		case ID_MENUITEM_REFRESH:
 			WindowRefresh(hWnd);
 			break;
@@ -1630,7 +1630,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			SendMessage(TbWnd, TB_CUSTOMIZE, 0, 0);
 			break;
 
-		//====== ƒ`ƒFƒbƒN‚ÌŠJn =========
+		//====== ãƒã‚§ãƒƒã‚¯ã®é–‹å§‹ =========
 		case ID_MENUITEM_CHECK:
 			HiTestItem = TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE));
 		case ID_MENUITEM_CHECK_POP:
@@ -1691,7 +1691,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			UpdateWindow(GetDlgItem(hWnd, WWWC_LIST));
 			break;
 
-		//====== ƒ`ƒFƒbƒN‚Ì’†~ =========
+		//====== ãƒã‚§ãƒƒã‚¯ã®ä¸­æ­¢ =========
 		case ID_MENUITEM_CHECKEND:
 			HiTestItem = TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE));
 		case ID_MENUITEM_CHECKEND_POP:
@@ -1738,7 +1738,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			WaitCursor(FALSE);
 			break;
 
-		//====== ƒAƒCƒRƒ“‚Ì‰Šú‰» =========
+		//====== ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ– =========
 		case ID_MENUITEM_INITICON:
 			HiTestItem = TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE));
 		case ID_MENUITEM_INITICON_POP:
@@ -1778,7 +1778,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			SetSbText(hWnd);
 			break;
 
-		//====== ƒAƒCƒRƒ“•ÏX =========
+		//====== ã‚¢ã‚¤ã‚³ãƒ³å¤‰æ›´ =========
 		case ID_MENUITEM_ICON_UP:
 			Item_ChangeState(hWnd, ST_UP);
 			break;
@@ -1797,7 +1797,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			Item_SwitchCheckState(hWnd, HiTestItem);
 			break;
 
-		//====== ƒo[ƒWƒ‡ƒ“î•ñ =========
+		//====== ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ± =========
 		case ID_MENUITEM_HELP:
 			ShowHelp(hWnd);
 			break;
@@ -1808,14 +1808,14 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				ABOUTTITLE, MB_OK | MB_ICONINFORMATION);
 			break;
 
-		//====== ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[ =========
+		//====== ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ =========
 		case ID_MENU_ACTION_RECY:
 			ClearRecycler(hWnd, FALSE);
 			break;
 
 		case ID_MENUITEM_REWINDOW:
 			ShowWindow(hWnd, SW_SHOW);
-			//ƒAƒCƒRƒ“‰»‚³‚ê‚Ä‚¢‚éê‡‚ÍŒ³‚ÌƒTƒCƒY‚É–ß‚·
+			//ã‚¢ã‚¤ã‚³ãƒ³åŒ–ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯å…ƒã®ã‚µã‚¤ã‚ºã«æˆ»ã™
 			if(IsIconic(hWnd) != 0){
 				ShowWindow(hWnd, SW_RESTORE);
 			}
@@ -1833,23 +1833,23 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 		default:
 			if(LOWORD(wParam) >= ID_MENU_NEWITEM && LOWORD(wParam) < (ID_MENU_NEWITEM + 1000)){
-				//V‹Kì¬‚Ìƒƒjƒ…[
+				//æ–°è¦ä½œæˆã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 				Item_Create(hWnd, LOWORD(wParam) - ID_MENU_NEWITEM);
 
 			}else if(LOWORD(wParam) >= ID_MENU_ACTION && LOWORD(wParam) < (ID_MENU_ACTION + 1000)){
-				//ƒAƒCƒeƒ€–ˆ‚ÌƒAƒNƒVƒ‡ƒ“ƒƒjƒ…[
+				//ã‚¢ã‚¤ãƒ†ãƒ æ¯ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 				Item_Open(hWnd, LOWORD(wParam) - ID_MENU_ACTION);
 
 			}else if(LOWORD(wParam) >= ID_MENU_TOOL_ACTION && LOWORD(wParam) < (ID_MENU_TOOL_ACTION + 1000)){
-				//ƒc[ƒ‹iƒAƒCƒeƒ€ƒƒjƒ…[j
+				//ãƒ„ãƒ¼ãƒ«ï¼ˆã‚¢ã‚¤ãƒ†ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼‰
 				ExecTool(hWnd, LOWORD(wParam) - ID_MENU_TOOL_ACTION, FALSE);
 
 			}else if(LOWORD(wParam) >= ID_WMENU_TOOL_ACTION && LOWORD(wParam) < (ID_WMENU_TOOL_ACTION + 1000)){
-				//ƒc[ƒ‹iƒEƒBƒ“ƒhƒEƒƒjƒ…[j
+				//ãƒ„ãƒ¼ãƒ«ï¼ˆã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼‰
 				ExecTool(hWnd, LOWORD(wParam) - ID_WMENU_TOOL_ACTION, TRUE);
 
 			}else if(LOWORD(wParam) >= ID_ACCEL_TOOL_ACTION && LOWORD(wParam) < (ID_ACCEL_TOOL_ACTION + 1000)){
-				//ƒc[ƒ‹ (ƒVƒ‡[ƒgƒJƒbƒgƒL[)
+				//ãƒ„ãƒ¼ãƒ« (ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼)
 				ExecTool(hWnd, LOWORD(wParam) - ID_ACCEL_TOOL_ACTION, TRUE);
 			}
 			break;
@@ -1866,7 +1866,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 		return (DefWindowProc(hWnd, uMsg, wParam, lParam));
 
-	//ƒ^ƒXƒNƒgƒŒƒCƒƒbƒZ[ƒW
+	//ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	case WM_TRAY_NOTIFY:
 		switch(lParam)
 		{
@@ -1902,29 +1902,29 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 		break;
 
-	//ƒzƒbƒgƒL[ƒƒbƒZ[ƒW
+	//ãƒ›ãƒƒãƒˆã‚­ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	case WM_HOTKEY:
 		SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_REWINDOW, 0);
 		break;
 
-	//ƒRƒ“ƒgƒ[ƒ‹’Ê’mƒƒbƒZ[ƒW
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«é€šçŸ¥ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	case WM_NOTIFY:
 		if(WindowFlag == FALSE){
 			break;
 		}
 		return NotifyProc(hWnd, lParam);
 
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒCƒxƒ“ƒg
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¤ãƒ™ãƒ³ãƒˆ
 	case WM_LV_EVENT:
 		switch(wParam)
 		{
 		case LVN_ITEMCHANGED:
-			//ƒXƒe[ƒ^ƒXƒo[‚Ìİ’è
+			//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã®è¨­å®š
 			SetTimer(hWnd, TIMER_SBTEXT, 100, NULL);
 			break;
 
 		case LVN_BEGINLABELEDIT:
-			//‚²‚İ” ‚Í–¼‘O•ÏX•s‰Â
+			//ã”ã¿ç®±ã¯åå‰å¤‰æ›´ä¸å¯
 			if(ListView_IsRecyclerItem(hWnd) == TRUE){
 				return TRUE;
 			}
@@ -1947,7 +1947,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 		case LVN_KEYDOWN:
 			if(((LV_KEYDOWN *)lParam)->wVKey == VK_BACK){
-				//BackSpaceƒL[‚ª‰Ÿ‚³‚ê‚½ê‡‚ÍAˆê‚Âã‚ÌŠK‘w‚ÉˆÚ“®
+				//BackSpaceã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸå ´åˆã¯ã€ä¸€ã¤ä¸Šã®éšå±¤ã«ç§»å‹•
 				SendMessage(hWnd, WM_COMMAND, ID_KEY_UPDIR, 0);
 				break;
 			}
@@ -1957,7 +1957,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			break;
 
 		case NM_SETFOCUS:
-			//ƒvƒƒgƒRƒ‹–ˆ‚Ìƒƒjƒ…[‚ğİ’è
+			//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¨­å®š
 			SetProtocolMenu(hWnd);
 			break;
 
@@ -1967,13 +1967,13 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			break;
 
 		case NM_RCLICK:
-			//ƒvƒƒgƒRƒ‹–ˆ‚Ìƒƒjƒ…[‚ğİ’è
+			//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¨­å®š
 			SendMessage(hWnd, WM_COMMAND, ID_KEY_RBUTTON, 0);
 			break;
 		}
 		break;
 
-	//ƒŠƒXƒgƒrƒ…[ƒAƒCƒeƒ€‚Ì‰Šú‰»
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®åˆæœŸåŒ–
 	case WM_LV_INITICON:
 		{
 			struct TPITEM *tpItemInfo;
@@ -1991,7 +1991,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 		break;
 
-	//ƒcƒŠ[ƒrƒ…[‚ÌƒCƒxƒ“ƒg
+	//ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã®ã‚¤ãƒ™ãƒ³ãƒˆ
 	case WM_TV_EVENT:
 		switch(wParam)
 		{
@@ -2008,7 +2008,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				);
 
 		case TVN_BEGINLABELEDIT:
-			//ƒ‹[ƒgƒAƒCƒeƒ€‚Ìê‡‚Íƒ‰ƒxƒ‹•ÒW‚ğs‚í‚È‚¢
+			//ãƒ«ãƒ¼ãƒˆã‚¢ã‚¤ãƒ†ãƒ ã®å ´åˆã¯ãƒ©ãƒ™ãƒ«ç·¨é›†ã‚’è¡Œã‚ãªã„
 			if(((TV_DISPINFO *)lParam)->item.hItem == RootItem ||
 				((TV_DISPINFO *)lParam)->item.hItem == RecyclerItem){
 				return TRUE;
@@ -2022,7 +2022,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				((TV_DISPINFO *)lParam)->item.pszText[0] == '\0'){
 				break;
 			}
-			//ƒcƒŠ[ƒAƒCƒeƒ€‚Ìƒ^ƒCƒgƒ‹‚ğİ’è‚·‚é
+			//ãƒ„ãƒªãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®šã™ã‚‹
 			TreeView_SetName(hWnd, ((TV_DISPINFO *)lParam)->item.hItem,
 				((TV_DISPINFO *)lParam)->item.pszText);
 			ListView_RefreshFolder(hWnd);
@@ -2034,7 +2034,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			break;
 
 		case NM_SETFOCUS:
-			//ƒvƒƒgƒRƒ‹–ˆ‚Ìƒƒjƒ…[‚ğİ’è
+			//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¨­å®š
 			SetProtocolMenu(hWnd);
 			break;
 
@@ -2053,17 +2053,17 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 		break;
 
-	//ƒc[ƒ‹ƒo[‚Ì•ÏX‚É‚æ‚éƒƒjƒ…[‚ÌÄİ’è
+	//ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®å¤‰æ›´ã«ã‚ˆã‚‹ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®å†è¨­å®š
 	case WM_TB_REFRESH:
 		SetProtocolMenu(hWnd);
 		ListView_StyleChange(hWnd, LvStyle);
 		break;
 
-	//ƒhƒ‰ƒbƒOƒCƒxƒ“ƒg
+	//ãƒ‰ãƒ©ãƒƒã‚°ã‚¤ãƒ™ãƒ³ãƒˆ
 	case WM_DRAGMSG:
 		return DragDrop_NotifyProc(hWnd, wParam, lParam);
 
-	//ƒhƒƒbƒvƒf[ƒ^—v‹
+	//ãƒ‰ãƒ­ãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿è¦æ±‚
 	case WM_DATAOBJECT_GETDATA:
 		if(wParam == WWWC_ClipFormat){
 			*((HGLOBAL *)lParam) = Clipboard_Set_WF_ItemList(hWnd, FLAG_CUT, DgdpItem);
@@ -2084,7 +2084,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 		break;
 
-	//ƒzƒXƒgî•ñæ“¾ƒƒbƒZ[ƒW (WSAAsyncGetHostByName)
+	//ãƒ›ã‚¹ãƒˆæƒ…å ±å–å¾—ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ (WSAAsyncGetHostByName)
 	case WM_WSOCK_GETHOST:
 		if(gCheckFlag == 0){
 			break;
@@ -2092,7 +2092,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		GethostMsg(hWnd, wParam, lParam);
 		break;
 
-	//SelectƒƒbƒZ[ƒW (WSAAsyncSelect)
+	//Selectãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ (WSAAsyncSelect)
 	case WM_WSOCK_SELECT:
 		if(gCheckFlag == 0){
 			break;
@@ -2100,18 +2100,18 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		SelectMsg(hWnd, wParam, lParam);
 		break;
 
-	//DLL‚©‚ç‚ÌƒAƒCƒeƒ€‚Ìƒ`ƒFƒbƒNI—¹’Ê’m
+	//DLLã‹ã‚‰ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒã‚§ãƒƒã‚¯çµ‚äº†é€šçŸ¥
 	case WM_CHECK_END:
 		if (gCheckFlag == 0) {
 			break;
 		}
 		if (ResultCheckStatus(hWnd, ((struct TPITEM *)lParam), wParam) == FALSE) {
-			//ƒ`ƒFƒbƒNƒAƒCƒeƒ€ƒŠƒXƒg‚Ì‰Šú‰»
+			//ãƒã‚§ãƒƒã‚¯ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®åˆæœŸåŒ–
 			InitCheckItemList(hWnd, ((struct TPITEM *)lParam));
 		}
 		break;
 
-	//DLL‚©‚ç‚ÌƒAƒCƒeƒ€‚Ìƒ`ƒFƒbƒNŒ‹‰Ê’Ê’m
+	//DLLã‹ã‚‰ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒã‚§ãƒƒã‚¯çµæœé€šçŸ¥
 	case WM_CHECK_RESULT:
 		if(gCheckFlag == 0){
 			break;
@@ -2119,7 +2119,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		CheckEndItem(hWnd, wParam, lParam);
 		break;
 
-	//Ÿ‚Ìƒ`ƒFƒbƒN
+	//æ¬¡ã®ãƒã‚§ãƒƒã‚¯
 	case WM_NEXTCHECK:
 		if(gCheckFlag == 0){
 			break;
@@ -2127,7 +2127,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		InitCheckItemList(hWnd, (struct TPITEM *)lParam);
 		break;
 
-	//ƒAƒCƒeƒ€‚Ìƒ`ƒFƒbƒN—v‹
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒã‚§ãƒƒã‚¯è¦æ±‚
 	case WM_ITEMCHECK:
 		ItemCheckIni(hWnd, (struct TPITEM *)lParam, TRUE);
 		CheckIniProc(hWnd, ((struct TPITEM *)lParam)->hItem, CHECKINI_DLLCHECK, CHECKTYPE_ITEM);
@@ -2139,15 +2139,15 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 		break;
 
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚Ì—v‹
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®è¦æ±‚
 	case WM_GETCHECKLIST:
 		return (long)CheckItemList;
 
-	//ƒAƒCƒeƒ€ƒŠƒXƒg”‚Ì—v‹
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆæ•°ã®è¦æ±‚
 	case WM_GETCHECKLISTCNT:
 		return CheckListMax;
 
-	//ƒAƒCƒeƒ€‚ğƒZƒbƒg‚·‚éƒƒbƒZ[ƒW
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	case WM_SETITEMLIST:
 		if(Item_ListAdd(hWnd, (struct TPITEM **)lParam, wParam) == TRUE){
 			FocusWnd = GetDlgItem(hWnd, WWWC_LIST);
@@ -2155,31 +2155,31 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 		break;
 
-	//ƒAƒCƒeƒ€‚ÌÀ‘Ì‚ğ—v‹
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®å®Ÿä½“ã‚’è¦æ±‚
 	case WM_GETMAINITEM:
 		return (long)FindMainItem(hWnd, (struct TPITEM *)lParam);
 
-	//ƒAƒCƒeƒ€‚ğÀs
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’å®Ÿè¡Œ
 	case WM_ITEMEXEC:
 		return Item_DefaultOpen(hWnd, (struct TPITEM *)lParam);
 
-	//ƒAƒCƒeƒ€‚ğ‰Šú‰»
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’åˆæœŸåŒ–
 	case WM_ITEMINIT:
 		{
 			struct TPITEM *tpItemInfo;
 
-			//ƒAƒCƒeƒ€‚ÌŒŸõ
+			//ã‚¢ã‚¤ãƒ†ãƒ ã®æ¤œç´¢
 			tpItemInfo = FindMainItem(hWnd, (struct TPITEM *)lParam);
 			if(tpItemInfo == NULL){
 				break;
 			}
-			//ƒAƒCƒeƒ€‚Ì‰Šú‰»
+			//ã‚¢ã‚¤ãƒ†ãƒ ã®åˆæœŸåŒ–
 			Item_Initialize(hWnd, tpItemInfo, FALSE);
 			TreeView_SetIconState(hWnd, tpItemInfo->hItem, 0);
 			TreeView_FreeItem(hWnd, tpItemInfo->hItem, 1);
 
 			if(tpItemInfo->hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
-				//ƒŠƒXƒgƒrƒ…[‚ÌXV
+				//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®æ›´æ–°
 				i = ListView_GetMemToIndex(GetDlgItem(hWnd, WWWC_LIST), tpItemInfo);
 				ListView_RedrawItems(GetDlgItem(hWnd, WWWC_LIST), i, i);
 				UpdateWindow(GetDlgItem(hWnd, WWWC_LIST));
@@ -2188,62 +2188,62 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 		break;
 
-	//WWWC‚Ìƒo[ƒWƒ‡ƒ“—v‹
+	//WWWCã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³è¦æ±‚
 	case WM_GETVERSION:
 		if(lParam != 0){
 			lstrcpy((char *)lParam, APP_VERSION);
 		}
 		break;
 
-	//ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
+	//ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 	case WM_GETMAINWINDOW:
 		if(lParam != 0){
 			*(HWND *)lParam = hWnd;
 		}
 		break;
 
-	//XVƒƒbƒZ[ƒW‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
+	//æ›´æ–°ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 	case WM_GETUPWINDOW:
 		if(lParam != 0){
 			*(HWND *)lParam = UpWnd;
 		}
 		break;
 
-	//ŒŸõƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
+	//æ¤œç´¢ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 	case WM_GETFINDWINDOW:
 		if(lParam != 0){
 			*(HWND *)lParam = FindWnd;
 		}
 		break;
 
-	//İ’è‚Ì“Ç‚İ’¼‚µ
+	//è¨­å®šã®èª­ã¿ç›´ã—
 	case WM_WWWC_GETINI:
 		RefreshIniFile(hWnd);
 		break;
 
-	//İ’è‚Ì‘‚«‚±‚İ
+	//è¨­å®šã®æ›¸ãã“ã¿
 	case WM_WWWC_PUTINI:
 		SaveIniFile(hWnd);
 		break;
 
-	//INIƒtƒ@ƒCƒ‹‚Ì•Û‘¶æ‚ÌƒpƒX‚ğæ“¾
+	//INIãƒ•ã‚¡ã‚¤ãƒ«ã®ä¿å­˜å…ˆã®ãƒ‘ã‚¹ã‚’å–å¾—
 	case WM_WWWC_GETINIPATH:
 		if(lParam != 0){
 			lstrcpy((char *)lParam, CuDir);
 		}
 		break;
 
-	//ƒtƒHƒ‹ƒ_‚Ì“à—e‚ğ•Û‘¶
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã‚’ä¿å­˜
 	case WM_FOLDER_SAVE:
 		TreeView_FreeItem(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), 1);
 		break;
 
-	//ƒtƒHƒ‹ƒ_‚Ì“à—e‚ğ“Ç‚İ‚Ş
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®å†…å®¹ã‚’èª­ã¿è¾¼ã‚€
 	case WM_FOLDER_LOAD:
 		FolderRefresh(hWnd);
 		break;
 
-	//ƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğæ“¾
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’å–å¾—
 	case WM_FOLDER_GETPATH:
 		if(lParam != 0){
 			TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE),
@@ -2252,7 +2252,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 		break;
 
-	//ƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğæ“¾
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’å–å¾—
 	case WM_FOLDER_GETWWWCPATH:
 		if(lParam != 0){
 			char buf[BUFSIZE];
@@ -2266,20 +2266,20 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		}
 		break;
 
-	//ƒtƒHƒ‹ƒ_‚Ì‘I‘ğ
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®é¸æŠ
 	case WM_FOLDER_SELECT:
 		if(lParam != 0){
 			SelectFolder((HWND)wParam, (char *)lParam);
 		}
 		break;
 
-	//ƒtƒHƒ‹ƒ_‚Ì“¯Šú
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®åŒæœŸ
 	case WM_FOLDER_REFRESH:
 		SetDirTree(GetDlgItem(hWnd, WWWC_TREE), CuDir, RootItem);
 		CallTreeItem(hWnd, RootItem, (FARPROC)FindTreeDir, 0);
 		break;
 
-	//ƒCƒxƒ“ƒgˆ—
+	//ã‚¤ãƒ™ãƒ³ãƒˆå‡¦ç†
 	case WM_DOEVENTS:
 		DoEvents();
 		break;
@@ -2295,7 +2295,7 @@ static LONG APIENTRY MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 	DelLastYen
 
-	ƒfƒBƒŒƒNƒgƒŠƒpƒX‚ÌÅŒã‚Ì \ ‚ğœ‹‚·‚é
+	ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹ã®æœ€å¾Œã® \ ã‚’é™¤å»ã™ã‚‹
 
 ******************************************************************************/
 
@@ -2317,7 +2317,7 @@ static void DelLastYen(char *p)
 
 	GetAppPath
 
-	ƒ†[ƒUƒfƒBƒŒƒNƒgƒŠ‚Ìì¬
+	ãƒ¦ãƒ¼ã‚¶ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ä½œæˆ
 
 ******************************************************************************/
 
@@ -2329,7 +2329,7 @@ static BOOL GetAppPath(HINSTANCE hinst)
 	char *p, *r;
 	int i;
 
-	//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒpƒX‚ğæ“¾
+	//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ‘ã‚¹ã‚’å–å¾—
 	GetModuleFileName(hinst, DefDirPath, BUFSIZE - 1);
 	r = p = DefDirPath;
 	while(*p != '\0'){
@@ -2342,20 +2342,20 @@ static BOOL GetAppPath(HINSTANCE hinst)
 	}
 	*r = '\0';
 
-	//ƒtƒ@ƒCƒ‹–¼‚ğ•t‰Á‚·‚é—]—T‚ª–³‚¢ƒpƒX‚ÍƒGƒ‰[
+	//ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ä»˜åŠ ã™ã‚‹ä½™è£•ãŒç„¡ã„ãƒ‘ã‚¹ã¯ã‚¨ãƒ©ãƒ¼
 	if(lstrlen(DefDirPath) + 1 + lstrlen(GENERAL_INI) >= BUFSIZE){
 		MessageBox(NULL, EMSG_PATHLENGTH, EMSG_PATHLENGTH_TITLE, MB_ICONERROR);
 		return FALSE;
 	}
 
-	//ƒfƒtƒHƒ‹ƒgƒAƒCƒeƒ€
+	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚¢ã‚¤ãƒ†ãƒ 
 	wsprintf(DefItem, "%s\\DefItem", DefDirPath);
 
-	//‹¤’Ê‚Ìİ’è‚ğg—p‚·‚éê‡‚Ìƒ†[ƒU–¼‚Ìæ“¾
+	//å…±é€šã®è¨­å®šã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã®ãƒ¦ãƒ¼ã‚¶åã®å–å¾—
 	wsprintf(gIniFile, "%s\\%s", DefDirPath, GENERAL_INI);
 	profile_initialize(gIniFile, TRUE);
 	profile_get_string("GENERAL", "User", "", GeneralUser, BUFSIZE - 1, gIniFile);
-	//ì‹ÆƒfƒBƒŒƒNƒgƒŠ‚ğæ“¾
+	//ä½œæ¥­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’å–å¾—
 	profile_get_string("GENERAL", "WorkDir", "", WorkDir, BUFSIZE - 1, gIniFile);
 	if(*WorkDir != '\0'){
 		DelLastYen(WorkDir);
@@ -2369,7 +2369,7 @@ static BOOL GetAppPath(HINSTANCE hinst)
 	profile_free();
 
 	if(*CmdDirPath != '\0'){
-		//ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Åw’è‚³‚ê‚½ƒfƒBƒŒƒNƒgƒŠ
+		//ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã§æŒ‡å®šã•ã‚ŒãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 		lstrcpy(DefDirPath, CmdDirPath);
 	}
 	if(lstrlen(DefDirPath) + 1 + lstrlen("Temp") >= BUFSIZE){
@@ -2377,26 +2377,26 @@ static BOOL GetAppPath(HINSTANCE hinst)
 		return FALSE;
 	}
 
-	//ˆêƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX‚ğæ“¾
+	//ä¸€æ™‚ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹ã‚’å–å¾—
 	if(GetTempPath(BUFSIZE - 1, TempDir) == 0){
-		//¸”s‚µ‚½ê‡‚ÍƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒpƒX‚Ì‰º‚Éİ’è
+		//å¤±æ•—ã—ãŸå ´åˆã¯ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ‘ã‚¹ã®ä¸‹ã«è¨­å®š
 		wsprintf(TempDir, "%s\\Temp", DefDirPath);
 	}else{
 		DelLastYen(TempDir);
 	}
 
 	if(*CmdUser != '\0'){
-		//ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Åw’è‚³‚ê‚½ƒ†[ƒU–¼
+		//ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã§æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ¼ã‚¶å
 		lstrcpy(CurrentUser, CmdUser);
 	}else{
-		//Œ»İ‚ÌƒƒOƒCƒ“ƒ†[ƒU–¼‚Ìæ“¾
+		//ç¾åœ¨ã®ãƒ­ã‚°ã‚¤ãƒ³ãƒ¦ãƒ¼ã‚¶åã®å–å¾—
 		i = BUFSIZE - 1;
 		if(GetUserName(CurrentUser, &i) == FALSE) {
 			lstrcpy(CurrentUser, DEFAULTUSER);
 		}
 	}
 
-	//ƒtƒ@ƒCƒ‹–¼‚Ég‚¦‚È‚¢•¶š‚Í '_' ‚É•ÏŠ·
+	//ãƒ•ã‚¡ã‚¤ãƒ«åã«ä½¿ãˆãªã„æ–‡å­—ã¯ '_' ã«å¤‰æ›
 	FileNameConv(GeneralUser, '_');
 	FileNameConv(CurrentUser, '_');
 
@@ -2408,7 +2408,7 @@ static BOOL GetAppPath(HINSTANCE hinst)
 	wsprintf(CuDir, "%s\\%s", DefDirPath, user);
 
 	if(GetDirSerch(CuDir) == FALSE){
-		//ƒ†[ƒUƒfƒBƒŒƒNƒgƒŠ‚Ìì¬
+		//ãƒ¦ãƒ¼ã‚¶ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ä½œæˆ
 		CreateDirectory(CuDir, NULL);
 		CopyDirTree(NULL, DefItem, DefDirPath, user, NULL);
 	}
@@ -2421,7 +2421,7 @@ static BOOL GetAppPath(HINSTANCE hinst)
 
 	CommandLineFunc
 
-	ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Ì‰ğÍ
+	ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã®è§£æ
 
 ******************************************************************************/
 
@@ -2464,7 +2464,7 @@ static void CommandLineFunc(HWND hWnd, char *StrCmdLine)
 				continue;
 			}
 			if(hItem == NULL){
-				//’Ç‰Á‚·‚éƒtƒHƒ‹ƒ_‚Ì‘I‘ğ
+				//è¿½åŠ ã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®é¸æŠ
 				hItem = SelectFolderItem(hWnd, TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)));
 				UpdateItemFlag = UF_COPY;
 				if(hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
@@ -2475,7 +2475,7 @@ static void CommandLineFunc(HWND hWnd, char *StrCmdLine)
 				CancelFlag = TRUE;
 				continue;
 			}
-			//ƒAƒCƒeƒ€‚Ì’Ç‰Á
+			//ã‚¢ã‚¤ãƒ†ãƒ ã®è¿½åŠ 
 			if(GetProtocolIndex(buf) != -1){
 				Item_UrlAdd(hWnd, NEWITEMNAME, buf, 1, hItem);
 			}else{
@@ -2486,7 +2486,7 @@ static void CommandLineFunc(HWND hWnd, char *StrCmdLine)
 				}
 				ListView_RefreshFolder(hWnd);
 				if(hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
-					//’Ç‰ÁƒAƒCƒeƒ€‚ÌƒtƒH[ƒJƒXİ’è
+					//è¿½åŠ ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ•ã‚©ãƒ¼ã‚«ã‚¹è¨­å®š
 					if(ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED) != -1){
 						ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST),
 							ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED),
@@ -2496,7 +2496,7 @@ static void CommandLineFunc(HWND hWnd, char *StrCmdLine)
 					}
 				}
 			}
-			//ƒRƒs[‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚Ä‚¢‚éê‡
+			//ã‚³ãƒ”ãƒ¼ãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚Œã¦ã„ã‚‹å ´åˆ
 			if(UpdateItemFlag == UF_CANCEL){
 				CancelFlag = TRUE;
 			}
@@ -2506,31 +2506,31 @@ static void CommandLineFunc(HWND hWnd, char *StrCmdLine)
 				{
 				case 'c':
 				case 'C':
-					//‘S‚Ä‚ÌƒAƒCƒeƒ€‚ğƒ`ƒFƒbƒN
+					//å…¨ã¦ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒã‚§ãƒƒã‚¯
 					SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_ALLCHECK, 0);
 					break;
 
 				case 'i':
 				case 'I':
-					//‘S‚Ä‚ÌƒAƒCƒeƒ€‚ğ‰Šú‰»
+					//å…¨ã¦ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’åˆæœŸåŒ–
 					SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_ALLINITICON_NOMSG, 0);
 					break;
 
 				case 's':
 				case 'S':
-					//‘S‚Ä‚Ìƒ`ƒFƒbƒN‚ğ’†~
+					//å…¨ã¦ã®ãƒã‚§ãƒƒã‚¯ã‚’ä¸­æ­¢
 					SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_ALLCHECKEND, 0);
 					break;
 
 				case 'e':
 				case 'E':
-					//‰‰ñƒ`ƒFƒbƒNŒãI—¹
+					//åˆå›ãƒã‚§ãƒƒã‚¯å¾Œçµ‚äº†
 					CmdCheckEnd = TRUE;
 					break;
 
 				case 'n':
 				case 'N':
-					//XV‚ª‚ ‚é‚Æ‚«‚Í‰‰ñƒ`ƒFƒbƒNI—¹‚ğ–³Œø
+					//æ›´æ–°ãŒã‚ã‚‹ã¨ãã¯åˆå›ãƒã‚§ãƒƒã‚¯çµ‚äº†ã‚’ç„¡åŠ¹
 					CmdNoUpCheckEnd = TRUE;
 					break;
 
@@ -2538,7 +2538,7 @@ static void CommandLineFunc(HWND hWnd, char *StrCmdLine)
 				case 'D':
 				case 'u':
 				case 'U':
-					//ì‹ÆƒfƒBƒŒƒNƒgƒŠAƒ†[ƒU–¼‚Ìw’è
+					//ä½œæ¥­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã€ãƒ¦ãƒ¼ã‚¶åã®æŒ‡å®š
 					p++;
 					if(*p != ':') break;
 					p++;
@@ -2563,7 +2563,7 @@ static void CommandLineFunc(HWND hWnd, char *StrCmdLine)
 
 	StartCommandLine
 
-	ÀsŠÂ‹«—pƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Ì‰ğÍ
+	å®Ÿè¡Œç’°å¢ƒç”¨ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã®è§£æ
 
 ******************************************************************************/
 
@@ -2591,13 +2591,13 @@ static void StartCommandLine(char *StrCmdLine)
 			{
 			case 'a':
 			case 'A':
-				//Šù‚É‹N“®‚µ‚Ä‚¢‚éƒEƒBƒ“ƒhƒE‚ğƒAƒNƒeƒBƒu‚µ‚È‚¢
+				//æ—¢ã«èµ·å‹•ã—ã¦ã„ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã—ãªã„
 				NoActiveFlag = TRUE;
 				break;
 
 			case 'd':
 			case 'D':
-				//ì‹ÆƒfƒBƒŒƒNƒgƒŠ‚Ìw’è
+				//ä½œæ¥­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®æŒ‡å®š
 				p++;
 				if(*p != ':') break;
 				p++;
@@ -2614,7 +2614,7 @@ static void StartCommandLine(char *StrCmdLine)
 
 			case 'u':
 			case 'U':
-				//ƒ†[ƒU–¼‚Ìw’è
+				//ãƒ¦ãƒ¼ã‚¶åã®æŒ‡å®š
 				p++;
 				if(*p != ':') break;
 				p++;
@@ -2639,7 +2639,7 @@ static void StartCommandLine(char *StrCmdLine)
 
 	InitApplication
 
-	ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^
+	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²
 
 ******************************************************************************/
 
@@ -2647,7 +2647,7 @@ static BOOL InitApplication(HANDLE hInstance)
 {
 	WNDCLASS  wc;
 
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚ğ“o˜^
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã‚’ç™»éŒ²
 	wc.style = 0;
 	wc.lpfnWndProc = (WNDPROC)MainProc;
 	wc.cbClsExtra = 0;
@@ -2666,7 +2666,7 @@ static BOOL InitApplication(HANDLE hInstance)
 
 	InitInstance
 
-	ƒEƒBƒ“ƒhƒE‚Ìì¬
+	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
 
 ******************************************************************************/
 
@@ -2674,7 +2674,7 @@ static HWND InitInstance(HANDLE hInstance, int nCmdShow)
 {
 	HWND hWnd;
 
-	// ƒEƒBƒ“ƒhƒE‚ğì¬
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ä½œæˆ
 	hWnd = CreateWindow(
 		WWWC_WNDCLASS,
 		APP_NAME,
@@ -2697,7 +2697,7 @@ static HWND InitInstance(HANDLE hInstance, int nCmdShow)
 		 return hWnd;
 	}
 
-	// ƒEƒBƒ“ƒhƒE‚ğ•\¦
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤º
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 	return hWnd;
@@ -2708,7 +2708,7 @@ static HWND InitInstance(HANDLE hInstance, int nCmdShow)
 
 	initWinsock
 
-	WinSock‚Ì‰Šú‰»
+	WinSockã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -2718,7 +2718,7 @@ static BOOL initWinsock(void)
 	int  nErrorStatus;
 	WSADATA wsaData;
 
-	wVersionRequested = MAKEWORD(1, 1);				// ƒo[ƒWƒ‡ƒ“ 1.1 ‚ğ—v‹
+	wVersionRequested = MAKEWORD(1, 1);				// ãƒãƒ¼ã‚¸ãƒ§ãƒ³ 1.1 ã‚’è¦æ±‚
 	nErrorStatus = WSAStartup(wVersionRequested, &wsaData);
 
 	if(nErrorStatus != 0){
@@ -2732,22 +2732,22 @@ static BOOL initWinsock(void)
 
 	AppExit
 
-	I—¹ˆ—
+	çµ‚äº†å‡¦ç†
 
 ******************************************************************************/
 
 void __cdecl AppExit(void)
 {
-	// OLE ‚ÌI—¹ˆ—
+	// OLE ã®çµ‚äº†å‡¦ç†
 	OleUninitialize();
-	// WinSock ‚ÌI—¹ˆ—
+	// WinSock ã®çµ‚äº†å‡¦ç†
 	WSACleanup();
-	//GetDiskFreeSpaceEx —p‚É“Ç‚İ‚ñ‚¾ƒ‰ƒCƒuƒ‰ƒŠ‚Ì‰ğ•ú
+	//GetDiskFreeSpaceEx ç”¨ã«èª­ã¿è¾¼ã‚“ã ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®è§£æ”¾
 	FreeGetDiskFreeSpaceEx();
 
-	//ƒvƒƒgƒRƒ‹î•ñ‚ğ‰ğ•ú
+	//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æƒ…å ±ã‚’è§£æ”¾
 	FreeProtocol();
-	//ƒc[ƒ‹î•ñ‚ğ‰ğ•ú
+	//ãƒ„ãƒ¼ãƒ«æƒ…å ±ã‚’è§£æ”¾
 	FreeTool();
 }
 
@@ -2756,7 +2756,7 @@ void __cdecl AppExit(void)
 
 	MessageFunc
 
-	ƒƒbƒZ[ƒWˆ—
+	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 
 ******************************************************************************/
 
@@ -2765,17 +2765,17 @@ static BOOL MessageFunc(HWND hWnd, MSG *msg)
 	HWND fWnd;
 
 	fWnd = GetForegroundWindow();
-	//ƒc[ƒ‹—pƒAƒNƒZƒ‰ƒŒ[ƒ^
+	//ãƒ„ãƒ¼ãƒ«ç”¨ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿
 	if(AccelFlag == FALSE && hToolAccel != NULL && fWnd == hWnd &&
 		TranslateAccelerator(fWnd, hToolAccel, msg) == TRUE){
 		return TRUE;
 	}
-	//ƒEƒBƒhƒE—pƒAƒNƒZƒ‰ƒŒ[ƒ^
+	//ã‚¦ã‚£ãƒ‰ã‚¦ç”¨ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿
 	if(AccelFlag == FALSE && TranslateAccelerator(fWnd,
 		((fWnd == FindWnd) ? hFindAccel : hAccel), msg) == TRUE){
 		return TRUE;
 	}
-	//ƒ_ƒCƒAƒƒOƒƒbƒZ[ƒW
+	//ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	if(AccelFlag == FALSE && IsDialogMessage(fWnd, msg) != 0){
 		return TRUE;
 	}
@@ -2789,7 +2789,7 @@ static BOOL MessageFunc(HWND hWnd, MSG *msg)
 
 	WinMain
 
-	ƒƒCƒ“
+	ãƒ¡ã‚¤ãƒ³
 
 ******************************************************************************/
 
@@ -2811,7 +2811,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 	g_hinst = hInstance;
 
-	//DLL‚ÌŒŸõƒpƒX‚©‚çƒJƒŒƒ“ƒgƒfƒBƒŒƒNƒgƒŠ‚ğœŠO‚·‚é
+	//DLLã®æ¤œç´¢ãƒ‘ã‚¹ã‹ã‚‰ã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’é™¤å¤–ã™ã‚‹
 	_SetDllDirectory = GetProcAddress(GetModuleHandle("kernel32.dll"), "SetDllDirectoryA");
 	if(_SetDllDirectory != NULL){
 		_SetDllDirectory("");
@@ -2822,9 +2822,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 0;
 	}
 
-	// CommonControl‚Ì‰Šú‰»‚ğs‚¤
+	// CommonControlã®åˆæœŸåŒ–ã‚’è¡Œã†
 	InitCommonControls();
-	// V‚µ‚¢CommonControl‚Ì‰Šú‰»‚ğs‚¤
+	// æ–°ã—ã„CommonControlã®åˆæœŸåŒ–ã‚’è¡Œã†
 	hLib = LoadLibrary("comctl32.dll");
 	if(hLib != NULL){
 		_InitCommonControlsEx = GetProcAddress((HMODULE)hLib, "InitCommonControlsEx");
@@ -2835,42 +2835,42 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		FreeLibrary(hLib);
 	}
-	// OLE‚Ì‰Šú‰»‚ğs‚¤
+	// OLEã®åˆæœŸåŒ–ã‚’è¡Œã†
 	if(OleInitialize(NULL) != S_OK){
 		MessageBox(NULL, EMSG_OLEINIT, APP_NAME, MB_OK | MB_ICONERROR);
 		return 0;
 	}
-	// WinSock‚Ì‰Šú‰»‚ğs‚¤
+	// WinSockã®åˆæœŸåŒ–ã‚’è¡Œã†
 	if(!initWinsock()){
 		MessageBox(NULL, EMSG_WINSOCKINIT, APP_NAME, MB_OK | MB_ICONERROR);
 		return 0;
 	}
-	//GetDiskFreeSpaceEx ‚ÌƒAƒhƒŒƒXæ“¾
+	//GetDiskFreeSpaceEx ã®ã‚¢ãƒ‰ãƒ¬ã‚¹å–å¾—
 	InitGetDiskFreeSpaceEx();
 
-	//İ’è‚ğ“Ç‚İ‚Ş
+	//è¨­å®šã‚’èª­ã¿è¾¼ã‚€
 	GetINI();
 	GetProtocolInfo();
 
-	//I—¹ˆ—
+	//çµ‚äº†å‡¦ç†
 	if(atexit(AppExit)){
 		MessageBox(NULL, EMSG_ATEXIT, APP_NAME, MB_OK | MB_ICONERROR);
 		return 0;
 	}
 
-	//‚Qd‹N“®‚Ìƒ`ƒFƒbƒN‚ğs‚¤
+	//ï¼’é‡èµ·å‹•ã®ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
 	if(hMutex == NULL && DoubleStart == 1){
 		if(DoubleStartMsg == 1){
-			//ƒƒbƒZ[ƒW•\¦‚Ì‚İ
+			//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºã®ã¿
 			MessageBox(NULL, IMSG_DOUBLESTART, APP_NAME, MB_OK | MB_ICONWARNING);
 			return 0;
 		}
-		//‹N“®’†‚ÌƒEƒBƒ“ƒhƒE‚ğŒŸõ
+		//èµ·å‹•ä¸­ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’æ¤œç´¢
 		hWnd = FindWindow(WWWC_WNDCLASS, NULL);
 		if(hWnd == NULL){
 			return 0;
 		}
-		//•\¦‚µ‚ÄƒAƒNƒeƒBƒu‚É‚·‚é
+		//è¡¨ç¤ºã—ã¦ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
 		if(NoActiveFlag == FALSE){
 			ShowWindow(hWnd, SW_SHOW);
 			if(IsZoomed(hWnd) == 0){
@@ -2879,7 +2879,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			_SetForegroundWindow(hWnd);
 		}
 
-		//ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Ì‘—M
+		//ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã®é€ä¿¡
 		if(lpCmdLine != NULL && *lpCmdLine != TEXT('\0')){
 			COPYDATASTRUCT cpdata;
 
@@ -2887,18 +2887,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			cpdata.cbData = lstrlen(lpCmdLine) + 1;
 			SendMessage(hWnd, WM_COPYDATA, (WPARAM)NULL, (LPARAM)&cpdata);
 		}else if(StartCheck == 1){
-			//‹N“®ƒ`ƒFƒbƒN
+			//èµ·å‹•æ™‚ãƒã‚§ãƒƒã‚¯
 			SendMessage(hWnd, WM_COMMAND, ID_MENUITEM_ALLCHECK, 0);
 		}
 		return 0;
 	}
 
-	//ƒŠƒ\[ƒX‚©‚çƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚ğƒ[ƒh
+	//ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ãƒ­ãƒ¼ãƒ‰
 	hPOPUP = LoadMenu(hInstance, MAKEINTRESOURCE(IDR_MENU_POPUP));
-	//ƒNƒŠƒbƒvƒ{[ƒh‚ÉWWWCƒf[ƒ^‚ÌŒ`®‚ğ“o˜^
+	//ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«WWWCãƒ‡ãƒ¼ã‚¿ã®å½¢å¼ã‚’ç™»éŒ²
 	WWWC_ClipFormat = RegisterClipboardFormat(CLIPBOARDFORMAT);
 
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğs‚¤
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’è¡Œã†
 	if(!InitApplication(hInstance)){
 		DestroyMenu(hPOPUP);
 		if(hMutex != NULL){
@@ -2908,7 +2908,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 0;
 	}
 
-	// ƒEƒBƒ“ƒhƒE‚Ìì¬‚ğs‚¤
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½œæˆã‚’è¡Œã†
 	if((hWnd = InitInstance(hInstance, nCmdShow)) == NULL){
 		DestroyMenu(hPOPUP);
 		if(hMutex != NULL){
@@ -2918,13 +2918,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 0;
 	}
 
-	//ƒŠƒ\[ƒX‚©‚çƒAƒNƒZƒŒ[ƒ^‚ğƒ[ƒh
+	//ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ã‚¢ã‚¯ã‚»ãƒ¬ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
 	hAccel = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDR_ACCELERATOR_WWWC));
 	hFindAccel = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDR_ACCELERATOR_FIND));
 
 	CommandLineFunc(hWnd, lpCmdLine);
 
-	// ƒEƒBƒ“ƒhƒEƒƒbƒZ[ƒW‚ğˆ—
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡¦ç†
 	while(GetMessage(&msg, NULL, 0, 0)){
 		MessageFunc(hWnd, &msg);
 	}

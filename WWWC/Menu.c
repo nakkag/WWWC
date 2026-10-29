@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -47,7 +47,7 @@ struct TPWINMENU{
 };
 static struct TPWINMENU tpWinMenu[WKMENU_CNT];
 
-//ŠO•”QÆ
+//å¤–éƒ¨å‚ç…§
 extern struct TP_PROTOCOL *tpProtocol;
 extern int ProtocolCnt;
 extern struct TP_TOOLS *ToolList;
@@ -65,7 +65,7 @@ extern HWND TbWnd;
 
 	ShowMenu
 
-	ƒ}ƒEƒX‚ÌˆÊ’u‚Éƒƒjƒ…[‚ğ•\¦‚·‚é
+	ãƒã‚¦ã‚¹ã®ä½ç½®ã«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹
 
 ******************************************************************************/
 
@@ -76,7 +76,7 @@ void ShowMenu(HWND hWnd, HMENU hMenu, int mpos)
 
 	_SetForegroundWindow(hWnd);
 
-	//ƒ}ƒEƒXˆÊ’u‚Éw’èƒƒjƒ…[‚ğ•\¦
+	//ãƒã‚¦ã‚¹ä½ç½®ã«æŒ‡å®šãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤º
 	GetCursorPos((LPPOINT)&apos);
 	hShowMenu = GetSubMenu(hMenu, mpos);
 	TrackPopupMenu(hShowMenu, TPM_TOPALIGN | TPM_RIGHTBUTTON | TPM_LEFTBUTTON,
@@ -90,7 +90,7 @@ void ShowMenu(HWND hWnd, HMENU hMenu, int mpos)
 
 	ShowMenuCommand
 
-	ƒ}ƒEƒX‚ÌˆÊ’u‚Éƒƒjƒ…[‚ğ•\¦‚·‚é
+	ãƒã‚¦ã‚¹ã®ä½ç½®ã«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹
 
 ******************************************************************************/
 
@@ -102,7 +102,7 @@ UINT ShowMenuCommand(HWND hWnd, HMENU hMenu, int mpos)
 
 	_SetForegroundWindow(hWnd);
 
-	//ƒ}ƒEƒXˆÊ’u‚Éw’èƒƒjƒ…[‚ğ•\¦
+	//ãƒã‚¦ã‚¹ä½ç½®ã«æŒ‡å®šãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤º
 	GetCursorPos((LPPOINT)&apos);
 	hShowMenu = GetSubMenu(hMenu, mpos);
 	ret = (UINT)TrackPopupMenu(hShowMenu, TPM_TOPALIGN | TPM_RIGHTBUTTON | TPM_LEFTBUTTON | TPM_RETURNCMD,
@@ -117,7 +117,7 @@ UINT ShowMenuCommand(HWND hWnd, HMENU hMenu, int mpos)
 
 	SetFolderEnableMenu
 
-	ƒtƒHƒ‹ƒ_‚Ìƒƒjƒ…[€–Ú‚Ìg—p‰Â”\^g—p•s”\ó‘Ô‚ğİ’è‚·‚é
+	ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®ä½¿ç”¨å¯èƒ½ï¼ä½¿ç”¨ä¸èƒ½çŠ¶æ…‹ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -129,12 +129,12 @@ void SetFolderEnableMenu(HWND hWnd, HTREEITEM hItem)
 	int CheckFolder = 0;
 	int PropFolder = 0;
 
-	//ƒ‹[ƒgƒAƒCƒeƒ€
+	//ãƒ«ãƒ¼ãƒˆã‚¢ã‚¤ãƒ†ãƒ 
 	Root = (hItem == RootItem) ? 1 : 0;
-	//‚²‚İ” 
+	//ã”ã¿ç®±
 	Recy = (hItem == RecyclerItem) ? 1 : 0;
 
-	//ƒ`ƒFƒbƒN
+	//ãƒã‚§ãƒƒã‚¯
 	tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	CheckNoCheck = (tpTreeInfo != NULL && tpTreeInfo->CheckFlag != 0) ? 1 : 0;
 	CheckFolder = FindCheckItem(hWnd, hItem);
@@ -143,7 +143,7 @@ void SetFolderEnableMenu(HWND hWnd, HTREEITEM hItem)
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_CHECKEND_POP, !CheckNoCheck);
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_INITICON_POP, CheckNoCheck);
 
-	//•ÒW
+	//ç·¨é›†
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_CUT_POP, Root || Recy);
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_COPY_POP, Root || Recy);
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_DELETE_POP,
@@ -158,7 +158,7 @@ void SetFolderEnableMenu(HWND hWnd, HTREEITEM hItem)
 
 	SetEnableMenu
 
-	ƒƒjƒ…[€–Ú‚Æƒc[ƒ‹ƒo[‚Ìg—p‰Â”\^g—p•s”\ó‘Ô‚ğİ’è‚·‚é
+	ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã¨ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ä½¿ç”¨å¯èƒ½ï¼ä½¿ç”¨ä¸èƒ½çŠ¶æ…‹ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -174,19 +174,19 @@ void SetEnableMenu(HWND hWnd)
 	int CheckMenuFlag;
 	static int UndoType = -1;
 
-	//ƒ‹[ƒgƒAƒCƒeƒ€A‚²‚İ” 
+	//ãƒ«ãƒ¼ãƒˆã‚¢ã‚¤ãƒ†ãƒ ã€ã”ã¿ç®±
 	hItem = TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE));
 	Root = (hItem == RootItem || hItem == RecyclerItem) ? 1 : 0;
 
-	//ƒ`ƒFƒbƒN
+	//ãƒã‚§ãƒƒã‚¯
 	tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	CheckNoCheck = (tpTreeInfo != NULL && tpTreeInfo->CheckFlag != 0) ? 1 : 0;
 	Check = gCheckFlag;
 	CheckFolder = FindCheckItem(hWnd, hItem);
 
-	//TreeView‚ÉFocus‚ª‚ ‚éê‡
+	//TreeViewã«FocusãŒã‚ã‚‹å ´åˆ
 	Tree = (GetFocus() == GetDlgItem(hWnd, WWWC_TREE)) ? 1 : 0;
-	//ListView‚ÉFocus‚ª‚ ‚éê‡
+	//ListViewã«FocusãŒã‚ã‚‹å ´åˆ
 	List = (GetFocus() == GetDlgItem(hWnd, WWWC_LIST)) ? 1 : 0;
 
 	SelItem = 0;
@@ -229,7 +229,7 @@ void SetEnableMenu(HWND hWnd)
 	HNext = TreeView_CheckHistory(hWnd, TRUE);
 	HPrev = TreeView_CheckHistory(hWnd, FALSE);
 
-	//‘I‘ğƒAƒCƒeƒ€‚Ìó‘Ô
+	//é¸æŠã‚¢ã‚¤ãƒ†ãƒ ã®çŠ¶æ…‹
 	if(List == 1 && ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST)) > 0){
 		SelItem = 1;
 
@@ -245,7 +245,7 @@ void SetEnableMenu(HWND hWnd)
 			}else{
 				hItem = TreeView_GetIndexToItem(GetDlgItem(hWnd, WWWC_TREE),
 					TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), SelectItem);
-				//‚²‚İ” 
+				//ã”ã¿ç®±
 				if(hItem == RecyclerItem){
 					Recy = 1;
 				}
@@ -260,15 +260,15 @@ void SetEnableMenu(HWND hWnd)
 
 	CheckMenuFlag = ((Tree && CheckNoCheck) || (List && CheckItem) || (List && !SelItem && CheckNoCheck));
 
-	//ƒEƒBƒ“ƒhƒEƒƒjƒ…[
-	//ˆê‚Âã‚ÌŠK‘w
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒ‹ãƒ¥ãƒ¼
+	//ä¸€ã¤ä¸Šã®éšå±¤
 	if(TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)) == RootItem){
 		SendMessage(TbWnd, TB_ENABLEBUTTON, ID_KEY_UPDIR, (LPARAM) MAKELONG(0, 0));
 	}else{
 		SendMessage(TbWnd, TB_ENABLEBUTTON, ID_KEY_UPDIR, (LPARAM) MAKELONG(1, 0));
 	}
 
-	//•ÒW
+	//ç·¨é›†
 	EnableMenuItem(GetSubMenu(GetMenu(hWnd), MENU_HWND_FILE), ID_MENUITEM_DELETE,
 		!((Tree && !Root && !CheckFolder) || (List && SelItem && !Recy)));
 	SendMessage(TbWnd, TB_ENABLEBUTTON, ID_MENUITEM_DELETE,
@@ -288,7 +288,7 @@ void SetEnableMenu(HWND hWnd)
 	SendMessage(TbWnd, TB_ENABLEBUTTON, ID_MENUITEM_COPY,
 		(LPARAM)MAKELONG(((Tree && !Root) || (List && SelItem)), 0));
 
-	//ˆÚ“®
+	//ç§»å‹•
 	EnableMenuItem(GetSubMenu(GetMenu(hWnd), MENU_HWND_VIEW), ID_MENUITEM_PREV_HISTORY, !HPrev);
 	SendMessage(TbWnd, TB_ENABLEBUTTON, ID_MENUITEM_PREV_HISTORY,
 		(LPARAM)MAKELONG(HPrev, 0));
@@ -296,7 +296,7 @@ void SetEnableMenu(HWND hWnd)
 	SendMessage(TbWnd, TB_ENABLEBUTTON, ID_MENUITEM_NEXT_HISTORY,
 		(LPARAM)MAKELONG(HNext, 0));
 
-	//ƒ`ƒFƒbƒN
+	//ãƒã‚§ãƒƒã‚¯
 	EnableMenuItem(GetSubMenu(GetMenu(hWnd), MENU_HWND_CHECK), ID_MENUITEM_CHECKEND, !CheckMenuFlag);
 	SendMessage(TbWnd, TB_ENABLEBUTTON, ID_MENUITEM_CHECKEND, (LPARAM) MAKELONG(CheckMenuFlag, 0));
 	EnableMenuItem(GetSubMenu(GetMenu(hWnd), MENU_HWND_CHECK), ID_MENUITEM_ALLCHECKEND, !Check);
@@ -306,19 +306,19 @@ void SetEnableMenu(HWND hWnd)
 	EnableMenuItem(GetSubMenu(GetMenu(hWnd), MENU_HWND_CHECK), ID_MENUITEM_ALLINITICON, Check);
 	SendMessage(TbWnd, TB_ENABLEBUTTON, ID_MENUITEM_ALLINITICON, (LPARAM) MAKELONG(!Check, 0));
 
-	//ƒAƒCƒRƒ“•ÏX
+	//ã‚¢ã‚¤ã‚³ãƒ³å¤‰æ›´
 	EnableMenuItem(GetSubMenu(GetMenu(hWnd), MENU_HWND_CHECK), ID_MENUITEM_ICON_UP, !(List && Item));
 	EnableMenuItem(GetSubMenu(GetMenu(hWnd), MENU_HWND_CHECK), ID_MENUITEM_ICON_ERROR, !(List && Item));
 	EnableMenuItem(GetSubMenu(GetMenu(hWnd), MENU_HWND_CHECK), ID_MENUITEM_ICON_TIMEOUT, !(List && Item));
 	EnableMenuItem(GetSubMenu(GetMenu(hWnd), MENU_HWND_CHECK), ID_MENUITEM_CHECKSWITCH,
 		!((Tree && !(hItem == RecyclerItem)) || (List && SelItem && !Recy)));
 
-	//ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[
-	//ƒ`ƒFƒbƒN
+	//ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼
+	//ãƒã‚§ãƒƒã‚¯
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_CHECKEND_POP, !CheckMenuFlag);
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_INITICON_POP, CheckMenuFlag);
 
-	//•ÒW
+	//ç·¨é›†
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_CUT_POP,
 		!((Tree && !Root) || (List && SelItem)));
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_COPY_POP,
@@ -328,15 +328,15 @@ void SetEnableMenu(HWND hWnd)
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_EDITNAME_POP,
 		!((Tree && !Root) || (List && SelItem && !Recy)));
 
-	//ƒAƒCƒRƒ“•ÏX
+	//ã‚¢ã‚¤ã‚³ãƒ³å¤‰æ›´
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_ICON_UP, !(List && Item));
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_ICON_ERROR, !(List && Item));
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_ICON_TIMEOUT, !(List && Item));
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM), ID_MENUITEM_CHECKSWITCH_POP,
 		!((Tree) || (List && SelItem && !Recy)));
 
-	//ƒtƒHƒ‹ƒ_ƒƒjƒ…[
-	//ƒ`ƒFƒbƒN
+	//ãƒ•ã‚©ãƒ«ãƒ€ãƒ¡ãƒ‹ãƒ¥ãƒ¼
+	//ãƒã‚§ãƒƒã‚¯
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_FOLDER), ID_MENUITEM_CHECKEND, !CheckNoCheck);
 	EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_FOLDER), ID_MENUITEM_INITICON, CheckFolder);
 
@@ -348,7 +348,7 @@ void SetEnableMenu(HWND hWnd)
 
 	SetEnableToolMenu
 
-	ƒEƒBƒ“ƒhƒE‚Ìƒc[ƒ‹ƒƒjƒ…[‚Ìg—p‰Â”\^g—p•s”\ó‘Ô‚ğİ’è‚·‚é
+	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ„ãƒ¼ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½¿ç”¨å¯èƒ½ï¼ä½¿ç”¨ä¸èƒ½çŠ¶æ…‹ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -371,7 +371,7 @@ void SetEnableToolMenu(HWND hWnd)
 
 	SetEnableToolItemMenu
 
-	ƒAƒCƒeƒ€‚Ìƒc[ƒ‹ƒƒjƒ…[‚Ìg—p‰Â”\^g—p•s”\ó‘Ô‚ğİ’è‚·‚é
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ„ãƒ¼ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½¿ç”¨å¯èƒ½ï¼ä½¿ç”¨ä¸èƒ½çŠ¶æ…‹ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -394,7 +394,7 @@ void SetEnableToolItemMenu(HMENU hMenu)
 
 	SetNewItemMenu
 
-	ƒƒjƒ…[‚Ì uV‹Kì¬v ‚Ìİ’è
+	ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã® ã€Œæ–°è¦ä½œæˆã€ ã®è¨­å®š
 
 ******************************************************************************/
 
@@ -423,7 +423,7 @@ void SetNewItemMenu(HWND hWnd)
 
 	ModifyCheckMenuItem
 
-	ƒƒjƒ…[‚Ì•ÏXƒ`ƒFƒbƒN
+	ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®å¤‰æ›´ãƒã‚§ãƒƒã‚¯
 
 ******************************************************************************/
 
@@ -436,7 +436,7 @@ static BOOL ModifyCheckMenuItem(HWND hWnd, HMENU pMenu)
 	int SelectItem;
 	int i;
 
-	//ƒƒjƒ…[‚ğ¯•Ê‚·‚é
+	//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è­˜åˆ¥ã™ã‚‹
 	for(i = 0;i < WKMENU_CNT;i++){
 		if(tpWinMenu[i].Menu == pMenu){
 			break;
@@ -457,7 +457,7 @@ static BOOL ModifyCheckMenuItem(HWND hWnd, HMENU pMenu)
 			FolderFlag = MENUFLAG_TREERECYCLER;
 		}
 		if(tpWinMenu[i].OldProtocolIndex == FolderFlag){
-			//‘O‰ñ‚Ìƒƒjƒ…[€–Ú‚Æ“¯‚¶
+			//å‰å›ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã¨åŒã˜
 			return FALSE;
 		}
 		tpWinMenu[i].OldProtocolIndex = FolderFlag;
@@ -469,7 +469,7 @@ static BOOL ModifyCheckMenuItem(HWND hWnd, HMENU pMenu)
 		return TRUE;
 	}
 
-	//‘O‰ñ‚Ìƒƒjƒ…[‚Æ“¯‚¶ê‡‚ÍŠÖ”‚ğ”²‚¯‚é
+	//å‰å›ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã¨åŒã˜å ´åˆã¯é–¢æ•°ã‚’æŠœã‘ã‚‹
 	SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_FOCUSED);
 	if(ListView_GetItemState(GetDlgItem(hWnd, WWWC_LIST), SelectItem, LVIS_SELECTED) != LVIS_SELECTED){
 		SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED);
@@ -478,7 +478,7 @@ static BOOL ModifyCheckMenuItem(HWND hWnd, HMENU pMenu)
 	tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), SelectItem);
 	if(tpItemInfo != NULL){
 		if(tpWinMenu[i].OldProtocolIndex == GetProtocolIndex(tpItemInfo->CheckURL)){
-			//‘O‰ñ‚Ìƒƒjƒ…[€–Ú‚Æ“¯‚¶
+			//å‰å›ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã¨åŒã˜
 			return FALSE;
 		}else{
 			TmpIndex = GetProtocolIndex(tpItemInfo->CheckURL);
@@ -488,7 +488,7 @@ static BOOL ModifyCheckMenuItem(HWND hWnd, HMENU pMenu)
 			FolderFlag = MENUFLAG_RECYCLER;
 		}
 		if(tpWinMenu[i].OldProtocolIndex == FolderFlag){
-			//‘O‰ñ‚Ìƒƒjƒ…[€–Ú‚Æ“¯‚¶
+			//å‰å›ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã¨åŒã˜
 			return FALSE;
 		}else{
 			TmpIndex = FolderFlag;
@@ -503,7 +503,7 @@ static BOOL ModifyCheckMenuItem(HWND hWnd, HMENU pMenu)
 
 	DeleteProtocolMenuItem
 
-	ƒvƒƒgƒRƒ‹ƒƒjƒ…[€–Ú‚Ìíœ
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®å‰Šé™¤
 
 ******************************************************************************/
 
@@ -511,7 +511,7 @@ void DeleteProtocolMenuItem(HMENU pMenu)
 {
 	UINT MenuID;
 
-	//Œ»İ‚Ìƒƒjƒ…[€–Ú‚ğíœ
+	//ç¾åœ¨ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã‚’å‰Šé™¤
 	while(1){
 		MenuID = GetMenuItemID(pMenu, 0);
 		if(MenuID == ID_MENUITEM_CHECK_POP ||
@@ -530,7 +530,7 @@ void DeleteProtocolMenuItem(HMENU pMenu)
 
 	SetFolderItemMenu
 
-	ƒtƒHƒ‹ƒ_ƒƒjƒ…[‚Ìİ’è
+	ãƒ•ã‚©ãƒ«ãƒ€ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¨­å®š
 
 ******************************************************************************/
 
@@ -540,7 +540,7 @@ static BOOL SetFolderItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag)
 	int SelectItem;
 	HTREEITEM HTItem;
 
-	//ƒcƒŠ[ƒrƒ…[
+	//ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼
 	if(GetFocus() == GetDlgItem(hWnd, WWWC_TREE)){
 		HTItem = (HTREEITEM)SendDlgItemMessage(hWnd, WWWC_TREE, TVM_GETNEXTITEM, TVGN_DROPHILITE, 0);
 		if(HTItem == NULL){
@@ -562,7 +562,7 @@ static BOOL SetFolderItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag)
 		return TRUE;
 	}
 
-	//ƒŠƒXƒgƒrƒ…[‚Å‘I‘ğ‚È‚µ
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã§é¸æŠãªã—
 	if(ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST)) <= 0){
 		if(TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)) == RecyclerItem){
 			InsertMenu(pMenu, 0, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
@@ -579,7 +579,7 @@ static BOOL SetFolderItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag)
 		SelectItem = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED);
 	}
 	tpItemInfo = (struct TPITEM *)ListView_GetlParam(GetDlgItem(hWnd, WWWC_LIST), SelectItem);
-	//ƒŠƒXƒgƒrƒ…[‚ÅƒtƒHƒ‹ƒ_‚ª‘I‘ğ
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã§ãƒ•ã‚©ãƒ«ãƒ€ãŒé¸æŠ
 	if(tpItemInfo == NULL){
 		if(ItemFlag == 1){
 			InsertMenu(pMenu, 0, MF_BYPOSITION | MF_STRING, ID_MENUITEM_FOLDERTREECHECK_POP, MENU_STR_FOLDERTREECHECK);
@@ -610,8 +610,8 @@ static BOOL SetFolderItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag)
 
 	SetProtocolItemMenuState
 
-	ƒAƒCƒeƒ€ƒƒjƒ…[‚Ì—LŒøA–³Œø‚ğİ’è‚·‚é
-	(“¯‚¶ƒvƒƒgƒRƒ‹‚ÌƒAƒCƒeƒ€‚Å‚Íƒƒjƒ…[‚ğì‚è’¼‚³‚È‚¢‚½‚ßA‘I‘ğ‚ª•Ï‚í‚é‚½‚Ñ‚Éİ’è‚·‚é)
+	ã‚¢ã‚¤ãƒ†ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®æœ‰åŠ¹ã€ç„¡åŠ¹ã‚’è¨­å®šã™ã‚‹
+	(åŒã˜ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã®ã‚¢ã‚¤ãƒ†ãƒ ã§ã¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ä½œã‚Šç›´ã•ãªã„ãŸã‚ã€é¸æŠãŒå¤‰ã‚ã‚‹ãŸã³ã«è¨­å®šã™ã‚‹)
 
 ******************************************************************************/
 
@@ -637,7 +637,7 @@ void SetProtocolItemMenuState(HWND hWnd, HMENU pMenu, BOOL UpWndFlag)
 	if(ProtocolIndex == -1 || tpProtocol[ProtocolIndex].tpMenu == NULL){
 		return;
 	}
-	//ƒƒjƒ…[‚Ìó‘Ô‚ğ•Ô‚·ŠÖ” (–³‚¢ê‡‚Í‚·‚×‚Ä—LŒø)
+	//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®çŠ¶æ…‹ã‚’è¿”ã™é–¢æ•° (ç„¡ã„å ´åˆã¯ã™ã¹ã¦æœ‰åŠ¹)
 	if(tpProtocol[ProtocolIndex].lib != NULL && lstrlen(tpProtocol[ProtocolIndex].FuncHeader) + lstrlen("GetMenuState") < BUFSIZE){
 		wsprintf(buf, "%sGetMenuState", tpProtocol[ProtocolIndex].FuncHeader);
 		Func_GetMenuState = GetProcAddress((HMODULE)tpProtocol[ProtocolIndex].lib, buf);
@@ -663,7 +663,7 @@ void SetProtocolItemMenuState(HWND hWnd, HMENU pMenu, BOOL UpWndFlag)
 
 	SetProtocolItemMenu
 
-	ƒAƒCƒeƒ€ƒƒjƒ…[‚Ìİ’è
+	ã‚¢ã‚¤ãƒ†ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¨­å®š
 
 ******************************************************************************/
 
@@ -700,7 +700,7 @@ void SetProtocolItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag, BOOL UpWndFlag)
 		return;
 	}
 	for(ii = 0, i = 0; i <= pMenuCnt; i++){
-		//ƒc[ƒ‹ƒƒjƒ…[
+		//ãƒ„ãƒ¼ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 		for(j = 0; j < ToolListCnt; j++){
 			if((ToolList[j].Action & TOOL_EXEC_ITEMMENU) != 0 &&
 				strlistcmp(tpProtocol[ProtocolIndex].title, ToolList[j].Protocol, ',') == TRUE &&
@@ -720,7 +720,7 @@ void SetProtocolItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag, BOOL UpWndFlag)
 			break;
 		}
 
-		//ƒvƒƒgƒRƒ‹ƒƒjƒ…[
+		//ãƒ—ãƒ­ãƒˆã‚³ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 		if(lstrcmp(tpProtocol[ProtocolIndex].tpMenu[i].name, "-") == 0){
 			InsertMenu(pMenu, ii++, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
 		}else{
@@ -734,7 +734,7 @@ void SetProtocolItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag, BOOL UpWndFlag)
 	}
 	InsertMenu(pMenu, ii, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
 
-	//ƒfƒtƒHƒ‹ƒgƒƒjƒ…[‚Ìİ’è
+	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¨­å®š
 	if(DefToolIndex != -1){
 		SetMenuDefaultItem(pMenu, DefToolIndex, 0);
 	}else if(DefIndex != -1){
@@ -748,29 +748,29 @@ void SetProtocolItemMenu(HWND hWnd, HMENU pMenu, BOOL ItemFlag, BOOL UpWndFlag)
 
 	SetProtocolMenu
 
-	ƒvƒƒgƒRƒ‹–ˆ‚Ìƒƒjƒ…[‚ğİ’è
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¨­å®š
 
 ******************************************************************************/
 
 void SetProtocolMenu(HWND hWnd)
 {
-	//ƒEƒBƒ“ƒhƒEƒƒjƒ…[
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 	if(ModifyCheckMenuItem(hWnd, GetSubMenu(GetMenu(hWnd), MENU_HWND_FILE)) == TRUE){
-		//ƒƒjƒ…[‚Ìíœ
+		//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®å‰Šé™¤
 		DeleteProtocolMenuItem(GetSubMenu(GetMenu(hWnd), MENU_HWND_FILE));
 		if(SetFolderItemMenu(hWnd, GetSubMenu(GetMenu(hWnd), MENU_HWND_FILE), FALSE) == FALSE){
 			SetProtocolItemMenu(hWnd, GetSubMenu(GetMenu(hWnd), MENU_HWND_FILE), FALSE, FALSE);
 		}
 	}
-	//ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[
+	//ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 	if(ModifyCheckMenuItem(hWnd, GetSubMenu(hPOPUP, MENU_POP_ITEM)) == TRUE){
-		//ƒƒjƒ…[‚Ìíœ
+		//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®å‰Šé™¤
 		DeleteProtocolMenuItem(GetSubMenu(hPOPUP, MENU_POP_ITEM));
 		if(SetFolderItemMenu(hWnd, GetSubMenu(hPOPUP, MENU_POP_ITEM), TRUE) == FALSE){
 			SetProtocolItemMenu(hWnd, GetSubMenu(hPOPUP, MENU_POP_ITEM), TRUE, FALSE);
 		}
 	}
-	//ƒƒjƒ…[‚ğì‚è’¼‚³‚È‚¢ê‡‚à‘I‘ğ‚µ‚½ƒAƒCƒeƒ€‚É‡‚í‚¹‚Ä—LŒøA–³Œø‚ğİ’è‚·‚é
+	//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ä½œã‚Šç›´ã•ãªã„å ´åˆã‚‚é¸æŠã—ãŸã‚¢ã‚¤ãƒ†ãƒ ã«åˆã‚ã›ã¦æœ‰åŠ¹ã€ç„¡åŠ¹ã‚’è¨­å®šã™ã‚‹
 	SetProtocolItemMenuState(hWnd, GetSubMenu(GetMenu(hWnd), MENU_HWND_FILE), FALSE);
 	SetProtocolItemMenuState(hWnd, GetSubMenu(hPOPUP, MENU_POP_ITEM), FALSE);
 	SetEnableMenu(hWnd);

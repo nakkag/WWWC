@@ -1,4 +1,4 @@
-/**************************************************************************
+﻿/**************************************************************************
 
 	WWWC (wwwc.dll)
 
@@ -33,7 +33,7 @@
 	Define
 **************************************************************************/
 
-#define WM_LV_EVENT					(WM_USER + 300)		//���X�g�r���[�C�x���g
+#define WM_LV_EVENT					(WM_USER + 300)		//リストビューイベント
 
 #define MAXPROPITEM					100
 
@@ -92,7 +92,7 @@ static BOOL CALLBACK ProtocolPropertyArchiveProc(HWND hDlg, UINT uMsg, WPARAM wP
 
 	OptionNotifyProc
 
-	�_�C�A���O�̒ʒm����������
+	ダイアログの通知を処理する
 
 ******************************************************************************/
 
@@ -127,7 +127,7 @@ static LRESULT OptionNotifyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 	AddItemInfo
 
-	�A�C�e����񃊃X�g�ɃA�C�e������o�^
+	アイテム情報リストにアイテム情報を登録
 
 ******************************************************************************/
 
@@ -149,7 +149,7 @@ static void AddItemInfo(HWND hWnd, struct TPITEM *tpItemInfo)
 
 	GetItemInfo
 
-	�A�C�e����񃊃X�g����A�C�e����������
+	アイテム情報リストからアイテム情報を検索
 
 ******************************************************************************/
 
@@ -170,7 +170,7 @@ static struct TPITEM *GetItemInfo(HWND hWnd)
 
 	DeleteItemInfo
 
-	�A�C�e����񃊃X�g����A�C�e�������폜
+	アイテム情報リストからアイテム情報を削除
 
 ******************************************************************************/
 
@@ -192,7 +192,7 @@ static void DeleteItemInfo(struct TPITEM *tpItemInfo)
 
 	DrawScrollControl
 
-	�X�N���[���o�[�̃{�^���̕`��
+	スクロールバーのボタンの描画
 
 ******************************************************************************/
 
@@ -201,18 +201,18 @@ static void DrawScrollControl(LPDRAWITEMSTRUCT lpDrawItem, UINT i)
 	#define FOCUSRECT_SIZE		3
 
 	if(lpDrawItem->itemState & ODS_DISABLED){
-		//�g�p�s�\
+		//使用不能
 		i |= DFCS_INACTIVE;
 	}
 	if(lpDrawItem->itemState & ODS_SELECTED){
-		//�I��
+		//選択
 		i |= DFCS_PUSHED;
 	}
 
-	//�t���[���R���g���[���̕`��
+	//フレームコントロールの描画
 	DrawFrameControl(lpDrawItem->hDC, &(lpDrawItem->rcItem), DFC_SCROLL, i);
 
-	//�t�H�[�J�X
+	//フォーカス
 	if(lpDrawItem->itemState & ODS_FOCUS){
 		lpDrawItem->rcItem.left += FOCUSRECT_SIZE;
 		lpDrawItem->rcItem.top += FOCUSRECT_SIZE;
@@ -227,7 +227,7 @@ static void DrawScrollControl(LPDRAWITEMSTRUCT lpDrawItem, UINT i)
 
 	PropertyProc
 
-	�A�C�e���̃v���p�e�B�ݒ�_�C�A���O
+	アイテムのプロパティ設定ダイアログ
 
 ******************************************************************************/
 
@@ -246,20 +246,20 @@ static BOOL CALLBACK PropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 
 		tpItemInfo = gItemInfo;
 
-		/* �A�C�e���̏�񂪋�łȂ��ꍇ�̓A�C�e���̓��e��\������ */
-		/* �^�C�g�� */
+		/* アイテムの情報が空でない場合はアイテムの内容を表示する */
+		/* タイトル */
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_TITLE), WM_SETTEXT, 0,
 			(LPARAM)((tpItemInfo->Title != NULL) ? tpItemInfo->Title : STR_NEWITEMNAME));
 
-		/* �`�F�b�N����URL */
+		/* チェックするURL */
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_URL), WM_SETTEXT, 0,
 			(LPARAM)((tpItemInfo->CheckURL != NULL) ? tpItemInfo->CheckURL : "https://"));
 
-		/* �J��URL */
+		/* 開くURL */
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_VIEWURL), WM_SETTEXT, 0,
 			(LPARAM)((tpItemInfo->ViewURL != NULL) ? tpItemInfo->ViewURL : ""));
 
-		/* �R�����g */
+		/* コメント */
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_COMMENT), EM_LIMITTEXT, MAXSIZE - 2, 0);
 		if(tpItemInfo->Comment != NULL){
 			buf = (char *)GlobalAlloc(GPTR, lstrlen(tpItemInfo->Comment) + 1);
@@ -285,22 +285,22 @@ static BOOL CALLBACK PropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 			}
 		}
 
-		/* �T�C�Y */
+		/* サイズ */
 		if(tpItemInfo->Size != NULL){
 			lstrcpyn(tmp, tpItemInfo->Size, BUFSIZE - 16);
-			lstrcat(tmp, " �o�C�g");
+			lstrcat(tmp, " バイト");
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_SIZE), WM_SETTEXT, 0, (LPARAM)tmp);
 		}
 
-		/* �X�V���� */
+		/* 更新日時 */
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_UPDATE), WM_SETTEXT, 0,
 			(LPARAM)((tpItemInfo->Date != NULL) ? tpItemInfo->Date : ""));
 
-		/* �`�F�b�N�������� */
+		/* チェックした日時 */
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_CHECKDATE), WM_SETTEXT, 0,
 			(LPARAM)((tpItemInfo->CheckDate != NULL) ? tpItemInfo->CheckDate : ""));
 
-		/* �G���[��� */
+		/* エラー情報 */
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_ERRORINFO), WM_SETTEXT, 0,
 			(LPARAM)((tpItemInfo->ErrStatus != NULL) ? tpItemInfo->ErrStatus : ""));
 		break;
@@ -309,7 +309,7 @@ static BOOL CALLBACK PropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 		if((UINT)wParam != IDC_BUTTON_CHANGE){
 			return FALSE;
 		}
-		//�{�^���̕`��
+		//ボタンの描画
 		DrawScrollControl((LPDRAWITEMSTRUCT)lParam, DFCS_SCROLLDOWN);
 		break;
 
@@ -322,7 +322,7 @@ static BOOL CALLBACK PropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 		case IDOK:
 			tpItemInfo = GetItemInfo(GetParent(hDlg));
 
-			/* �^�C�g����ݒ肷�� */
+			/* タイトルを設定する */
 			if(tpItemInfo->Title != NULL){
 				GlobalFree(tpItemInfo->Title);
 			}
@@ -332,7 +332,7 @@ static BOOL CALLBACK PropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 				SendMessage(GetDlgItem(hDlg, IDC_EDIT_TITLE), WM_GETTEXT, len, (LPARAM)tpItemInfo->Title);
 			}
 
-			/* URL��ݒ肷�� */
+			/* URLを設定する */
 			if(tpItemInfo->CheckURL != NULL){
 				len = SendMessage(GetDlgItem(hDlg, IDC_EDIT_URL), WM_GETTEXTLENGTH, 0, 0) + 1;
 				buf = GlobalAlloc(GPTR, len + 1);
@@ -374,7 +374,7 @@ static BOOL CALLBACK PropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 				SendMessage(GetDlgItem(hDlg,IDC_EDIT_URL), WM_GETTEXT, len, (LPARAM)tpItemInfo->CheckURL);
 			}
 
-			/* �J��URL��ݒ肷�� */
+			/* 開くURLを設定する */
 			if(tpItemInfo->ViewURL != NULL){
 				GlobalFree(tpItemInfo->ViewURL);
 			}
@@ -384,7 +384,7 @@ static BOOL CALLBACK PropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 				SendMessage(GetDlgItem(hDlg, IDC_EDIT_VIEWURL), WM_GETTEXT, len, (LPARAM)tpItemInfo->ViewURL);
 			}
 
-			/* �R�����g��ݒ肷�� */
+			/* コメントを設定する */
 			if(tpItemInfo->Comment != NULL){
 				GlobalFree(tpItemInfo->Comment);
 			}
@@ -399,8 +399,8 @@ static BOOL CALLBACK PropertyProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 			DialogBoxParam(ghinst, MAKEINTRESOURCE(IDD_DIALOG_URLLIST), hDlg, URLListroc, (LPARAM)hDlg);
 			break;
 
-		case IDC_BUTTON_CHANGE:		//URL�̓���ւ�
-			/* �`�F�b�N����URL�̎擾 */
+		case IDC_BUTTON_CHANGE:		//URLの入れ替え
+			/* チェックするURLの取得 */
 			len = SendMessage(GetDlgItem(hDlg, IDC_EDIT_URL), WM_GETTEXTLENGTH, 0, 0) + 1;
 			p = GlobalAlloc(GPTR, len + 1);
 			if(p != NULL){
@@ -437,7 +437,7 @@ static void ReqTypeEnable(HWND hDlg)
 
 	PropertyCheckProc
 
-	�A�C�e���̃`�F�b�N�ݒ�_�C�A���O
+	アイテムのチェック設定ダイアログ
 
 ******************************************************************************/
 
@@ -581,7 +581,7 @@ static BOOL CALLBACK PropertyCheckProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPAR
 
 	PropertyOptionProc
 
-	�A�C�e���̃I�v�V�����ݒ�_�C�A���O
+	アイテムのオプション設定ダイアログ
 
 ******************************************************************************/
 
@@ -606,7 +606,7 @@ static BOOL CALLBACK PropertyOptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 	case WM_INITDIALOG:
 		tpItemInfo = GetItemInfo(GetParent(hDlg));
 
-		/* �A�C�e���̏�񂪋�łȂ��ꍇ�̓A�C�e���̓��e��\������ */
+		/* アイテムの情報が空でない場合はアイテムの内容を表示する */
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_PROXY), EM_LIMITTEXT, BUFSIZE - 2, 0);
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_PROXY_PORT), EM_LIMITTEXT, BUFSIZE - 2, 0);
 		SendMessage(GetDlgItem(hDlg, IDC_EDIT_REFERER), EM_LIMITTEXT, BUFSIZE - 2, 0);
@@ -698,7 +698,7 @@ static BOOL CALLBACK PropertyOptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PROXY), WM_GETTEXT, BUFSIZE - 1, (LPARAM)proxy);
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PROXY_PORT), WM_GETTEXT, BUFSIZE - 1, (LPARAM)port);
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_USER), WM_GETTEXT, BUFSIZE - 1, (LPARAM)user);
-			//�]���̌`���ł�2�{�̒����ɂȂ邽�ߔ����܂łƂ���
+			//従来の形式では2倍の長さになるため半分までとする
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PASS), WM_GETTEXT, BUFSIZE / 2, (LPARAM)pass);
 			EncodePassword(pass, epass, PASS_BUFSIZE);
 			SecureZeroMemory(pass, sizeof(pass));
@@ -707,7 +707,7 @@ static BOOL CALLBACK PropertyOptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_USERAGENT), WM_GETTEXT, BUFSIZE - 1, (LPARAM)ua);
 			NormalizeUserAgent(ua);
 
-			//�A�[�J�C�u�̐ݒ�ȂǁA�ȍ~�̍��ڂ͂��̂܂܎c��
+			//アーカイブの設定など、以降の項目はそのまま残す
 			wsprintf(nb, "%d", IsDlgButtonChecked(hDlg, IDC_CHECK_NOPROXY));
 			wsprintf(sb, "%d", IsDlgButtonChecked(hDlg, IDC_CHECK_SETPROXY));
 			wsprintf(ub, "%d", IsDlgButtonChecked(hDlg, IDC_CHECK_USEPASS));
@@ -722,7 +722,7 @@ static BOOL CALLBACK PropertyOptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 			opt = ReplaceOptionFields(tpItemInfo->Option2, 0, 8, vals);
 			SecureZeroMemory(epass, sizeof(epass));
 			if(opt != NULL){
-				//User-Agent (�A�[�J�C�u�̐ݒ�̌�̍���)
+				//User-Agent (アーカイブの設定の後の項目)
 				vals[0] = ua;
 				opt2 = ReplaceOptionFields(opt, OP2_USERAGENT, 1, vals);
 				if(opt2 != NULL){
@@ -750,7 +750,7 @@ static BOOL CALLBACK PropertyOptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 
 	ArchiveEnable
 
-	�A�[�J�C�u�̐ݒ�̗L���A������؂�ւ���
+	アーカイブの設定の有効、無効を切り替える
 
 ******************************************************************************/
 
@@ -769,7 +769,7 @@ static void ArchiveEnable(HWND hDlg)
 
 	PropertyArchiveProc
 
-	�A�C�e���̃A�[�J�C�u�ݒ�_�C�A���O (Option2 �� OP2_NOARCHIVE �ȍ~�ɕۑ�)
+	アイテムのアーカイブ設定ダイアログ (Option2 の OP2_NOARCHIVE 以降に保存)
 
 ******************************************************************************/
 
@@ -799,7 +799,7 @@ static BOOL CALLBACK PropertyArchiveProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 		SetDlgItemInt(hDlg, IDC_EDIT_ARCHIVE_GEN, gen, FALSE);
 		ShowWindow(GetDlgItem(hDlg, IDC_STATIC_ARCHIVE_GLOBAL), (ArchiveGlobal == 0) ? SW_SHOW : SW_HIDE);
 		ShowWindow(GetDlgItem(hDlg, IDC_STATIC_ARCHIVE_AUTH), (Archive_IsAuthItem(tpItemInfo) == TRUE) ? SW_SHOW : SW_HIDE);
-		//�A�[�J�C�u�������ꍇ�͍폜�ł��Ȃ�
+		//アーカイブが無い場合は削除できない
 		EnableWindow(GetDlgItem(hDlg, IDC_BUTTON_ARCHIVE_DELETE), Archive_Exists(hDlg, tpItemInfo));
 		ArchiveEnable(hDlg);
 		break;
@@ -815,7 +815,7 @@ static BOOL CALLBACK PropertyArchiveProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 			break;
 
 		case IDC_BUTTON_ARCHIVE_DELETE:
-			//�A�[�J�C�u�̍폜 (�m�F�シ���ɍ폜����)
+			//アーカイブの削除 (確認後すぐに削除する)
 			tpItemInfo = GetItemInfo(GetParent(hDlg));
 			if(tpItemInfo == NULL ||
 				MessageBox(hDlg, STR_Q_MSG_ARCHIVE_DELETE, STR_ERR_TITLE_ARCHIVE, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2) != IDYES){
@@ -852,7 +852,7 @@ static BOOL CALLBACK PropertyArchiveProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 			for(i = 0; i < 5; i++){
 				vals[i] = val[i];
 			}
-			//�A�[�J�C�u����f�[�^�̐ݒ肪�ς������
+			//アーカイブするデータの設定が変わったか
 			changed = (IsDlgButtonChecked(hDlg, IDC_CHECK_ARCHIVE) == 1 && (
 				GetOptionInt(tpItemInfo->Option2, OP2_ARCHIVE_NOIMAGE) != ((val[1][0] == '1') ? 1 : 0) ||
 				GetOptionInt(tpItemInfo->Option2, OP2_ARCHIVE_NOCSS) != ((val[2][0] == '1') ? 1 : 0) ||
@@ -864,7 +864,7 @@ static BOOL CALLBACK PropertyArchiveProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 				}
 				tpItemInfo->Option2 = opt;
 			}
-			//�ύX�O�̐ݒ�̃A�[�J�C�u���폜���� (���̃`�F�b�N�ō쐬�����)
+			//変更前の設定のアーカイブを削除する (次のチェックで作成される)
 			if(changed == TRUE && Archive_Exists(hDlg, tpItemInfo) == TRUE &&
 				MessageBox(hDlg, STR_Q_MSG_ARCHIVE_CHANGED, STR_ERR_TITLE_ARCHIVE, MB_ICONQUESTION | MB_YESNO) == IDYES){
 				switch(Archive_Delete(hDlg, tpItemInfo))
@@ -895,7 +895,7 @@ static BOOL CALLBACK PropertyArchiveProc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 
 	ProtocolPropertyArchiveProc
 
-	�v���g�R���̃A�[�J�C�u�ݒ�_�C�A���O
+	プロトコルのアーカイブ設定ダイアログ
 
 ******************************************************************************/
 
@@ -945,13 +945,13 @@ static BOOL CALLBACK ProtocolPropertyArchiveProc(HWND hDlg, UINT uMsg, WPARAM wP
 
 	HTTP_Property
 
-	�A�C�e���̃v���p�e�B�\��
+	アイテムのプロパティ表示
 
 ******************************************************************************/
 
 __declspec(dllexport) int CALLBACK HTTP_Property(HWND hWnd, struct TPITEM *tpItemInfo)
 {
-#define sizeof_PROPSHEETHEADER		40	//�Â��R�����R���g���[���΍�
+#define sizeof_PROPSHEETHEADER		40	//古いコモンコントロール対策
 	PROPSHEETPAGE psp;
 	PROPSHEETHEADER psh;
 	HPROPSHEETPAGE hpsp[4];
@@ -1026,7 +1026,7 @@ __declspec(dllexport) int CALLBACK HTTP_Property(HWND hWnd, struct TPITEM *tpIte
 
 	ProtocolPropertyCheckProc
 
-	�v���g�R���̃v���p�e�B�ݒ�_�C�A���O
+	プロトコルのプロパティ設定ダイアログ
 
 ******************************************************************************/
 
@@ -1119,7 +1119,7 @@ static BOOL CALLBACK ProtocolPropertyCheckProc(HWND hDlg, UINT uMsg, WPARAM wPar
 
 			pUsePass = IsDlgButtonChecked(hDlg, IDC_CHECK_USEPASS);
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_USER), WM_GETTEXT, BUFSIZE - 1, (LPARAM)pUser);
-			//�Í��������2�{�̒����ɂȂ邽�ߔ����܂łƂ���
+			//暗号化すると2倍の長さになるため半分までとする
 			SendMessage(GetDlgItem(hDlg, IDC_EDIT_PASS), WM_GETTEXT, BUFSIZE / 2, (LPARAM)pPass);
 
 			wsprintf(buf, "%ld", TimeOut);
@@ -1156,13 +1156,13 @@ static BOOL CALLBACK ProtocolPropertyCheckProc(HWND hDlg, UINT uMsg, WPARAM wPar
 
 	ViewProtocolProperties
 
-	�v���g�R���̃v���p�e�B�\��
+	プロトコルのプロパティ表示
 
 ******************************************************************************/
 
 __declspec(dllexport) int CALLBACK HTTP_ProtocolProperty(HWND hWnd)
 {
-#define sizeof_PROPSHEETHEADER		40	//�Â��R�����R���g���[���΍�
+#define sizeof_PROPSHEETHEADER		40	//古いコモンコントロール対策
 	PROPSHEETPAGE psp;
 	PROPSHEETHEADER psh;
 	HPROPSHEETPAGE hpsp[2];

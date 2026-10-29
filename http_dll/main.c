@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC (wwwc.dll)
 
@@ -74,7 +74,7 @@ extern FILTER *FilterInfo;
 
 	DllInitialize
 
-	‰Šú‰»
+	åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -97,7 +97,7 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 	}
 	*r = '\0';
 	if(lstrlen(CuDir) + lstrlen("\\wwwc.ini") >= BUFSIZE){
-		//ƒpƒX‚ª’·‚·‚¬‚éê‡‚Íİ’èƒtƒ@ƒCƒ‹‚ğg—p‚µ‚È‚¢
+		//ãƒ‘ã‚¹ãŒé•·ã™ãã‚‹å ´åˆã¯è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½¿ç”¨ã—ãªã„
 		*app_path = '\0';
 	}else{
 		wsprintf(app_path, "%s\\wwwc.ini", CuDir);
@@ -107,9 +107,9 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 	GetPrivateProfileString("FORMAT", "TimeFormat", "HH:mm", TimeFormat, BUFSIZE - 1, app_path);
 	TimeZone = GetPrivateProfileInt("HTTP", "TimeZone", 9, app_path);
 	HostNoCache = GetPrivateProfileInt("HTTP", "HostNoCache", 0, app_path);
-	//ƒpƒXƒ[ƒh‚ğ Windows ‚Ìƒ†[ƒU‚É•R•t‚¯‚ÄˆÃ†‰»‚µ‚Ä•Û‘¶‚·‚é (0 ‚Å]—ˆ‚ÌŒ`®)
+	//ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ Windows ã®ãƒ¦ãƒ¼ã‚¶ã«ç´ä»˜ã‘ã¦æš—å·åŒ–ã—ã¦ä¿å­˜ã™ã‚‹ (0 ã§å¾“æ¥ã®å½¢å¼)
 	PassProtect = GetPrivateProfileInt("HTTP", "PassProtect", 1, app_path);
-	//ƒy[ƒW‚ÌƒA[ƒJƒCƒu (0 ‚Å‚·‚×‚Ä‚ÌƒAƒCƒeƒ€‚ÅƒA[ƒJƒCƒu‚µ‚È‚¢)
+	//ãƒšãƒ¼ã‚¸ã®ã‚¢ãƒ¼ã‚«ã‚¤ãƒ– (0 ã§ã™ã¹ã¦ã®ã‚¢ã‚¤ãƒ†ãƒ ã§ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã—ãªã„)
 	ArchiveGlobal = GetPrivateProfileInt("ARCHIVE", "Enable", 1, app_path);
 
 	WritePrivateProfileString("FORMAT", "DateFormat", DateFormat, app_path);
@@ -150,7 +150,7 @@ __declspec(dllexport) int CALLBACK DllInitialize(void)
 
 	DllMain
 
-	ƒƒCƒ“
+	ãƒ¡ã‚¤ãƒ³
 
 ******************************************************************************/
 
@@ -190,7 +190,7 @@ int WINAPI DllMain(HINSTANCE hInst, DWORD fdwReason, PVOID pvReserved)
 
 	GetProtocolList
 
-	ƒvƒƒgƒRƒ‹İ’è
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«è¨­å®š
 
 ******************************************************************************/
 
@@ -230,7 +230,7 @@ __declspec(dllexport) int CALLBACK GetProtocolList(int cnt, struct TPPROTOCOLSET
 
 	GetToolList
 
-	ƒc[ƒ‹İ’è
+	ãƒ„ãƒ¼ãƒ«è¨­å®š
 
 ******************************************************************************/
 
@@ -278,7 +278,7 @@ __declspec(dllexport) int CALLBACK GetToolList(int cnt, struct TP_TOOLS *tpToolI
 
 	GetToolHideOption
 
-	ƒc[ƒ‹İ’è‚Å”ñ•\¦‚É‚·‚éƒIƒvƒVƒ‡ƒ“‚Ìæ“¾ (–ß‚è’l TOOL_HIDE_ ‚Ì‘g‚İ‡‚í‚¹)
+	ãƒ„ãƒ¼ãƒ«è¨­å®šã§éè¡¨ç¤ºã«ã™ã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å–å¾— (æˆ»ã‚Šå€¤ TOOL_HIDE_ ã®çµ„ã¿åˆã‚ã›)
 
 ******************************************************************************/
 
@@ -292,7 +292,7 @@ __declspec(dllexport) int CALLBACK GetToolHideOption(char *FuncName)
 
 	ErrMsg
 
-	ƒGƒ‰[ƒƒbƒZ[ƒW‚Ì•\¦
+	ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è¡¨ç¤º
 
 ******************************************************************************/
 
@@ -303,7 +303,7 @@ void ErrMsg(HWND hWnd, int ErrCode, char *Title)
 
 	p = (Title == NULL) ? "Error" : Title;
 
-	//ƒGƒ‰[ƒR[ƒh‚©‚ç•¶š—ñ‚ğæ“¾
+	//ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‹ã‚‰æ–‡å­—åˆ—ã‚’å–å¾—
 	if(FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 		NULL, ErrCode, 0, (LPTSTR)&ErrStr, BUFSIZE - 1, NULL) == 0 || ErrStr == NULL){
 		wsprintf(buf, "Error (%d)", ErrCode);
@@ -311,7 +311,7 @@ void ErrMsg(HWND hWnd, int ErrCode, char *Title)
 		return;
 	}
 
-	//ƒGƒ‰[ƒƒbƒZ[ƒW‚ğ•\¦
+	//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
 	MessageBox(hWnd, ErrStr, p, MB_ICONEXCLAMATION);
 	LocalFree(ErrStr);
 }
@@ -321,7 +321,7 @@ void ErrMsg(HWND hWnd, int ErrCode, char *Title)
 
 	ExecItem
 
-	ƒtƒ@ƒCƒ‹,URL ‚ÌÀs
+	ãƒ•ã‚¡ã‚¤ãƒ«,URL ã®å®Ÿè¡Œ
 
 ******************************************************************************/
 
@@ -330,7 +330,7 @@ int ExecItem(HWND hWnd, char *buf, char *cmdline)
 	int ret;
 
 	ret = (int)ShellExecute((HWND)NULL, (LPCTSTR)NULL, (LPCTSTR)buf, cmdline, NULL, SW_SHOWNORMAL);
-	if(ret <= 32){			//ƒGƒ‰[‚Ìê‡‚ÍAƒGƒ‰[‚Ì•¶š—ñ‚ğæ“¾‚µ‚ÄƒƒbƒZ[ƒWƒ{ƒbƒNƒX‚ğ•\¦‚·‚é
+	if(ret <= 32){			//ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯ã€ã‚¨ãƒ©ãƒ¼ã®æ–‡å­—åˆ—ã‚’å–å¾—ã—ã¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹
 		ret = GetLastError();
 		ErrMsg(hWnd, ret, STR_ERR_TITLE_OPEN);
 		return -1;
@@ -343,7 +343,7 @@ int ExecItem(HWND hWnd, char *buf, char *cmdline)
 
 	ConfirmOpenURL
 
-	http, https ˆÈŠO‚ÌURL‚ğŠJ‚­ê‡‚ÍŠm”F‚ğs‚¤
+	http, https ä»¥å¤–ã®URLã‚’é–‹ãå ´åˆã¯ç¢ºèªã‚’è¡Œã†
 
 ******************************************************************************/
 
@@ -359,7 +359,7 @@ BOOL ConfirmOpenURL(HWND hWnd, char *URL)
 	if(IsWebURL(URL) == TRUE){
 		return TRUE;
 	}
-	//ˆø—p•„‚ğŠÜ‚ŞURL‚Íˆø”‚ğ•ªŠ„‚³‚ê‚é‚½‚ßŠJ‚©‚È‚¢
+	//å¼•ç”¨ç¬¦ã‚’å«ã‚€URLã¯å¼•æ•°ã‚’åˆ†å‰²ã•ã‚Œã‚‹ãŸã‚é–‹ã‹ãªã„
 	for(p = URL; *p != '\0'; p++){
 		if(*p == '\"'){
 			MessageBox(hWnd, STR_ERR_MSG_URLQUOTE, STR_ERR_TITLE_URLOPEN, MB_ICONEXCLAMATION);
@@ -381,7 +381,7 @@ BOOL ConfirmOpenURL(HWND hWnd, char *URL)
 
 	FileSelect
 
-	ƒtƒ@ƒCƒ‹‚Ì‘I‘ğ
+	ãƒ•ã‚¡ã‚¤ãƒ«ã®é¸æŠ
 
 ******************************************************************************/
 

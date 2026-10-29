@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -40,9 +40,9 @@ HTREEITEM HistoryItem[HISTORYCNT + 1];
 int HistoryIndex;
 BOOL HistoryFlag;
 
-//ŠO•”QÆ
-extern HINSTANCE g_hinst;			//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
-extern HWND WWWCWnd;				//–{‘Ì
+//å¤–éƒ¨å‚ç…§
+extern HINSTANCE g_hinst;			//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
+extern HWND WWWCWnd;				//æœ¬ä½“
 extern HTREEITEM DgdpItem;
 extern char CuDir[];
 extern int gCheckFlag;
@@ -98,7 +98,7 @@ static void TreeView_SetHistory(HTREEITEM NewItem);
 
 	CallTreeItem
 
-	‚·‚×‚Ä‚ÌƒcƒŠƒrƒ…[‚ÌƒAƒCƒeƒ€‚Éw’èŠÖ”‚ğÀs
+	ã™ã¹ã¦ã®ãƒ„ãƒªãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã«æŒ‡å®šé–¢æ•°ã‚’å®Ÿè¡Œ
 
 ******************************************************************************/
 
@@ -106,12 +106,12 @@ void CallTreeItem(HWND hWnd, HTREEITEM hItem, FARPROC Func, long Param)
 {
 	HTREEITEM cItem;
 
-	//ŠÖ”‚ÌŒÄ‚Ño‚µ
+	//é–¢æ•°ã®å‘¼ã³å‡ºã—
 	Func(hWnd, hItem, Param);
 
 	cItem = TreeView_GetChild(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	while(cItem != NULL){
-		//Ä‹A
+		//å†å¸°
 		CallTreeItem(hWnd, cItem, Func, Param);
 		cItem = TreeView_GetNextSibling(GetDlgItem(hWnd, WWWC_TREE), cItem);
 	}
@@ -122,7 +122,7 @@ void CallTreeItem(HWND hWnd, HTREEITEM hItem, FARPROC Func, long Param)
 
 	CreateTreeView
 
-	ƒcƒŠ[ƒrƒ…[‚Ìì¬
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 
 ******************************************************************************/
 
@@ -138,7 +138,7 @@ HWND CreateTreeView(HWND hWnd)
 
 	TreeView_Initialize
 
-	ƒcƒŠ[ƒrƒ…[‚Ì‰Šú‰»
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -221,19 +221,19 @@ void TreeView_Initialize(HWND hWnd)
 
 	TreeView_SetImageList(GetDlgItem(hWnd, WWWC_TREE), IconList, TVSIL_NORMAL);
 
-	//ƒ‹[ƒgƒAƒCƒeƒ€
+	//ãƒ«ãƒ¼ãƒˆã‚¢ã‚¤ãƒ†ãƒ 
 	RootItem = TreeView_AllocItem(GetDlgItem(hWnd, WWWC_TREE), (HTREEITEM)TVI_ROOT,
 		(HTREEITEM)TVI_LAST, RootTitle, ICON_INET, ICON_INET);
 	GetDirInfo(GetDlgItem(hWnd, WWWC_TREE), CuDir, RootItem);
 
-	//‚²‚İ” 
+	//ã”ã¿ç®±
 	RecyclerItem = TreeView_AllocItem(GetDlgItem(hWnd, WWWC_TREE), (HTREEITEM)RootItem,
 		(HTREEITEM)TVI_LAST, RecyclerTitle, ICON_DIR_RECYCLER, ICON_DIR_RECYCLER);
 
-	//ÀƒfƒBƒŒƒNƒgƒŠ\‘¢‚©‚çƒtƒHƒ‹ƒ_‚Ìì¬
+	//å®Ÿãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªæ§‹é€ ã‹ã‚‰ãƒ•ã‚©ãƒ«ãƒ€ã®ä½œæˆ
 	SetDirTree(GetDlgItem(hWnd, WWWC_TREE), CuDir, RootItem);
 
-	//‚²‚İ” ‚Ìó‘Ô‚ğXV
+	//ã”ã¿ç®±ã®çŠ¶æ…‹ã‚’æ›´æ–°
 	TreeView_SetIconState(hWnd, RecyclerItem, 0);
 }
 
@@ -242,7 +242,7 @@ void TreeView_Initialize(HWND hWnd)
 
 	TreeView_SetNewItem
 
-	ƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚Ì’Ç‰Á
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®è¿½åŠ 
 
 ******************************************************************************/
 
@@ -274,7 +274,7 @@ static HTREEITEM TreeView_SetNewItem(HWND hTreeView, char *buf, HTREEITEM SetIte
 
 	TreeView_AllocItem
 
-	ƒcƒŠ[î•ñ‚ÌŠm•Û
+	ãƒ„ãƒªãƒ¼æƒ…å ±ã®ç¢ºä¿
 
 ******************************************************************************/
 
@@ -299,7 +299,7 @@ HTREEITEM TreeView_AllocItem(HWND hTreeView, HTREEITEM pItem, HTREEITEM After, c
 
 	NewItem = TreeView_SetNewItem(hTreeView, Title, pItem, Icon, IconSel, (HTREEITEM)After);
 
-	//ƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚ÌlParam‚ÉƒcƒŠ[î•ñ‚ÌƒAƒhƒŒƒX‚ğ‚¢‚ê‚é
+	//ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®lParamã«ãƒ„ãƒªãƒ¼æƒ…å ±ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ã„ã‚Œã‚‹
 	TreeView_SetlParam(hTreeView, NewItem, (long)tpTreeInfo);
 
 	return NewItem;
@@ -310,7 +310,7 @@ HTREEITEM TreeView_AllocItem(HWND hTreeView, HTREEITEM pItem, HTREEITEM After, c
 
 	TreeView_NewFolderItem
 
-	ƒcƒŠ[ƒrƒ…[‚ÉV‚µ‚¢ƒtƒHƒ‹ƒ_‚ğ’Ç‰Á‚·‚é
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã«æ–°ã—ã„ãƒ•ã‚©ãƒ«ãƒ€ã‚’è¿½åŠ ã™ã‚‹
 
 ******************************************************************************/
 
@@ -322,7 +322,7 @@ BOOL TreeView_NewFolderItem(HWND hWnd)
 	char path[BUFSIZE];
 	int i;
 
-	//V‚µ‚¢ƒtƒHƒ‹ƒ_‚Ì–¼‘O‚ğì¬‚µ‚ÄÀÛ‚ÉƒtƒHƒ‹ƒ_‚ğì¬‚·‚é
+	//æ–°ã—ã„ãƒ•ã‚©ãƒ«ãƒ€ã®åå‰ã‚’ä½œæˆã—ã¦å®Ÿéš›ã«ãƒ•ã‚©ãƒ«ãƒ€ã‚’ä½œæˆã™ã‚‹
 	lstrcpy(name, NEWFOLDER" (99999)");
 	if(TreeView_CheckPathLength(GetDlgItem(hWnd, WWWC_TREE),
 		TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)), name) == FALSE){
@@ -334,7 +334,7 @@ BOOL TreeView_NewFolderItem(HWND hWnd)
 	lstrcpy(name, NEWFOLDER);
 	wsprintf(path, "%s\\%s", buf, name);
 
-	//Šù‚ÉƒtƒHƒ‹ƒ_‚ª‘¶İ‚µ‚Ä‚¢‚éê‡‚Í”Ô†‚ğ•t‚¯‚é
+	//æ—¢ã«ãƒ•ã‚©ãƒ«ãƒ€ãŒå­˜åœ¨ã—ã¦ã„ã‚‹å ´åˆã¯ç•ªå·ã‚’ä»˜ã‘ã‚‹
 	i = 1;
 	while(CreateDirectory(path, NULL) == FALSE){
 		i++;
@@ -346,13 +346,13 @@ BOOL TreeView_NewFolderItem(HWND hWnd)
 		wsprintf(path, "%s\\%s", buf, name);
 	}
 
-	//ƒcƒŠ[‚ÉƒtƒHƒ‹ƒ_‚ğ’Ç‰Á‚·‚é
+	//ãƒ„ãƒªãƒ¼ã«ãƒ•ã‚©ãƒ«ãƒ€ã‚’è¿½åŠ ã™ã‚‹
 	hItem = TreeView_AllocItem(GetDlgItem(hWnd, WWWC_TREE),
 		TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE)),
 		(HTREEITEM)TVI_SORT, name, ICON_DIR_CLOSE, ICON_DIR_OPEN);
 
 	if(SucceedFromParent == 1){
-		//eî•ñ‚ÌŒp³
+		//è¦ªæƒ…å ±ã®ç¶™æ‰¿
 		CopyAutoTime(hWnd, hItem, (long)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE),
 			TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))));
 	}
@@ -365,17 +365,17 @@ BOOL TreeView_NewFolderItem(HWND hWnd)
 	UpdateWindow(GetDlgItem(hWnd, WWWC_TREE));
 
 	if(GetFocus() == GetDlgItem(hWnd, WWWC_TREE)){
-		//ƒcƒŠ[‚ÉƒtƒH[ƒJƒX‚ª‚ ‚éê‡‚ÍA’Ç‰Á‚µ‚½ƒAƒCƒeƒ€‚ğ‘I‘ğ‚µ‚Äƒ‰ƒxƒ‹‚ğ•ÒWƒ‚[ƒh‚É‚·‚é
+		//ãƒ„ãƒªãƒ¼ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒã‚ã‚‹å ´åˆã¯ã€è¿½åŠ ã—ãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠã—ã¦ãƒ©ãƒ™ãƒ«ã‚’ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã«ã™ã‚‹
 		TreeView_SelectItem(GetDlgItem(hWnd, WWWC_TREE), hItem);
 		TreeView_EditLabel(GetDlgItem(hWnd, WWWC_TREE), hItem);
 		return TRUE;
 	}
 	if(GetFocus() == GetDlgItem(hWnd, WWWC_LIST)){
-		//ƒŠƒXƒgƒrƒ…[‚ÉƒtƒH[ƒJƒX‚ª‚ ‚éê‡‚ÍAƒŠƒXƒg‚ÉƒtƒHƒ‹ƒ_‚ğ’Ç‰Á‚µ‚Ä•ÒWƒ‚[ƒh‚É‚·‚é
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒã‚ã‚‹å ´åˆã¯ã€ãƒªã‚¹ãƒˆã«ãƒ•ã‚©ãƒ«ãƒ€ã‚’è¿½åŠ ã—ã¦ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã«ã™ã‚‹
 		ListView_RefreshFolder(hWnd);
 
 		if((i = TreeView_GetListIndex(GetDlgItem(hWnd, WWWC_TREE), hItem)) != -1){
-			//ƒŠƒXƒgƒrƒ…[ƒAƒCƒeƒ€‚ğ•ÒWƒ‚[ƒh‚É‚·‚é
+			//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã«ã™ã‚‹
 			ListView_EditLabel(GetDlgItem(hWnd, WWWC_LIST), i);
 		}
 	}
@@ -387,7 +387,7 @@ BOOL TreeView_NewFolderItem(HWND hWnd)
 
 	TreeView_FreeItem
 
-	ƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚ÉŠÖ˜A•t‚¯‚ç‚ê‚½ƒAƒCƒeƒ€î•ñ‚Ì‰ğ•ú
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã«é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®è§£æ”¾
 
 ******************************************************************************/
 
@@ -398,17 +398,17 @@ void CALLBACK TreeView_FreeItem(HWND hWnd, HTREEITEM hItem, long Param)
 
 	if(Param == 1){
 		WaitCursor(TRUE);
-		//ƒAƒCƒeƒ€î•ñ‚Ì•Û‘¶
+		//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®ä¿å­˜
 		SaveTreeMem(hWnd, GetDlgItem(hWnd, WWWC_TREE), hItem);
 		WaitCursor(FALSE);
 	}
 
-	//Œ»İŠJ‚¢‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ìê‡‚ÍŠÖ”‚ğ”²‚¯‚é
+	//ç¾åœ¨é–‹ã„ã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®å ´åˆã¯é–¢æ•°ã‚’æŠœã‘ã‚‹
 	if(Param != 2 && hItem == TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
 		return;
 	}
 
-	//ƒcƒŠ[î•ñ‚Ìæ“¾
+	//ãƒ„ãƒªãƒ¼æƒ…å ±ã®å–å¾—
 	tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	if(tpTreeInfo == NULL){
 		return;
@@ -417,13 +417,13 @@ void CALLBACK TreeView_FreeItem(HWND hWnd, HTREEITEM hItem, long Param)
 		return;
 	}
 
-	//ƒtƒHƒ‹ƒ_‚ÌƒvƒƒpƒeƒB‚ğŠJ‚¢‚Ä‚¢‚é‚È‚Ç‚Ìó‹µ
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’é–‹ã„ã¦ã„ã‚‹ãªã©ã®çŠ¶æ³
 	if(tpTreeInfo->MemFlag > 0){
 		return;
 	}
 	tpTreeInfo->MemFlag = 0;
 
-	//ƒ`ƒFƒbƒN’†‚Ìê‡‚ÍŠÖ”‚ğ”²‚¯‚é
+	//ãƒã‚§ãƒƒã‚¯ä¸­ã®å ´åˆã¯é–¢æ•°ã‚’æŠœã‘ã‚‹
 	for(i = 0;i < tpTreeInfo->ItemListCnt;i++){
 		if((*(tpTreeInfo->ItemList + i)) == NULL){
 			continue;
@@ -434,7 +434,7 @@ void CALLBACK TreeView_FreeItem(HWND hWnd, HTREEITEM hItem, long Param)
 		}
 	}
 
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚Ì‰ğ•ú
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®è§£æ”¾
 	FreeItemList(tpTreeInfo->ItemList, tpTreeInfo->ItemListCnt, TRUE);
 	GlobalFree(tpTreeInfo->ItemList);
 	tpTreeInfo->ItemList = NULL;
@@ -446,7 +446,7 @@ void CALLBACK TreeView_FreeItem(HWND hWnd, HTREEITEM hItem, long Param)
 
 	TreeView_FreeTreeItem
 
-	ƒcƒŠ[î•ñ‚Ì‰ğ•ú
+	ãƒ„ãƒªãƒ¼æƒ…å ±ã®è§£æ”¾
 
 ******************************************************************************/
 
@@ -454,19 +454,19 @@ void CALLBACK TreeView_FreeTreeItem(HWND hWnd, HTREEITEM hItem, long Param)
 {
 	struct TPTREE *tpTreeInfo;
 
-	//ƒcƒŠ[î•ñ‚Ìæ“¾
+	//ãƒ„ãƒªãƒ¼æƒ…å ±ã®å–å¾—
 	tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	if(tpTreeInfo == NULL){
 		return;
 	}
 	tpTreeInfo->MemFlag = 0;
 
-	//ƒcƒŠ[î•ñ‚Ìæ“¾
+	//ãƒ„ãƒªãƒ¼æƒ…å ±ã®å–å¾—
 	if(Param == 0){
 		SaveTreeMem(hWnd, GetDlgItem(hWnd, WWWC_TREE), hItem);
 	}
 
-	//ƒAƒCƒeƒ€ƒŠƒXƒg‚Ì‰ğ•ú
+	//ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã®è§£æ”¾
 	if(tpTreeInfo->ItemList != NULL){
 		FreeItemList(tpTreeInfo->ItemList, tpTreeInfo->ItemListCnt, TRUE);
 		GlobalFree(tpTreeInfo->ItemList);
@@ -474,20 +474,20 @@ void CALLBACK TreeView_FreeTreeItem(HWND hWnd, HTREEITEM hItem, long Param)
 		tpTreeInfo->ItemListCnt = 0;
 	}
 
-	//©“®ƒ`ƒFƒbƒNî•ñ‚Ì‰ğ•ú
+	//è‡ªå‹•ãƒã‚§ãƒƒã‚¯æƒ…å ±ã®è§£æ”¾
 	if(tpTreeInfo->tpCheckTime != NULL){
 		GlobalFree(tpTreeInfo->tpCheckTime);
 		tpTreeInfo->tpCheckTime = NULL;
 		tpTreeInfo->tpCheckTimeCnt = 0;
 	}
 
-	//ƒtƒHƒ‹ƒ_‚ÌƒRƒƒ“ƒg‚Ì‰ğ•ú
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®ã‚³ãƒ¡ãƒ³ãƒˆã®è§£æ”¾
 	if(tpTreeInfo->Comment != NULL){
 		GlobalFree(tpTreeInfo->Comment);
 		tpTreeInfo->Comment = NULL;
 	}
 
-	//ƒcƒŠ[î•ñ‚Ì‰ğ•ú
+	//ãƒ„ãƒªãƒ¼æƒ…å ±ã®è§£æ”¾
 	GlobalFree(tpTreeInfo);
 	TreeView_SetlParam(GetDlgItem(hWnd, WWWC_TREE), hItem, (long)NULL);
 }
@@ -497,7 +497,7 @@ void CALLBACK TreeView_FreeTreeItem(HWND hWnd, HTREEITEM hItem, long Param)
 
 	TreeView_DeleteTreeInfo
 
-	ƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚Ìíœ
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®å‰Šé™¤
 
 ******************************************************************************/
 
@@ -506,12 +506,12 @@ void TreeView_DeleteTreeInfo(HWND hWnd, HTREEITEM hItem)
 	HTREEITEM pItem;
 	char buf[BUFSIZE];
 
-	//ÀƒfƒBƒŒƒNƒgƒŠ‚Ìíœ
+	//å®Ÿãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å‰Šé™¤
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE), hItem, buf, CuDir);
 	DeleteDirTree(buf, FALSE);
 	RemoveDirectory(buf);
 
-	//ƒtƒHƒ‹ƒ_‚Ìíœ
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®å‰Šé™¤
 	CallTreeItem(hWnd, hItem, (FARPROC)TreeView_FreeTreeItem, 1);
 	pItem = TreeView_GetParent(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	TreeView_DeleteItem(GetDlgItem(hWnd, WWWC_TREE), hItem);
@@ -523,7 +523,7 @@ void TreeView_DeleteTreeInfo(HWND hWnd, HTREEITEM hItem)
 
 	TreeView_AllExpand
 
-	ƒAƒCƒeƒ€‚ğ“WŠJ‚·‚é
+	ã‚¢ã‚¤ãƒ†ãƒ ã‚’å±•é–‹ã™ã‚‹
 
 ******************************************************************************/
 
@@ -534,7 +534,7 @@ void CALLBACK TreeView_AllExpand(HWND hWnd, HTREEITEM hItem, long Param)
 	if(Param == 1){
 		TreeView_Expand(GetDlgItem(hWnd, WWWC_TREE), hItem, TVE_EXPAND);
 	}else{
-		//ƒcƒŠ[î•ñ‚Ìæ“¾
+		//ãƒ„ãƒªãƒ¼æƒ…å ±ã®å–å¾—
 		tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), hItem);
 		if(tpTreeInfo == NULL){
 			return;
@@ -550,7 +550,7 @@ void CALLBACK TreeView_AllExpand(HWND hWnd, HTREEITEM hItem, long Param)
 
 	TreeView_FindItemPath
 
-	ƒpƒX‚©‚çƒAƒCƒeƒ€‚ğŒŸõ
+	ãƒ‘ã‚¹ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¤œç´¢
 
 ******************************************************************************/
 
@@ -566,7 +566,7 @@ HTREEITEM TreeView_FindItemPath(HWND hTreeView, HTREEITEM hItem, char *path)
 
 	p = path;
 
-	//ƒ‹[ƒg‚Ìê‡
+	//ãƒ«ãƒ¼ãƒˆã®å ´åˆ
 	if((*p == '\\' && *(p + 1) == '\\') || (*p == '/' && *(p + 1) == '/')){
 		for(p = path + 2; *p != '\0'; p++){
 			if(!IS_LEAD_BYTE(p)){
@@ -586,7 +586,7 @@ HTREEITEM TreeView_FindItemPath(HWND hTreeView, HTREEITEM hItem, char *path)
 		return hItem;
 	}
 
-	//ƒpƒX‚ğ“WŠJ (ƒoƒbƒtƒ@‚ğ’´‚¦‚é–¼‘O‚ÍØ‚è‹l‚ß‚é)
+	//ãƒ‘ã‚¹ã‚’å±•é–‹ (ãƒãƒƒãƒ•ã‚¡ã‚’è¶…ãˆã‚‹åå‰ã¯åˆ‡ã‚Šè©°ã‚ã‚‹)
 	for(r = buf; *p != '\0' && r < buf + BUFSIZE - 2; p++, r++){
 		if(!IS_LEAD_BYTE(p)){
 			if(*p == '\\' || *p == '/'){
@@ -600,14 +600,14 @@ HTREEITEM TreeView_FindItemPath(HWND hTreeView, HTREEITEM hItem, char *path)
 	}
 	*r = '\0';
 
-	//–¼‘O‚©‚çƒAƒCƒeƒ€‚ğæ“¾
+	//åå‰ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ ã‚’å–å¾—
 	cItem = TreeView_CheckName(hTreeView, hItem, buf);
 	if(cItem == NULL){
 		return NULL;
 	}
 
 	if(*p != '\0'){
-		//Ä‹A
+		//å†å¸°
 		return TreeView_FindItemPath(hTreeView, cItem, p);
 	}
 	return cItem;
@@ -618,7 +618,7 @@ HTREEITEM TreeView_FindItemPath(HWND hTreeView, HTREEITEM hItem, char *path)
 
 	FindTreeItem
 
-	ƒAƒCƒeƒ€‚©‘¶İ‚·‚é‚©’²‚×‚é
+	ã‚¢ã‚¤ãƒ†ãƒ ã‹å­˜åœ¨ã™ã‚‹ã‹èª¿ã¹ã‚‹
 
 ******************************************************************************/
 
@@ -649,7 +649,7 @@ BOOL IsTreeItem(HWND hWnd, HTREEITEM hItem)
 
 	TreeView_CheckName
 
-	w’è‚Ì–¼‘O‚ÌƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
+	æŒ‡å®šã®åå‰ã®ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -674,7 +674,7 @@ HTREEITEM TreeView_CheckName(HWND hTreeView, HTREEITEM hItem, char *str)
 
 	TreeView_GetChildCount
 
-	ƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚Ìq‹Ÿ”‚ğæ“¾
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®å­ä¾›æ•°ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -683,7 +683,7 @@ int TreeView_GetChildCount(HWND hTreeView, HTREEITEM hItem)
 	HTREEITEM cItem;
 	int ret = 0;
 
-	//ƒcƒŠ[ƒrƒ…[‚É•\¦‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚Ì”
+	//ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®æ•°
 	cItem = TreeView_GetChild(hTreeView, hItem);
 	while(cItem != NULL){
 		ret++;
@@ -697,7 +697,7 @@ int TreeView_GetChildCount(HWND hTreeView, HTREEITEM hItem)
 
 	TreeView_IsRecyclerItem
 
-	ƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚ª‚²‚İ” ‚©‚²‚İ” ‚Ì’†‚ÌƒAƒCƒeƒ€‚È‚Ì‚©ƒ`ƒFƒbƒN‚·‚é
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ãŒã”ã¿ç®±ã‹ã”ã¿ç®±ã®ä¸­ã®ã‚¢ã‚¤ãƒ†ãƒ ãªã®ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 
 ******************************************************************************/
 
@@ -708,7 +708,7 @@ BOOL TreeView_IsRecyclerItem(HWND hTreeView, HTREEITEM hItem)
 	cItem = hItem;
 	while(cItem != RootItem){
 		if(cItem == RecyclerItem){
-			//‚²‚İ” ‚Ìê‡
+			//ã”ã¿ç®±ã®å ´åˆ
 			return TRUE;
 		}
 		cItem = TreeView_GetParent(hTreeView, cItem);
@@ -721,7 +721,7 @@ BOOL TreeView_IsRecyclerItem(HWND hTreeView, HTREEITEM hItem)
 
 	TreeView_GetPath
 
-	ƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚ÌƒpƒX‚ğæ“¾‚·‚é
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‘ã‚¹ã‚’å–å¾—ã™ã‚‹
 
 ******************************************************************************/
 
@@ -733,7 +733,7 @@ void TreeView_GetPath(HWND hTreeView, HTREEITEM hItem, char *ret, char *RootStri
 	char work[BUFSIZE * 2];
 	BOOL OverFlag = FALSE;
 
-	//ƒ‹[ƒgƒAƒCƒeƒ€‚Ìê‡‚Í‚»‚Ì‚Ü‚ÜƒpƒX‚ğ•Ô‚·
+	//ãƒ«ãƒ¼ãƒˆã‚¢ã‚¤ãƒ†ãƒ ã®å ´åˆã¯ãã®ã¾ã¾ãƒ‘ã‚¹ã‚’è¿”ã™
 	if(hItem == RootItem){
 		lstrcpyn(ret, RootString, BUFSIZE);
 		return;
@@ -757,14 +757,14 @@ void TreeView_GetPath(HWND hTreeView, HTREEITEM hItem, char *ret, char *RootStri
 	}
 	if(OverFlag == TRUE || lstrlen(RootString) + 1 + lstrlen(buf) > BUFSIZE - 1){
 		if(RootString == CuDir){
-			//ÀƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğØ‚è‹l‚ß‚é‚Æ•Ê‚ÌƒtƒHƒ‹ƒ_‚ğ‘€ì‚µ‚Ä‚µ‚Ü‚¤‚½‚ßI—¹‚·‚é
+			//å®Ÿãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’åˆ‡ã‚Šè©°ã‚ã‚‹ã¨åˆ¥ã®ãƒ•ã‚©ãƒ«ãƒ€ã‚’æ“ä½œã—ã¦ã—ã¾ã†ãŸã‚çµ‚äº†ã™ã‚‹
 			abort();
 		}
-		//•\¦—p‚ÌƒpƒX‚ÍØ‚è‹l‚ß‚é
+		//è¡¨ç¤ºç”¨ã®ãƒ‘ã‚¹ã¯åˆ‡ã‚Šè©°ã‚ã‚‹
 		lstrcpyn(ret, RootString, BUFSIZE);
 		return;
 	}
-	//w’è‚Ì•¶š—ñ‚ÆŒ‹‡
+	//æŒ‡å®šã®æ–‡å­—åˆ—ã¨çµåˆ
 	wsprintf(ret, "%s\\%s", RootString, buf);
 }
 
@@ -773,7 +773,7 @@ void TreeView_GetPath(HWND hTreeView, HTREEITEM hItem, char *ret, char *RootStri
 
 	TreeView_GetChildPathLength
 
-	qƒtƒHƒ‹ƒ_‚ğŠÜ‚ß‚½ƒpƒX‚ÌÅ‘å‚Ì’·‚³ (w’èƒAƒCƒeƒ€‚©‚ç‚Ì‘Š‘Î) ‚ğæ“¾‚·‚é
+	å­ãƒ•ã‚©ãƒ«ãƒ€ã‚’å«ã‚ãŸãƒ‘ã‚¹ã®æœ€å¤§ã®é•·ã• (æŒ‡å®šã‚¢ã‚¤ãƒ†ãƒ ã‹ã‚‰ã®ç›¸å¯¾) ã‚’å–å¾—ã™ã‚‹
 
 ******************************************************************************/
 
@@ -798,7 +798,7 @@ int TreeView_GetChildPathLength(HWND hTreeView, HTREEITEM hItem)
 
 	TreeView_CheckPathLength
 
-	ƒtƒHƒ‹ƒ_‚ğ’Ç‰Á‚µ‚½‚Æ‚«‚ÌƒpƒX‚Ì’·‚³‚ªãŒÀˆÈ“à‚©ƒ`ƒFƒbƒN‚·‚é
+	ãƒ•ã‚©ãƒ«ãƒ€ã‚’è¿½åŠ ã—ãŸã¨ãã®ãƒ‘ã‚¹ã®é•·ã•ãŒä¸Šé™ä»¥å†…ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 
 ******************************************************************************/
 
@@ -815,7 +815,7 @@ BOOL TreeView_CheckPathLength(HWND hTreeView, HTREEITEM pItem, char *Name)
 
 	TreeView_SetItemText
 
-	ƒAƒCƒeƒ€‚Ìƒ^ƒCƒgƒ‹‚ğİ’è
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®š
 
 ******************************************************************************/
 
@@ -836,7 +836,7 @@ static BOOL TreeView_SetItemText(HWND hTreeView, HTREEITEM hItem, char *buf)
 
 	TreeView_SetName
 
-	ƒfƒBƒŒƒNƒgƒŠ–¼‚ÆƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚Ì–¼‘O‚ğİ’è‚·‚é
+	ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã¨ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®åå‰ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -847,41 +847,41 @@ BOOL TreeView_SetName(HWND hWnd, HTREEITEM hItem, char *NewName)
 	char OldFileName[BUFSIZE];
 	char NewFileName[BUFSIZE];
 
-	//•s³‚Èƒtƒ@ƒCƒ‹–¼‚Ìê‡‚ÍƒGƒ‰[‚ğo‚·
+	//ä¸æ­£ãªãƒ•ã‚¡ã‚¤ãƒ«åã®å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’å‡ºã™
 	if(FileNameCheck(NewName) == FALSE){
 		MessageBox(hWnd, EMSG_CHANGEFILENAME, EMSG_CHANGEFILENAME_TITLE, MB_ICONSTOP);
 		return FALSE;
 	}
 
-	//ƒpƒX‚ğæ“¾‚·‚é
+	//ãƒ‘ã‚¹ã‚’å–å¾—ã™ã‚‹
 	*buf = '\0';
 	TreeView_GetPath(GetDlgItem(hWnd, WWWC_TREE),
 		TreeView_GetParent(GetDlgItem(hWnd, WWWC_TREE), hItem), buf, CuDir);
 
-	//qƒtƒHƒ‹ƒ_‚ğŠÜ‚ß‚ÄƒpƒX‚ª’·‚·‚¬‚éê‡‚ÍƒGƒ‰[‚ğo‚·
+	//å­ãƒ•ã‚©ãƒ«ãƒ€ã‚’å«ã‚ã¦ãƒ‘ã‚¹ãŒé•·ã™ãã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’å‡ºã™
 	if(lstrlen(buf) + 1 + lstrlen(NewName) + TreeView_GetChildPathLength(GetDlgItem(hWnd, WWWC_TREE), hItem) > MAX_TREEPATH){
 		MessageBox(hWnd, EMSG_PATHLENGTH, EMSG_CHANGEFILENAME_TITLE, MB_ICONSTOP);
 		return FALSE;
 	}
 
-	//ŒÃ‚¢ƒpƒX‚ÆV‚µ‚¢ƒpƒX‚ğì¬‚·‚é
+	//å¤ã„ãƒ‘ã‚¹ã¨æ–°ã—ã„ãƒ‘ã‚¹ã‚’ä½œæˆã™ã‚‹
 	TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, Tmpbuf);
 	wsprintf(OldFileName, "%s\\%s", buf, Tmpbuf);
 	wsprintf(NewFileName, "%s\\%s", buf, NewName);
 
-	//ƒtƒ@ƒCƒ‹–¼‚ğ•ÏX‚·‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«åã‚’å¤‰æ›´ã™ã‚‹
 	if(MoveFile(OldFileName, NewFileName) == FALSE){
-		//¸”s‚µ‚½ê‡‚ÍƒGƒ‰[‚ğo—Í‚·‚é
+		//å¤±æ•—ã—ãŸå ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’å‡ºåŠ›ã™ã‚‹
 		ErrMsg(hWnd, GetLastError(), EMSG_CHANGEFILENAME_TITLE);
 		return FALSE;
 	}
 
-	//ƒcƒŠ[‚Ìƒ^ƒCƒgƒ‹‚ğ•ÏX‚µ‚Äƒ\[ƒg‚·‚é
+	//ãƒ„ãƒªãƒ¼ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’å¤‰æ›´ã—ã¦ã‚½ãƒ¼ãƒˆã™ã‚‹
 	TreeView_SetItemText(GetDlgItem(hWnd, WWWC_TREE), hItem, NewName);
 	TreeView_SortChildren(GetDlgItem(hWnd, WWWC_TREE),
 		TreeView_GetParent(GetDlgItem(hWnd, WWWC_TREE), hItem), 0);
 
-	//Undoƒoƒbƒtƒ@‚ÉƒZƒbƒg
+	//Undoãƒãƒƒãƒ•ã‚¡ã«ã‚»ãƒƒãƒˆ
 	SetTVTitleToUndo(hItem, Tmpbuf);
 	return TRUE;
 }
@@ -891,7 +891,7 @@ BOOL TreeView_SetName(HWND hWnd, HTREEITEM hItem, char *NewName)
 
 	TreeView_GetItemInfo
 
-	ƒAƒCƒeƒ€‚Ìƒ^ƒCƒgƒ‹‚ÆƒAƒCƒRƒ“‚ğæ“¾
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¿ã‚¤ãƒˆãƒ«ã¨ã‚¢ã‚¤ã‚³ãƒ³ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -917,7 +917,7 @@ int TreeView_GetItemInfo(HWND hTreeView, HTREEITEM hItem, char *buf)
 
 	TreeView_GetListIndex
 
-	ƒAƒCƒeƒ€‚ÌˆÊ’u‚ğæ“¾
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ä½ç½®ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -944,7 +944,7 @@ int TreeView_GetListIndex(HWND hTreeView, HTREEITEM hItem)
 
 	TreeView_GetIndexToItem
 
-	w’èˆÊ’u‚ÌƒAƒCƒeƒ€‚ğæ“¾
+	æŒ‡å®šä½ç½®ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -970,7 +970,7 @@ HTREEITEM TreeView_GetIndexToItem(HWND hTreeView, HTREEITEM hItem, int Index)
 
 	TreeView_GetHiTestItem
 
-	ƒ}ƒEƒX‚Ì‰º‚ÌƒAƒCƒeƒ€‚ğæ“¾
+	ãƒã‚¦ã‚¹ã®ä¸‹ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -984,7 +984,7 @@ HTREEITEM TreeView_GetHiTestItem(HWND hTreeView)
 		return NULL;
 	}
 
-	//ƒ}ƒEƒX‚ÌˆÊ’u‚ğæ“¾
+	//ãƒã‚¦ã‚¹ã®ä½ç½®ã‚’å–å¾—
 	GetCursorPos((LPPOINT)&apos);
 	GetWindowRect(hTreeView, (LPRECT)&TvRect);
 	apos.x = apos.x - TvRect.left;
@@ -1001,7 +1001,7 @@ HTREEITEM TreeView_GetHiTestItem(HWND hTreeView)
 
 	TreeView_SetlParam
 
-	ƒAƒCƒeƒ€‚Éî•ñ‚ğŠÖ˜A‚Â‚¯‚é
+	ã‚¢ã‚¤ãƒ†ãƒ ã«æƒ…å ±ã‚’é–¢é€£ã¤ã‘ã‚‹
 
 ******************************************************************************/
 
@@ -1020,7 +1020,7 @@ BOOL TreeView_SetlParam(HWND hTreeView, HTREEITEM hItem, long lParam)
 
 	TreeView_GetlParam
 
-	ƒAƒCƒeƒ€‚ÉŠÖ˜A•t‚¯‚ç‚ê‚½î•ñ‚Ìæ“¾
+	ã‚¢ã‚¤ãƒ†ãƒ ã«é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸæƒ…å ±ã®å–å¾—
 
 ******************************************************************************/
 
@@ -1046,7 +1046,7 @@ void *TreeView_GetlParam(HWND hTreeView, HTREEITEM hItem)
 
 	TreeView_SetState
 
-	ƒAƒCƒeƒ€‚Ìó‘Ô‚Ìİ’è
+	ã‚¢ã‚¤ãƒ†ãƒ ã®çŠ¶æ…‹ã®è¨­å®š
 
 ******************************************************************************/
 
@@ -1066,7 +1066,7 @@ BOOL TreeView_SetState(HWND hTreeView, HTREEITEM hItem, int State, int mask)
 
 	TreeView_GetState
 
-	ƒAƒCƒeƒ€‚Ìó‘Ô‚Ìæ“¾
+	ã‚¢ã‚¤ãƒ†ãƒ ã®çŠ¶æ…‹ã®å–å¾—
 
 ******************************************************************************/
 
@@ -1088,7 +1088,7 @@ int TreeView_GetState(HWND hTreeView, HTREEITEM hItem, int mask)
 
 	TreeView_SetIcon
 
-	ƒAƒCƒeƒ€‚ÌƒAƒCƒRƒ“‚ğİ’è
+	ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¨­å®š
 
 ******************************************************************************/
 
@@ -1109,7 +1109,7 @@ static BOOL TreeView_SetIcon(HWND hTreeView, HTREEITEM hItem, int Icon, int SelI
 
 	TreeView_UpdateList
 
-	ƒcƒŠ[ƒrƒ…[‚ÌƒAƒCƒeƒ€‚É‘Î‰‚µ‚½ƒŠƒXƒgƒrƒ…[ƒAƒCƒeƒ€‚ğXV
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã«å¯¾å¿œã—ãŸãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ›´æ–°
 
 ******************************************************************************/
 
@@ -1117,12 +1117,12 @@ BOOL TreeView_UpdateList(HWND hWnd, HTREEITEM hItem)
 {
 	int ListIndex;
 
-	//eƒEƒBƒ“ƒhƒE‚ª‘I‘ğƒtƒHƒ‹ƒ_‚Å‚Í‚È‚¢ê‡‚ÍŠÖ”‚ğ”²‚¯‚é
+	//è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé¸æŠãƒ•ã‚©ãƒ«ãƒ€ã§ã¯ãªã„å ´åˆã¯é–¢æ•°ã‚’æŠœã‘ã‚‹
 	if(TreeView_GetParent(GetDlgItem(hWnd, WWWC_TREE), hItem) !=
 		TreeView_GetSelection(GetDlgItem(hWnd, WWWC_TREE))){
 		return FALSE;
 	}
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
 	ListIndex = TreeView_GetListIndex(GetDlgItem(hWnd, WWWC_TREE), hItem);
 
 	ListView_SetItemText(GetDlgItem(hWnd, WWWC_LIST), ListIndex, 0, LPSTR_TEXTCALLBACK);
@@ -1136,7 +1136,7 @@ BOOL TreeView_UpdateList(HWND hWnd, HTREEITEM hItem)
 
 	SetItemIcon
 
-	ƒAƒCƒeƒ€‚Ìó‘Ô‚É‰‚¶‚ÄƒAƒCƒRƒ“‚ğİ’è‚·‚é
+	ã‚¢ã‚¤ãƒ†ãƒ ã®çŠ¶æ…‹ã«å¿œã˜ã¦ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -1154,10 +1154,10 @@ BOOL SetItemIcon(HWND hWnd, HTREEITEM hItem)
 		return FALSE;
 	}
 
-	//Œ»İ‚ÌƒAƒCƒRƒ“‚ğæ“¾
+	//ç¾åœ¨ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’å–å¾—
 	Icon = TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, buf);
 
-	//ƒ`ƒFƒbƒN’†
+	//ãƒã‚§ãƒƒã‚¯ä¸­
 	if(tpTreeInfo->Icon & TREEICON_CH){
 		if(Icon == ICON_DIR_CLOSE_CH){
 			return FALSE;
@@ -1167,7 +1167,7 @@ BOOL SetItemIcon(HWND hWnd, HTREEITEM hItem)
 		TreeView_UpdateList(hWnd, hItem);
 		return TRUE;
 	}
-	//q‹Ÿ‚ªƒ`ƒFƒbƒN’†
+	//å­ä¾›ãŒãƒã‚§ãƒƒã‚¯ä¸­
 	if(tpTreeInfo->Icon & TREEICON_CHECKCHILD){
 		if(Icon == ICON_DIR_CLOSE_CHECKCHILD){
 			return FALSE;
@@ -1177,7 +1177,7 @@ BOOL SetItemIcon(HWND hWnd, HTREEITEM hItem)
 		TreeView_UpdateList(hWnd, hItem);
 		return TRUE;
 	}
-	//UPƒAƒCƒRƒ“‚ ‚è
+	//UPã‚¢ã‚¤ã‚³ãƒ³ã‚ã‚Š
 	if(tpTreeInfo->Icon & TREEICON_UP){
 		if(Icon == ICON_DIR_CLOSE_UP){
 			return FALSE;
@@ -1187,7 +1187,7 @@ BOOL SetItemIcon(HWND hWnd, HTREEITEM hItem)
 		TreeView_UpdateList(hWnd, hItem);
 		return TRUE;
 	}
-	//q‹Ÿ‚ªUPƒAƒCƒRƒ“‚ ‚è
+	//å­ä¾›ãŒUPã‚¢ã‚¤ã‚³ãƒ³ã‚ã‚Š
 	if(tpTreeInfo->Icon & TREEICON_UPCHILD){
 		if(Icon == ICON_DIR_CLOSE_UPCHILD){
 			return FALSE;
@@ -1198,7 +1198,7 @@ BOOL SetItemIcon(HWND hWnd, HTREEITEM hItem)
 		return TRUE;
 	}
 
-	//•W€ƒAƒCƒRƒ“
+	//æ¨™æº–ã‚¢ã‚¤ã‚³ãƒ³
 	if(Icon != ICON_DIR_CLOSE){
 		TreeView_SetIcon(GetDlgItem(hWnd, WWWC_TREE), hItem,
 			ICON_DIR_CLOSE, ICON_DIR_OPEN);
@@ -1213,7 +1213,7 @@ BOOL SetItemIcon(HWND hWnd, HTREEITEM hItem)
 
 	TreeView_SetParentIcon
 
-	eƒAƒCƒeƒ€‚Ìó‘Ô‚ğİ’è‚·‚é
+	è¦ªã‚¢ã‚¤ãƒ†ãƒ ã®çŠ¶æ…‹ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -1229,7 +1229,7 @@ static void TreeView_SetParentIcon(HWND hWnd, HTREEITEM hItem, int Icon)
 			if((TmptpTreeInfo->Icon & Icon) != 0){
 				break;
 			}
-			//ó‘Ô‚ğİ’è
+			//çŠ¶æ…‹ã‚’è¨­å®š
 			TmptpTreeInfo->Icon |= Icon;
 			SetItemIcon(hWnd, pItem);
 		}
@@ -1242,7 +1242,7 @@ static void TreeView_SetParentIcon(HWND hWnd, HTREEITEM hItem, int Icon)
 
 	TreeView_DeleteParentIcon
 
-	eƒAƒCƒeƒ€‚Ìó‘Ô‚ğíœ‚·‚é
+	è¦ªã‚¢ã‚¤ãƒ†ãƒ ã®çŠ¶æ…‹ã‚’å‰Šé™¤ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1269,7 +1269,7 @@ static void TreeView_DeleteParentIcon(HWND hWnd, HTREEITEM hItem, int Icon1, int
 
 		TmptpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), pItem);
 		if(TmptpTreeInfo != NULL && TmptpTreeInfo->Icon & Icon2){
-			//ó‘Ô‚ğíœ
+			//çŠ¶æ…‹ã‚’å‰Šé™¤
 			TmptpTreeInfo->Icon ^= Icon2;
 			SetItemIcon(hWnd, pItem);
 		}
@@ -1282,7 +1282,7 @@ static void TreeView_DeleteParentIcon(HWND hWnd, HTREEITEM hItem, int Icon1, int
 
 	TreeView_SetIconState
 
-	ƒcƒŠƒrƒ…[ƒAƒCƒeƒ€‚ÌƒAƒCƒRƒ“ó‘Ô‚ğİ’è‚·‚é
+	ãƒ„ãƒªãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¢ã‚¤ã‚³ãƒ³çŠ¶æ…‹ã‚’è¨­å®šã™ã‚‹
 
 ******************************************************************************/
 
@@ -1293,12 +1293,12 @@ void CALLBACK TreeView_SetIconState(HWND hWnd, HTREEITEM hItem, long Param)
 	int UPFlag = 0;
 	char buf[BUFSIZE];
 
-	//ƒ‹[ƒgƒAƒCƒeƒ€‚Ìê‡‚ÍŠÖ”‚ğ”²‚¯‚é
+	//ãƒ«ãƒ¼ãƒˆã‚¢ã‚¤ãƒ†ãƒ ã®å ´åˆã¯é–¢æ•°ã‚’æŠœã‘ã‚‹
 	if(hItem == RootItem){
 		return;
 	}
 
-	//‚²‚İ” ‚Ìê‡‚Í‚²‚İ” ‚Ì’†g‚É‚æ‚Á‚ÄƒAƒCƒRƒ“‚ğ•Ï‰»‚³‚¹‚é
+	//ã”ã¿ç®±ã®å ´åˆã¯ã”ã¿ç®±ã®ä¸­èº«ã«ã‚ˆã£ã¦ã‚¢ã‚¤ã‚³ãƒ³ã‚’å¤‰åŒ–ã•ã›ã‚‹
 	if(hItem == RecyclerItem){
 		Icon = TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, buf);
 		if(CheckRecycler(hWnd) == FALSE){
@@ -1322,14 +1322,14 @@ void CALLBACK TreeView_SetIconState(HWND hWnd, HTREEITEM hItem, long Param)
 		return;
 	}
 
-	//ƒcƒŠ[ƒAƒCƒeƒ€î•ñ‚Ìæ“¾
+	//ãƒ„ãƒªãƒ¼ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®å–å¾—
 	tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	if(tpTreeInfo == NULL){
 		TreeView_SetIcon(GetDlgItem(hWnd, WWWC_TREE), hItem, ICON_DIR_CLOSE, ICON_DIR_OPEN);
 		return;
 	}
 
-	//ƒAƒCƒeƒ€î•ñ‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚È‚¢ê‡‚Í“Ç‚İ‚Ş
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ãªã„å ´åˆã¯èª­ã¿è¾¼ã‚€
 	if(tpTreeInfo->ItemList == NULL){
 		if(ReadTreeMem(hWnd, hItem) == FALSE){
 			TreeView_SetIcon(GetDlgItem(hWnd, WWWC_TREE), hItem, ICON_DIR_CLOSE, ICON_DIR_OPEN);
@@ -1337,7 +1337,7 @@ void CALLBACK TreeView_SetIconState(HWND hWnd, HTREEITEM hItem, long Param)
 		}
 	}
 
-	//ƒcƒŠ[‚ÌƒAƒCƒeƒ€‚Ìî•ñ‚ğæ“¾
+	//ãƒ„ãƒªãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã®æƒ…å ±ã‚’å–å¾—
 	Icon = TreeView_GetItemInfo(GetDlgItem(hWnd, WWWC_TREE), hItem, buf);
 
 	ItemCnt = tpTreeInfo->ItemListCnt;
@@ -1346,30 +1346,30 @@ void CALLBACK TreeView_SetIconState(HWND hWnd, HTREEITEM hItem, long Param)
 			continue;
 		}
 
-		//ƒ`ƒFƒbƒN’†‚ÌƒAƒCƒeƒ€
+		//ãƒã‚§ãƒƒã‚¯ä¸­ã®ã‚¢ã‚¤ãƒ†ãƒ 
 		if((*(tpTreeInfo->ItemList + i))->IconStatus == ST_CHECK){
 			tpTreeInfo->Icon |= TREEICON_CH;
 			SetItemIcon(hWnd, hItem);
 
-			//e‚ğƒ`ƒFƒbƒN‚ ‚èƒAƒCƒRƒ“‚É‚·‚é
+			//è¦ªã‚’ãƒã‚§ãƒƒã‚¯ã‚ã‚Šã‚¢ã‚¤ã‚³ãƒ³ã«ã™ã‚‹
 			TreeView_SetParentIcon(hWnd, hItem, TREEICON_CHECKCHILD);
 			return;
 		}
 
-		//UPƒAƒCƒeƒ€
+		//UPã‚¢ã‚¤ãƒ†ãƒ 
 		if((*(tpTreeInfo->ItemList + i))->Status == ST_UP){
-			//UPƒAƒCƒeƒ€‘¶İƒtƒ‰ƒO‚ğƒZƒbƒg
+			//UPã‚¢ã‚¤ãƒ†ãƒ å­˜åœ¨ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆ
 			UPFlag = 1;
-			//ƒ`ƒFƒbƒN’†‚Å‚Í‚È‚¢ê‡‚Íƒ‹[ƒv‚ğ”²‚¯‚é
+			//ãƒã‚§ãƒƒã‚¯ä¸­ã§ã¯ãªã„å ´åˆã¯ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 			if(gCheckFlag == 0){
 				break;
 			}
 		}
 	}
 
-	//ƒ`ƒFƒbƒN’†ƒtƒ‰ƒO
+	//ãƒã‚§ãƒƒã‚¯ä¸­ãƒ•ãƒ©ã‚°
 	if(tpTreeInfo->Icon & TREEICON_CH){
-		//ƒ`ƒFƒbƒN’†ƒtƒ‰ƒO‚ğ–³‚­‚·
+		//ãƒã‚§ãƒƒã‚¯ä¸­ãƒ•ãƒ©ã‚°ã‚’ç„¡ãã™
 		tpTreeInfo->Icon ^= TREEICON_CH;
 
 		TreeView_DeleteParentIcon(hWnd,
@@ -1377,31 +1377,31 @@ void CALLBACK TreeView_SetIconState(HWND hWnd, HTREEITEM hItem, long Param)
 			TREEICON_CH, TREEICON_CHECKCHILD);
 	}
 
-	//UPƒAƒCƒeƒ€‚ª‘¶İ‚·‚éê‡
+	//UPã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã™ã‚‹å ´åˆ
 	if(UPFlag == 1){
-		//UPƒAƒCƒRƒ“‚É•ÏX
+		//UPã‚¢ã‚¤ã‚³ãƒ³ã«å¤‰æ›´
 		tpTreeInfo->Icon |= TREEICON_UP;
 		SetItemIcon(hWnd, hItem);
 
-		//e‚ğUP‚ ‚èƒAƒCƒRƒ“‚É‚·‚é
+		//è¦ªã‚’UPã‚ã‚Šã‚¢ã‚¤ã‚³ãƒ³ã«ã™ã‚‹
 		TreeView_SetParentIcon(hWnd, hItem, TREEICON_UPCHILD);
 		return;
 	}
 
 	if(tpTreeInfo->Icon & TREEICON_UP){
-		//UPƒAƒCƒRƒ“‚Ìœ‹
+		//UPã‚¢ã‚¤ã‚³ãƒ³ã®é™¤å»
 		tpTreeInfo->Icon ^= TREEICON_UP;
-		//e‚ÌƒAƒCƒRƒ“‚ğ•ÏX
+		//è¦ªã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’å¤‰æ›´
 		TreeView_DeleteParentIcon(hWnd,
 			TreeView_GetParent(GetDlgItem(hWnd, WWWC_TREE), hItem),
 			TREEICON_UP, TREEICON_UPCHILD);
 
 	}else if(tpTreeInfo->Icon & TREEICON_UPCHILD){
-		//q‹Ÿ‚ÌŠm”F
+		//å­ä¾›ã®ç¢ºèª
 		TreeView_DeleteParentIcon(hWnd, hItem, TREEICON_UP, TREEICON_UPCHILD);
 	}
 
-	//ƒAƒCƒRƒ“‚Ì•ÏX
+	//ã‚¢ã‚¤ã‚³ãƒ³ã®å¤‰æ›´
 	SetItemIcon(hWnd, hItem);
 }
 
@@ -1410,7 +1410,7 @@ void CALLBACK TreeView_SetIconState(HWND hWnd, HTREEITEM hItem, long Param)
 
 	TreeView_NoFileDelete
 
-	‘Î‰‚·‚éƒtƒHƒ‹ƒ_‚ª‘¶İ‚µ‚È‚¢ƒAƒCƒeƒ€‚ğíœ‚·‚é
+	å¯¾å¿œã™ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ãŒå­˜åœ¨ã—ãªã„ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã™ã‚‹
 
 ******************************************************************************/
 
@@ -1428,7 +1428,7 @@ void CALLBACK TreeView_NoFileDelete(HWND hWnd, HTREEITEM hItem, long Param)
 
 	cItem = TreeView_GetChild(GetDlgItem(hWnd, WWWC_TREE), hItem);
 	while(cItem != NULL){
-		//Ä‹A
+		//å†å¸°
 		TmpItem = TreeView_GetNextSibling(GetDlgItem(hWnd, WWWC_TREE), cItem);
 		TreeView_NoFileDelete(hWnd, cItem, Param);
 		cItem = TmpItem;
@@ -1441,7 +1441,7 @@ void CALLBACK TreeView_NoFileDelete(HWND hWnd, HTREEITEM hItem, long Param)
 
 	TreeView_StartDragItem
 
-	ƒcƒŠƒrƒ…[ƒAƒCƒeƒ€‚Ìƒhƒ‰ƒbƒO•ƒhƒƒbƒvŠJn
+	ãƒ„ãƒªãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—é–‹å§‹
 
 ******************************************************************************/
 
@@ -1460,10 +1460,10 @@ void TreeView_StartDragItem(HWND hWnd, HTREEITEM hItem)
 		return;
 	}
 
-	//AltƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éê‡‚Íƒtƒ@ƒCƒ‹‚ğˆµ‚í‚È‚¢
+	//Altã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ‰±ã‚ãªã„
 	NoFileFlag = (GetAsyncKeyState(VK_MENU) < 0) ? TRUE : FALSE;
 
-	//ƒtƒHƒ‹ƒ_î•ñ‚Ì•Û‘¶
+	//ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±ã®ä¿å­˜
 	SaveTreeMem(hWnd, GetDlgItem(hWnd, WWWC_TREE), DgdpItem);
 
 	Effect = DROPEFFECT_COPY;
@@ -1514,7 +1514,7 @@ void TreeView_StartDragItem(HWND hWnd, HTREEITEM hItem)
 
 	TreeView_SelItemChanging
 
-	ƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚Ì‘I‘ğ•ÏXƒ`ƒFƒbƒN
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®é¸æŠå¤‰æ›´ãƒã‚§ãƒƒã‚¯
 
 ******************************************************************************/
 
@@ -1525,7 +1525,7 @@ BOOL TreeView_SelItemChanging(HWND hWnd, HTREEITEM NewItem, HTREEITEM OldItem)
 	}
 	WaitCursor(TRUE);
 
-	//ƒtƒ@ƒCƒ‹‚©‚çƒŠƒXƒg‚Ìî•ñ‚ğƒƒ‚ƒŠ‚É“Ç‚İ‚Ş
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒªã‚¹ãƒˆã®æƒ…å ±ã‚’ãƒ¡ãƒ¢ãƒªã«èª­ã¿è¾¼ã‚€
 	if(ReadTreeMem(hWnd, NewItem) == FALSE){
 		WaitCursor(FALSE);
 		MessageBox(hWnd, EMSG_DIRMOVE, EMSG_DIRMOVE_TITLE, MB_ICONSTOP);
@@ -1543,13 +1543,13 @@ BOOL TreeView_SelItemChanging(HWND hWnd, HTREEITEM NewItem, HTREEITEM OldItem)
 
 	TreeView_SelItemChanged
 
-	ƒcƒŠ[ƒrƒ…[ƒAƒCƒeƒ€‚Ì‘I‘ğ•ÏX
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®é¸æŠå¤‰æ›´
 
 ******************************************************************************/
 
 BOOL TreeView_SelItemChanged(HWND hWnd, HTREEITEM NewItem, HTREEITEM OldItem)
 {
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒeƒ€‚ğ‚·‚×‚Äíœ‚·‚é
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’ã™ã¹ã¦å‰Šé™¤ã™ã‚‹
 	if(NewItem == NULL){
 		ListView_DeleteAllItems(GetDlgItem(hWnd, WWWC_LIST));
 		return FALSE;
@@ -1557,14 +1557,14 @@ BOOL TreeView_SelItemChanged(HWND hWnd, HTREEITEM NewItem, HTREEITEM OldItem)
 
 	WaitCursor(TRUE);
 
-	//ƒŠƒXƒgƒrƒ…[‚ÉƒAƒCƒeƒ€‚ğ•\¦‚·‚é
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¡¨ç¤ºã™ã‚‹
 	ListView_ShowItem(hWnd, NewItem);
 	ListView_SetItemState(GetDlgItem(hWnd, WWWC_LIST), 0, LVIS_FOCUSED, LVIS_FOCUSED);
 
-	//ƒcƒŠ[‚ÌƒAƒCƒRƒ“‚ğİ’è‚·‚é
+	//ãƒ„ãƒªãƒ¼ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¨­å®šã™ã‚‹
 	TreeView_SetIconState(hWnd, NewItem, 0);
 
-	//‘O‰ñ‘I‘ğ‚³‚ê‚Ä‚¢‚½ƒAƒCƒeƒ€‚Ìƒƒ‚ƒŠ‚ğ‰ğ•ú‚·‚éi•Û‘¶ƒ‚[ƒhj
+	//å‰å›é¸æŠã•ã‚Œã¦ã„ãŸã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ¡ãƒ¢ãƒªã‚’è§£æ”¾ã™ã‚‹ï¼ˆä¿å­˜ãƒ¢ãƒ¼ãƒ‰ï¼‰
 	if(OldItem != NULL){
 		TreeView_FreeItem(hWnd, OldItem, 1);
 	}
@@ -1582,7 +1582,7 @@ BOOL TreeView_SelItemChanged(HWND hWnd, HTREEITEM NewItem, HTREEITEM OldItem)
 
 	TreeView_SetHistory
 
-	TreeViewƒAƒCƒeƒ€‚ğ—š—ğ‚É’Ç‰Á
+	TreeViewã‚¢ã‚¤ãƒ†ãƒ ã‚’å±¥æ­´ã«è¿½åŠ 
 
 ******************************************************************************/
 
@@ -1610,7 +1610,7 @@ static void TreeView_SetHistory(HTREEITEM NewItem)
 
 	TreeView_CheckHistory
 
-	ˆÚ“®‰Â”\‚©ƒ`ƒFƒbƒN
+	ç§»å‹•å¯èƒ½ã‹ãƒã‚§ãƒƒã‚¯
 
 ******************************************************************************/
 
@@ -1641,7 +1641,7 @@ BOOL TreeView_CheckHistory(HWND hWnd, BOOL NextFlag)
 
 	TreeView_PrevHistory
 
-	‘O‚É–ß‚é
+	å‰ã«æˆ»ã‚‹
 
 ******************************************************************************/
 
@@ -1673,7 +1673,7 @@ BOOL TreeView_PrevHistory(HWND hWnd)
 
 	TreeView_NextHistory
 
-	Ÿ‚Éi‚Ş
+	æ¬¡ã«é€²ã‚€
 
 ******************************************************************************/
 
@@ -1705,7 +1705,7 @@ BOOL TreeView_NextHistory(HWND hWnd)
 
 	TreeView_NotifyProc
 
-	ƒcƒŠ[ƒrƒ…[ƒCƒxƒ“ƒg
+	ãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆ
 
 ******************************************************************************/
 

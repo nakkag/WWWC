@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC (wwwc.dll)
 
@@ -43,7 +43,7 @@ char fpath[BUFSIZE];
 FILTER *FilterInfo;
 int FilterCount;
 
-//ŠO•”QÆ
+//å¤–éƒ¨å‚ç…§
 extern HINSTANCE ghinst;
 
 
@@ -62,7 +62,7 @@ static char *AllocItemStr(char *buf, char **ret);
 
 	FindStr
 
-	ƒ^ƒO’PˆÊ‚Å•¶š—ñ‚ÌŒŸõ
+	ã‚¿ã‚°å˜ä½ã§æ–‡å­—åˆ—ã®æ¤œç´¢
 
 ******************************************************************************/
 
@@ -101,7 +101,7 @@ static char *FindStr(char *buf, char *Str, int len, BOOL first, BOOL icase)
 
 	ConvStr
 
-	§Œä•¶š—ñ‚Ì•ÏŠ·
+	åˆ¶å¾¡æ–‡å­—åˆ—ã®å¤‰æ›
 
 ******************************************************************************/
 
@@ -143,7 +143,7 @@ static char *ConvStr(char *buf)
 
 	CRLFConv
 
-	‰üs•¶š‚Ì•ÏŠ·
+	æ”¹è¡Œæ–‡å­—ã®å¤‰æ›
 
 ******************************************************************************/
 
@@ -174,7 +174,7 @@ static void CRLFConv(char *buf)
 
 	FindFIlterString
 
-	•¶š—ñ‚ğŒŸõ‚µ‚ÄŠJn‚ÆI—¹ˆÊ’u‚ğæ“¾
+	æ–‡å­—åˆ—ã‚’æ¤œç´¢ã—ã¦é–‹å§‹ã¨çµ‚äº†ä½ç½®ã‚’å–å¾—
 
 ******************************************************************************/
 
@@ -227,7 +227,7 @@ static BOOL FindFIlterString(char *buf, char *sStr, char **ts, char **te, BOOL i
 
 	StrFilter
 
-	•¶š—ñ‚ÉƒtƒBƒ‹ƒ^‚ğ‚©‚¯‚é
+	æ–‡å­—åˆ—ã«ãƒ•ã‚£ãƒ«ã‚¿ã‚’ã‹ã‘ã‚‹
 
 ******************************************************************************/
 
@@ -236,12 +236,12 @@ static BOOL StrFilter(char *buf, char *sStr, char *eStr, int f, BOOL icase)
 	char *s1 = NULL, *e1 = NULL;
 	char *s2 = NULL, *e2 = NULL;
 
-	//ŠJnˆÊ’u‚ÌŒŸõ
+	//é–‹å§‹ä½ç½®ã®æ¤œç´¢
 	if(FindFIlterString(buf, sStr, &s1, &e1, icase) == FALSE){
 		return FALSE;
 	}
 
-	//I—¹ˆÊ’u‚ÌŒŸõ
+	//çµ‚äº†ä½ç½®ã®æ¤œç´¢
 	if(eStr != NULL && *eStr != '\0'){
 		if(FindFIlterString(e1, eStr, &s2, &e2, icase) == FALSE){
 			return FALSE;
@@ -250,10 +250,10 @@ static BOOL StrFilter(char *buf, char *sStr, char *eStr, int f, BOOL icase)
 	}
 
 	if(f == 0){
-		//•¶š—ñ‚Ìíœ
+		//æ–‡å­—åˆ—ã®å‰Šé™¤
 		lstrcpy(s1, e1);
 	}else{
-		//•¶š—ñ‚Ì’Šo
+		//æ–‡å­—åˆ—ã®æŠ½å‡º
 		lstrcpyn(buf, s1, e1 - s1 + 1);
 	}
 	return TRUE;
@@ -264,7 +264,7 @@ static BOOL StrFilter(char *buf, char *sStr, char *eStr, int f, BOOL icase)
 
 	FilterMatch
 
-	ƒtƒBƒ‹ƒ^‘ÎÛ•¶š—ñ‚Ìƒ`ƒFƒbƒN
+	ãƒ•ã‚£ãƒ«ã‚¿å¯¾è±¡æ–‡å­—åˆ—ã®ãƒã‚§ãƒƒã‚¯
 
 ******************************************************************************/
 
@@ -290,7 +290,7 @@ BOOL FilterMatch(char *url)
 
 	FilterCheck
 
-	ƒtƒBƒ‹ƒ^‚ğ‚©‚¯‚é
+	ãƒ•ã‚£ãƒ«ã‚¿ã‚’ã‹ã‘ã‚‹
 
 ******************************************************************************/
 
@@ -308,17 +308,17 @@ BOOL FilterCheck(char *url, char *buf, int Size)
 		}
 		if(str_match((FilterInfo + i)->url, url) == TRUE){
 			if(tmp == NULL){
-				//ƒ\[ƒX•ÏŠ·
+				//ã‚½ãƒ¼ã‚¹å¤‰æ›
 				tmp = SrcConv(buf, Size);
 				if(tmp == NULL){
 					break;
 				}
 				CRLFConv(tmp);
 			}
-			//ƒtƒBƒ‹ƒ^‚Ì“K—p
+			//ãƒ•ã‚£ãƒ«ã‚¿ã®é©ç”¨
 			if(StrFilter(tmp, (FilterInfo + i)->string1, (FilterInfo + i)->string2, 
 				(FilterInfo + i)->flag, (FilterInfo + i)->IgnoreCase) == FALSE){
-				//’ŠoƒGƒ‰[‚Í‹ó‚É‚·‚éİ’è
+				//æŠ½å‡ºã‚¨ãƒ©ãƒ¼ã¯ç©ºã«ã™ã‚‹è¨­å®š
 				if((FilterInfo + i)->flag == 1 && (FilterInfo + i)->ErrorEmptyBody == TRUE){
 					*tmp = '\0';
 					continue;
@@ -327,14 +327,14 @@ BOOL FilterCheck(char *url, char *buf, int Size)
 					rc = FALSE;
 				}
 			}else if((FilterInfo + i)->flag == 0 && (FilterInfo + i)->Repeat == TRUE){
-				//ŒJ‚è•Ô‚µ‚ÄƒtƒBƒ‹ƒ^‚Ì“K—p
+				//ç¹°ã‚Šè¿”ã—ã¦ãƒ•ã‚£ãƒ«ã‚¿ã®é©ç”¨
 				while(StrFilter(tmp, (FilterInfo + i)->string1, (FilterInfo + i)->string2, 
 					(FilterInfo + i)->flag, (FilterInfo + i)->IgnoreCase) == TRUE);
 			}
 		}
 	}
 	if(tmp != NULL){
-		//•ÏŠ·‚Å’·‚­‚È‚Á‚½ê‡‚àóMƒoƒbƒtƒ@‚Éû‚Ü‚é’·‚³‚Ü‚ÅƒRƒs[‚·‚é
+		//å¤‰æ›ã§é•·ããªã£ãŸå ´åˆã‚‚å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã«åã¾ã‚‹é•·ã•ã¾ã§ã‚³ãƒ”ãƒ¼ã™ã‚‹
 		lstrcpyn(buf, tmp, lstrlen(buf) + 1);
 		GlobalFree(tmp);
 		return rc;
@@ -347,7 +347,7 @@ BOOL FilterCheck(char *url, char *buf, int Size)
 
 	AllocItemStr
 
-	•¶š—ñ‚ğŠm•Û‚µ‚ÄƒRƒs[
+	æ–‡å­—åˆ—ã‚’ç¢ºä¿ã—ã¦ã‚³ãƒ”ãƒ¼
 
 ******************************************************************************/
 
@@ -360,7 +360,7 @@ static char *AllocItemStr(char *buf, char **ret)
 		return buf;
 	}
 
-	//•¶š‚Ì‹æØ‚èˆÊ’u‚Ìæ“¾
+	//æ–‡å­—ã®åŒºåˆ‡ã‚Šä½ç½®ã®å–å¾—
 	for(EndPoint = buf; *EndPoint != '\t' && *EndPoint != '\r' && *EndPoint != '\0'; EndPoint++);
 
 	*ret = (char *)LocalAlloc(LMEM_FIXED, EndPoint - buf + 2);
@@ -381,7 +381,7 @@ static char *AllocItemStr(char *buf, char **ret)
 
 	ReadFilterFile
 
-	ƒtƒBƒ‹ƒ^‚Ì“Ç‚İ‚İ
+	ãƒ•ã‚£ãƒ«ã‚¿ã®èª­ã¿è¾¼ã¿
 
 ******************************************************************************/
 
@@ -398,12 +398,12 @@ BOOL ReadFilterFile(char *cpath)
 	lstrcpy(fpath, cpath);
 	wsprintf(path, "%s\\%s", cpath, FILE_FILTER);
 
-	/* ƒtƒ@ƒCƒ‹‚ğŠJ‚­ */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã */
 	hFile = CreateFile(path, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if(hFile == NULL || hFile == (HANDLE)-1){
 		return FALSE;
 	}
-	/* Šm•Û‚·‚éƒTƒCƒY‚Ìæ“¾ */
+	/* ç¢ºä¿ã™ã‚‹ã‚µã‚¤ã‚ºã®å–å¾— */
 	fSizeLow = GetFileSize(hFile, &fSizeHigh);
 	if(fSizeLow == 0xFFFFFFFF){
 		CloseHandle(hFile);
@@ -411,13 +411,13 @@ BOOL ReadFilterFile(char *cpath)
 	}
 	FileSize = (long)fSizeLow;
 
-	/* “Ç‚İæ‚é—Ìˆæ‚ÌŠm•Û */
+	/* èª­ã¿å–ã‚‹é ˜åŸŸã®ç¢ºä¿ */
 	buf = (char *)LocalAlloc(LMEM_FIXED, FileSize + 1);
 	if(buf == NULL){
 		CloseHandle(hFile);
 		return FALSE;
 	}
-	/* ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ */
 	if(ReadFile(hFile, buf, fSizeLow, &ret, NULL) == FALSE){
 		LocalFree(buf);
 		CloseHandle(hFile);
@@ -426,7 +426,7 @@ BOOL ReadFilterFile(char *cpath)
 	CloseHandle(hFile);
 	*(buf + FileSize) = '\0';
 
-	//s”‚ÌƒJƒEƒ“ƒg
+	//è¡Œæ•°ã®ã‚«ã‚¦ãƒ³ãƒˆ
 	FilterCount = 0;
 	for(p = buf; *p != '\0'; p++){
 		if(*p == '\n'){
@@ -439,7 +439,7 @@ BOOL ReadFilterFile(char *cpath)
 		return TRUE;
 	}
 
-	//ƒtƒBƒ‹ƒ^[î•ñ‚ÌŠm•Û
+	//ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼æƒ…å ±ã®ç¢ºä¿
 	FilterInfo = (FILTER *)LocalAlloc(LPTR, sizeof(FILTER) * (FilterCount));
 	if(FilterInfo == NULL){
 		LocalFree(buf);
@@ -460,38 +460,38 @@ BOOL ReadFilterFile(char *cpath)
 			for(; *p != '\0' && *p != '\t'; p++){
 				switch(*p)
 				{
-				//œ‹
+				//é™¤å»
 				case 'D':
 				case 'd':
 				default:
 					(FilterInfo + i)->flag = 0;
 					break;
 
-				//’Šo
+				//æŠ½å‡º
 				case 'S':
 				case 's':
 					(FilterInfo + i)->flag = 1;
 					break;
 
-				//‘å•¶š‚Æ¬•¶š‚ğ‹æ•Ê‚µ‚È‚¢
+				//å¤§æ–‡å­—ã¨å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
 				case 'C':
 				case 'c':
 					(FilterInfo + i)->IgnoreCase = TRUE;
 					break;
 
-				//ƒGƒ‰[–³‹
+				//ã‚¨ãƒ©ãƒ¼ç„¡è¦–
 				case 'I':
 				case 'i':
 					(FilterInfo + i)->IgnoreError = TRUE;
 					break;
 
-				//ƒGƒ‰[‹ó‚É‚·‚é (S w’è)
+				//ã‚¨ãƒ©ãƒ¼æ™‚ç©ºã«ã™ã‚‹ (S æŒ‡å®šæ™‚)
 				case 'E':
 				case 'e':
 					(FilterInfo + i)->ErrorEmptyBody = TRUE;
 					break;
 
-				//ŒJ‚è•Ô‚µ
+				//ç¹°ã‚Šè¿”ã—
 				case 'R':
 				case 'r':
 					(FilterInfo + i)->Repeat = TRUE;
@@ -530,7 +530,7 @@ BOOL ReadFilterFile(char *cpath)
 
 	FreeFilter
 
-	ƒtƒBƒ‹ƒ^î•ñ‚Ì‰ğ•ú
+	ãƒ•ã‚£ãƒ«ã‚¿æƒ…å ±ã®è§£æ”¾
 
 ******************************************************************************/
 
@@ -561,7 +561,7 @@ void FreeFilter(void)
 
 	FilterReload
 
-	ƒtƒBƒ‹ƒ^Ä“Ç‚İ‚İƒc[ƒ‹
+	ãƒ•ã‚£ãƒ«ã‚¿å†èª­ã¿è¾¼ã¿ãƒ„ãƒ¼ãƒ«
 
 ******************************************************************************/
 

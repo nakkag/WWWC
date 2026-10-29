@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -27,19 +27,19 @@
 	Define
 **************************************************************************/
 
-#define DEF_RIGHT						120		//ƒfƒtƒHƒ‹ƒg‚ÌˆÊ’u
+#define DEF_RIGHT						120		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ä½ç½®
 #define DEF_BOTTOM						140
 
-#define LIST_TOP						20		//ƒŠƒXƒgƒrƒ…[‚Ì‚‚³
+#define LIST_TOP						20		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®é«˜ã•
 
-#define BTN_LEFT						100		//ƒ{ƒ^ƒ“‚ÌˆÊ’u
+#define BTN_LEFT						100		//ãƒœã‚¿ãƒ³ã®ä½ç½®
 #define BTN_RIGHT						88
 #define BTN_BOTTOM						23
 #define BTN_VIEW_TOP					10
 #define BTN_WAIT_TOP					40
 #define BTN_INFO_TOP					70
 
-#define UPINFO_VIEWSPEED				20		//Ú×‚ğ“WŠJ‚·‚é‘¬‚³
+#define UPINFO_VIEWSPEED				20		//è©³ç´°ã‚’å±•é–‹ã™ã‚‹é€Ÿã•
 
 #define DnD_CLIPFORMAT_CNT				3
 #define MENU_MAX						1000
@@ -60,9 +60,9 @@ static BOOL MaxWndFlag;
 
 static WNDPROC BannerWindowProcedure;
 
-//ŠO•”QÆ
-extern HINSTANCE g_hinst;				//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
-extern HWND WWWCWnd;					//–{‘Ì
+//å¤–éƒ¨å‚ç…§
+extern HINSTANCE g_hinst;				//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
+extern HWND WWWCWnd;					//æœ¬ä½“
 extern HWND FocusWnd;
 extern HWND UpWnd;
 extern HTREEITEM RootItem;
@@ -131,7 +131,7 @@ static LRESULT CALLBACK SubClassBannerProc(HWND hWnd, UINT msg, WPARAM wParam,LP
 
 	AddUpItem
 
-	XVƒAƒCƒeƒ€î•ñ‚ÉƒAƒCƒeƒ€î•ñ‚ğ’Ç‰Á
+	æ›´æ–°ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã«ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’è¿½åŠ 
 
 ******************************************************************************/
 
@@ -145,12 +145,12 @@ BOOL AddUpItem(struct TPITEM *NewItemInfo)
 		return FALSE;
 	}
 
-	//d•¡ƒAƒCƒeƒ€î•ñ‚Ìƒ`ƒFƒbƒN
+	//é‡è¤‡ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®ãƒã‚§ãƒƒã‚¯
 	for(i = 0; i < UpItemListCnt; i++){
 		if((*(UpItemList + i)) == NULL){
 			continue;
 		}
-		//Šù‚É“¯‚¶ƒAƒCƒeƒ€‚ª‘¶İ‚µ‚Ä‚¢‚éê‡‚Íã‘‚«‚ğs‚¤
+		//æ—¢ã«åŒã˜ã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã—ã¦ã„ã‚‹å ´åˆã¯ä¸Šæ›¸ãã‚’è¡Œã†
 		if((*(UpItemList + i))->hItem == NewItemInfo->hItem &&
 			lstrcmp((*(UpItemList + i))->Title, NewItemInfo->Title) == 0 &&
 			lstrcmp((*(UpItemList + i))->CheckURL, NewItemInfo->CheckURL) == 0){
@@ -169,7 +169,7 @@ BOOL AddUpItem(struct TPITEM *NewItemInfo)
 	}
 
 	CopyMemory(tpItemInfo, UpItemList, sizeof(struct TPITEM *) * UpItemListCnt);
-	//ƒRƒs[‚Ìì¬
+	//ã‚³ãƒ”ãƒ¼ã®ä½œæˆ
 	*(tpItemInfo + UpItemListCnt) = Item_Copy(NewItemInfo);
 
 	GlobalFree(UpItemList);
@@ -184,7 +184,7 @@ BOOL AddUpItem(struct TPITEM *NewItemInfo)
 
 	CopyUPItem
 
-	XVƒAƒCƒeƒ€î•ñ‚ğ•\¦ƒAƒCƒeƒ€î•ñ‚ÉˆÚ‚·
+	æ›´æ–°ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’è¡¨ç¤ºã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã«ç§»ã™
 
 ******************************************************************************/
 
@@ -198,10 +198,10 @@ static BOOL CopyUPItem(void)
 		return FALSE;
 	}
 
-	//íœÏ‚İƒJƒEƒ“ƒg
+	//å‰Šé™¤æ¸ˆã¿ã‚«ã‚¦ãƒ³ãƒˆ
 	DecCnt = 0;
 
-	//d•¡ƒAƒCƒeƒ€î•ñ‚Ìƒ`ƒFƒbƒN
+	//é‡è¤‡ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®ãƒã‚§ãƒƒã‚¯
 	for(j = 0; j < UpItemListCnt; j++){
 		if((*(UpItemList + j)) == NULL){
 			continue;
@@ -210,7 +210,7 @@ static BOOL CopyUPItem(void)
 			if((*(ViewUpItemList + i)) == NULL){
 				continue;
 			}
-			//Šù‚É“¯‚¶ƒAƒCƒeƒ€‚ª‘¶İ‚µ‚Ä‚¢‚éê‡‚Íã‘‚«‚ğs‚¤
+			//æ—¢ã«åŒã˜ã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã—ã¦ã„ã‚‹å ´åˆã¯ä¸Šæ›¸ãã‚’è¡Œã†
 			if((*(ViewUpItemList + i))->hItem == (*(UpItemList + j))->hItem &&
 				lstrcmp((*(ViewUpItemList + i))->Title, (*(UpItemList + j))->Title) == 0 &&
 				lstrcmp((*(ViewUpItemList + i))->CheckURL, (*(UpItemList + j))->CheckURL) == 0){
@@ -227,7 +227,7 @@ static BOOL CopyUPItem(void)
 		}
 	}
 
-	//•\¦ƒAƒCƒeƒ€î•ñ‚Ìì¬
+	//è¡¨ç¤ºã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®ä½œæˆ
 	tpItemInfo = (struct TPITEM **)GlobalAlloc(GPTR,
 		sizeof(struct TPITEM *) * (ViewUpItemListCnt + UpItemListCnt - DecCnt));
 	if(tpItemInfo == NULL){
@@ -260,7 +260,7 @@ static BOOL CopyUPItem(void)
 
 	FreeViewUpItemList
 
-	•\¦UPƒAƒCƒeƒ€‚Ì‰ğ•ú
+	è¡¨ç¤ºUPã‚¢ã‚¤ãƒ†ãƒ ã®è§£æ”¾
 
 ******************************************************************************/
 
@@ -269,7 +269,7 @@ static void FreeViewUpItemList(void)
 	if(ViewUpItemList == NULL){
 		return;
 	}
-	//UPƒAƒCƒeƒ€‚Ìƒƒ‚ƒŠ‚ğ‰ğ•ú
+	//UPã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ¡ãƒ¢ãƒªã‚’è§£æ”¾
 	FreeItemList(ViewUpItemList, ViewUpItemListCnt, FALSE);
 	GlobalFree(ViewUpItemList);
 	ViewUpItemList = NULL;
@@ -281,7 +281,7 @@ static void FreeViewUpItemList(void)
 
 	ListView_UpGetDispItem
 
-	ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒeƒ€î•ñ—v‹
+	ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±è¦æ±‚
 
 ******************************************************************************/
 
@@ -297,10 +297,10 @@ static BOOL ListView_UpGetDispItem(HWND hWnd, LV_ITEM *lvItem)
 		return FALSE;
 	}
 
-	//ƒeƒLƒXƒgİ’è
+	//ãƒ†ã‚­ã‚¹ãƒˆè¨­å®š
 	if(lvItem->mask & LVIF_TEXT){
 		if((upColumnInfo + lvItem->iSubItem)->p == 0){
-			//ƒAƒCƒeƒ€‚ªŠi”[‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚ÌƒpƒX
+			//ã‚¢ã‚¤ãƒ†ãƒ ãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹
 			if(IsTreeItem(WWWCWnd, tpItemInfo->hItem) == TRUE){
 				TreeView_GetItemInfo(GetDlgItem(WWWCWnd, WWWC_TREE), RootItem, tmp1);
 				wsprintf(tmp2, "\\\\%s", tmp1);
@@ -308,7 +308,7 @@ static BOOL ListView_UpGetDispItem(HWND hWnd, LV_ITEM *lvItem)
 			}
 
 		}else if((char *)*((long *)((long)tpItemInfo + (upColumnInfo + lvItem->iSubItem)->p)) != NULL){
-			//ƒAƒCƒeƒ€î•ñ‚ÆƒJƒ‰ƒ€î•ñ‚©‚çƒeƒLƒXƒg‚ğİ’è
+			//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã¨ã‚«ãƒ©ãƒ æƒ…å ±ã‹ã‚‰ãƒ†ã‚­ã‚¹ãƒˆã‚’è¨­å®š
 			lstrcpyn(lvItem->pszText,
 				(char *)*((long *)((long)tpItemInfo + (upColumnInfo + lvItem->iSubItem)->p)), BUFSIZE - 1);
 
@@ -321,9 +321,9 @@ static BOOL ListView_UpGetDispItem(HWND hWnd, LV_ITEM *lvItem)
 		return FALSE;
 	}
 
-	//ƒAƒCƒRƒ“î•ñİ’è
+	//ã‚¢ã‚¤ã‚³ãƒ³æƒ…å ±è¨­å®š
 	i = GetProtocolIndex(tpItemInfo->CheckURL);
-	//ƒAƒCƒeƒ€‚ÌƒAƒCƒRƒ“
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¢ã‚¤ã‚³ãƒ³
 	if(tpItemInfo->Status & ST_UP){
 		lvItem->iImage = (i == -1) ? ICON_UP : (tpProtocol + i)->Icon + 3;
 	}else{
@@ -337,7 +337,7 @@ static BOOL ListView_UpGetDispItem(HWND hWnd, LV_ITEM *lvItem)
 
 	SetSubItemClipboardData
 
-	ListViewƒAƒCƒeƒ€‚ğƒNƒŠƒbƒvƒ{[ƒh‚ÉƒRƒs[
+	ListViewã‚¢ã‚¤ãƒ†ãƒ ã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼
 
 ******************************************************************************/
 
@@ -346,7 +346,7 @@ BOOL SetSubItemClipboardData(HWND hWnd)
 	HANDLE hMem, hMemText, hMemDrop;
 	int ErrCode;
 
-	//ƒNƒŠƒbƒvƒ{[ƒh‚ğŠJ‚­
+	//ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‚’é–‹ã
 	if(OpenClipboard(hWnd) == FALSE){
 		ErrMsg(hWnd, GetLastError(), NULL);
 		return FALSE;
@@ -358,13 +358,13 @@ BOOL SetSubItemClipboardData(HWND hWnd)
 		return FALSE;
 	}
 
-	//ƒtƒHƒ‹ƒ_î•ñ
+	//ãƒ•ã‚©ãƒ«ãƒ€æƒ…å ±
 	hMem = Clipboard_Set_WF_ItemList(hWnd, FLAG_COPY, NULL);
 	if(hMem == NULL){
 		CloseClipboard();
 		return FALSE;
 	}
-	//“Æ©ƒtƒH[ƒ}ƒbƒg‚Ìİ’è
+	//ç‹¬è‡ªãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®è¨­å®š
 	if(SetClipboardData(WWWC_ClipFormat, hMem) == NULL){
 		ErrCode = GetLastError();
 		CloseClipboard();
@@ -372,7 +372,7 @@ BOOL SetSubItemClipboardData(HWND hWnd)
 		return FALSE;
 	}
 
-	//ƒhƒƒbƒvƒtƒ@ƒCƒ‹
+	//ãƒ‰ãƒ­ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«
 	if(DragDrop_CreateDropFiles(hWnd, DnD_DirName) == FALSE){
 		return FALSE;
 	}
@@ -381,7 +381,7 @@ BOOL SetSubItemClipboardData(HWND hWnd)
 	}
 	FreeDropFiles();
 
-	//ƒtƒHƒ‹ƒ_‚ÌƒpƒX
+	//ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹
 	hMemText = Clipboard_Set_TEXT(hWnd, NULL);
 	if(hMemText != NULL){
 		SetClipboardData(CF_TEXT, hMemText);
@@ -395,7 +395,7 @@ BOOL SetSubItemClipboardData(HWND hWnd)
 
 	StartDragSubItem
 
-	ListViewƒAƒCƒeƒ€‚Ìƒhƒ‰ƒbƒO•ƒhƒƒbƒv
+	ListViewã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—
 
 ******************************************************************************/
 
@@ -409,7 +409,7 @@ void StartDragSubItem(HWND hWnd)
 
 	DgdpItem = NULL;
 
-	//AltƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éê‡‚Íƒtƒ@ƒCƒ‹‚ğˆµ‚í‚È‚¢
+	//Altã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ‰±ã‚ãªã„
 	NoFileFlag = (GetAsyncKeyState(VK_MENU) < 0) ? TRUE : FALSE;
 
 	if(NoFileFlag == FALSE){
@@ -420,7 +420,7 @@ void StartDragSubItem(HWND hWnd)
 
 	WWWCDropFlag = FALSE;
 
-	//ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚Ìİ’è
+	//ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®è¨­å®š
 	cf[0] = WWWC_ClipFormat;
 	cf[1] = CF_TEXT;
 	cf[2] = CF_HDROP;
@@ -433,14 +433,14 @@ void StartDragSubItem(HWND hWnd)
 		FreeDropFiles();
 	}
 
-	//ƒAƒCƒeƒ€‚ªWWWCˆÈŠO‚ÉƒRƒs[‚³‚ê‚½ê‡
+	//ã‚¢ã‚¤ãƒ†ãƒ ãŒWWWCä»¥å¤–ã«ã‚³ãƒ”ãƒ¼ã•ã‚ŒãŸå ´åˆ
 	if(ret != -1 && ret != DROPEFFECT_NONE && WWWCDropFlag == FALSE){
 		switch(DnDReturnIcon)
 		{
-		case 0:			//‰Šú‰»‚µ‚È‚¢
+		case 0:			//åˆæœŸåŒ–ã—ãªã„
 			break;
 
-		case 1:			//‘I‘ğ‚ªˆêŒ‚Ìê‡‚Ì‚İƒAƒCƒRƒ“‚ğ‰Šú‰»
+		case 1:			//é¸æŠãŒä¸€ä»¶ã®å ´åˆã®ã¿ã‚¢ã‚¤ã‚³ãƒ³ã‚’åˆæœŸåŒ–
 			if(ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST)) != 1){
 				break;
 			}
@@ -451,7 +451,7 @@ void StartDragSubItem(HWND hWnd)
 			SetTrayInitIcon(WWWCWnd);
 			break;
 
-		case 2:			//ƒAƒCƒRƒ“‚ğ‰Šú‰»
+		case 2:			//ã‚¢ã‚¤ã‚³ãƒ³ã‚’åˆæœŸåŒ–
 			i = -1;
 			while((i = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), i, LVNI_SELECTED)) != -1){
 				InitSubIcon(hWnd, i);
@@ -469,7 +469,7 @@ void StartDragSubItem(HWND hWnd)
 
 	UpListViewHeaderNotifyProc
 
-	UPƒƒbƒZ[ƒW‚ÌƒŠƒXƒgƒrƒ…[ƒwƒbƒ_ƒƒbƒZ[ƒW
+	UPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ãƒ˜ãƒƒãƒ€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
 ******************************************************************************/
 
@@ -479,16 +479,16 @@ static LRESULT UpListViewHeaderNotifyProc(HWND hWnd, LPARAM lParam, struct TPLVC
 
 	switch(phd->hdr.code)
 	{
-	case HDN_ITEMCLICK:			//ƒwƒbƒ_‚ªƒNƒŠƒbƒN‚³‚ê‚½‚Ì‚Åƒ\[ƒg‚ğs‚¤
+	case HDN_ITEMCLICK:			//ãƒ˜ãƒƒãƒ€ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã®ã§ã‚½ãƒ¼ãƒˆã‚’è¡Œã†
 		WaitCursor(TRUE);
 
-		//ƒ\[ƒg
+		//ã‚½ãƒ¼ãƒˆ
 		LvUPSortFlag = (ABS(LvUPSortFlag) == (phd->iItem + 1))
 			? (LvUPSortFlag * -1) : (phd->iItem + 1);
 		SortColInfo = ColInfo;
 		ListView_SortItems(GetDlgItem(hWnd, WWWC_LIST), CompareFunc, LvUPSortFlag);
 
-		//ƒAƒCƒeƒ€î•ñ‚ÌÄİ’è
+		//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®å†è¨­å®š
 		GlobalFree(ViewUpItemList);
 		ViewUpItemListCnt = 0;
 		ViewUpItemList = ListView_SetListToMem(hWnd, &ViewUpItemListCnt);
@@ -504,7 +504,7 @@ static LRESULT UpListViewHeaderNotifyProc(HWND hWnd, LPARAM lParam, struct TPLVC
 
 	InitSubIcon
 
-	UPƒƒbƒZ[ƒW‚Æ–{‘Ì‚ÌƒAƒCƒRƒ“‚Ì‰Šú‰»
+	UPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¨æœ¬ä½“ã®ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -517,7 +517,7 @@ BOOL InitSubIcon(HWND hDlg, int Index)
 	if(SelItemInfo == NULL){
 		return FALSE;
 	}
-	//ƒAƒCƒeƒ€î•ñ‚ğæ“¾
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’å–å¾—
 	tpItemInfo = FindMainItem(WWWCWnd, SelItemInfo);
 	if(tpItemInfo != NULL){
 		Item_Initialize(WWWCWnd, tpItemInfo, FALSE);
@@ -533,7 +533,7 @@ BOOL InitSubIcon(HWND hDlg, int Index)
 
 	FindInitSubIcon
 
-	UPƒƒbƒZ[ƒW‚©‚çƒAƒCƒeƒ€‚ğŒŸõ‚µ‚ÄƒAƒCƒRƒ“‚Ì‰Šú‰»
+	UPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¤œç´¢ã—ã¦ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -564,7 +564,7 @@ BOOL FindInitSubIcon(HWND hDlg, struct TPITEM *tpItemInfo)
 
 	MainItemSelect
 
-	ƒƒbƒZ[ƒW‚ÆƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ÌƒŠƒXƒgƒrƒ…[‚Æ‚Ì‘I‘ğƒAƒCƒeƒ€‚Ì“¯Šú
+	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¨ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã¨ã®é¸æŠã‚¢ã‚¤ãƒ†ãƒ ã®åŒæœŸ
 
 ******************************************************************************/
 
@@ -574,7 +574,7 @@ BOOL MainItemSelect(HWND hWnd)
 	struct TPITEM *SelItemInfo;
 	int i;
 
-	//ƒtƒH[ƒJƒX‚ğ‚ÂƒAƒCƒeƒ€‚Ìæ“¾
+	//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æŒã¤ã‚¢ã‚¤ãƒ†ãƒ ã®å–å¾—
 	if((i = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_FOCUSED)) == -1){
 		return FALSE;
 	}
@@ -583,21 +583,21 @@ BOOL MainItemSelect(HWND hWnd)
 		MessageBox(hWnd, EMSG_NOMAINITEM, EMSG_MAINSHOW_TITLE, MB_ICONSTOP);
 		return FALSE;
 	}
-	//–{‘ÌƒcƒŠ[‚Ì‘I‘ğ
+	//æœ¬ä½“ãƒ„ãƒªãƒ¼ã®é¸æŠ
 	TreeView_SelectItem(GetDlgItem(WWWCWnd, WWWC_TREE), SelItemInfo->hItem);
 	FocusWnd = GetDlgItem(WWWCWnd, WWWC_LIST);
-	//–{‘ÌƒEƒBƒ“ƒhƒE‚Ì•\¦
+	//æœ¬ä½“ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤º
 	SendMessage(WWWCWnd, WM_COMMAND, ID_MENUITEM_REWINDOW, 0);
 
-	//–{‘Ì‚ÌƒAƒCƒeƒ€î•ñ‚ğæ“¾
+	//æœ¬ä½“ã®ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’å–å¾—
 	tpItemInfo = FindMainItem(WWWCWnd, SelItemInfo);
 	if(tpItemInfo == NULL){
 		return FALSE;
 	}
 
-	//‘S‚Ä‚ÌƒAƒCƒeƒ€‚Ì‘I‘ğó‘Ô‚ğ‰ğœ
+	//å…¨ã¦ã®ã‚¢ã‚¤ãƒ†ãƒ ã®é¸æŠçŠ¶æ…‹ã‚’è§£é™¤
 	ListView_SetItemState(GetDlgItem(WWWCWnd, WWWC_LIST), -1, 0, LVIS_SELECTED);
-	//w’èƒAƒCƒeƒ€‚ğ‘I‘ğó‘Ô‚É‚·‚é
+	//æŒ‡å®šã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 	i = ListView_GetMemToIndex(GetDlgItem(WWWCWnd, WWWC_LIST), tpItemInfo);
 	if(i != -1){
 		ListView_SetItemState(GetDlgItem(WWWCWnd, WWWC_LIST), i,
@@ -615,7 +615,7 @@ BOOL MainItemSelect(HWND hWnd)
 
 	MainItemProp
 
-	–{‘Ì‚ÌƒAƒCƒeƒ€‚ÌƒvƒƒpƒeƒB‚ğ•\¦
+	æœ¬ä½“ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¡¨ç¤º
 
 ******************************************************************************/
 
@@ -632,7 +632,7 @@ BOOL MainItemProp(HWND hWnd)
 	if(ListView_GetSelectedCount(GetDlgItem(hWnd, WWWC_LIST)) <= 0){
 		return FALSE;
 	}
-	//ƒtƒH[ƒJƒX‚ğ‚ÂƒAƒCƒeƒ€‚Ìæ“¾
+	//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æŒã¤ã‚¢ã‚¤ãƒ†ãƒ ã®å–å¾—
 	i = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_FOCUSED);
 	if(ListView_GetItemState(GetDlgItem(hWnd, WWWC_LIST), i, LVIS_SELECTED) != LVIS_SELECTED){
 		i = ListView_GetNextItem(GetDlgItem(hWnd, WWWC_LIST), -1, LVNI_SELECTED);
@@ -643,7 +643,7 @@ BOOL MainItemProp(HWND hWnd)
 		return FALSE;
 	}
 
-	//–{‘Ì‚ÌƒAƒCƒeƒ€î•ñ‚ğæ“¾
+	//æœ¬ä½“ã®ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’å–å¾—
 	tpTreeInfo = (struct TPTREE *)TreeView_GetlParam(GetDlgItem(WWWCWnd, WWWC_TREE),
 		SelItemInfo->hItem);
 	if(tpTreeInfo == NULL){
@@ -655,18 +655,18 @@ BOOL MainItemProp(HWND hWnd)
 		return FALSE;
 	}
 
-	//ƒvƒƒpƒeƒB—pƒAƒCƒeƒ€‚Ìì¬
+	//ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ç”¨ã‚¢ã‚¤ãƒ†ãƒ ã®ä½œæˆ
 	PropItemInfo = Item_Copy(tpItemInfo);
 	if(PropItemInfo == NULL){
 		return FALSE;
 	}
 
 	if(PropItemInfo->Comment != NULL){
-		//ƒRƒƒ“ƒg‚Ì‰üsƒR[ƒh‚ğ•ÏŠ·
+		//ã‚³ãƒ¡ãƒ³ãƒˆã®æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›
 		EscToCode(PropItemInfo->Comment);
 	}
 
-	//ƒvƒƒpƒeƒB•\¦
+	//ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£è¡¨ç¤º
 	tpTreeInfo->MemFlag++;
 	ret = ShowItemProp(hWnd, PropItemInfo);
 	if(IsTreeItem(WWWCWnd, PropItemInfo->hItem) == FALSE){
@@ -683,13 +683,13 @@ BOOL MainItemProp(HWND hWnd)
 	}
 
 	if(PropItemInfo->Comment != NULL){
-		//ƒRƒƒ“ƒg‚Ì‰üsƒR[ƒh‚ğ•ÏŠ·
+		//ã‚³ãƒ¡ãƒ³ãƒˆã®æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’å¤‰æ›
 		p = CodeToEsc(PropItemInfo->Comment);
 		GlobalFree(PropItemInfo->Comment);
 		PropItemInfo->Comment = p;
 	}
 
-	//SubƒEƒBƒ“ƒhƒE‚ÌƒAƒCƒeƒ€‚É”½‰f
+	//Subã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¢ã‚¤ãƒ†ãƒ ã«åæ˜ 
 	i = ListView_GetMemToIndex(GetDlgItem(hWnd, WWWC_LIST), SelItemInfo);
 	if(i != -1){
 		FreeItemInfo(SelItemInfo, FALSE);
@@ -700,10 +700,10 @@ BOOL MainItemProp(HWND hWnd)
 		UpdateWindow(GetDlgItem(hWnd, WWWC_LIST));
 	}
 
-	//–{‘Ì‚ÌƒAƒCƒeƒ€‚É”½‰f
+	//æœ¬ä½“ã®ã‚¢ã‚¤ãƒ†ãƒ ã«åæ˜ 
 	for(i = 0; i < tpTreeInfo->ItemListCnt; i++){
 		if(tpItemInfo == *(tpTreeInfo->ItemList + i)){
-			//DLL‚ªŠÇ—‚·‚éî•ñ‚Í–{‘Ì‚ÌƒAƒCƒeƒ€‚ÌŒ»İ‚Ì’l‚ğˆø‚«Œp‚®
+			//DLLãŒç®¡ç†ã™ã‚‹æƒ…å ±ã¯æœ¬ä½“ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ç¾åœ¨ã®å€¤ã‚’å¼•ãç¶™ã
 			PropItemInfo->IconStatus = tpItemInfo->IconStatus;
 			PropItemInfo->Soc1 = tpItemInfo->Soc1;
 			PropItemInfo->Soc2 = tpItemInfo->Soc2;
@@ -729,7 +729,7 @@ BOOL MainItemProp(HWND hWnd)
 		return FALSE;
 	}
 
-	//–{‘Ì‚ÌƒŠƒXƒgƒrƒ…[‚ÌXV
+	//æœ¬ä½“ã®ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®æ›´æ–°
 	if(tpItemInfo->hItem == TreeView_GetSelection(GetDlgItem(WWWCWnd, WWWC_TREE))){
 		i = ListView_GetMemToIndex(GetDlgItem(WWWCWnd, WWWC_LIST), tpItemInfo);
 		if(i != -1){
@@ -750,7 +750,7 @@ BOOL MainItemProp(HWND hWnd)
 
 	InitializeUpMessage
 
-	UPƒƒbƒZ[ƒW‚Ì‰Šú‰»
+	UPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -781,16 +781,16 @@ static void InitializeUpMessage(HWND hDlg)
 		SetWindowPos(hDlg, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
 	}
 
-	//ƒRƒ“ƒgƒ[ƒ‹‚ÌˆÊ’u‚ğƒZƒbƒg
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ä½ç½®ã‚’ã‚»ãƒƒãƒˆ
 	SetUpMessageControls(hDlg);
 
-	//ƒŠƒXƒgƒrƒ…[‚ğ‰Šú‰»
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‚’åˆæœŸåŒ–
 	SetWindowLong(GetDlgItem(hDlg, WWWC_LIST), GWL_STYLE,
 		GetWindowLong(GetDlgItem(hDlg, WWWC_LIST), GWL_STYLE) | LVS_SHOWSELALWAYS);
-	//ƒŠƒXƒgƒrƒ…[‚ÌŠg’£ƒXƒ^ƒCƒ‹‚ğİ’è
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®æ‹¡å¼µã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
 	SendDlgItemMessage(hDlg, WWWC_LIST, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
 		LvUPExStyle | SendDlgItemMessage(hDlg, WWWC_LIST, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0));
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒtƒHƒ“ƒgİ’è
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒ•ã‚©ãƒ³ãƒˆè¨­å®š
 	if(ListFont != NULL){
 		SendMessage(GetDlgItem(hDlg, WWWC_LIST), WM_SETFONT, (WPARAM)ListFont, MAKELPARAM(TRUE, 0));
 	}
@@ -808,7 +808,7 @@ static void InitializeUpMessage(HWND hDlg)
 
 	CloseUpMessage
 
-	UPƒƒbƒZ[ƒW‚ÌI—¹ˆ—
+	UPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®çµ‚äº†å‡¦ç†
 
 ******************************************************************************/
 
@@ -825,7 +825,7 @@ static void CloseUpMessage(HWND hDlg)
 
 	ListView_DeleteAllItems(GetDlgItem(hDlg, WWWC_LIST));
 
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒJƒ‰ƒ€‚ÌƒTƒCƒY‚ğæ“¾
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ©ãƒ ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
 	for(i = 0; i < LvUPColCnt; i++){
 		LvUPColSize[i] = ListView_GetColumnWidth(GetDlgItem(hDlg, WWWC_LIST), i);
 	}
@@ -841,7 +841,7 @@ static void CloseUpMessage(HWND hDlg)
 
 	ShowUpMessage
 
-	UPƒƒbƒZ[ƒW‚Ì•\¦
+	UPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è¡¨ç¤º
 
 ******************************************************************************/
 
@@ -854,55 +854,55 @@ static void ShowUpMessage(HWND hDlg)
 	int UpItemCnt;
 	BOOL UpMsgFlag;
 
-	//XVƒAƒCƒeƒ€‚Ì‘¶İ‚ğ¦‚·ƒtƒ‰ƒO
+	//æ›´æ–°ã‚¢ã‚¤ãƒ†ãƒ ã®å­˜åœ¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
 	UpMsgFlag = (UpItemListCnt == 0) ? TRUE : FALSE;
 
-	if(ClearTime == 1){		//XVƒAƒCƒeƒ€‚ğ‰ğ•ú‚·‚éİ’è
+	if(ClearTime == 1){		//æ›´æ–°æ™‚ã‚¢ã‚¤ãƒ†ãƒ ã‚’è§£æ”¾ã™ã‚‹è¨­å®š
 		switch(CheckUPItemClear)
 		{
-		//–³ğŒ
+		//ç„¡æ¡ä»¶
 		case 0:
-			//‘O‰ñ‚ÌXVƒAƒCƒeƒ€î•ñ‚ğ‰ğ•ú
+			//å‰å›ã®æ›´æ–°ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’è§£æ”¾
 			SendMessage(hDlg, WM_UP_FREE, 0, 0);
 			break;
 
-		//ƒEƒBƒ“ƒhƒE‚ª•\¦ó‘Ô‚Ì‚Æ‚«
+		//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¡¨ç¤ºçŠ¶æ…‹ã®ã¨ã
 		case 1:
 			if(IsWindowVisible(hDlg) == 0){
-				//‘O‰ñ‚ÌXVƒAƒCƒeƒ€î•ñ‚ğ‰ğ•ú
+				//å‰å›ã®æ›´æ–°ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã‚’è§£æ”¾
 				SendMessage(hDlg, WM_UP_FREE, 0, 0);
 			}
 			break;
 
-		//‹ó‚É‚µ‚È‚¢
+		//ç©ºã«ã—ãªã„
 		case 2:
 			break;
 		}
 	}
 
-	//ƒEƒBƒ“ƒhƒE‚ª•\¦‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍƒTƒCƒY‚Ì‰Šú‰»‚ğs‚¤
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã‚µã‚¤ã‚ºã®åˆæœŸåŒ–ã‚’è¡Œã†
 	if(IsWindowVisible(hDlg) == 0){
 		SendMessage(hDlg, WM_UP_WININI, 0, 0);
 	}
 
-	//XVƒƒbƒZ[ƒW•\¦
+	//æ›´æ–°ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
 	if(NoUpMsg == 1 || UPMsg == 1){
 		ShowWindow(hDlg, SW_SHOWNOACTIVATE);
 		if(UPMsgTop == 0){
-			//”ñƒAƒNƒeƒBƒu‚Å‘O–Ê‚É‚Á‚Ä‚­‚é
+			//éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã§å‰é¢ã«æŒã£ã¦ãã‚‹
 			SetWindowPos(hDlg, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
 			SetWindowPos(hDlg, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
 		}
 	}
 
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒAƒCƒeƒ€‚ğ‚·‚×‚ÄÁ‹
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’ã™ã¹ã¦æ¶ˆå»
 	ListView_DeleteAllItems(GetDlgItem(hDlg, WWWC_LIST));
 
-	//UPƒAƒCƒeƒ€‚Ìƒƒ‚ƒŠ‚ğì¬
+	//UPã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ¡ãƒ¢ãƒªã‚’ä½œæˆ
 	CopyUPItem();
 	ListView_SetItemCount(GetDlgItem(hDlg, WWWC_LIST), ViewUpItemListCnt);
 
-	//ƒŠƒXƒgƒrƒ…[‚ÉƒAƒCƒeƒ€‚ğ’Ç‰ÁiƒR[ƒ‹ƒoƒbƒNƒAƒCƒeƒ€j
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ ï¼ˆã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚¢ã‚¤ãƒ†ãƒ ï¼‰
 	UpItemCnt = 0;
 	for(i = 0; i < ViewUpItemListCnt; i++){
 		if((*(ViewUpItemList + i)) == NULL){
@@ -914,36 +914,36 @@ static void ShowUpMessage(HWND hDlg)
 		UpItemCnt++;
 	}
 
-	//©“®ƒ\[ƒg
+	//è‡ªå‹•ã‚½ãƒ¼ãƒˆ
 	if(CheckUPItemAutoSort == 1){
 		SortColInfo = upColumnInfo;
 		ListView_SortItems(GetDlgItem(hDlg, WWWC_LIST), CompareFunc, LvUPSortFlag);
 
-		//ƒAƒCƒeƒ€î•ñ‚ÌÄİ’è
+		//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®å†è¨­å®š
 		GlobalFree(ViewUpItemList);
 		ViewUpItemListCnt = 0;
 		ViewUpItemList = ListView_SetListToMem(hDlg, &ViewUpItemListCnt);
 	}
 	ListView_SetItemState(GetDlgItem(hDlg, WWWC_LIST), 0, LVIS_FOCUSED, LVIS_FOCUSED);
 
-	//XVƒƒbƒZ[ƒW‚ğ•\¦
+	//æ›´æ–°ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
 	GetDateTime(fDay, fTime);
 	if(UpMsgFlag == TRUE){
-		//XVƒAƒCƒeƒ€‚ª‘¶İ‚µ‚È‚¢ê‡
+		//æ›´æ–°ã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã—ãªã„å ´åˆ
 		if(UpItemCnt == 0){
-			//•\¦‚ª0Œ‚Ìê‡
+			//è¡¨ç¤ºãŒ0ä»¶ã®å ´åˆ
 			wsprintf(buf, STR_ZEROMSG, fDay, fTime);
 		}else{
-			//•\¦‚ª‚ ‚éê‡
+			//è¡¨ç¤ºãŒã‚ã‚‹å ´åˆ
 			wsprintf(buf, STR_NOTUPMSG, UpItemCnt, fDay, fTime);
 		}
 	}else{
-		//XVƒAƒCƒeƒ€‚ª‘¶İ‚·‚éê‡
+		//æ›´æ–°ã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã™ã‚‹å ´åˆ
 		wsprintf(buf, STR_UPMSG, UpItemCnt, fDay, fTime);
 	}
 	SetWindowText(GetDlgItem(hDlg, IDC_STATIC_MSG), buf);
 
-	//ƒAƒNƒeƒBƒu‚É‚·‚éİ’è
+	//ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹è¨­å®š
 	if(UPMsg == 1 && UPActive == 1){
 		ShowWindow(hDlg, SW_SHOW);
 		_SetForegroundWindow(hDlg);
@@ -955,7 +955,7 @@ static void ShowUpMessage(HWND hDlg)
 
 	SizeInitUpMessage
 
-	UPƒƒbƒZ[ƒW‚ÌƒTƒCƒY‚Ì‰Šú‰»
+	UPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ã‚µã‚¤ã‚ºã®åˆæœŸåŒ–
 
 ******************************************************************************/
 
@@ -964,15 +964,15 @@ static void SizeInitUpMessage(HWND hDlg, int Size, int Pos, int Expand)
 	RECT DesktopRect, WindowRect, lvRect, StRect, BnRect, WinRec;
 	int i, BnSize;
 
-	GetWindowRect(GetDesktopWindow(), (LPRECT)&DesktopRect);	//ƒfƒXƒNƒgƒbƒv‚ÌƒTƒCƒY
-	GetWindowRect(hDlg, (LPRECT)&WindowRect);				//ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY
+	GetWindowRect(GetDesktopWindow(), (LPRECT)&DesktopRect);	//ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã®ã‚µã‚¤ã‚º
+	GetWindowRect(hDlg, (LPRECT)&WindowRect);				//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚º
 	GetWindowRect(GetDlgItem(hDlg, IDC_STATIC_MSG), (LPRECT)&StRect);
 
 	GetWindowRect(GetDlgItem(hDlg, IDC_STATIC_BANNER), (LPRECT)&BnRect);
 	BnSize = (BnRect.bottom - BnRect.top < 32) ? 32 : BnRect.bottom - BnRect.top;
 
 	if(Size == 1 && (UPWinBottom != 0 && UPWinRight != 0)){
-		//‘O‰ñ‚ÌƒTƒCƒY‚É•\¦
+		//å‰å›ã®ã‚µã‚¤ã‚ºã«è¡¨ç¤º
 		SetWindowPos(hDlg, 0, 0, 0, UPWinRight, WindowRect.bottom - WindowRect.top,
 			SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOMOVE);
 	}else{
@@ -983,7 +983,7 @@ static void SizeInitUpMessage(HWND hDlg, int Size, int Pos, int Expand)
 			SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOMOVE);
 	}
 
-	GetWindowRect(hDlg, (LPRECT)&WindowRect);				//ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY
+	GetWindowRect(hDlg, (LPRECT)&WindowRect);				//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚º
 	GetClientRect(hDlg, (LPRECT)&WinRec);
 	GetWindowRect(GetDlgItem(hDlg, WWWC_LIST), (LPRECT)&lvRect);
 
@@ -991,12 +991,12 @@ static void SizeInitUpMessage(HWND hDlg, int Size, int Pos, int Expand)
 		WinRec.right, UPWinBottom, SWP_NOACTIVATE | SWP_NOZORDER);
 	GetWindowRect(GetDlgItem(hDlg, WWWC_LIST), (LPRECT)&lvRect);
 
-	//ƒEƒBƒ“ƒhƒE‚ÌcƒTƒCƒY‚ğƒZƒbƒg
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç¸¦ã‚µã‚¤ã‚ºã‚’ã‚»ãƒƒãƒˆ
 	i = lvRect.top - WindowRect.top + GetSystemMetrics(SM_CYSIZEFRAME);
 	if(Expand == 1){
-		//ƒEƒBƒ“ƒhƒE‚ğ“WŠJó‘Ô‚É‚·‚éê‡‚ÍAƒ{ƒ^ƒ“‚Ì–¼‘O‚ğ•ÏX
+		//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’å±•é–‹çŠ¶æ…‹ã«ã™ã‚‹å ´åˆã¯ã€ãƒœã‚¿ãƒ³ã®åå‰ã‚’å¤‰æ›´
 		SetWindowText(GetDlgItem(hDlg, IDC_BUTTON_INFO), BTN_UPINFO_OFF);
-		//ƒEƒBƒ“ƒhƒE‚ÌcƒTƒCƒY‚ÉƒŠƒXƒgƒrƒ…[‚ÌƒTƒCƒY‚ğ‰Á‚¦‚é
+		//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç¸¦ã‚µã‚¤ã‚ºã«ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚µã‚¤ã‚ºã‚’åŠ ãˆã‚‹
 		i = lvRect.bottom - WindowRect.top + GetSystemMetrics(SM_CYSIZEFRAME);
 		ShowWindow(GetDlgItem(hDlg, WWWC_LIST), SW_SHOW);
 	}else{
@@ -1004,7 +1004,7 @@ static void SizeInitUpMessage(HWND hDlg, int Size, int Pos, int Expand)
 		ShowWindow(GetDlgItem(hDlg, WWWC_LIST), SW_HIDE);
 	}
 
-	//ƒZƒ“ƒ^ƒŠƒ“ƒO‚Ì‚½‚ß‚ÉˆêƒEƒBƒ“ƒhƒEƒTƒCƒY•ÏX
+	//ã‚»ãƒ³ã‚¿ãƒªãƒ³ã‚°ã®ãŸã‚ã«ä¸€æ™‚ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå¤‰æ›´
 	if(UPWinExpandCenter == 1){
 		SetWindowPos(hDlg, 0, 0, 0,
 			WindowRect.right - WindowRect.left,
@@ -1014,14 +1014,14 @@ static void SizeInitUpMessage(HWND hDlg, int Size, int Pos, int Expand)
 		SetWindowPos(hDlg, 0, 0, 0, WindowRect.right - WindowRect.left, i,
 			SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOMOVE);
 	}
-	GetWindowRect(hDlg, (LPRECT)&WindowRect);				//ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY
+	GetWindowRect(hDlg, (LPRECT)&WindowRect);				//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚º
 
 	if(Pos == 1 && (UPWinLeft != 0 && UPWinTop != 0)){
-		//‘O‰ñ‚Ì•\¦ˆÊ’u‚É•\¦
+		//å‰å›ã®è¡¨ç¤ºä½ç½®ã«è¡¨ç¤º
 		SetWindowPos(hDlg, 0, UPWinLeft, UPWinTop, WindowRect.right - WindowRect.left, i,
 			SWP_NOACTIVATE | SWP_NOZORDER);
 	}else{
-		//ƒZƒ“ƒ^ƒŠƒ“ƒO‚µ‚ÄƒfƒtƒHƒ‹ƒg‚ÌƒTƒCƒY‚Å•\¦
+		//ã‚»ãƒ³ã‚¿ãƒªãƒ³ã‚°ã—ã¦ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚µã‚¤ã‚ºã§è¡¨ç¤º
 		SetWindowPos(hDlg, 0,
 			(DesktopRect.right / 2) - ((WindowRect.right - WindowRect.left) / 2),
 			(DesktopRect.bottom / 2) - ((WindowRect.bottom - WindowRect.top) / 2),
@@ -1034,7 +1034,7 @@ static void SizeInitUpMessage(HWND hDlg, int Size, int Pos, int Expand)
 
 	SetUpMessageControls
 
-	UPƒƒbƒZ[ƒW“à‚ÌƒRƒ“ƒgƒ[ƒ‹‚ÌƒTƒCƒYEˆÊ’u‚ğ•ÏX
+	UPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å†…ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ã‚µã‚¤ã‚ºãƒ»ä½ç½®ã‚’å¤‰æ›´
 
 ******************************************************************************/
 
@@ -1046,7 +1046,7 @@ static void SetUpMessageControls(HWND hDlg)
 
 	GetClientRect(hDlg, (LPRECT)&WinRec);
 
-	//ƒ{ƒ^ƒ“‚ÌˆÊ’uİ’è
+	//ãƒœã‚¿ãƒ³ã®ä½ç½®è¨­å®š
 	MoveWindow(GetDlgItem(hDlg, IDC_BUTTON_VIEW),
 		WinRec.right - BTN_LEFT, BTN_VIEW_TOP, BTN_RIGHT, BTN_BOTTOM, TRUE);
 	MoveWindow(GetDlgItem(hDlg, IDC_BUTTON_WAIT),
@@ -1054,7 +1054,7 @@ static void SetUpMessageControls(HWND hDlg)
 	MoveWindow(GetDlgItem(hDlg, IDC_BUTTON_INFO),
 		WinRec.right - BTN_LEFT, BTN_INFO_TOP, BTN_RIGHT, BTN_BOTTOM, TRUE);
 
-	//ƒEƒBƒ“ƒhƒE‚Ì‚‚³İ’è
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®é«˜ã•è¨­å®š
 	GetWindowText(GetDlgItem(hDlg, IDC_BUTTON_INFO), buf, BUFSIZE - 1);
 	if(lstrcmp(buf, BTN_UPINFO_OFF) == 0){
 		GetWindowRect(GetDlgItem(hDlg, IDC_STATIC_MSG), (LPRECT)&StRect);
@@ -1073,11 +1073,11 @@ static void SetUpMessageControls(HWND hDlg)
 	}
 	UpdateWindow(GetDlgItem(hDlg, WWWC_LIST));
 
-	//ƒƒbƒZ[ƒW‚ÌÄ•`‰æ
+	//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å†æç”»
 	InvalidateRect(GetDlgItem(hDlg, IDC_STATIC_MSG), NULL, FALSE);
 	UpdateWindow(GetDlgItem(hDlg, IDC_STATIC_MSG));
 
-	//ƒ{ƒ^ƒ“‚ÌÄ•`‰æ
+	//ãƒœã‚¿ãƒ³ã®å†æç”»
 	InvalidateRect(GetDlgItem(hDlg, IDC_BUTTON_VIEW), NULL, FALSE);
 	UpdateWindow(GetDlgItem(hDlg, IDC_BUTTON_VIEW));
 	InvalidateRect(GetDlgItem(hDlg, IDC_BUTTON_WAIT), NULL, FALSE);
@@ -1091,7 +1091,7 @@ static void SetUpMessageControls(HWND hDlg)
 
 	SizeUpMessage
 
-	UPƒƒbƒZ[ƒW‚ÌƒTƒCƒY•ÏX
+	UPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ã‚µã‚¤ã‚ºå¤‰æ›´
 
 ******************************************************************************/
 
@@ -1105,7 +1105,7 @@ static void SizeUpMessage(HWND hDlg, WPARAM wParam)
 	}
 	GetWindowText(GetDlgItem(hDlg, IDC_BUTTON_INFO), buf, BUFSIZE - 1);
 	if(wParam == SIZE_RESTORED && MaxWndFlag == TRUE && lstrcmp(buf, BTN_UPINFO_OFF) == 0){
-		//Ú×•\¦‚ÅŒ³‚ÌƒTƒCƒY‚É–ß‚Á‚½ê‡
+		//è©³ç´°è¡¨ç¤ºã§å…ƒã®ã‚µã‚¤ã‚ºã«æˆ»ã£ãŸå ´åˆ
 		MaxWndFlag = FALSE;
 		GetWindowRect(hDlg, (LPRECT)&WindowRect);
 		GetWindowRect(GetDlgItem(hDlg, WWWC_LIST), (LPRECT)&lvRect);
@@ -1118,19 +1118,19 @@ static void SizeUpMessage(HWND hDlg, WPARAM wParam)
 			SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOMOVE);
 
 	}else if(wParam == SIZE_RESTORED && MaxWndFlag == TRUE && lstrcmp(buf, BTN_UPINFO_ON) == 0){
-		//Ú×”ñ•\¦‚ÅŒ³‚ÌƒTƒCƒY‚É–ß‚Á‚½ê‡
+		//è©³ç´°éè¡¨ç¤ºã§å…ƒã®ã‚µã‚¤ã‚ºã«æˆ»ã£ãŸå ´åˆ
 		MaxWndFlag = FALSE;
 		GetWindowRect(GetDlgItem(hDlg, WWWC_LIST), (LPRECT)&lvRect);
 		SetWindowPos(GetDlgItem(hDlg, WWWC_LIST), 0, 0, 0,
 			lvRect.right - lvRect.left, UPWinBottom, SWP_NOZORDER | SWP_NOMOVE);
 
 	}else if(wParam == SIZE_MAXIMIZED && MaxWndFlag == FALSE){
-		//Å‘å‰»‚³‚ê‚½ê‡
+		//æœ€å¤§åŒ–ã•ã‚ŒãŸå ´åˆ
 		MaxWndFlag = TRUE;
 		SetWindowText(GetDlgItem(hDlg, IDC_BUTTON_INFO), BTN_UPINFO_OFF);
 		ShowWindow(GetDlgItem(hDlg, WWWC_LIST), SW_SHOW);
 	}
-	//ƒRƒ“ƒgƒ[ƒ‹‚ÌˆÊ’u‚ğƒZƒbƒg
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ä½ç½®ã‚’ã‚»ãƒƒãƒˆ
 	SetUpMessageControls(hDlg);
 }
 
@@ -1139,7 +1139,7 @@ static void SizeUpMessage(HWND hDlg, WPARAM wParam)
 
 	RefreshListView
 
-	UPƒƒbƒZ[ƒW‚Æ–{‘Ì‚Ì•`‰æ‚ÌXV
+	UPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¨æœ¬ä½“ã®æç”»ã®æ›´æ–°
 
 ******************************************************************************/
 
@@ -1162,7 +1162,7 @@ void RefreshListView(HWND hDlg)
 
 	ViewUpInfo
 
-	Ú×‚Ì•\¦ó‘Ô‚ğØ‚è‘Ö‚¦‚é
+	è©³ç´°ã®è¡¨ç¤ºçŠ¶æ…‹ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 
 ******************************************************************************/
 
@@ -1172,25 +1172,25 @@ static void ViewUpInfo(HWND hDlg)
 	char buf[BUFSIZE];
 	int i, j;
 
-	GetWindowRect(hDlg, (LPRECT)&WindowRect);					//ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY
-	GetWindowRect(GetDlgItem(hDlg, WWWC_LIST), (LPRECT)&lvRect);	//ƒŠƒXƒgƒrƒ…[‚ÌƒTƒCƒY
+	GetWindowRect(hDlg, (LPRECT)&WindowRect);					//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚º
+	GetWindowRect(GetDlgItem(hDlg, WWWC_LIST), (LPRECT)&lvRect);	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚µã‚¤ã‚º
 
 	GetWindowText(GetDlgItem(hDlg, IDC_BUTTON_INFO), buf, BUFSIZE - 1);
 	if(lstrcmp(buf, BTN_UPINFO_OFF) == 0){
-		//Ú×‚ğ‰B‚·
+		//è©³ç´°ã‚’éš ã™
 		SetWindowText(GetDlgItem(hDlg, IDC_BUTTON_INFO), BTN_UPINFO_ON);
 		ShowWindow(GetDlgItem(hDlg, WWWC_LIST), SW_HIDE);
 
-		//ƒEƒBƒ“ƒhƒE‚ÌcƒTƒCƒY‚ğƒZƒbƒg
+		//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç¸¦ã‚µã‚¤ã‚ºã‚’ã‚»ãƒƒãƒˆ
 		i = lvRect.top - WindowRect.top + GetSystemMetrics(SM_CYSIZEFRAME);
 
 	}else{
-		//Ú×‚ğ•\¦
-		//ƒEƒBƒ“ƒhƒE‚ğ“WŠJó‘Ô‚É‚·‚éê‡‚ÍAƒ{ƒ^ƒ“‚Ì–¼‘O‚ğ•ÏX
+		//è©³ç´°ã‚’è¡¨ç¤º
+		//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’å±•é–‹çŠ¶æ…‹ã«ã™ã‚‹å ´åˆã¯ã€ãƒœã‚¿ãƒ³ã®åå‰ã‚’å¤‰æ›´
 		SetWindowText(GetDlgItem(hDlg, IDC_BUTTON_INFO), BTN_UPINFO_OFF);
 		ShowWindow(GetDlgItem(hDlg, WWWC_LIST), SW_SHOW);
 
-		//™X‚É•\¦
+		//å¾ã€…ã«è¡¨ç¤º
 		i = lvRect.bottom - WindowRect.top + GetSystemMetrics(SM_CYSIZEFRAME);
 		if(UPAni == 1){
 			SizeFlag = TRUE;
@@ -1201,7 +1201,7 @@ static void ViewUpInfo(HWND hDlg)
 			SizeFlag = FALSE;
 		}
 	}
-	//ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY‚ğİ’è
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’è¨­å®š
 	SetWindowPos(hDlg, 0, 0, 0,WindowRect.right - WindowRect.left, i,
 		SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOMOVE);
 	SetUpMessageControls(hDlg);
@@ -1212,7 +1212,7 @@ static void ViewUpInfo(HWND hDlg)
 
 	ExeAction
 
-	ƒvƒƒgƒRƒ‹–ˆ‚Ìˆ—‚¨‚æ‚Ñƒc[ƒ‹‚ÌÀs
+	ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯ã®å‡¦ç†ãŠã‚ˆã³ãƒ„ãƒ¼ãƒ«ã®å®Ÿè¡Œ
 
 ******************************************************************************/
 
@@ -1223,7 +1223,7 @@ void ExeAction(HWND hDlg, WPARAM wParam)
 	int i;
 	int id;
 
-	//ƒvƒƒgƒRƒ‹–ˆ‚Ìˆ—
+	//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯ã®å‡¦ç†
 	if(LOWORD(wParam) >= ID_MENU_ACTION && LOWORD(wParam) < (ID_MENU_ACTION + MENU_MAX)){
 		Item_Open(hDlg, LOWORD(wParam) - ID_MENU_ACTION);
 		return;
@@ -1234,7 +1234,7 @@ void ExeAction(HWND hDlg, WPARAM wParam)
 		return;
 	}
 
-	//w’èƒvƒƒgƒRƒ‹‚ÌƒAƒCƒeƒ€‚ğ’Šo
+	//æŒ‡å®šãƒ—ãƒ­ãƒˆã‚³ãƒ«ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’æŠ½å‡º
 	TmpItemList = ListView_SelectItemToMem(GetDlgItem(hDlg, WWWC_LIST), &i);
 	if(TmpItemList != NULL){
 		ToolItemList = Item_ProtocolSelect(TmpItemList, &i, ToolList[id].Protocol);
@@ -1243,26 +1243,26 @@ void ExeAction(HWND hDlg, WPARAM wParam)
 	if(ToolItemList == NULL){
 		return;
 	}
-	//–{‘Ì‚ÌƒAƒCƒeƒ€‚Æ“¯Šú
+	//æœ¬ä½“ã®ã‚¢ã‚¤ãƒ†ãƒ ã¨åŒæœŸ
 	WaitCursor(TRUE);
 	Item_CopyMainContent(WWWCWnd, ToolItemList, i);
 	WaitCursor(FALSE);
 
-	//ƒc[ƒ‹‚ÌÀs
+	//ãƒ„ãƒ¼ãƒ«ã®å®Ÿè¡Œ
 	SubItemExecTool(hDlg, id, ToolItemList, i, TOOL_EXEC_ITEMMENU, 0);
 
 	WaitCursor(TRUE);
-	//XVƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚éƒAƒCƒeƒ€‚ğ–{‘Ì‚É‘‚«–ß‚·
+	//æ›´æ–°ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’æœ¬ä½“ã«æ›¸ãæˆ»ã™
 	Item_CopyMainRefreshContent(WWWCWnd, ToolItemList, i);
 	if(ToolList[id].Action & TOOL_EXEC_INITITEM){
-		//ƒAƒCƒRƒ“‚Ì‰Šú‰»
+		//ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 		Item_MainItemIni(WWWCWnd, hDlg, ToolItemList, i);
 	}
-	//ƒAƒCƒeƒ€î•ñ‚Ì‰ğ•ú
+	//ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±ã®è§£æ”¾
 	GlobalFree(ToolItemList);
 	CallTreeItem(WWWCWnd, RootItem, (FARPROC)TreeView_FreeItem, 1);
 
-	//•\¦‚ÌXV
+	//è¡¨ç¤ºã®æ›´æ–°
 	RefreshListView(hDlg);
 	WaitCursor(FALSE);
 }
@@ -1272,7 +1272,7 @@ void ExeAction(HWND hDlg, WPARAM wParam)
 
 	SetBannerSubClass
 
-	ƒEƒBƒ“ƒhƒE‚ÌƒTƒuƒNƒ‰ƒX‰»
+	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µãƒ–ã‚¯ãƒ©ã‚¹åŒ–
 
 ******************************************************************************/
 
@@ -1286,7 +1286,7 @@ static void SetBannerSubClass(HWND hWnd)
 
 	DelBannerSubClass
 
-	ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚ğ•W€‚Ì‚à‚Ì‚É–ß‚·
+	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã‚’æ¨™æº–ã®ã‚‚ã®ã«æˆ»ã™
 
 ******************************************************************************/
 
@@ -1301,7 +1301,7 @@ static void DelBannerSubClass(HWND hWnd)
 
 	SubClassBannerProc
 
-	ƒEƒBƒ“ƒhƒE‚ÌƒTƒuƒNƒ‰ƒX‰»
+	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µãƒ–ã‚¯ãƒ©ã‚¹åŒ–
 
 ******************************************************************************/
 
@@ -1321,7 +1321,7 @@ static LRESULT CALLBACK SubClassBannerProc(HWND hWnd, UINT msg, WPARAM wParam,LP
 
 	UpMessageProc
 
-	UPƒƒbƒZ[ƒW‚ÌƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	UPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 
 ******************************************************************************/
 
@@ -1343,12 +1343,12 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			ShowWindow(hDlg, SW_RESTORE);
 		}
 
-		//ƒTƒCƒY‚Ì‰Šú‰»
+		//ã‚µã‚¤ã‚ºã®åˆæœŸåŒ–
 		SizeFlag = TRUE;
 		SizeInitUpMessage(hDlg, UPWinSizeSave, UPWinPosSave, UPMsgExpand);
 		SizeFlag = FALSE;
 
-		//ƒRƒ“ƒgƒ[ƒ‹‚ÌˆÊ’u‚ğƒZƒbƒg
+		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ä½ç½®ã‚’ã‚»ãƒƒãƒˆ
 		SetUpMessageControls(hDlg);
 		break;
 
@@ -1372,7 +1372,7 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_SIZING:
-		//Ú×‚ª‰B‚³‚ê‚Ä‚¢‚éê‡‚ÍƒTƒCƒY‚ğ§ŒÀ
+		//è©³ç´°ãŒéš ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚µã‚¤ã‚ºã‚’åˆ¶é™
 		GetWindowText(GetDlgItem(hDlg, IDC_BUTTON_INFO), buf, BUFSIZE - 1);
 		if(lstrcmp(buf, BTN_UPINFO_ON) == 0){
 			GetWindowRect(GetDlgItem(hDlg, WWWC_LIST), (LPRECT)&lvRect);
@@ -1382,7 +1382,7 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	case WM_EXITSIZEMOVE:
 		if(IsWindowVisible(hDlg) != 0 && IsIconic(hDlg) == 0 && IsZoomed(hDlg) == 0){
-			//ƒEƒBƒ“ƒhƒE‚ÌˆÊ’u‚ğ•Û‘¶
+			//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½ç½®ã‚’ä¿å­˜
 			GetWindowRect(hDlg, (LPRECT)&WindowRect);
 			GetWindowRect(GetDlgItem(hDlg, WWWC_LIST), (LPRECT)&lvRect);
 			UPWinLeft = WindowRect.left;
@@ -1400,7 +1400,7 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_TIMER:
 		switch(wParam)
 		{
-		//Ÿ‚ÌƒAƒCƒeƒ€‚ÉƒtƒH[ƒJƒX‚ğˆÚ“®‚·‚é
+		//æ¬¡ã®ã‚¢ã‚¤ãƒ†ãƒ ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’ç§»å‹•ã™ã‚‹
 		case TIMER_NEXTFOCUS:
 			KillTimer(hDlg, wParam);
 			ListView_SetItemState(GetDlgItem(hDlg, WWWC_LIST),
@@ -1413,11 +1413,11 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_NOTIFY:
-		//ƒŠƒXƒgƒrƒ…[ƒwƒbƒ_ƒRƒ“ƒgƒ[ƒ‹
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ãƒ˜ãƒƒãƒ€ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«
 		if(((NMHDR *)lParam)->hwndFrom == GetWindow(GetDlgItem(hDlg, WWWC_LIST), GW_CHILD)){
 			return UpListViewHeaderNotifyProc(hDlg, lParam, upColumnInfo);
 		}
-		//ƒŠƒXƒgƒrƒ…[
+		//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼
 		if(((NMHDR *)lParam)->hwndFrom != GetDlgItem(hDlg, WWWC_LIST)){
 			return FALSE;
 		}
@@ -1432,11 +1432,11 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		case ID_KEY_RETURN:
 			if(GetFocus() != GetDlgItem(hDlg, WWWC_LIST)){
-				//ƒtƒH[ƒJƒX‚Ì‚Âƒ{ƒ^ƒ“‚ğ‘I‘ğ
+				//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã®æŒã¤ãƒœã‚¿ãƒ³ã‚’é¸æŠ
 				SendMessage(hDlg, WM_COMMAND, GetDlgCtrlID(GetFocus()), 0);
 				break;
 			}
-			//ƒvƒƒgƒRƒ‹–ˆ‚Ìƒƒjƒ…[‚ğİ’è
+			//ãƒ—ãƒ­ãƒˆã‚³ãƒ«æ¯ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¨­å®š
 			DeleteProtocolMenuItem(GetSubMenu(hPOPUP, MENU_POP_UPITEM));
 			SetProtocolItemMenu(hDlg, GetSubMenu(hPOPUP, MENU_POP_UPITEM), TRUE, TRUE);
 			SetEnableToolItemMenu(GetSubMenu(hPOPUP, MENU_POP_UPITEM));
@@ -1454,7 +1454,7 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				ShowMenu(hDlg, hPOPUP, MENU_POP_UPMSG);
 				break;
 			}
-			//ƒAƒCƒeƒ€ƒƒjƒ…[‚Ì•\¦
+			//ã‚¢ã‚¤ãƒ†ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¡¨ç¤º
 			EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_UPITEM), ID_MENUITEM_UPVIEW, MF_ENABLED);
 			EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_UPITEM), ID_MENUITEM_COPY, MF_ENABLED);
 			EnableMenuItem(GetSubMenu(hPOPUP, MENU_POP_UPITEM), ID_MENUITEM_INITICON_POP, MF_ENABLED);
@@ -1466,59 +1466,59 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 
 		case ID_KEY_ESC:
-		//‘Ò‹@
+		//å¾…æ©Ÿ
 		case IDC_BUTTON_WAIT:
 			SendMessage(hDlg, WM_CLOSE, 0, 0);
 			break;
 
-		//QÆ
+		//å‚ç…§
 		case IDC_BUTTON_VIEW:
 			if(ViewUpItemListCnt != 0 && ViewUpItemList != NULL && *ViewUpItemList != NULL
 				&& IsTreeItem(WWWCWnd, (*ViewUpItemList)->hItem) == TRUE){
-				//ˆê”Ô–Ú‚ÌƒAƒCƒeƒ€‚ÌƒtƒHƒ‹ƒ_‚ğ‘I‘ğ
+				//ä¸€ç•ªç›®ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ•ã‚©ãƒ«ãƒ€ã‚’é¸æŠ
 				TreeView_SelectItem(GetDlgItem(WWWCWnd, WWWC_TREE),
 					(*ViewUpItemList)->hItem);
 			}
-			//–{‘ÌƒEƒBƒ“ƒhƒE‚Ì•\¦
+			//æœ¬ä½“ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤º
 			SendMessage(WWWCWnd, WM_COMMAND, ID_MENUITEM_REWINDOW, 0);
 			ShowWindow(hDlg, SW_HIDE);
 			break;
 
-		//Ú×
+		//è©³ç´°
 		case IDC_BUTTON_INFO:
-			//Ú×‚Ì•\¦‚ÌØ‚è‘Ö‚¦
+			//è©³ç´°ã®è¡¨ç¤ºã®åˆ‡ã‚Šæ›¿ãˆ
 			ViewUpInfo(hDlg);
 			break;
 
-		//ŠJ‚­
+		//é–‹ã
 		case ID_MENU_ACTION_OPEM:
 			Item_Open(hDlg, -1);
 			break;
 
-		//‘S‚Ä‘I‘ğ
+		//å…¨ã¦é¸æŠ
 		case ID_MENUITEM_ALLSELECT:
 			SetFocus(GetDlgItem(hDlg, WWWC_LIST));
 			ListView_SetItemState(GetDlgItem(hDlg, WWWC_LIST), -1, LVIS_SELECTED, LVIS_SELECTED);
 			break;
 
-		//XVƒAƒCƒeƒ€‚ğ‘I‘ğ
+		//æ›´æ–°ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠ
 		case ID_MENUITEM_UPSELECT:
 			SetFocus(GetDlgItem(hDlg, WWWC_LIST));
 			ListView_UpSelectItem(GetDlgItem(hDlg, WWWC_LIST));
 			break;
 
-		//•\¦
+		//è¡¨ç¤º
 		case ID_MENUITEM_UPVIEW:
-			//–{‘Ì‚ÌƒAƒCƒRƒ“‚ğ•\¦
+			//æœ¬ä½“ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤º
 			MainItemSelect(hDlg);
 			break;
 
-		//ƒRƒs[
+		//ã‚³ãƒ”ãƒ¼
 		case ID_MENUITEM_COPY:
 			SetSubItemClipboardData(hDlg);
 			break;
 
-		//‘S‚Ä‚ÌƒAƒCƒRƒ“‚ğ‰Šú‰»
+		//å…¨ã¦ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’åˆæœŸåŒ–
 		case ID_MENUITEM_ALLINITICON:
 			WaitCursor(TRUE);
 			for(i = 0; i < ListView_GetItemCount(GetDlgItem(hDlg, WWWC_LIST)); i++){
@@ -1528,7 +1528,7 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WaitCursor(FALSE);
 			break;
 
-		//ƒAƒCƒRƒ“‚Ì‰Šú‰»
+		//ã‚¢ã‚¤ã‚³ãƒ³ã®åˆæœŸåŒ–
 		case ID_MENUITEM_INITICON:
 		case ID_MENUITEM_INITICON_POP:
 			if(ListView_GetSelectedCount(GetDlgItem(hDlg, WWWC_LIST)) <= 0){
@@ -1543,12 +1543,12 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WaitCursor(FALSE);
 			break;
 
-		//ƒNƒŠƒA
+		//ã‚¯ãƒªã‚¢
 		case ID_MENUITEM_UPITEMCLEAR:
 			SendMessage(hDlg, WM_UP_FREE, 0, 0);
 			break;
 
-		//ƒvƒƒpƒeƒB
+		//ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 		case ID_MENUITEM_PROP:
 			MainItemProp(hDlg);
 			break;
@@ -1559,7 +1559,7 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 
-	//ƒŠƒXƒgƒrƒ…[‚ÌƒCƒxƒ“ƒg
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ã‚¤ãƒ™ãƒ³ãƒˆ
 	case WM_LV_EVENT:
 		switch(wParam)
 		{
@@ -1599,15 +1599,15 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 
-	//ƒŠƒXƒgƒrƒ…[ƒAƒCƒeƒ€‚Ì‰Šú‰»
+	//ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®åˆæœŸåŒ–
 	case WM_LV_INITICON:
 		InitSubIcon(hDlg, wParam);
 		RefreshListView(hDlg);
 		break;
 
-	//ƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚Ìƒf[ƒ^—v‹
+	//ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã®ãƒ‡ãƒ¼ã‚¿è¦æ±‚
 	case WM_DATAOBJECT_GETDATA:
-		//WWWCƒAƒCƒeƒ€ƒtƒH[ƒ}ƒbƒg
+		//WWWCã‚¢ã‚¤ãƒ†ãƒ ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 		if(wParam == WWWC_ClipFormat){
 			*((HGLOBAL *)lParam) = Clipboard_Set_WF_ItemList(hDlg, FLAG_COPY, NULL);
 			WWWCDropFlag = TRUE;
@@ -1617,17 +1617,17 @@ BOOL CALLBACK UpMessageProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		WWWCDropFlag = FALSE;
 		switch(wParam)
 		{
-		case CF_TEXT:	//ƒeƒLƒXƒg
+		case CF_TEXT:	//ãƒ†ã‚­ã‚¹ãƒˆ
 			*((HGLOBAL *)lParam) = Clipboard_Set_TEXT(hDlg, NULL);
 			break;
 
-		case CF_HDROP:	//ƒhƒƒbƒvƒtƒ@ƒCƒ‹
+		case CF_HDROP:	//ãƒ‰ãƒ­ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«
 			*((HGLOBAL *)lParam) = DragDrop_SetDropFileMem(hDlg);
 			break;
 		}
 		break;
 
-	//DLL‚©‚ç‚ÌƒƒbƒZ[ƒW‚ğ–{‘Ì‚É“]‘—
+	//DLLã‹ã‚‰ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æœ¬ä½“ã«è»¢é€
 	case WM_GETVERSION:
 	case WM_GETMAINWINDOW:
 	case WM_GETUPWINDOW:

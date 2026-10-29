@@ -1,4 +1,4 @@
-/**************************************************************************
+ï»¿/**************************************************************************
 
 	WWWC
 
@@ -24,7 +24,7 @@
 #include "OleDragDrop.h"
 
 
-/* Clipboard format ‚©‚ç Type of storage medium ‚ðŽæ“¾ */
+/* Clipboard format ã‹ã‚‰ Type of storage medium ã‚’å–å¾— */
 static DWORD FormatToTymed(const UINT cfFormat)
 {
 	switch (cfFormat) {
@@ -79,7 +79,7 @@ typedef struct _IDROPTARGET_INTERNAL {
 	IDROPTARGET_NOTIFY dtn;
 }IDROPTARGET_INTERNAL, *LPIDROPTARGET_INTERNAL;
 
-/* OLE‚Ìƒhƒƒbƒvƒ^[ƒQƒbƒg‚Æ‚µ‚Ä“o˜^‚·‚é */
+/* OLEã®ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã—ã¦ç™»éŒ²ã™ã‚‹ */
 BOOL APIPRIVATE OLE_IDropTarget_RegisterDragDrop(HWND hWnd, UINT uCallbackMessage, UINT *cFormat, int cfcnt)
 {
 	static IDROPTARGET_INTERNAL *pdti;
@@ -90,19 +90,19 @@ BOOL APIPRIVATE OLE_IDropTarget_RegisterDragDrop(HWND hWnd, UINT uCallbackMessag
 	}
 	pdti->lpVtbl = (LPVOID)&dtv;
 	pdti->m_refCnt = 0;
-	pdti->hWnd = hWnd;													/* ƒƒbƒZ[ƒW‚ðŽó‚¯Žæ‚éƒEƒBƒ“ƒhƒE */
-	pdti->uCallbackMessage = uCallbackMessage;							/* ƒƒbƒZ[ƒW */
-	pdti->cFormat = (UINT *)GlobalAlloc(GPTR, sizeof(UINT) * cfcnt);		/* ‘Î‰ž‚µ‚Ä‚¢‚éƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg */
+	pdti->hWnd = hWnd;													/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å—ã‘å–ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ */
+	pdti->uCallbackMessage = uCallbackMessage;							/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+	pdti->cFormat = (UINT *)GlobalAlloc(GPTR, sizeof(UINT) * cfcnt);		/* å¯¾å¿œã—ã¦ã„ã‚‹ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ */
 	if (pdti->cFormat == NULL) {
 		GlobalFree(pdti);
 		return FALSE;
 	}
 	CopyMemory(pdti->cFormat, cFormat, sizeof(UINT) * cfcnt);
-	pdti->cfcnt = cfcnt;												/* ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚Ì” */
+	pdti->cfcnt = cfcnt;												/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã®æ•° */
 	return (S_OK == RegisterDragDrop(hWnd, (LPDROPTARGET)pdti));
 }
 
-/* OLE‚Ìƒhƒƒbƒvƒ^[ƒQƒbƒg‚ð‰ðœ‚·‚é */
+/* OLEã®ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è§£é™¤ã™ã‚‹ */
 void APIPRIVATE OLE_IDropTarget_RevokeDragDrop(HWND hWnd)
 {
 	RevokeDragDrop(hWnd);
@@ -110,7 +110,7 @@ void APIPRIVATE OLE_IDropTarget_RevokeDragDrop(HWND hWnd)
 
 static HRESULT STDMETHODCALLTYPE OLE_IDropTarget_QueryInterface(LPDROPTARGET pThis, REFIID riid, PVOID *ppvObject)
 {
-	//—v‹‚³‚ê‚½IID‚Æ“¯‚¶ê‡‚ÍƒIƒuƒWƒFƒNƒg‚ð•Ô‚·
+	//è¦æ±‚ã•ã‚ŒãŸIIDã¨åŒã˜å ´åˆã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 	if (IsEqualIID(riid, &IID_IUnknown) || IsEqualIID(riid, &IID_IDropTarget)) {
 		*ppvObject = (LPVOID)pThis;
 		((LPUNKNOWN)*ppvObject)->lpVtbl->AddRef((LPUNKNOWN)*ppvObject);
@@ -124,7 +124,7 @@ static ULONG STDMETHODCALLTYPE OLE_IDropTarget_AddRef(LPDROPTARGET pThis)
 {
 	CONST LPIDROPTARGET_INTERNAL pdti = (LPIDROPTARGET_INTERNAL)pThis;
 
-	/* reference count‚ðƒCƒ“ƒNƒŠƒƒ“ƒg‚·‚é */
+	/* reference countã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã™ã‚‹ */
 	pdti->m_refCnt++;
 	return pdti->m_refCnt;
 }
@@ -133,10 +133,10 @@ static ULONG STDMETHODCALLTYPE OLE_IDropTarget_Release(LPDROPTARGET pThis)
 {
 	CONST LPIDROPTARGET_INTERNAL pdti = (LPIDROPTARGET_INTERNAL)pThis;
 
-	/* reference count‚ðƒfƒNƒŠƒƒ“ƒg‚·‚é */
+	/* reference countã‚’ãƒ‡ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã™ã‚‹ */
 	pdti->m_refCnt--;
 
-	/* reference count‚ª 0 ‚É‚È‚Á‚½ê‡‚ÍƒIƒuƒWƒFƒNƒg‚Ì‰ð•ú‚ðs‚¤ */
+	/* reference countãŒ 0 ã«ãªã£ãŸå ´åˆã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§£æ”¾ã‚’è¡Œã† */
 	if (pdti->m_refCnt == 0L) {
 		if (pdti->cFormat != NULL) {
 			GlobalFree(pdti->cFormat);
@@ -176,37 +176,37 @@ static HRESULT APIPRIVATE OLE_IDropTarget_Internal_SendMessage(LPDROPTARGET pThi
 	int i;
 
 	if (pdo) {
-		/* ‘Î‰ž‚µ‚Ä‚¢‚éƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚ª‚ ‚é‚©’²‚×‚é */
+		/* å¯¾å¿œã—ã¦ã„ã‚‹ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆãŒã‚ã‚‹ã‹èª¿ã¹ã‚‹ */
 		for (i = 0; i < pdti->cfcnt; i++) {
 			if (DropTarget_QueryGetData(pdo, pdti->cFormat[i]) == S_OK) {
 				cfFormat = pdti->cFormat[i];
 				break;
 			}
 		}
-		/* ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚©‚çƒf[ƒ^‚ðŽæ“¾‚·‚é */
+		/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ */
 		if (cfFormat != 0) {
 			if (DropTarget_GetData(pdo, cfFormat, &sm) != S_OK) {
 				cfFormat = 0;
 			}
 		}
 	}
-	pdtn->ppt = ppt;					/* ƒ}ƒEƒXƒ|ƒCƒ“ƒ^‚ÌˆÊ’u */
-	pdtn->grfKeyState = grfKeyState;	/* ƒL[Aƒ}ƒEƒXƒ{ƒ^ƒ“‚Ìó‘Ô */
-	pdtn->cfFormat = cfFormat;			/* ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg */
+	pdtn->ppt = ppt;					/* ãƒžã‚¦ã‚¹ãƒã‚¤ãƒ³ã‚¿ã®ä½ç½® */
+	pdtn->grfKeyState = grfKeyState;	/* ã‚­ãƒ¼ã€ãƒžã‚¦ã‚¹ãƒœã‚¿ãƒ³ã®çŠ¶æ…‹ */
+	pdtn->cfFormat = cfFormat;			/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ */
 	if (pdo) {
-		pdtn->hMem = sm.hGlobal;			/* ŽÀƒf[ƒ^ */
+		pdtn->hMem = sm.hGlobal;			/* å®Ÿãƒ‡ãƒ¼ã‚¿ */
 	}
 	pdtn->pdo = pdo;					/* IDataObject */
 
-	/* ƒEƒBƒ“ƒhƒE‚ÉƒCƒxƒ“ƒg‚ð’Ê’m‚·‚é */
+	/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é€šçŸ¥ã™ã‚‹ */
 	SendMessage(pdti->hWnd, pdti->uCallbackMessage, (WPARAM)uNotify, (LPARAM)pdtn);
 
-	/* ƒNƒŠƒbƒvƒ{[ƒhŒ`Ž®‚Ìƒf[ƒ^‚Ì‰ð•ú */
+	/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰å½¢å¼ã®ãƒ‡ãƒ¼ã‚¿ã®è§£æ”¾ */
 	if (cfFormat && pdo) {
 		ReleaseStgMedium(&sm);
 	}
 
-	/* Œø‰Ê‚ÌÝ’è */
+	/* åŠ¹æžœã®è¨­å®š */
 	if (pdwEffect) {
 		*pdwEffect &= pdtn->dwEffect;
 
@@ -222,7 +222,7 @@ static HRESULT APIPRIVATE DropTarget_GetData(LPDATAOBJECT pdo, UINT cfFormat, LP
 {
 	FORMATETC fmt;
 
-	/* IDataObject‚ÉƒNƒŠƒbƒvƒ{[ƒhŒ`Ž®‚Ìƒf[ƒ^‚ð—v‹‚·‚é */
+	/* IDataObjectã«ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰å½¢å¼ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¦æ±‚ã™ã‚‹ */
 	fmt.cfFormat = cfFormat;
 	fmt.ptd = NULL;
 	fmt.dwAspect = DVASPECT_CONTENT;
@@ -235,7 +235,7 @@ static HRESULT APIPRIVATE DropTarget_QueryGetData(LPDATAOBJECT pdo, UINT cfForma
 {
 	FORMATETC fmt;
 
-	/* IDataObject‚ÉŽw’è‚ÌƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚ª‘¶Ý‚·‚é‚©–â‚¢‡‚í‚¹‚é */
+	/* IDataObjectã«æŒ‡å®šã®ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆãŒå­˜åœ¨ã™ã‚‹ã‹å•ã„åˆã‚ã›ã‚‹ */
 	fmt.cfFormat = cfFormat;
 	fmt.ptd = NULL;
 	fmt.dwAspect = DVASPECT_CONTENT;
@@ -281,7 +281,7 @@ typedef struct _IENUMFORMATETC_INTERNAL {
 
 static HRESULT STDMETHODCALLTYPE OLE_IEnumFORMATETC_QueryInterface(LPENUMFORMATETC lpThis, REFIID riid, LPVOID FAR* lplpvObj)
 {
-	//—v‹‚³‚ê‚½IID‚Æ“¯‚¶ê‡‚ÍƒIƒuƒWƒFƒNƒg‚ð•Ô‚·
+	//è¦æ±‚ã•ã‚ŒãŸIIDã¨åŒã˜å ´åˆã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 	if (IsEqualIID(riid, &IID_IUnknown) || IsEqualIID(riid, &IID_IEnumFORMATETC)) {
 		*lplpvObj = (LPVOID)lpThis;
 		((LPUNKNOWN)*lplpvObj)->lpVtbl->AddRef(((LPUNKNOWN)*lplpvObj));
@@ -295,9 +295,9 @@ static ULONG STDMETHODCALLTYPE OLE_IEnumFORMATETC_AddRef(LPENUMFORMATETC lpThis)
 {
 	CONST LPIENUMFORMATETC_INTERNAL pefi = (LPIENUMFORMATETC_INTERNAL)lpThis;
 
-	/* reference count‚ðƒCƒ“ƒNƒŠƒƒ“ƒg‚·‚é */
+	/* reference countã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã™ã‚‹ */
 	pefi->m_refCnt++;
-	/* eƒIƒuƒWƒFƒNƒg‚Ìreference count‚ð‰Á‚¦‚é */
+	/* è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®reference countã‚’åŠ ãˆã‚‹ */
 	pefi->m_pUnknownObj->lpVtbl->AddRef(pefi->m_pUnknownObj);
 	return pefi->m_refCnt;
 }
@@ -306,12 +306,12 @@ static ULONG STDMETHODCALLTYPE OLE_IEnumFORMATETC_Release(LPENUMFORMATETC lpThis
 {
 	CONST LPIENUMFORMATETC_INTERNAL pefi = (LPIENUMFORMATETC_INTERNAL)lpThis;
 
-	/* reference count‚ðƒfƒNƒŠƒƒ“ƒg‚·‚é */
+	/* reference countã‚’ãƒ‡ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã™ã‚‹ */
 	pefi->m_refCnt--;
-	/* eƒIƒuƒWƒFƒNƒg‚Ìreference count‚ðŒ¸‚ç‚· */
+	/* è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®reference countã‚’æ¸›ã‚‰ã™ */
 	pefi->m_pUnknownObj->lpVtbl->Release(pefi->m_pUnknownObj);
 
-	/* reference count‚ª 0 ‚É‚È‚Á‚½ê‡‚ÍƒIƒuƒWƒFƒNƒg‚Ì‰ð•ú‚ðs‚¤ */
+	/* reference countãŒ 0 ã«ãªã£ãŸå ´åˆã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§£æ”¾ã‚’è¡Œã† */
 	if (pefi->m_refCnt == 0L) {
 		if (pefi->m_formatList != NULL) {
 			GlobalFree(pefi->m_formatList);
@@ -386,7 +386,7 @@ static HRESULT STDMETHODCALLTYPE OLE_IEnumFORMATETC_Clone(LPENUMFORMATETC lpThis
 	LPIENUMFORMATETC_INTERNAL lpefi = ((LPIENUMFORMATETC_INTERNAL)lpThis);
 	UINT i;
 
-	/* IEnumFORMATETC‚ðì¬‚·‚é */
+	/* IEnumFORMATETCã‚’ä½œæˆã™ã‚‹ */
 	pNew = GlobalAlloc(GPTR, sizeof(IENUMFORMATETC_INTERNAL));
 	if (pNew == NULL) {
 		return ResultFromScode(E_OUTOFMEMORY);
@@ -398,7 +398,7 @@ static HRESULT STDMETHODCALLTYPE OLE_IEnumFORMATETC_Clone(LPENUMFORMATETC lpThis
 	pNew->m_pUnknownObj = lpefi->m_pUnknownObj;
 	pNew->m_numFormats = lpefi->m_numFormats;
 
-	/* ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚ÌƒŠƒXƒg‚ðƒRƒs[‚·‚é */
+	/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã®ãƒªã‚¹ãƒˆã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹ */
 	pNew->m_formatList = GlobalAlloc(GPTR, sizeof(FORMATETC) * pNew->m_numFormats);
 	if (pNew->m_formatList != NULL) {
 		for (i = 0; i < pNew->m_numFormats; i++) {
@@ -464,7 +464,7 @@ typedef struct _IDATAOBJECT_INTERNAL {
 
 static HRESULT STDMETHODCALLTYPE OLE_IDataObject_QueryInterface(LPDATAOBJECT lpThis, REFIID riid, LPVOID FAR *lplpvObj)
 {
-	//—v‹‚³‚ê‚½IID‚Æ“¯‚¶ê‡‚ÍƒIƒuƒWƒFƒNƒg‚ð•Ô‚·
+	//è¦æ±‚ã•ã‚ŒãŸIIDã¨åŒã˜å ´åˆã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 	if (IsEqualIID(riid, &IID_IUnknown) || IsEqualIID(riid, &IID_IDataObject)) {
 		*lplpvObj = lpThis;
 		((LPUNKNOWN)*lplpvObj)->lpVtbl->AddRef(((LPUNKNOWN)*lplpvObj));
@@ -478,7 +478,7 @@ static ULONG STDMETHODCALLTYPE OLE_IDataObject_AddRef(LPDATAOBJECT lpThis)
 {
 	CONST LPIDATAOBJECT_INTERNAL pdoi = (LPIDATAOBJECT_INTERNAL)lpThis;
 
-	/* reference count‚ðƒCƒ“ƒNƒŠƒƒ“ƒg‚·‚é */
+	/* reference countã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã™ã‚‹ */
 	pdoi->m_refCnt++;
 	return pdoi->m_refCnt;
 }
@@ -487,10 +487,10 @@ static ULONG STDMETHODCALLTYPE OLE_IDataObject_Release(LPDATAOBJECT lpThis)
 {
 	CONST LPIDATAOBJECT_INTERNAL pdoi = (LPIDATAOBJECT_INTERNAL)lpThis;
 
-	/* reference count‚ðƒfƒNƒŠƒƒ“ƒg‚·‚é */
+	/* reference countã‚’ãƒ‡ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã™ã‚‹ */
 	pdoi->m_refCnt--;
 
-	/* reference count‚ª 0 ‚É‚È‚Á‚½ê‡‚ÍƒIƒuƒWƒFƒNƒg‚Ì‰ð•ú‚ðs‚¤ */
+	/* reference countãŒ 0 ã«ãªã£ãŸå ´åˆã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§£æ”¾ã‚’è¡Œã† */
 	if (pdoi->m_refCnt == 0L) {
 		if (pdoi->m_typeList != NULL) {
 			GlobalFree(pdoi->m_typeList);
@@ -507,18 +507,18 @@ static HRESULT STDMETHODCALLTYPE OLE_IDataObject_GetData(LPDATAOBJECT lpThis, FO
 	HGLOBAL hMem;
 	UINT i;
 
-	/* —v‹‚³‚ê‚½ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚ª‘¶Ý‚·‚é‚©’²‚×‚é */
+	/* è¦æ±‚ã•ã‚ŒãŸã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆãŒå­˜åœ¨ã™ã‚‹ã‹èª¿ã¹ã‚‹ */
 	for (i = 0; i < pdoi->m_numTypes; i++) {
 		if (pdoi->m_typeList[i].cfFormat == pFormatetc->cfFormat) {
 			break;
 		}
 	}
 	if (i == pdoi->m_numTypes) {
-		/* —v‹‚³‚ê‚½ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚ðƒTƒ|[ƒg‚µ‚Ä‚È‚¢ê‡ */
+		/* è¦æ±‚ã•ã‚ŒãŸã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ãªã„å ´åˆ */
 		return ResultFromScode(DV_E_FORMATETC);
 	}
 
-	/* ƒEƒBƒ“ƒhƒE‚Éƒf[ƒ^‚Ì—v‹‚ðs‚¤ */
+	/* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ãƒ‡ãƒ¼ã‚¿ã®è¦æ±‚ã‚’è¡Œã† */
 	SendMessage(pdoi->hWnd, pdoi->uCallbackMessage, (WPARAM)pdoi->m_typeList[i].cfFormat, (LPARAM)&hMem);
 	if (hMem == NULL) {
 		return ResultFromScode(STG_E_MEDIUMFULL);
@@ -539,7 +539,7 @@ static HRESULT STDMETHODCALLTYPE OLE_IDataObject_QueryGetData(LPDATAOBJECT lpThi
 	CONST LPIDATAOBJECT_INTERNAL pdoi = (LPIDATAOBJECT_INTERNAL)lpThis;
 	UINT i;
 
-	/* —v‹‚³‚ê‚½ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚ª‘¶Ý‚·‚é‚©’²‚×‚é */
+	/* è¦æ±‚ã•ã‚ŒãŸã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆãŒå­˜åœ¨ã™ã‚‹ã‹èª¿ã¹ã‚‹ */
 	for (i = 0; i < pdoi->m_numTypes; i++) {
 		if (pdoi->m_typeList[i].cfFormat == pFormatetc->cfFormat) {
 			return S_OK;
@@ -573,7 +573,7 @@ static HRESULT STDMETHODCALLTYPE OLE_IDataObject_EnumFormatEtc(LPDATAOBJECT lpTh
 		return ResultFromScode(E_NOTIMPL);
 	}
 
-	/* IEnumFORMATETC‚ðì¬‚·‚é */
+	/* IEnumFORMATETCã‚’ä½œæˆã™ã‚‹ */
 	pefi = GlobalAlloc(GPTR, sizeof(IENUMFORMATETC_INTERNAL));
 	if (pefi == NULL) {
 		return E_OUTOFMEMORY;
@@ -584,7 +584,7 @@ static HRESULT STDMETHODCALLTYPE OLE_IDataObject_EnumFormatEtc(LPDATAOBJECT lpTh
 	pefi->m_pUnknownObj = (struct IUnknown *)lpThis;
 	pefi->m_numFormats = pdoi->m_numTypes;
 
-	/* ƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚ÌƒŠƒXƒg‚ðƒRƒs[‚·‚é */
+	/* ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã®ãƒªã‚¹ãƒˆã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹ */
 	pefi->m_formatList = GlobalAlloc(GPTR, sizeof(FORMATETC) * pefi->m_numFormats);
 	if (pefi->m_formatList != NULL) {
 		for (i = 0; i < pefi->m_numFormats; i++) {
@@ -647,7 +647,7 @@ typedef struct _IDROPSOURCE_INTERNAL {
 
 static HRESULT STDMETHODCALLTYPE OLE_IDropSource_QueryInterface(LPDROPSOURCE lpThis, REFIID riid, LPVOID FAR *lplpvObj)
 {
-	//—v‹‚³‚ê‚½IID‚Æ“¯‚¶ê‡‚ÍƒIƒuƒWƒFƒNƒg‚ð•Ô‚·
+	//è¦æ±‚ã•ã‚ŒãŸIIDã¨åŒã˜å ´åˆã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 	if (IsEqualIID(riid, &IID_IUnknown) || IsEqualIID(riid, &IID_IDropSource)) {
 		*lplpvObj = (LPVOID)lpThis;
 		((LPUNKNOWN)*lplpvObj)->lpVtbl->AddRef(((LPUNKNOWN)*lplpvObj));
@@ -662,7 +662,7 @@ static ULONG STDMETHODCALLTYPE OLE_IDropSource_AddRef(LPDROPSOURCE lpThis)
 {
 	CONST LPIDROPSOURCE_INTERNAL pdsi = (LPIDROPSOURCE_INTERNAL)lpThis;
 
-	/* reference count‚ðƒCƒ“ƒNƒŠƒƒ“ƒg‚·‚é */
+	/* reference countã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã™ã‚‹ */
 	pdsi->m_refCnt++;
 	return pdsi->m_refCnt;
 }
@@ -671,10 +671,10 @@ static ULONG STDMETHODCALLTYPE OLE_IDropSource_Release(LPDROPSOURCE lpThis)
 {
 	CONST LPIDROPSOURCE_INTERNAL pdsi = (LPIDROPSOURCE_INTERNAL)lpThis;
 
-	/* reference count‚ðƒfƒNƒŠƒƒ“ƒg‚·‚é */
+	/* reference countã‚’ãƒ‡ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã™ã‚‹ */
 	pdsi->m_refCnt--;
 
-	/* reference count‚ª 0 ‚É‚È‚Á‚½ê‡‚ÍƒIƒuƒWƒFƒNƒg‚Ì‰ð•ú‚ðs‚¤ */
+	/* reference countãŒ 0 ã«ãªã£ãŸå ´åˆã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§£æ”¾ã‚’è¡Œã† */
 	if (pdsi->m_refCnt == 0L) {
 		GlobalFree(pdsi);
 		return 0L;
@@ -687,11 +687,11 @@ static HRESULT STDMETHODCALLTYPE OLE_IDropSource_QueryContinueDrag(LPDROPSOURCE 
 	CONST LPIDROPSOURCE_INTERNAL pdsi = (LPIDROPSOURCE_INTERNAL)lpThis;
 
 	if (fEscapePressed) {
-		/* ƒGƒXƒP[ƒv‚ª‰Ÿ‚³‚ê‚½ê‡‚ÍƒLƒƒƒ“ƒZƒ‹‚É‚·‚é */
+		/* ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ãŒæŠ¼ã•ã‚ŒãŸå ´åˆã¯ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã«ã™ã‚‹ */
 		return ResultFromScode(DRAGDROP_S_CANCEL);
 	}
 
-	/* Žw’è‚ÌƒL[‚âƒ}ƒEƒX‚ª—£‚³‚ê‚½ê‡‚Íƒhƒƒbƒv‚É‚·‚é */
+	/* æŒ‡å®šã®ã‚­ãƒ¼ã‚„ãƒžã‚¦ã‚¹ãŒé›¢ã•ã‚ŒãŸå ´åˆã¯ãƒ‰ãƒ­ãƒƒãƒ—ã«ã™ã‚‹ */
 	if (pdsi->m_button == 0) {
 		if (grfKeyState != pdsi->m_keyState) {
 			return ResultFromScode(DRAGDROP_S_DROP);
@@ -709,7 +709,7 @@ static HRESULT STDMETHODCALLTYPE OLE_IDropSource_GiveFeedback(LPDROPSOURCE lpThi
 	return ResultFromScode(DRAGDROP_S_USEDEFAULTCURSORS);
 }
 
-/* ƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚ÌŠJŽn */
+/* ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã®é–‹å§‹ */
 int APIPRIVATE OLE_IDropSource_Start(HWND hWnd, UINT uCallbackMessage, UINT *ClipFormtList, int cfcnt, int Effect)
 {
 	static IDATAOBJECT_INTERNAL *pdoi;
@@ -719,7 +719,7 @@ int APIPRIVATE OLE_IDropSource_Start(HWND hWnd, UINT uCallbackMessage, UINT *Cli
 	int i;
 	int ret;
 
-	/* IDataObject‚Ìì¬ */
+	/* IDataObjectã®ä½œæˆ */
 	pdoi = GlobalAlloc(GPTR, sizeof(IDATAOBJECT_INTERNAL));
 	if (pdoi == NULL) {
 		return -1;
@@ -728,7 +728,7 @@ int APIPRIVATE OLE_IDropSource_Start(HWND hWnd, UINT uCallbackMessage, UINT *Cli
 	pdoi->m_refCnt = 0;
 	pdoi->m_numTypes = cfcnt;
 	pdoi->m_maxTypes = cfcnt;
-	/* —LŒø‚ÈƒNƒŠƒbƒvƒ{[ƒhƒtƒH[ƒ}ƒbƒg‚ðÝ’è‚·‚é */
+	/* æœ‰åŠ¹ãªã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã‚’è¨­å®šã™ã‚‹ */
 	pdoi->m_typeList = GlobalAlloc(GPTR, sizeof(FORMATETC) * cfcnt);
 	if (pdoi->m_typeList == NULL) {
 		GlobalFree(pdoi);
@@ -745,24 +745,24 @@ int APIPRIVATE OLE_IDropSource_Start(HWND hWnd, UINT uCallbackMessage, UINT *Cli
 	pdoi->uCallbackMessage = uCallbackMessage;
 	((LPDATAOBJECT)pdoi)->lpVtbl->AddRef((LPDATAOBJECT)pdoi);
 
-	/* IDropSource‚Ìì¬ */
+	/* IDropSourceã®ä½œæˆ */
 	pdsi = GlobalAlloc(GPTR, sizeof(IDROPSOURCE_INTERNAL));
 	if (pdsi == NULL) {
-		/* IDataObject‚ð‰ð•ú‚·‚é */
+		/* IDataObjectã‚’è§£æ”¾ã™ã‚‹ */
 		((LPDATAOBJECT)pdoi)->lpVtbl->Release((LPDATAOBJECT)pdoi);
 		return -1;
 	}
 	pdsi->lpVtbl = (LPVOID)&dsv;
 	pdsi->m_refCnt = 0;
 
-	/* —LŒø‚ÈƒL[‚Æƒ}ƒEƒX‚Ìó‘Ô */
+	/* æœ‰åŠ¹ãªã‚­ãƒ¼ã¨ãƒžã‚¦ã‚¹ã®çŠ¶æ…‹ */
 	if (GetKeyState(VK_RBUTTON) & 0x8000) {
 		pdsi->m_button = MK_RBUTTON;
 	} else {
 		pdsi->m_button = MK_LBUTTON;
 	}
 
-	/* Œ»Ý‚ÌƒL[‚Æƒ}ƒEƒX‚Ìó‘Ô */
+	/* ç¾åœ¨ã®ã‚­ãƒ¼ã¨ãƒžã‚¦ã‚¹ã®çŠ¶æ…‹ */
 	keyState = 0;
 	if (GetKeyState(VK_SHIFT) & 0x8000) {
 		keyState |= MK_SHIFT;
@@ -787,16 +787,16 @@ int APIPRIVATE OLE_IDropSource_Start(HWND hWnd, UINT uCallbackMessage, UINT *Cli
 
 	lpdwEffect = 0;
 
-	/* ƒhƒ‰ƒbƒO&ƒhƒƒbƒv‚ÌŠJŽn */
+	/* ãƒ‰ãƒ©ãƒƒã‚°&ãƒ‰ãƒ­ãƒƒãƒ—ã®é–‹å§‹ */
 	ret = DoDragDrop((LPDATAOBJECT)pdoi, (LPDROPSOURCE)pdsi, Effect, &lpdwEffect);
 
-	/* IDataObject‚ð‰ð•ú‚·‚é */
+	/* IDataObjectã‚’è§£æ”¾ã™ã‚‹ */
 	((LPDATAOBJECT)pdoi)->lpVtbl->Release((LPDATAOBJECT)pdoi);
-	/* IDropSource‚ð‰ð•ú‚·‚é */
+	/* IDropSourceã‚’è§£æ”¾ã™ã‚‹ */
 	((LPDROPSOURCE)pdsi)->lpVtbl->Release((LPDROPSOURCE)pdsi);
 
 	if (ret == DRAGDROP_S_DROP) {
-		/* ƒhƒƒbƒvæ‚ÌƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ªÝ’è‚µ‚½Œø‰Ê‚ð•Ô‚· */
+		/* ãƒ‰ãƒ­ãƒƒãƒ—å…ˆã®ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ãŒè¨­å®šã—ãŸåŠ¹æžœã‚’è¿”ã™ */
 		return lpdwEffect;
 	}
 	return -1;
